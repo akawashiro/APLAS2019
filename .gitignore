@@ -1,4 +1,5 @@
 *.log
+*.pdf
 *.omc
 *.omakedb
 *.blg
