@@ -38,18 +38,31 @@ Atsushi Igarashi\inst{2}\orcidID{0000-0002-5143-9764}}
 \maketitle              % typeset the header of the contribution
 %
 \begin{abstract}
-We develop yet another typed multi-stage calculus Lambda-MD. It extends Hanada and Igarashi's Lambda-TP with dependent type.
+We develop yet another typed multi-stage calculus $\lambda^{\textrm{MD}}$.
+It extends Hanada and Igarashi's $\lambda^{\triangleright\%}$ with dependent type.
 
-Multi-stage calculus enables us to generate and execute codes at runtime. And people have researched it as a method for improving the performance of programs. On the other hand, the dependent type is a type dependent on values. It is famous for its application for vectors with their length.
+Multi-stage calculus enables us to generate and execute codes at runtime.
+And people have researched it as a method for improving the performance of programs. 
+On the other hand, the dependent type is a type dependent on values. 
+It is famous for its application for vectors with their length.
 
-In this article, we design Lambda-MD by introducing dependent type into Lamda-TP. It has a simple, substitution-based full-reduction semantics and enjoys basic properties of subject reduction, confluence, and strong normalization. In addition, we define an evaluation context which takes stages into account. Under the evaluation context progress is hold.
+In this article, we design $\lambda^{\textrm{MD}}$ by introducing dependent type into Lamda-TP.
+It has a simple, substitution-based full-reduction semantics and enjoys basic properties of subject reduction, confluence, and strong normalization.
+In addition, we define an evaluation context which takes stages into account. Under the evaluation context progress is hold.
 
-As a result of the combination of multi-stage calculus and dependent type, we can test code-generating functions such as staged interpreter at type-checking time. Staged-interpreter takes an abstract syntax tree as its input and output a corresponding code. Using dependent type, we can check whether some conditions written as a term is true or not at type-checking time. Then we can check staged-interpreter returns the correct output for a given input.
+As a result of the combination of multi-stage calculus and dependent type, 
+we can test code-generating functions such as staged interpreter at type-checking time.
+Staged-interpreter takes an abstract syntax tree as its input and output a corresponding code.
+Using dependent type, we can check whether some conditions written as a term is true or not at type-checking time.
+Then we can check staged-interpreter returns the correct output for a given input.
 
-199 words
+Finally, we discuss the relationship between Cross Stage Persistent and decidability of type checking.
+If you import dependent type to multi-stage calculus naively, the type checking may fail into an infinite loop and doesn't finish forever.
+We impose a little restriction on typing rules and made the type checking finish in finite time.
 
-The abstract should briefly summarize the contents of the paper in
-150--250 words.
+238 words
+
+The abstract should briefly summarize the contents of the paper in 150--250 words.
 \keywords{Multistage programming \and Dependent type \and Specification verification by tests.}
 \end{abstract}
 %
