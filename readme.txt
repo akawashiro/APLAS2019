@@ -1,3 +1,6 @@
+You can get all pdf file with latexmk commmand.
+You can get full version by changing \fullversionfalse to \fullversiontrue.
+
 Dear LLNCS user,
 
 The files in this directory belong to the LaTeX2e package for
