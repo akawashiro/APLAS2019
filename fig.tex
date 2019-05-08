@@ -2445,11 +2445,45 @@ Use induction on type derivation tree.
 \end{itemize}
 \end{dfn}
 
+\begin{thm}[Preservation of equality in $\natural$]
+    If $\G \V \tau \E \sigma @ A$ then $\natural(\tau) = \natural(\sigma)$.
+\end{thm}
+
+Prove by induction on the derivation tree.
+
 \begin{thm}[Preservation of typing in $\natural$]
     If $\G \V M:\tau@A$ in $\lambda^{\text{MD}}$ then $\natural(\G) \V \natural(M): \natural(\tau)$ in $\lambda^\to$.
 \end{thm}
 
 Prove by induction on the type derivation tree.
+
+\begin{itemize}
+    \newcommand{\MD}[1]{\mathcal{D}_#1}
+    \newcommand{\ID}[1]{\infer[]{#1}{\vdots}}
+    \item \TApp
+    
+        We have a derivation tree $\MD{1}$.
+
+        $\MD{1}$ = \infer[\TApp]
+        {\G \V M N : \tau[x \mapsto N] @A}
+        {\ID{\G \V M : (\Pi(x:\sigma).\tau) @ A} \andalso \ID{\G \V N :\sigma @A}}
+
+        From the induction hypothesis, we have $\natural(\G) \V \natural(M) : \natural(\sigma) \to \natural(\tau)$ and $\natural(\G) \V \natural(N) : \natural(\sigma)$.
+        Use the Application rule in $\lambda^\to$, we get $\natural(\G) \V \natural(M)\ \natural(N) : \natural(\tau)$.
+        Because $\natural(M)\ \natural(N) = \natural(M\ N)$ from the definition of $\natural$, $\natural(\G) \V \natural(M\ N) : \natural(\tau)$ in $\lambda^\to$.
+    \item \TConv
+    
+        We have a derivation tree $\MD{1}$.
+
+        $\MD{1}$ = \infer[\TConv]
+        {\G\V M:\sigma@A}
+        {\ID{\G\V M:\tau@A} \andalso \ID{\G\V \tau\E\sigma@A}}
+
+        Use "Preservation of typing in $\natural$" to $\G\V \tau\E\sigma@A$, we get $\natural(\tau) = \natural(\sigma)$. 
+        On the otherhand, $\natural(\G) \V \natural(M):\natural(\tau)$ from the induction hypothesis.
+        Then $\natural(\G) \V \natural(M):\natural(\sigma)$.
+
+\end{itemize}
 
 \begin{thm}[Inversion Lemma for Application]
     This theorem is used to prove Inversion Lemma for $\Pi$ type.
