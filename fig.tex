@@ -150,14 +150,14 @@
     \textrm{Type variables} && & X,Y,Z,... \\
 \end{align*}
 
-\figheader{Well-formed kinds}{\rulefbox{\Gamma \vdash K\iskind}}
+\figheader{Well-formed kinds}{\rulefbox{\Gamma \vdash K\iskind @A}}
 \begin{center}
     \infrule{}{\G\V*\iskind @A}{\WStar} \andalso
     \infrule{\G\V \tau::*@A \andalso \G,x:\tau@A\V K\iskind @A}{\G\V(\Pi x:\tau.K)\iskind @A}{\WAbs}\andalso
     \infrule{\G\V K\iskind @A}{\G\V K\iskind @A\alpha}{\WCsp}\\[2mm]
 \end{center}
 
-\figheader{Kinding}{\rulefbox{\G \V T::K}}
+\figheader{Kinding}{\rulefbox{\G \V T::K @ A}}
 \begin{center}
     \infrule{X::K@A \in \G \andalso \G\V K\iskind @A}{\G \V X::K@A}{\KVar} \andalso
     \infrule{\G\V \tau :: *@A \andalso \G,x:\tau@A\V \sigma::J@A}{\G\V(\Pi x:\tau.\sigma) :: (\Pi x:\tau.J)@A}{\KAbs} \\[2mm]
@@ -168,7 +168,7 @@
     \infrule{\G\V \tau::K@A}{\G\V \tau::K@A\alpha}{\KCsp}
 \end{center}
 
-\figheader{Typing}{\rulefbox{\G\V t:\tau}}
+\figheader{Typing}{\rulefbox{\G\V M:\tau @A}}
 \begin{center}
     \infrule{x:\tau@A \in \G \andalso \G\V \tau::*@A}{\G \V x:\tau@A}{\TVar} \andalso
     \infrule{\G\V \sigma::*@A\andalso\G,x:\sigma@A\V M:\tau@A}{\G\V(\lambda (x:\sigma).M):(\Pi (x:\sigma).\tau)@A}{\textsc{T-Abs}} \\[2mm]
@@ -493,7 +493,8 @@ And take a minimum compatible relationship on terms.
     \newcommand{\Exp}{\textrm{Str}}
     \newcommand{\RI}{\textrm{RFun}}
     \newcommand{\rI}{\textrm{rFun}}
-    \rI\ is a primitive function with a type of $\rI : \I \to (\RI\ \text{true})$.
+    \rI\ is a primitive function with a type of $\rI : (\forall\alpha.\TW_\alpha(\I \to \I)) \to (\RI\ \text{true})$.\\
+    == between codes is a primitive function which return true for $\alpha$ equivalence pair.
     \begin{align*}
         \text{let}\ & staged\_intepreter\ str = \hdots \\
         & staged\_intepreter : \Exp \to \forall\alpha.\TW_\alpha(\I \to \I) \\
@@ -2007,11 +2008,12 @@ Prove by induction on derivation tree.
 
 We can prove using induction on the derivation tree. 
 
-Basecases are \WStar, \KVar, \TVar, \QKRefl, \QTRefl, \QRefl.
+Basecases are \KVar, \TVar, \QKRefl, \QTRefl, \QRefl.
 We can prove for these cases directly from the definition of rules.
 
-Others are proved by using induction hypothesis and a rule. We show the case of \KCsp as an example.
+Others are proved by using induction hypothesis and a rule. We show some cases as examples.
 \begin{itemize}
+    \newcommand{\MD}[1]{\mathcal{D}_#1}
     \item \KCsp
     
         We have a derivation tree from the premise.
@@ -2029,6 +2031,17 @@ Others are proved by using induction hypothesis and a rule. We show the case of 
         $\mathcal{D}_3$ = \infer[\WCsp]
         {\G\V K \iskind @A\alpha}
         {\mathcal{D}_2}
+
+    \item \KTW
+    
+        We have a derivation tree from the premise.
+    
+        $\MD{1}$ = \infer[\KTW]
+        {\G\V\TW_\alpha \tau::*@A}
+        {\vdots}
+
+        From \WStar, $\G\V * \iskind @A$.
+
 \end{itemize}
 
 \begin{thm}[Generized Inversion Lemma for $\Pi$ type]
@@ -2427,7 +2440,7 @@ Use induction on type derivation tree.
         \begin{flalign*}
             \natural(\phi) &= \phi & \\
             \natural(\G, x:T@A) &= \natural(\G), \natural(x):\natural(\tau) & \\
-            \natural(\G, X:K@A) &= \natural(\G), \natural(X):\natural(K) &
+            \natural(\G, X:K@A) &= \natural(\G) &
         \end{flalign*}
 \end{itemize}
 \end{dfn}
@@ -2531,7 +2544,9 @@ Then, what we must show is Weak Church-Rosser Property now.
 
 When we consider two dirfferent redux in a $\lambda^{\text{MD}}$ term, they can only be disjoint, or one is a part of the other.
 In short, they are never overlapped each other.
-So, we can reduce one of them after we reduce another.
+So, we can reduce one of them after we reduce another.\\
+
+\blue{From here, it is on the work.}
 
 \section{ Staged Semantics }
 
