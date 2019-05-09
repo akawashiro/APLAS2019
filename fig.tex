@@ -2561,7 +2561,7 @@ Now, we can conclude there are no infinite reductions in a typed $\lambda^{\text
 
 This is because if there are no infinite reduction in a typed $\lambda^{\text{MD}}$ term $M$,
 we can construct a typed term of simply typed lambda calculus $\natural(M)$ from "Preservation of typing in $\natural$".
-And $\natural(M)$ has infinite reductions from "Preservation of $beta$ reduction in $\natural$".\\
+And $\natural(M)$ has infinite reductions from "Preservation of $\beta$ reduction in $\natural$".\\
 
 But, indeed, $\lambda^\to$ has a property of Strong Normalization, so there is no infinite reductions.
 
@@ -2580,7 +2580,7 @@ When we consider two dirfferent redux in a $\lambda^{\text{MD}}$ term, they can 
 In short, they are never overlapped each other.
 So, we can reduce one of them after we reduce another.\\
 
-\blue{From here, it is on the work.}
+\blue{\huge{It is work in progress from here.}}
 
 \section{ Staged Semantics }
 
@@ -2615,8 +2615,12 @@ So, we can reduce one of them after we reduce another.\\
                                            \mid E^A_B\ \epsilon \mid \%_\alpha\ E^{A'}_B \ (\text{where } A'\alpha = A)\\
 \end{align*}
 
-\section{ Deterministic Typechecking }
+\begin{thm}[Progress]
+    If $x:\tau@\epsilon \notin \G$ and $\G \V M : \tau @ A$ then $ M \in V^A $ or $\exists M'$ such that $M \longleftarrow_s M'$.
+\end{thm}
 
+% \section{ Deterministic Typechecking }
+%
 % \figheader{Well-formed kinds}{\rulefbox{\Gamma \vdash K\iskind}}
 % \begin{center}
 %     \infrule{}{\G\VT *\iskind @A}{\WStar} \andalso
@@ -2682,75 +2686,75 @@ So, we can reduce one of them after we reduce another.\\
 %     \infrule{\G\VT M:\tau@{A\alpha} \andalso \G\VT M:\tau@A}{\G\VT\%_\alpha M \E M : \tau@{A\alpha}}{\QPercent} \andalso
 % \end{center}
 
-\figheader{Well-formed kinds}{\rulefbox{\Gamma \vdash K\iskind}}
-\begin{center}
-    \infrule{}{\G\VT*\iskind @A}{\WStar} \andalso
-    \infrule{\G\VT \tau::*@A \andalso \G,x:\tau@A\VT K\iskind @A}{\G\VT(\Pi x:\tau.K)\iskind @A}{\WAbs}\andalso
-    \infrule{\G\VT K\iskind @A}{\G\VT K\iskind @A\alpha}{\WCsp}\\[2mm]
-\end{center}
-
-\figheader{Kinding}{\rulefbox{\G \VT T::K}}
-\begin{center}
-    \infrule{X::K@A \in \G \andalso \G\VT K\iskind @A}{\G \VT X::K@A}{\KVar} \andalso
-    \infrule{\G\VT \tau :: *@A \andalso \G,x:\tau@A\VT \sigma::J@A}{\G\VT(\Pi x:\tau.\sigma) :: (\Pi x:\tau.J)@A}{\KAbs} \\[2mm]
-    \infrule{\G\VT \sigma:: (\Pi x:\tau.K)@A \andalso \G\VT M:\tau@A}{\G\VT \sigma\ M::K[x\mapsto M]@A}{\KApp} \andalso
-    \infrule{\G\VT \tau::K@A \andalso \G\VT K\equiv J@A}{\G\VT \tau::J@A}{\KConv} \\[2mm]
-    \infrule{\G\VT \tau::*@A\alpha}{\G\VT\TW_\alpha \tau::*@A}{\KTW}\andalso
-    \infrule{\G\VT \tau::K@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\VT\forall\alpha.\tau::K@A}{\KGen} \andalso
-    \infrule{\G\VT \tau::K@A}{\G\VT \tau::K@A\alpha}{\KCsp}
-\end{center}
-
-\figheader{Typing}{\rulefbox{\G\VT t:\tau}}
-\begin{center}
-    \infrule{x:\tau@A \in \G \andalso \G\VT \tau::*@A}{\G \VT x:\tau@A}{\TVar} \andalso
-    \infrule{\G\VT \sigma::*@A\andalso\G,x:\sigma@A\VT M:\tau@A}{\G\VT(\lambda (x:\sigma).M):(\Pi (x:\sigma).\tau)@A}{\textsc{T-Abs}} \\[2mm]
-    \infrule{\G\VT M:(\Pi (x:\sigma).\tau)@A \andalso \G\VT N:\sigma@A}{\G\VT M\ N : \tau[x\mapsto N]@A}{\textsc{T-App}} \andalso
-    \infrule{\G\VT M:\tau@A \andalso \G\VT \tau\equiv \sigma :: K@A}{\G\VT M:\sigma@A}{\textsc{T-Conv}} \\[2mm]
-    \infrule{\G\VT M:\tau@{A\alpha}}{\G\VT\TB_{\alpha}M:\TW_{\alpha}\tau@A}{\textsc{T-$\TB$}} \andalso
-    \infrule{\G\VT M:\TW_{\alpha}\tau@A}{\G\VT\TBL_{\alpha}M:\tau@{A\alpha}}{\TTBL} \\[2mm]
-    \infrule{\G\VT M:\tau@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\VT\Lambda\alpha.M:\forall\alpha.\tau@A}{\textsc{T-Gen}} \andalso
-    \infrule{\G\VT M:\forall\alpha.\tau@A}{\G\VT M\ \epsilon:\tau[\alpha \mapsto \epsilon]@A}{\textsc{T-Ins}} \andalso
-    \infrule{\G\VT M:\tau@A}{\G\VT \%_\alpha M:\tau@{A\alpha}}{\textsc{T-Csp}} \andalso
-\end{center}
-
-\figheader{Kind Equivalence}{\rulefbox{\G\VT K\E J@A}}
-\begin{center}
-    \infrule{\G\VT \tau \E \sigma :: *@A \andalso \G,x:\tau@A \VT K \E J@A}{\G\VT\Pi x:\tau.K \E \Pi x:\sigma.J@A}{\QKAbs} \andalso
-    \infrule{\G\VT K \E J@A}{\G\VT K \E J@{A\alpha}}{\textsc{QK-Csp}} \\[2mm]
-    \infrule{\G\VT K \iskind @A}{\G\VT K\E K@A}{\textsc{QK-Refl}} \andalso
-    % 簡約規則の要請\\[2mm]
-\end{center}
-
-\figheader{Type Equivalence}{\rulefbox{\G\VT S\E T :: K @A}}
-\begin{center}
-    \infrule{\G\VT \tau \E \sigma :: *@A \andalso \G,x:\tau@A \VT \rho \E \pi :: *@A}{\G\VT\Pi x:\tau.\rho \E \Pi x:\sigma.\pi :: *@A}{\QTAbs} \andalso
-    \infrule{\G\VT \tau \E \sigma :: (\Pi x:\rho.K)@A \andalso \G\VT M \E N : \rho @A}{\G\VT \tau\ M \E \sigma\ N :: K[x \mapsto M]@A}{\QTApp} \\[2mm]
-    \infrule{\G\VT \tau \E \sigma :: *@{A\alpha}}{\G\VT \TW_{\alpha} \tau \E \TW_{\alpha} \sigma :: *@A}{\textsc{QT-$\TW$}}\andalso
-    \infrule{\G\VT \tau \E \sigma :: *@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\VT \forall\alpha.\tau \E  \forall\alpha.\sigma :: *@A}{\textsc{QT-Gen}} \andalso
-    \infrule{\G\VT \tau \E \sigma :: K@A}{\G\VT \tau \E \sigma :: K@{A\alpha}}{\textsc{QT-Csp}} \\[2mm]
-    \infrule{\G\VT \tau::K@A}{\G\VT \tau\E\tau :: K@A}{\textsc{QT-Refl}} 
-\end{center}
-
-\figheader{Term Equivalence}{\rulefbox{\G\VT M\E N : \tau @A}}
-\begin{center}
-    \infrule{\G\VT \tau \E \sigma :: *@A \andalso \G,x:\tau@A \VT M \E N : \rho @A}{\G\VT\lambda x:\tau.M \E \lambda x:\sigma.N : (\Pi x:\tau.\rho)@A}{\QAbs} \andalso
-    \infrule{\G\VT M \E L : (\Pi x:\sigma.\tau)@A \andalso \G\VT N \E O : \sigma@A}{\G\VT M\ N \E L\ O : \tau[x \mapsto N]@A}{\QApp} \\[2mm]
-    \infrule{\G\VT M \E N : \tau@{A\alpha}}{\G\VT \TB_\alpha M \E \TB_\alpha N : \TW_\alpha \tau@A}{\QTB} \andalso
-    \infrule{\G\VT M \E N : \TW_\alpha \tau@A}{\G\VT \TBL_\alpha M \E \TBL_\alpha N : \tau@{A\alpha}}{\QTBL} \\[2mm]
-    \infrule{\G\VT M\E N : \tau@A \andalso \alpha \notin \FTV(\G)\cup\FTV(A)}{\G\VT \Lambda\alpha.M \E \Lambda\alpha.N : \forall\alpha.\tau@A}{\QGen} \andalso
-    \infrule{\G\VT M \E N:\forall\alpha.\tau@A}{\G\VT M\ \epsilon \E N\ \epsilon : \tau[\alpha \mapsto \epsilon]@A}{\QIns}\andalso
-    \infrule{\G\VT M \E N : \tau @A}{\G\VT\%_\alpha M \E \%_\alpha N : \tau@{A\alpha}}{\QCsp} \\[2mm]
-    \infrule{\G\VT M:\tau@A}{\G\VT M\E M : \tau@A}{\QRefl} \\[2mm]
-    \infrule{\G,x:\sigma@A\VT M:\tau@A \andalso \G\VT N:\sigma@A}{\G\VT(\lambda x:\sigma.M)\ N\E M[x\mapsto N] : \tau[x \mapsto N]@A}{\QBeta} \andalso
-    \infrule{\G,x:\sigma@A\VT M:\tau@A \andalso \G\VT N:\sigma@A}{\G\VT M[x\mapsto N] \E (\lambda x:\sigma.M)\ N : \tau[x \mapsto N]@A}{\QBeta T} \\[2mm]
-    \infrule{\G\VT M:(\Pi x:\sigma.\tau)@A \andalso x\notin \text{FV}(M)}{\G\VT(\lambda x:\sigma.M\ x)\E M: (\Pi x:\sigma.\tau)@A}{\QEta} \andalso
-    \infrule{\G\VT M:(\Pi x:\sigma.\tau)@A \andalso x\notin \text{FV}(M)}{\G\VT M \E (\lambda x:\sigma.M\ x) @A}{\QEta T} \\[2mm]
-    \infrule{\G\VT M \E N : \tau@A}{\G\VT \TBL_\alpha(\TB_\alpha M) \E N : \tau @A}{\QTBLTB} \andalso
-    \infrule{\G\VT M \E N : \tau@A}{\G\VT N \E \TBL_\alpha(\TB_\alpha M) : \tau @A}{\QTBLTB T} \\[2mm]
-    \infrule{\G\VT (\Lambda\alpha.M) : \forall\alpha.\tau@A}{\G\VT (\Lambda\alpha.M)\ \epsilon \E M[\alpha \mapsto \epsilon] : \tau[\alpha \mapsto \epsilon]@A}{\QLambda} \andalso
-    \infrule{\G\VT (\Lambda\alpha.M) : \forall\alpha.\tau@A}{\G\VT M[\alpha \mapsto \epsilon] \E (\Lambda\alpha.M)\ \epsilon : \tau[\alpha \mapsto \epsilon]@A}{\QLambda} \\[2mm]
-    \infrule{\G\VT M:\tau@{A\alpha} \andalso \G\VT M:\tau@A}{\G\VT\%_\alpha M \E M : \tau@{A\alpha}}{\QPercent} \\[2mm]
-    \infrule{\G\VT M:\tau@{A\alpha} \andalso \G\VT M:\tau@A}{\G\VT M \E \%_\alpha M : \tau@{A\alpha}}{\QPercent}
-\end{center}
+% \figheader{Well-formed kinds}{\rulefbox{\Gamma \vdash K\iskind}}
+% \begin{center}
+%     \infrule{}{\G\VT*\iskind @A}{\WStar} \andalso
+%     \infrule{\G\VT \tau::*@A \andalso \G,x:\tau@A\VT K\iskind @A}{\G\VT(\Pi x:\tau.K)\iskind @A}{\WAbs}\andalso
+%     \infrule{\G\VT K\iskind @A}{\G\VT K\iskind @A\alpha}{\WCsp}\\[2mm]
+% \end{center}
+% 
+% \figheader{Kinding}{\rulefbox{\G \VT T::K}}
+% \begin{center}
+%     \infrule{X::K@A \in \G \andalso \G\VT K\iskind @A}{\G \VT X::K@A}{\KVar} \andalso
+%     \infrule{\G\VT \tau :: *@A \andalso \G,x:\tau@A\VT \sigma::J@A}{\G\VT(\Pi x:\tau.\sigma) :: (\Pi x:\tau.J)@A}{\KAbs} \\[2mm]
+%     \infrule{\G\VT \sigma:: (\Pi x:\tau.K)@A \andalso \G\VT M:\tau@A}{\G\VT \sigma\ M::K[x\mapsto M]@A}{\KApp} \andalso
+%     \infrule{\G\VT \tau::K@A \andalso \G\VT K\equiv J@A}{\G\VT \tau::J@A}{\KConv} \\[2mm]
+%     \infrule{\G\VT \tau::*@A\alpha}{\G\VT\TW_\alpha \tau::*@A}{\KTW}\andalso
+%     \infrule{\G\VT \tau::K@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\VT\forall\alpha.\tau::K@A}{\KGen} \andalso
+%     \infrule{\G\VT \tau::K@A}{\G\VT \tau::K@A\alpha}{\KCsp}
+% \end{center}
+% 
+% \figheader{Typing}{\rulefbox{\G\VT t:\tau}}
+% \begin{center}
+%     \infrule{x:\tau@A \in \G \andalso \G\VT \tau::*@A}{\G \VT x:\tau@A}{\TVar} \andalso
+%     \infrule{\G\VT \sigma::*@A\andalso\G,x:\sigma@A\VT M:\tau@A}{\G\VT(\lambda (x:\sigma).M):(\Pi (x:\sigma).\tau)@A}{\textsc{T-Abs}} \\[2mm]
+%     \infrule{\G\VT M:(\Pi (x:\sigma).\tau)@A \andalso \G\VT N:\sigma@A}{\G\VT M\ N : \tau[x\mapsto N]@A}{\textsc{T-App}} \andalso
+%     \infrule{\G\VT M:\tau@A \andalso \G\VT \tau\equiv \sigma :: K@A}{\G\VT M:\sigma@A}{\textsc{T-Conv}} \\[2mm]
+%     \infrule{\G\VT M:\tau@{A\alpha}}{\G\VT\TB_{\alpha}M:\TW_{\alpha}\tau@A}{\textsc{T-$\TB$}} \andalso
+%     \infrule{\G\VT M:\TW_{\alpha}\tau@A}{\G\VT\TBL_{\alpha}M:\tau@{A\alpha}}{\TTBL} \\[2mm]
+%     \infrule{\G\VT M:\tau@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\VT\Lambda\alpha.M:\forall\alpha.\tau@A}{\textsc{T-Gen}} \andalso
+%     \infrule{\G\VT M:\forall\alpha.\tau@A}{\G\VT M\ \epsilon:\tau[\alpha \mapsto \epsilon]@A}{\textsc{T-Ins}} \andalso
+%     \infrule{\G\VT M:\tau@A}{\G\VT \%_\alpha M:\tau@{A\alpha}}{\textsc{T-Csp}} \andalso
+% \end{center}
+% 
+% \figheader{Kind Equivalence}{\rulefbox{\G\VT K\E J@A}}
+% \begin{center}
+%     \infrule{\G\VT \tau \E \sigma :: *@A \andalso \G,x:\tau@A \VT K \E J@A}{\G\VT\Pi x:\tau.K \E \Pi x:\sigma.J@A}{\QKAbs} \andalso
+%     \infrule{\G\VT K \E J@A}{\G\VT K \E J@{A\alpha}}{\textsc{QK-Csp}} \\[2mm]
+%     \infrule{\G\VT K \iskind @A}{\G\VT K\E K@A}{\textsc{QK-Refl}} \andalso
+%     % 簡約規則の要請\\[2mm]
+% \end{center}
+% 
+% \figheader{Type Equivalence}{\rulefbox{\G\VT S\E T :: K @A}}
+% \begin{center}
+%     \infrule{\G\VT \tau \E \sigma :: *@A \andalso \G,x:\tau@A \VT \rho \E \pi :: *@A}{\G\VT\Pi x:\tau.\rho \E \Pi x:\sigma.\pi :: *@A}{\QTAbs} \andalso
+%     \infrule{\G\VT \tau \E \sigma :: (\Pi x:\rho.K)@A \andalso \G\VT M \E N : \rho @A}{\G\VT \tau\ M \E \sigma\ N :: K[x \mapsto M]@A}{\QTApp} \\[2mm]
+%     \infrule{\G\VT \tau \E \sigma :: *@{A\alpha}}{\G\VT \TW_{\alpha} \tau \E \TW_{\alpha} \sigma :: *@A}{\textsc{QT-$\TW$}}\andalso
+%     \infrule{\G\VT \tau \E \sigma :: *@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\VT \forall\alpha.\tau \E  \forall\alpha.\sigma :: *@A}{\textsc{QT-Gen}} \andalso
+%     \infrule{\G\VT \tau \E \sigma :: K@A}{\G\VT \tau \E \sigma :: K@{A\alpha}}{\textsc{QT-Csp}} \\[2mm]
+%     \infrule{\G\VT \tau::K@A}{\G\VT \tau\E\tau :: K@A}{\textsc{QT-Refl}} 
+% \end{center}
+% 
+% \figheader{Term Equivalence}{\rulefbox{\G\VT M\E N : \tau @A}}
+% \begin{center}
+%     \infrule{\G\VT \tau \E \sigma :: *@A \andalso \G,x:\tau@A \VT M \E N : \rho @A}{\G\VT\lambda x:\tau.M \E \lambda x:\sigma.N : (\Pi x:\tau.\rho)@A}{\QAbs} \andalso
+%     \infrule{\G\VT M \E L : (\Pi x:\sigma.\tau)@A \andalso \G\VT N \E O : \sigma@A}{\G\VT M\ N \E L\ O : \tau[x \mapsto N]@A}{\QApp} \\[2mm]
+%     \infrule{\G\VT M \E N : \tau@{A\alpha}}{\G\VT \TB_\alpha M \E \TB_\alpha N : \TW_\alpha \tau@A}{\QTB} \andalso
+%     \infrule{\G\VT M \E N : \TW_\alpha \tau@A}{\G\VT \TBL_\alpha M \E \TBL_\alpha N : \tau@{A\alpha}}{\QTBL} \\[2mm]
+%     \infrule{\G\VT M\E N : \tau@A \andalso \alpha \notin \FTV(\G)\cup\FTV(A)}{\G\VT \Lambda\alpha.M \E \Lambda\alpha.N : \forall\alpha.\tau@A}{\QGen} \andalso
+%     \infrule{\G\VT M \E N:\forall\alpha.\tau@A}{\G\VT M\ \epsilon \E N\ \epsilon : \tau[\alpha \mapsto \epsilon]@A}{\QIns}\andalso
+%     \infrule{\G\VT M \E N : \tau @A}{\G\VT\%_\alpha M \E \%_\alpha N : \tau@{A\alpha}}{\QCsp} \\[2mm]
+%     \infrule{\G\VT M:\tau@A}{\G\VT M\E M : \tau@A}{\QRefl} \\[2mm]
+%     \infrule{\G,x:\sigma@A\VT M:\tau@A \andalso \G\VT N:\sigma@A}{\G\VT(\lambda x:\sigma.M)\ N\E M[x\mapsto N] : \tau[x \mapsto N]@A}{\QBeta} \andalso
+%     \infrule{\G,x:\sigma@A\VT M:\tau@A \andalso \G\VT N:\sigma@A}{\G\VT M[x\mapsto N] \E (\lambda x:\sigma.M)\ N : \tau[x \mapsto N]@A}{\QBeta T} \\[2mm]
+%     \infrule{\G\VT M:(\Pi x:\sigma.\tau)@A \andalso x\notin \text{FV}(M)}{\G\VT(\lambda x:\sigma.M\ x)\E M: (\Pi x:\sigma.\tau)@A}{\QEta} \andalso
+%     \infrule{\G\VT M:(\Pi x:\sigma.\tau)@A \andalso x\notin \text{FV}(M)}{\G\VT M \E (\lambda x:\sigma.M\ x) @A}{\QEta T} \\[2mm]
+%     \infrule{\G\VT M \E N : \tau@A}{\G\VT \TBL_\alpha(\TB_\alpha M) \E N : \tau @A}{\QTBLTB} \andalso
+%     \infrule{\G\VT M \E N : \tau@A}{\G\VT N \E \TBL_\alpha(\TB_\alpha M) : \tau @A}{\QTBLTB T} \\[2mm]
+%     \infrule{\G\VT (\Lambda\alpha.M) : \forall\alpha.\tau@A}{\G\VT (\Lambda\alpha.M)\ \epsilon \E M[\alpha \mapsto \epsilon] : \tau[\alpha \mapsto \epsilon]@A}{\QLambda} \andalso
+%     \infrule{\G\VT (\Lambda\alpha.M) : \forall\alpha.\tau@A}{\G\VT M[\alpha \mapsto \epsilon] \E (\Lambda\alpha.M)\ \epsilon : \tau[\alpha \mapsto \epsilon]@A}{\QLambda} \\[2mm]
+%     \infrule{\G\VT M:\tau@{A\alpha} \andalso \G\VT M:\tau@A}{\G\VT\%_\alpha M \E M : \tau@{A\alpha}}{\QPercent} \\[2mm]
+%     \infrule{\G\VT M:\tau@{A\alpha} \andalso \G\VT M:\tau@A}{\G\VT M \E \%_\alpha M : \tau@{A\alpha}}{\QPercent}
+% \end{center}
 
 \end{document}
