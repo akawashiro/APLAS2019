@@ -116,6 +116,9 @@
 \newcommand{\QLambda}{\textsc{Q-$\Lambda$}}
 \newcommand{\QPercent}{\textsc{Q-\%}}
 
+\newcommand{\ID}[1]{\infer[]{#1}{\vdots}}
+\newcommand{\MD}[1]{\mathcal{D}_#1}
+
 \newcommand{\red}[1]{\textcolor{red}{ #1 }}
 \newcommand{\blue}[1]{\textcolor{blue}{ #1 }}
 
@@ -558,7 +561,6 @@ Prove by induction on derivation tree.
     \newcommand{\SB}{[z \mapsto P]}
     \newcommand{\GG}{\G}
     \newcommand{\GGV}{\G \V}
-    \newcommand{\ID}[1]{\infer[]{#1}{\vdots}}
 
     \iffullversion
 
@@ -1276,7 +1278,6 @@ Prove by induction on derivation tree.
     \newcommand{\SB}{[\beta \mapsto \epsilon]}
     \newcommand{\GG}{\G\SB}
     \newcommand{\GGV}{\G\SB \V}
-    \newcommand{\ID}[1]{\infer[]{#1}{\vdots}}
 
     \iffullversion
 
@@ -2013,7 +2014,6 @@ We can prove for these cases directly from the definition of rules.
 
 Others are proved by using induction hypothesis and a rule. We show some cases as examples.
 \begin{itemize}
-    \newcommand{\MD}[1]{\mathcal{D}_#1}
     \item \KCsp
     
         We have a derivation tree from the premise.
@@ -2044,16 +2044,11 @@ Others are proved by using induction hypothesis and a rule. We show some cases a
 
 \end{itemize}
 
-\begin{thm}[Generized Inversion Lemma for $\Pi$ type]
-    This theorem is used to prove Inversion Lemma for $\Pi$ type.
-
+\begin{thm}[Inversion Lemma for $\Pi$ type]
+    If $\G \V (\lambda x:\sigma.M) : (\Pi x:\sigma'.\tau)@A$ then
     \begin{enumerate}
-    \item If $\G \V M : (\Pi x:\sigma.\tau)@A$ then $\exists N, \sigma', \tau', K, J$ such that
-    \begin{enumerate}
-        \item $M = \lambda x:\sigma'.N$
-        \item $\G \V \sigma \E \sigma' : K@A$
-        \item $\G ,x:\sigma@A\V N:\tau'@A$
-        \item $\G, x:\sigma@A\V \tau \E \tau' : J@A$
+        \item $\G \V \sigma \E \sigma'@A$
+        \item $\G ,x:\sigma@A\V M:\tau@A$
     \end{enumerate}
     \item If $\G \V \rho \E (\Pi x:\sigma.\tau) : K @A$ then $\exists \sigma', \tau', K, J$ such that
     \begin{enumerate}
@@ -2067,13 +2062,11 @@ Others are proved by using induction hypothesis and a rule. We show some cases a
         \item $\G \V \sigma \E \sigma' : K @A$
         \item $\G, x:\sigma@A\V \tau \E \tau' : J @A$
     \end{enumerate}
-    \end{enumerate}
 \end{thm}
 
 Proved by induction on the derivation tree.
 
 \begin{itemize}
-    \newcommand{\ID}[1]{\infer[]{#1}{\vdots}}
     \item \TAbs
     
         We have a derivation tree $\mathcal{D}_1$.
@@ -2082,9 +2075,11 @@ Proved by induction on the derivation tree.
         {\G \V ((\lambda x:\sigma).M) : (\Pi (x:\sigma).\tau) @ A}
         {\ID{\G \V \sigma :: * @ A} \andalso \ID{\G, x:\sigma@A \V M:\tau@A}}
 
-        Use "Agreement" to $\G, x:\sigma@A \V M:\tau@A$, get $\G, x:\sigma@A \V \tau :: * @A$.
-
-        Then we can take $M, \sigma, \tau, *, *$ as $N, \sigma', \tau', K, J$ in the statement of the theorem.
+        Following conclusion are obvious.
+        \begin{enumerate}
+            \item $\G \V \sigma \E \sigma'@A$
+            \item $\G ,x:\sigma@A\V M:\tau@A$
+        \end{enumerate}
     
     \item \TConv
     
@@ -2110,20 +2105,9 @@ Proved by induction on the derivation tree.
 
     \item Otherwise
     
-        Obvious.
+        It is obvious.
 
 \end{itemize}
-
-\begin{thm}[Inversion Lemma for $\Pi$ type]
-    If $\G \V (\lambda x:\sigma.N) : (\Pi x:\sigma'.\tau)@A$ then $\exists \tau$ such that
-    \begin{enumerate}
-        \item $\G \V \sigma \E \sigma'@A$
-        \item $\G ,x:\sigma@A\V N:\tau@A$
-        \item $\G, x:\sigma@A\V \tau \E \tau' @A$
-    \end{enumerate}
-\end{thm}
-
-From the above theorem and \TConv.
 
 \begin{thm}[Preservation for term on $\beta$ reduction]
     If $\G\V M:\tau@A$ and $M \longrightarrow_{\beta} M'$, then $\G\V M':\tau@A$\\
@@ -2133,7 +2117,6 @@ Use induction on type derivation tree.
 
 \begin{itemize}
     \newcommand{\LB}{\longrightarrow_{\beta}}
-    \newcommand{\ID}[1]{\infer[]{#1}{\vdots}}
 
     \item \TApp
 
@@ -2257,7 +2240,6 @@ Use induction on type derivation tree.
 Prove by induction on the derivation tree.
 
 \begin{itemize}
-    \newcommand{\ID}[1]{\infer[]{#1}{\vdots}}
     \item \TTB
     
         The derivation tree looks like $\mathcal{D}_1$.
@@ -2292,7 +2274,6 @@ Use induction on type derivation tree.
 
 \begin{itemize}
     \newcommand{\R}{\longrightarrow_{\blacklozenge}}
-    \newcommand{\ID}[1]{\infer[]{#1}{\vdots}}
 
     \item \TTBL
 
@@ -2345,7 +2326,6 @@ Use induction on type derivation tree.
 Proved by induction on the derivation tree.
 
 \begin{itemize}
-    \newcommand{\ID}[1]{\infer[]{#1}{\vdots}}
     \newcommand{\MC}[1]{\mathcal{#1}}
     \item \TGen
     
@@ -2378,7 +2358,6 @@ Use induction on type derivation tree.
 
 \begin{itemize}
     \newcommand{\R}{\longrightarrow_{\Lambda}}
-    \newcommand{\ID}[1]{\infer[]{#1}{\vdots}}
     \item \TIns
     
         There are two cases for the reduction.
@@ -2458,8 +2437,6 @@ Prove by induction on the derivation tree.
 Prove by induction on the type derivation tree.
 
 \begin{itemize}
-    \newcommand{\MD}[1]{\mathcal{D}_#1}
-    \newcommand{\ID}[1]{\infer[]{#1}{\vdots}}
     \item \TApp
     
         We have a derivation tree $\MD{1}$.
@@ -2500,7 +2477,6 @@ Prove by induction on the type derivation tree.
 Prove by induction on the derivation tree.
 
 \begin{itemize}
-    \newcommand{\ID}[1]{\infer[]{#1}{\vdots}}
     \item \TApp 
     
         Obvious.
@@ -2604,6 +2580,7 @@ So, we can reduce one of them after we reduce another.\\
 \end{align*}
 
 \figheader{Evaluation Context}{}
+$A \neq \epsilon$\\
 \begin{align*}
     E^\epsilon_B \in ECtx^\epsilon_B & ::= \square\ (\text{if\ } B = \epsilon) \mid E^\epsilon_B\ M \mid v^e\ E^\epsilon_B
                                            \mid \TB_\alpha E^\alpha_B \mid \Lambda\alpha.E^\epsilon_B
@@ -2619,7 +2596,7 @@ So, we can reduce one of them after we reduce another.\\
     If $x:\tau@\epsilon \notin \G$ and $\G \V M : \tau @ A$ then 1 or 2 is true.
     \begin{enumerate}
         \item $ M \in V^A$
-        \item $\exists B, E^A_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
+        \item $\exists ! B, E^A_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
     \end{enumerate}
 \end{thm}
 
@@ -2635,6 +2612,31 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
         
             This case is obvious because $x \in V^A$.
     \end{itemize}
+
+    \item \TTBL
+    \begin{itemize}
+        \item $ A = \epsilon$
+        
+            This case is impossible because the stage of the conclusion of \TTBL\ cannot be $\epsilon$.
+        \item Otherwise
+        
+            The derivation is $\MD{1}$.
+
+            $\MD{1}$ = \infer[\TTBL]
+            {\G \V \TBL_\alpha M :\tau @ A\alpha}
+            {\ID{\G \V M : \TW_\alpha \tau @ A}}
+
+            Use "Generized Inversion Lemma for $\TW$ type" to $\G \V M : \TW_\alpha \tau @ A$, we get $\MD{2}$ from $\MD{1}$.
+        
+            $\MD{2}$ = \infer[\TTBL]
+            {\G \V \TBL_\alpha \TB_\alpha M :\tau @ A\alpha}
+            {\ID{\G \V \TB_\alpha M : \TW_\alpha \tau @ A}}
+
+    \end{itemize}
+
+    \item \TConv
+    
+        We can use the induction hypothesis directly.
 
 \end{itemize}
 
