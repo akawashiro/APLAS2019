@@ -2615,8 +2615,31 @@ So, we can reduce one of them after we reduce another.\\
                                            \mid E^A_B\ \epsilon \mid \%_\alpha\ E^{A'}_B \ (\text{where } A'\alpha = A)\\
 \end{align*}
 
+\begin{thm}[Unique Decomposition]
+    If $x:\tau@\epsilon \notin \G$ and $\G \V M : \tau @ A$ then 1 or 2 is true.
+    \begin{enumerate}
+        \item $ M \in V^A$
+        \item $\exists B, E^A_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
+    \end{enumerate}
+\end{thm}
+
+Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
+
+\begin{itemize}
+    \item \TVar
+    \begin{itemize}
+        \item $ A = \epsilon$
+        
+            This case is impossible because $x:\tau@\epsilon \notin \G$.
+        \item Otherwise
+        
+            This case is obvious because $x \in V^A$.
+    \end{itemize}
+
+\end{itemize}
+
 \begin{thm}[Progress]
-    If $x:\tau@\epsilon \notin \G$ and $\G \V M : \tau @ A$ then $ M \in V^A $ or $\exists M'$ such that $M \longleftarrow_s M'$.
+    If $x:\tau@\epsilon \notin \G$ and $\G \V M : \tau @ A$ then $ M \in V^A $ or $\exists M'$ such that $M \longrightarrow_s M'$.
 \end{thm}
 
 % \section{ Deterministic Typechecking }
