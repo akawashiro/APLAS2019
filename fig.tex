@@ -2214,17 +2214,10 @@ Use induction on type derivation tree.
 
 \end{itemize}
 
-\begin{thm}[Generized Inversion Lemma for $\TW$ type]
-    This theorem is used to prove Inversion Lemma for $\Pi$ type.
-
-    \begin{enumerate}
-    \item If $\G \V M : \TW_\alpha \tau@A$ then $\exists N, \tau', K$ such that
-    \begin{enumerate}
-        \item $M = \TB_\alpha N$
-        \item $\G \V N:\tau' @ A\alpha$
-        \item $\G \V \tau \E \tau' : K @A$
-    \end{enumerate}
-    \item If $\G \V \rho \E  \TW_\alpha \tau : K @A$ then $\exists \tau', K, J$ such that
+\begin{thm}[Inversion Lemma for $\TW$ type]
+    \begin{item}
+    \item If $\G \V \TB_\alpha M : \TW_\alpha \tau@A$ then $\G \V M : \tau @A$.
+   \item If $\G \V \rho \E  \TW_\alpha \tau : K @A$ then $\exists \tau', K, J$ such that
     \begin{enumerate}
         \item $\rho = \TW_\alpha \tau'$
         \item $\G @A\V \tau \E \tau' : K @A$
@@ -2234,10 +2227,8 @@ Use induction on type derivation tree.
         \item $\rho = \TW_\alpha \tau'$
         \item $\G @A\V \tau \E \tau' : K @A$
     \end{enumerate}
-    \end{enumerate}
+    \end{item}
 \end{thm}
-
-Prove by induction on the derivation tree.
 
 \begin{itemize}
     \item \TTB
@@ -2248,23 +2239,11 @@ Prove by induction on the derivation tree.
         {\G \V \TB_\alpha M : \TW_\alpha \tau@A}
         {\ID{\G \V M : \tau@A\alpha}}
 
-        Use "Agreement" to $\G \V M : \tau@A\alpha$, get $\G \V \tau : *@A\alpha$.
-
-        Then use \KCsp\ to $\G \V \tau : *@A\alpha$, get $\G \V \tau : *@A$.
-
-        Then we can take $M, \tau, *$ as $N, \tau', K$ in the theorem statement correspondingly.
-
     \item Otherwise
-    
-        Just same as "Generized Inversion Lemma for $\Pi$ type".
+
+        It is obvious.
 
 \end{itemize}
-
-\begin{thm}[Inversion Lemma for $\TW$ type]
-    If $\G \V \TB_\alpha M : \TW_\alpha \tau@A$ then $\G \V M : \tau @A$.
-\end{thm}
-
-From the above theorem and \TConv.
 
 \begin{thm}[Preservation for term on $\TBL\TB$ reduction]
     If $\G\V M:\tau@A$ and $M\longrightarrow_\blacklozenge N$, then $\G\V N:\tau@A$\\
@@ -2300,16 +2279,9 @@ Use induction on type derivation tree.
         We can use the induction hypothesis directly.
 \end{itemize}
 
-\begin{thm}[Generized Inversion Lemma for $\forall$ type]
-    This theorem is used to prove Inversion Lemma for $\forall$ type.
-
-    \begin{enumerate}
-    \item If $\G \V M : \forall\alpha.\tau@A$ then $\exists N, \tau', K$ such that
-    \begin{enumerate}
-        \item $M = \Lambda\alpha.N$
-        \item $\G \V N:\tau' @ A$
-        \item $\G \V \tau \E \tau' : K @A$
-    \end{enumerate}
+\begin{thm}[Inversion Lemma for $\Lambda$ type]
+    \begin{item}
+    \item If $\G \V \Lambda\alpha.M : \forall\alpha.\tau@A$ then $\G \V M : \tau @A$ and $\alpha \notin \FTV(\G) \cup \FV(A)$.
     \item If $\G \V \rho \E \forall\alpha.\tau : K @A$ then $\exists \tau', K$ such that
     \begin{enumerate}
         \item $\rho = \forall\alpha.\tau'$
@@ -2320,10 +2292,8 @@ Use induction on type derivation tree.
         \item $\rho = \forall\alpha.\tau'$
         \item $\G \V \tau \E \tau' : K @A$
     \end{enumerate}
-    \end{enumerate}
+    \end{item}
 \end{thm}
-
-Proved by induction on the derivation tree.
 
 \begin{itemize}
     \newcommand{\MC}[1]{\mathcal{#1}}
@@ -2335,20 +2305,10 @@ Proved by induction on the derivation tree.
         {\G \V \Lambda\alpha.M : \forall\alpha.\tau@A}
         {\ID{\G\V M:\tau@A} \andalso \alpha \notin \FTV(\G)\cup\FTV(A)}
 
-        Use "Agreement" to $\G\V M:\tau@A$, get $\G\V \tau :: * @A$.
-
-        Then we can take $M, \tau, *$ as $N, \tau', K$ in the theorem statement correspondingly .
-
     \item Otherwise
-    
-        Just same as "Generized Inversion Lemma for $\Pi$ type".
+
+        It is obvious.
 \end{itemize}
-
-\begin{thm}[Inversion Lemma for $\Lambda$ type]
-    If $\G \V \Lambda\alpha.M : \forall\alpha.\tau@A$ then $\G \V M : \tau @A$ and $\alpha \notin \FTV(\G) \cup \FV(A)$.
-\end{thm}
-
-From the above theorem and \TConv.
 
 \begin{thm}[Preservation for term on $\Lambda$ reduction]
     If $\G\V M:\tau@A$ and $M \longrightarrow_{\Lambda} N$, then $\G\V N:\tau@A$.
