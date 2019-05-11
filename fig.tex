@@ -2521,7 +2521,7 @@ So, we can reduce one of them after we reduce another.\\
 \section{ Staged Semantics }
 
 \figheader{Values and Redexes}{}
-
+$A \neq \epsilon$\\
 \begin{align*}
     \textrm{Values} && v^\epsilon \in V^\epsilon & ::= \lambda x:\tau.M \mid\ \TB_\alpha v^\alpha \mid \Lambda\alpha.v^\epsilon & \\
                     && v^A \in V^A & ::= x \mid \lambda x:\tau.v^A \mid v^A\ v^A \mid\ \TB_\alpha v^{A\alpha} 
@@ -2533,6 +2533,7 @@ So, we can reduce one of them after we reduce another.\\
 \end{align*}
 
 \figheader{Staged Reduction}{}
+$A \neq \epsilon$\\
 \begin{align*}
     E^A_\epsilon [(\lambda x:\tau.M)\ v^\epsilon] & \longrightarrow_s E^A_\epsilon[M[x\mapsto v^\epsilon]] \\
     E^A_\epsilon [(\Lambda\alpha.v^\epsilon)\ \epsilon] & \longrightarrow_s E^A_\epsilon[v^\epsilon[\alpha\mapsto \epsilon]] \\
@@ -2551,6 +2552,8 @@ $A \neq \epsilon$\\
                                            & \quad \mid \Lambda\alpha.E^\epsilon_B
                                            \mid E^A_B\ \epsilon \mid \%_\alpha\ E^{A'}_B \ (\text{where } A'\alpha = A)\\
 \end{align*}
+
+\blue{We cannot prove this theorem. I think the definition contains a bug.}
 
 \begin{thm}[Unique Decomposition]
     If $x:\tau@\epsilon \notin \G$ and $\G \V M : \tau @ A$ then 1 or 2 is true.
@@ -2578,19 +2581,36 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
         \item $ A = \epsilon$
         
             This case is impossible because the stage of the conclusion of \TTBL\ cannot be $\epsilon$.
-        \item Otherwise
+        \item $ A = \alpha $
         
             The derivation is $\MD{1}$.
 
             $\MD{1}$ = \infer[\TTBL]
-            {\G \V \TBL_\alpha M :\tau @ A\alpha}
-            {\ID{\G \V M : \TW_\alpha \tau @ A}}
+            {\G \V \TBL_\alpha M :\tau @ \alpha}
+            {\ID{\G \V M : \TW_\alpha \tau @ \epsilon}}
 
-            Use "Generized Inversion Lemma for $\TW$ type" to $\G \V M : \TW_\alpha \tau @ A$, we get $\MD{2}$ from $\MD{1}$.
-        
-            $\MD{2}$ = \infer[\TTBL]
-            {\G \V \TBL_\alpha \TB_\alpha M :\tau @ A\alpha}
-            {\ID{\G \V \TB_\alpha M : \TW_\alpha \tau @ A}}
+            From the induction hypothesis, 1 or 2 is true.
+            \begin{enumerate}
+                \item $ M \in V^\epsilon$
+                \item $\exists ! B, E^\epsilon_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^\epsilon_B[R^B]$.
+            \end{enumerate}
+
+            \begin{itemize}
+                \item $ M \in V^\epsilon$ is true
+                
+                Use "Inversion Lemma" for all cases of $v^\epsilon$, the case of $ M = \TB_\alpha v^\alpha $ is only reasonable.
+                
+                Then, $\TBL_\alpha \TB_\alpha v^\alpha = E^\alpha_\alpha [R^\alpha]$.
+
+                \item $\exists ! B, E^\epsilon_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^\epsilon_B[R^B]$ is true.
+                
+                \begin{itemize}
+                    \item $ M = \TB_\alpha E^\alpha_B[R^B] $
+                    \item Otherwise
+                \end{itemize}
+            \end{itemize}
+
+        \item Otherwise
 
     \end{itemize}
 
@@ -2600,9 +2620,68 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 
 \end{itemize}
 
+\begin{dfn}[Reduction]
+    $ M \longrightarrow M'$ iff \\
+    $ M \longrightarrow_\Lambda M' $, $ M \longrightarrow_\blacklozenge M' $ or $ M \longrightarrow_\beta M' $.
+\end{dfn}
+
 \begin{thm}[Progress]
-    If $x:\tau@\epsilon \notin \G$ and $\G \V M : \tau @ A$ then $ M \in V^A $ or $\exists M'$ such that $M \longrightarrow_s M'$.
+    If $x:\tau@\epsilon \notin \G$ and $\G \V M : \tau @ A$ then $ M \in V^A $ or $\exists M'$ such that $M \longrightarrow M'$.
 \end{thm}
+
+Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
+
+\begin{itemize}
+    \item \TVar
+    \begin{itemize}
+        \item $ A = \epsilon$
+        
+            This case is impossible because $x:\tau@\epsilon \notin \G$.
+        \item Otherwise
+        
+            This case is obvious because $x \in V^A$.
+    \end{itemize}
+
+    \item \TTBL
+    
+        The derivation is $\MD{1}$.
+
+        $\MD{1}$ = \infer[\TTBL]
+        {\G \V \TBL_\alpha M :\tau @ A\alpha}
+        {\ID{\G \V M : \TW_\alpha \tau @ A}}
+
+        At least one of following conditions is true from the induction hypothesis.
+
+        \begin{itemize}
+
+            \item $ M \in V^A $
+            
+                \begin{itemize}
+                    \item $ A = \epsilon $
+
+                        Use "Inversion Lemma" for all cases of $v^\epsilon$, the case of $ M = \TB_\alpha v^\alpha $ is only reasonable.\\
+                        From the definition of $ \longrightarrow $, $\TBL_\alpha \TB_\alpha v^\alpha \longrightarrow v^\alpha$
+
+                    \item Otherwise
+                    
+                        $ \TBL_\alpha M \in V^{A\alpha}$.
+                \end{itemize}
+            
+            \item $\exists M'$ such that $M \longrightarrow M'$
+
+                From the definition of $ \longrightarrow $, $\TBL_\alpha M \longrightarrow \TBL_\alpha M'$
+
+        \end{itemize}
+
+    \item \TApp
+    
+    \item \TIns
+
+    \item Others
+    
+        It is obvious from the induction hypothesis.
+
+\end{itemize}
 
 % \section{ Deterministic Typechecking }
 %
