@@ -2423,15 +2423,13 @@ Prove by induction on the type derivation tree.
 \end{itemize}
 
 \begin{thm}[Inversion Lemma for Application]
-    This theorem is used to prove Inversion Lemma for $\Pi$ type.
-
-    \begin{enumerate}
-    \item If $\G \V (\lambda x:\sigma.M)\ N: \tau@A$ then $\exists x, \rho$ such that
-    \begin{enumerate}
-        \item $\G, x:\sigma \V M : \rho @A$
-        \item $\G \V N:\sigma @ A$
-    \end{enumerate}
-   \end{enumerate}
+    \begin{item}
+        \item If $\G \V (\lambda x:\sigma.M)\ N: \tau@A$ then $\exists x, \rho$ such that
+        \begin{enumerate}
+            \item $\G, x:\sigma \V M : \rho @A$
+            \item $\G \V N:\sigma @ A$
+        \end{enumerate}
+   \end{item}
 \end{thm}
 
 Prove by induction on the derivation tree.
@@ -2650,7 +2648,7 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
         {\G \V \TBL_\alpha M :\tau @ A\alpha}
         {\ID{\G \V M : \TW_\alpha \tau @ A}}
 
-        At least one of following conditions is true from the induction hypothesis.
+        There are two cases for the induction hypothesis.
 
         \begin{itemize}
 
@@ -2674,7 +2672,30 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
         \end{itemize}
 
     \item \TApp
-    
+     
+        The derivation is $\MD{1}$.
+
+        $\MD{1}$ = \infer[\TApp]
+        {\G \V M\ N :\tau[x\mapsto N] @ A\alpha}
+        {\ID{\G \V M : (\Pi x:\sigma.\tau) @ A} \andalso \ID{\G \V N : \sigma @ A}}
+
+        \begin{itemize}
+            \item $M \in V^A$ and $N \in V^A$
+            
+                \begin{itemize}
+                    \item $A=\epsilon$
+                    
+                        $M = \lambda x:\sigma.L$ from the definition of $V^\epsilon$ and Inversion Lemma.\\
+                        Then, $\lambda x:\sigma.L\ N \longrightarrow_\beta L[x\mapsto N]$.
+                    \item Otherwise
+                    
+                        $M\ N \in V^A$.
+                \end{itemize}
+            \item Otherwise
+            
+                $M\ N \longrightarrow M'\ N$ or $M\ N \longrightarrow M\ N'$.
+        \end{itemize}
+   
     \item \TIns
 
     \item Others
