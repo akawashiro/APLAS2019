@@ -2551,7 +2551,118 @@ $A \neq \epsilon$\\
                                            \mid E^A_B\ \epsilon \mid \%_\alpha\ E^{A'}_B \ (\text{where } A'\alpha = A)\\
 \end{align*}
 
-\blue{We cannot prove this theorem. I think the definition contains a bug.}
+\begin{dfn}[Reduction]
+    $ M \longrightarrow M'$ iff \\
+    $ M \longrightarrow_\Lambda M' $, $ M \longrightarrow_\blacklozenge M' $ or $ M \longrightarrow_\beta M' $.
+\end{dfn}
+
+\begin{thm}[Progress]
+    If $x:\tau@\epsilon \notin \G$ and $\G \V M : \tau @ A$ then $ M \in V^A $ or $\exists M'$ such that $M \longrightarrow M'$.
+\end{thm}
+
+Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
+
+\begin{itemize}
+    \item \TVar
+    \begin{itemize}
+        \item $ A = \epsilon$
+        
+            This case is impossible because $x:\tau@\epsilon \notin \G$.
+        \item Otherwise
+        
+            This case is obvious because $x \in V^A$.
+    \end{itemize}
+
+    \item \TTBL
+    
+        The derivation is $\MD{1}$.
+
+        $\MD{1}$ = \infer[\TTBL]
+        {\G \V \TBL_\alpha M :\tau @ A\alpha}
+        {\ID{\G \V M : \TW_\alpha \tau @ A}}
+
+        There are two cases for the induction hypothesis.
+
+        \begin{itemize}
+
+            \item $ M \in V^A $
+            
+                \begin{itemize}
+                    \item $ A = \epsilon $
+
+                        Use "Inversion Lemma" for all cases of $v^\epsilon$, the case of $ M = \TB_\alpha v^\alpha $ is only reasonable.\\
+                        From the definition of $ \longrightarrow $, $\TBL_\alpha \TB_\alpha v^\alpha \longrightarrow v^\alpha$
+
+                    \item Otherwise
+                    
+                        $ \TBL_\alpha M \in V^{A\alpha}$.
+                \end{itemize}
+            
+            \item $\exists M'$ such that $M \longrightarrow M'$
+
+                From the definition of $ \longrightarrow $, $\TBL_\alpha M \longrightarrow \TBL_\alpha M'$
+
+        \end{itemize}
+
+    \item \TApp
+     
+        The derivation looks like $\MD{1}$.
+
+        $\MD{1}$ = \infer[\TApp]
+        {\G \V M\ N :\tau[x\mapsto N] @ A}
+        {\ID{\G \V M : (\Pi x:\sigma.\tau) @ A} \andalso \ID{\G \V N : \sigma @ A}}
+
+        \begin{itemize}
+            \item $M \in V^A$ and $N \in V^A$
+            
+                \begin{itemize}
+                    \item $A=\epsilon$
+                    
+                        $M = \lambda x:\sigma.L$ from the definition of $V^\epsilon$ and Inversion Lemma.\\
+                        Then, $\lambda x:\sigma.L\ N \longrightarrow_\beta L[x\mapsto N]$.
+                    \item Otherwise
+                    
+                        $M\ N \in V^A$.
+                \end{itemize}
+            \item Otherwise
+            
+                $M\ N \longrightarrow M'\ N$ or $M\ N \longrightarrow M\ N'$.
+        \end{itemize}
+   
+    \item \TIns
+ 
+        The derivation looks like $\MD{1}$.
+
+        $\MD{1}$ = \infer[\TIns]
+        {\G \V M\ \epsilon : \tau[\alpha \mapsto \epsilon] @ A}
+        {\ID{\G \V M : \forall\alpha.\tau @ A}}
+
+        \begin{itemize}
+            \item $ M \in V^A $
+            
+                \begin{itemize}
+                    \item $A=\epsilon$
+
+                        $M = \Lambda\alpha.v^\epsilon$ from the definition of $V^\epsilon$ and Inversion Lemma.\\
+                        Then, $\Lambda\alpha.v^\epsilon\ \epsilon \longrightarrow_\Lambda v^\epsilon[x\mapsto \epsilon]$.
+
+                    \item Otherwise
+                    
+                        $v^A \epsilon \in V^A$.
+                \end{itemize}
+                    
+            \item $\exists M'$ such that $M \longrightarrow M'$
+            
+                $M\ \epsilon \longrightarrow M'\ \epsilon$
+        \end{itemize}
+
+    \item Others
+    
+        It is obvious from the induction hypothesis.
+
+\end{itemize}
+
+\blue{I couldn't prove Unique Decomposition. I think the definition contains a bug. Evaluation Context is suspicious.}
 
 \begin{thm}[Unique Decomposition]
     If $x:\tau@\epsilon \notin \G$ and $\G \V M : \tau @ A$ then 1 or 2 is true.
@@ -2618,91 +2729,7 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 
 \end{itemize}
 
-\begin{dfn}[Reduction]
-    $ M \longrightarrow M'$ iff \\
-    $ M \longrightarrow_\Lambda M' $, $ M \longrightarrow_\blacklozenge M' $ or $ M \longrightarrow_\beta M' $.
-\end{dfn}
 
-\begin{thm}[Progress]
-    If $x:\tau@\epsilon \notin \G$ and $\G \V M : \tau @ A$ then $ M \in V^A $ or $\exists M'$ such that $M \longrightarrow M'$.
-\end{thm}
-
-Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
-
-\begin{itemize}
-    \item \TVar
-    \begin{itemize}
-        \item $ A = \epsilon$
-        
-            This case is impossible because $x:\tau@\epsilon \notin \G$.
-        \item Otherwise
-        
-            This case is obvious because $x \in V^A$.
-    \end{itemize}
-
-    \item \TTBL
-    
-        The derivation is $\MD{1}$.
-
-        $\MD{1}$ = \infer[\TTBL]
-        {\G \V \TBL_\alpha M :\tau @ A\alpha}
-        {\ID{\G \V M : \TW_\alpha \tau @ A}}
-
-        There are two cases for the induction hypothesis.
-
-        \begin{itemize}
-
-            \item $ M \in V^A $
-            
-                \begin{itemize}
-                    \item $ A = \epsilon $
-
-                        Use "Inversion Lemma" for all cases of $v^\epsilon$, the case of $ M = \TB_\alpha v^\alpha $ is only reasonable.\\
-                        From the definition of $ \longrightarrow $, $\TBL_\alpha \TB_\alpha v^\alpha \longrightarrow v^\alpha$
-
-                    \item Otherwise
-                    
-                        $ \TBL_\alpha M \in V^{A\alpha}$.
-                \end{itemize}
-            
-            \item $\exists M'$ such that $M \longrightarrow M'$
-
-                From the definition of $ \longrightarrow $, $\TBL_\alpha M \longrightarrow \TBL_\alpha M'$
-
-        \end{itemize}
-
-    \item \TApp
-     
-        The derivation is $\MD{1}$.
-
-        $\MD{1}$ = \infer[\TApp]
-        {\G \V M\ N :\tau[x\mapsto N] @ A\alpha}
-        {\ID{\G \V M : (\Pi x:\sigma.\tau) @ A} \andalso \ID{\G \V N : \sigma @ A}}
-
-        \begin{itemize}
-            \item $M \in V^A$ and $N \in V^A$
-            
-                \begin{itemize}
-                    \item $A=\epsilon$
-                    
-                        $M = \lambda x:\sigma.L$ from the definition of $V^\epsilon$ and Inversion Lemma.\\
-                        Then, $\lambda x:\sigma.L\ N \longrightarrow_\beta L[x\mapsto N]$.
-                    \item Otherwise
-                    
-                        $M\ N \in V^A$.
-                \end{itemize}
-            \item Otherwise
-            
-                $M\ N \longrightarrow M'\ N$ or $M\ N \longrightarrow M\ N'$.
-        \end{itemize}
-   
-    \item \TIns
-
-    \item Others
-    
-        It is obvious from the induction hypothesis.
-
-\end{itemize}
 
 % \section{ Deterministic Typechecking }
 %
