@@ -2639,6 +2639,17 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 
 \blue{\huge{It is work in progress from here.}}
 
+\begin{dfn}[\% Powerset of a Term]
+    For a term $M$, $M^\%$ is a set of terms.\\
+    $M' \in M^\%$ iff you can get $M'$ from $M$ by removing arbitary number $\%$.
+\end{dfn}
+
+\begin{thm}[Equality and Reduction]
+    $\G \V M \E N : \tau @A$ if and only if\\
+    $\exists M' \in M^\%, M' \in M^\%, \exists N' \in N^\%, \exists L$
+    such that $\G \V M' : \tau$, $\G \V N' : \tau$, $M' \longrightarrow^* L$ and $N' \longrightarrow^* L$.
+\end{thm}
+
 \section{ Staged Semantics }
 
 \figheader{Staged Reduction}{}
