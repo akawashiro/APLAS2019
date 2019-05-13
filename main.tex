@@ -12,7 +12,6 @@
 \usepackage{fancybox}
 \usepackage{mathtools}
 \usepackage{float}
-\usepackage[truedimen,margin=15truemm]{geometry}
 \usepackage{xparse}
 \usepackage{ebproof}
 \usepackage{lscape}
@@ -201,7 +200,11 @@ We give reasonable equivalence rules to handle them.
     & (\Lambda \alpha.M) \epsilon \longrightarrow_\Lambda M[\alpha \mapsto \epsilon]
 \end{align*}
 And take a minimum compatible relationship on terms.
+
+    $ M \longrightarrow M'$ iff 
+    $ M \longrightarrow_\Lambda M' $, $ M \longrightarrow_\blacklozenge M' $ or $ M \longrightarrow_\beta M' $.
 \end{definition}
+
 
 \subsection{Type System}
 \subsubsection{Kinding Rules}
@@ -276,11 +279,6 @@ $A \neq \epsilon$\\
     \textrm{Redexes} && R^\epsilon & ::= (\lambda x:\tau.M)\ v^\epsilon \mid (\Lambda\alpha.v^\epsilon)\ \epsilon & \\
                      && R^\alpha & ::=\ \TBL_\alpha \TB_\alpha M & \\
 \end{align*}
-\end{definition}
-
-\begin{definition}[Reduction]
-    $ M \longrightarrow M'$ iff \\
-    $ M \longrightarrow_\Lambda M' $, $ M \longrightarrow_\blacklozenge M' $ or $ M \longrightarrow_\beta M' $.
 \end{definition}
 
 \begin{theorem}[Progress]
