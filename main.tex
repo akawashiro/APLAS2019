@@ -16,6 +16,9 @@
 \newcommand{\red}[1]{\textcolor{red}{ #1 }}
 \newcommand{\blue}[1]{\textcolor{blue}{ #1 }}
 \newcommand{\TW}{\triangleright}
+\newcommand{\LTP}{$\lambda^{\triangleright\%}$}
+\newcommand{\LMD}{$\lambda^{\textrm{MD}}$}
+\newcommand{\LLF}{$\lambda^{\textrm{LF}}$}
 
 \begin{document}
 %
@@ -41,8 +44,8 @@ Atsushi Igarashi\inst{2}\orcidID{0000-0002-5143-9764}}
 %
 \begin{abstract}
 
-We develop yet another typed multi-stage calculus $\lambda^{\textrm{MD}}$.
-It extends Hanada and Igarashi's $\lambda^{\triangleright\%}$ with dependent type.
+We develop yet another typed multi-stage calculus \LMD.
+It extends Hanada and Igarashi's \LTP with dependent type.
 
 Dependent types is types dependent on values. 
 Vectors with lengths is famous example of dependent types and they enable us to omit boundary checking.
@@ -50,8 +53,8 @@ Vectors with lengths is famous example of dependent types and they enable us to 
 A multi-stage calculus enables us to generate and execute codes at runtime.
 It can improve the performance of programs by generating optimized codes for given inputs.
 
-In this paper, we design $\lambda^{\textrm{MD}}$ by introducing dependent type into $\lambda^{\TW\%}$.
-You can make more efficient programs from existing dependent typed programs with $\lambda^{\textrm{MD}}$.
+In this paper, we design \LMD by introducing dependent type into $\lambda^{\TW\%}$.
+You can make more efficient programs from existing dependent typed programs with \LMD.
 
 It has a simple, substitution-based full-reduction semantics and enjoys basic properties of subject reduction, confluence, strong normalization and progress.
 
@@ -66,14 +69,27 @@ The second point is CSP in equivalence rules.
 Prameters of dependent types may contain cross-staed terms.
 We give reasonable equivalence rules to handle them.
 
-\keywords{Multistage programming \and Dependent type \and Specification verification by tests.}
+\keywords{Multistage programming \and Dependent type}
 \end{abstract}
 
 \blue{203 words. The abstract should briefly summarize the contents of the paper in 150--250 words.}
 %
 %
 %
+\section{Introduction}
+\subsection{Dependent Types}
+\subsection{Multi-Stage Calculus}
+\subsection{Organaization of the Paper}
+\section{Informal Overview of \LMD}
+\subsection{\LLF}
+\subsection{\LTP}
+\section{Formal Definition of \LMD}
+\subsection{Kinding Rules}
+\subsection{Equivalence Rules}
 \section{First Section}
+\section{Related Work}
+\section{Conclusions}
+
 \subsection{A Subsection Sample}
 Please note that the first paragraph of a section or subsection is
 not indented. The first paragraph that follows a table, figure,
