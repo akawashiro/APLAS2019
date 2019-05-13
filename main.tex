@@ -5,6 +5,7 @@
 \documentclass[runningheads]{llncs}
 %
 \usepackage{graphicx}
+\usepackage{color}
 % Used for displaying a sample figure. If possible, figure files should
 % be included in EPS format.
 %
@@ -39,6 +40,7 @@ Atsushi Igarashi\inst{2}\orcidID{0000-0002-5143-9764}}
 \maketitle              % typeset the header of the contribution
 %
 \begin{abstract}
+
 We develop yet another typed multi-stage calculus $\lambda^{\textrm{MD}}$.
 It extends Hanada and Igarashi's $\lambda^{\triangleright\%}$ with dependent type.
 
@@ -57,13 +59,17 @@ The main technical points of this paper is how to deal with Cross Stage Persiste
 CSP is a function of a multi-stage calculus which allows to use a value in quoted code.
 
 The first point is CSP in kinding rules.
-$\lambda^{\TW\%}$ contains kinding rules because dependent types need them.
+$\lambda^{\TW\%}$ includes kinding rules because dependent types need them
+but the relationship between kinds and stages was't clear.
 
 The second point is CSP in equivalence rules.
+Prameters of dependent types may contain cross-staed terms.
+We give reasonable equivalence rules to handle them.
 
-The abstract should briefly summarize the contents of the paper in 150--250 words.
 \keywords{Multistage programming \and Dependent type \and Specification verification by tests.}
 \end{abstract}
+
+\blue{203 words. The abstract should briefly summarize the contents of the paper in 150--250 words.}
 %
 %
 %
