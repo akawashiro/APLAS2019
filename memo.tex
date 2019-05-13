@@ -2650,6 +2650,8 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
     such that $\G \V M' : \tau$, $\G \V N' : \tau$, $M' \longrightarrow^* L$ and $N' \longrightarrow^* L$.
 \end{thm}
 
+\red{TODO}
+
 \section{ Staged Semantics }
 
 \figheader{Staged Reduction}{}
@@ -2657,7 +2659,7 @@ $A \neq \epsilon$\\
 \begin{align*}
     E^A_\epsilon [(\lambda x:\tau.M)\ v^\epsilon] & \longrightarrow_s E^A_\epsilon[M[x\mapsto v^\epsilon]] \\
     E^A_\epsilon [(\Lambda\alpha.v^\epsilon)\ \epsilon] & \longrightarrow_s E^A_\epsilon[v^\epsilon[\alpha\mapsto \epsilon]] \\
-    E^A_\alpha [\TBL_\alpha \TB_\alpha M] & \longrightarrow_s E^A_\alpha[M] \\
+    E^A_\alpha [\TBL_\alpha \TB_\alpha v^\alpha] & \longrightarrow_s E^A_\alpha[v^\alpha] \\
 \end{align*}
 
 \figheader{Evaluation Context}{}
@@ -2672,8 +2674,6 @@ $A \neq \epsilon$\\
                                            & \quad \mid \Lambda\alpha.E^\epsilon_B
                                            \mid E^A_B\ \epsilon \mid \%_\alpha\ E^{A'}_B \ (\text{where } A'\alpha = A)\\
 \end{align*}
-
-\blue{I couldn't prove Unique Decomposition. I think the definition contains a bug. Evaluation Context is suspicious.}
 
 \begin{thm}[Unique Decomposition]
     If $x:\tau@\epsilon \notin \G$ and $\G \V M : \tau @ A$ then 1 or 2 is true.
