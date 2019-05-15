@@ -24,8 +24,8 @@
 % to display URLs in blue roman font according to Springer's eBook style:
 % \renewcommand\UrlFont{\color{blue}\rmfamily}
 
-\newcommand{\red}[1]{\textcolor{red}{ #1 }}
-\newcommand{\blue}[1]{\textcolor{blue}{ #1 }}
+\newcommand{\red}[1]{\textcolor{red}{#1 }}
+\newcommand{\blue}[1]{\textcolor{blue}{#1 }}
 
 \newcommand{\LTP}{$\lambda^{\triangleright\%}$}
 \newcommand{\LMD}{$\lambda^{\textrm{MD}}$}
@@ -106,7 +106,7 @@
 
 \begin{document}
 %
-\title{Dependent Typed Multi-Stage Calculus\thanks{Supported by organization x.}}
+\title{Dependently Typed Multi-Stage Calculus\thanks{Supported by organization x.}}
 %
 %\titlerunning{Abbreviated paper title}
 % If the paper title is too long for the running head, you can set
@@ -128,29 +128,30 @@ Atsushi Igarashi\inst{2}\orcidID{0000-0002-5143-9764}}
 %
 \begin{abstract}
 
+
 We develop yet another typed multi-stage calculus \LMD.
-It extends Hanada and Igarashi's \LTP with dependent type.
+It extends Hanada and Igarashi's \LTP with dependent types.
 
 A multi-stage calculus enables us to generate and execute codes at runtime.
 It can improve the performance of programs by generating optimized codes for given inputs.
 
-Dependent types is types dependent on values. 
-Vectors with lengths is famous example of dependent types and they enable us to omit boundary checking.
+Dependent types are types dependent on values. 
+Vectors with lengths are a famous example of dependent types and they enable us to omit boundary checking.
 
 In this paper, we design \LMD by introducing dependent type into $\lambda^{\TW\%}$.
 You can make more efficient programs from existing dependent typed programs with \LMD.
 
-It has a simple, substitution-based full-reduction semantics and enjoys basic properties of subject reduction, confluence, strong normalization and progress.
+It has a simple, substitution-based full-reduction semantics and enjoys basic properties of subject reduction, confluence, strong normalization, and progress.
 
-The main technical points of this paper is how to deal with Cross Stage Persistence of multi-stage calculuses in a dependent type system.
-CSP is a function of a multi-stage calculus which allows to use a value in quoted code.
+The main technical points of this paper are how to deal with Cross Stage Persistence of multi-stage calculuses in a dependent type system.
+CSP is a function of a multi-stage calculus which allows using a value in quoted code.
 
 The first point is CSP in kinding rules.
 $\lambda^{\TW\%}$ includes kinding rules because dependent types need them
-but the relationship between kinds and stages was't clear.
+but the relationship between kinds and stages wasn't clear.
 
 The second point is CSP in equivalence rules.
-Prameters of dependent types may contain cross-staed terms.
+Parameters of dependent types may contain cross-staged terms.
 We give reasonable equivalence rules to handle them.
 
 \keywords{Multistage programming \and Dependent type}
@@ -182,12 +183,12 @@ We give reasonable equivalence rules to handle them.
     \textrm{Types} && \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} M \mid \F\alpha.\tau \\
     \textrm{Kinds} && K,J,I,H,G & ::= * \mid \Pi x:\tau.K\\
     \textrm{Contexts} && \Gamma & ::= \phi \mid 
-    \Gamma,x:\tau@A\ (x\not\in\textrm{FV}(\G)) \mid 
-    \Gamma,X::K@A\ (X\not\in \textrm{FV}(\G))\\
-    \textrm{Transition variables} && & \alpha,\beta,\gamma,... \\
-    \textrm{Transition} && & A,B,C,... \\
-    \textrm{Variables} && & x,y,z,... \\
-    \textrm{Type variables} && & X,Y,Z,... \\
+    \Gamma,x:\tau @A\ (x\not\in\textrm{FV}(\G)) \mid 
+    \Gamma,X::K @A\ (X\not\in \textrm{FV}(\G))\\
+    \textrm{Transition variables} && & \alpha,\beta,\gamma, \dots \\
+    \textrm{Transition} && & A,B,C,\dots \\
+    \textrm{Variables} && & x,y,z,\dots \\
+    \textrm{Type variables} && & X,Y,Z,\dots \\
 \end{align*}
 
 \subsection{Reduction}
@@ -214,48 +215,48 @@ And take a minimum compatible relationship on terms.
 
 \begin{theorem}[Substituition Lemma for Variables of Terms, Types or Kinds and Their Equivalence]
     \begin{flalign*}
-        \text{If\ } \G,z:\xi@B \V M:\tau@A \text{\ and\ } \G\V P:\xi@B
-        &\text{\ then\ } \G\V M[z \mapsto P]:\tau[z \mapsto P]@A.&\\
-        \text{If\ } \G,z:\xi@B \V \tau::K@A \text{\ and\ } \G\V P:\xi@B
-        &\text{\ then\ } \G\V \tau[z \mapsto P]::K[z \mapsto P]@A.&\\
-        \text{If\ } \G,z:\xi@B \V K\iskind@A \text{\ and\ } \G\V P:\xi@B
-        &\text{\ then\ } \G\V K[z \mapsto P] \iskind @A.&\\
-        \text{If\ } \G,z:\xi@B \V M\E N : \tau@A \text{\ and\ } \G\V P:\xi@B
-        &\text{\ then\ } \G\V M[z \mapsto P]\E N[z \mapsto P] : \tau[z \mapsto P]@A.&\\
-        \text{If\ } \G,z:\xi@B \V \tau\E \sigma : K@A \text{\ and\ } \G\V P:\xi@B
-        &\text{\ then\ } \G\V \tau[z \mapsto P]\E \sigma[z \mapsto P] : K[z \mapsto P]@A.&\\
-        \text{If\ } \G,z:\xi@B \V K\E J@A \text{\ and\ } \G\V P:\xi@B
-        &\text{\ then\ } \G\V K[z \mapsto P]\E J[z \mapsto P]@A.&
+        \text{If\ } \G,z:\xi @B \V M:\tau @A \text{\ and\ } \G\V P:\xi @B
+        &\text{\ then\ } \G\V M[z \mapsto P]:\tau[z \mapsto P] @A.&\\
+        \text{If\ } \G,z:\xi @B \V \tau::K @A \text{\ and\ } \G\V P:\xi @B
+        &\text{\ then\ } \G\V \tau[z \mapsto P]::K[z \mapsto P] @A.&\\
+        \text{If\ } \G,z:\xi @B \V K\iskind @A \text{\ and\ } \G\V P:\xi @B
+        &\text{\ then\ } \G\V K[z \mapsto P] \iskind  @A.&\\
+        \text{If\ } \G,z:\xi @B \V M\E N : \tau @A \text{\ and\ } \G\V P:\xi @B
+        &\text{\ then\ } \G\V M[z \mapsto P]\E N[z \mapsto P] : \tau[z \mapsto P] @A.&\\
+        \text{If\ } \G,z:\xi @B \V \tau\E \sigma : K @A \text{\ and\ } \G\V P:\xi @B
+        &\text{\ then\ } \G\V \tau[z \mapsto P]\E \sigma[z \mapsto P] : K[z \mapsto P] @A.&\\
+        \text{If\ } \G,z:\xi @B \V K\E J @A \text{\ and\ } \G\V P:\xi @B
+        &\text{\ then\ } \G\V K[z \mapsto P]\E J[z \mapsto P] @A.&
     \end{flalign*}    
 \end{theorem}
 
 \begin{theorem}[Stage Substituition Lemma for Variables of Terms, Types or Kinds and Their Equivalence]
     \begin{flalign*}
-        \text{If\ } \G \V M:\tau@A
-        &\text{\ then\ } \G[\beta \mapsto \epsilon]\V M[\beta \mapsto \epsilon]:\tau[\beta \mapsto \epsilon]@A[\beta \mapsto \epsilon].&\\
-        \text{If\ } \G \V \tau::K@A
-        &\text{\ then\ } \G[\beta \mapsto \epsilon]\V \tau[\beta \mapsto \epsilon]::K[\beta \mapsto \epsilon]@A[\beta \mapsto \epsilon].&\\
-        \text{If\ } \G \V K\iskind@A
-        &\text{\ then\ } \G[\beta \mapsto \epsilon]\V K[\beta \mapsto \epsilon] \iskind@A[\beta \mapsto \epsilon].&\\
-        \text{If\ } \G \V M\E N : \tau@A
-        &\text{\ then\ } \G[\beta \mapsto \epsilon]\V M[\beta \mapsto \epsilon]\E N[\beta \mapsto \epsilon] : \tau[\beta \mapsto \epsilon] @A[\beta \mapsto \epsilon].&\\
-        \text{If\ } \G \V \tau\E \sigma : K@A
-        &\text{\ then\ } \G[\beta \mapsto \epsilon]\V \tau[\beta \mapsto \epsilon]\E \sigma[\beta \mapsto \epsilon] : K[\beta \mapsto \epsilon]@A[\beta \mapsto \epsilon].&\\
-        \text{If\ } \G \V K\E J@A
-        &\text{\ then\ } \G[\beta \mapsto \epsilon]\V K[\beta \mapsto \epsilon]\E J[\beta \mapsto \epsilon]@A[\beta \mapsto \epsilon].&
+        \text{If\ } \G \V M:\tau @A
+        &\text{\ then\ } \G[\beta \mapsto \epsilon]\V M[\beta \mapsto \epsilon]:\tau[\beta \mapsto \epsilon] @A[\beta \mapsto \epsilon].&\\
+        \text{If\ } \G \V \tau::K @A
+        &\text{\ then\ } \G[\beta \mapsto \epsilon]\V \tau[\beta \mapsto \epsilon]::K[\beta \mapsto \epsilon] @A[\beta \mapsto \epsilon].&\\
+        \text{If\ } \G \V K\iskind @A
+        &\text{\ then\ } \G[\beta \mapsto \epsilon]\V K[\beta \mapsto \epsilon] \iskind @A[\beta \mapsto \epsilon].&\\
+        \text{If\ } \G \V M\E N : \tau @A
+        &\text{\ then\ } \G[\beta \mapsto \epsilon]\V M[\beta \mapsto \epsilon]\E N[\beta \mapsto \epsilon] : \tau[\beta \mapsto \epsilon]  @A[\beta \mapsto \epsilon].&\\
+        \text{If\ } \G \V \tau\E \sigma : K @A
+        &\text{\ then\ } \G[\beta \mapsto \epsilon]\V \tau[\beta \mapsto \epsilon]\E \sigma[\beta \mapsto \epsilon] : K[\beta \mapsto \epsilon] @A[\beta \mapsto \epsilon].&\\
+        \text{If\ } \G \V K\E J @A
+        &\text{\ then\ } \G[\beta \mapsto \epsilon]\V K[\beta \mapsto \epsilon]\E J[\beta \mapsto \epsilon] @A[\beta \mapsto \epsilon].&
     \end{flalign*}
 \end{theorem}
 
 \begin{theorem}[Preservation for term on $\beta$ reduction]
-    If $\G\V M:\tau@A$ and $M \longrightarrow_{\beta} M'$, then $\G\V M':\tau@A$\\
+    If $\G\V M:\tau @A$ and $M \longrightarrow_{\beta} M'$, then $\G\V M':\tau @A$\\
 \end{theorem}
 
 \begin{theorem}[Preservation for term on $\TBL\TB$ reduction]
-    If $\G\V M:\tau@A$ and $M\longrightarrow_\blacklozenge N$, then $\G\V N:\tau@A$\\
+    If $\G\V M:\tau @A$ and $M\longrightarrow_\blacklozenge N$, then $\G\V N:\tau @A$\\
 \end{theorem}
 
 \begin{theorem}[Preservation for term on $\Lambda$ reduction]
-    If $\G\V M:\tau@A$ and $M \longrightarrow_{\Lambda} N$, then $\G\V N:\tau@A$.
+    If $\G\V M:\tau @A$ and $M \longrightarrow_{\Lambda} N$, then $\G\V N:\tau @A$.
 \end{theorem}
 
 \begin{theorem}[Strong Normalization]
@@ -274,7 +275,7 @@ $A \neq \epsilon$\\
     \textrm{Values} && v^\epsilon \in V^\epsilon & ::= \lambda x:\tau.M \mid\ \TB_\alpha v^\alpha \mid \Lambda\alpha.v^\epsilon & \\
                     && v^A \in V^A & ::= x \mid \lambda x:\tau.v^A \mid v^A\ v^A \mid\ \TB_\alpha v^{A\alpha} 
                                            \mid \Lambda\alpha.v^A \mid v^A\ \epsilon &\\
-                                    &&& \quad\   \mid\ \TBL_\alpha v^{A'} (\text{if } A'\alpha = A \text{ and } A' \neq \epsilon) & \\
+                                    &&& \quad\   \mid\ \TBL_\alpha v^{A'} (\text{if } A'\alpha = A \text{and } A' \neq \epsilon) & \\
                                     &&& \quad\   \mid \%_\alpha v^{A'} (\text{if } A'\alpha = A) & \\
     \textrm{Redexes} && R^\epsilon & ::= (\lambda x:\tau.M)\ v^\epsilon \mid (\Lambda\alpha.v^\epsilon)\ \epsilon & \\
                      && R^\alpha & ::=\ \TBL_\alpha \TB_\alpha M & \\
@@ -282,11 +283,24 @@ $A \neq \epsilon$\\
 \end{definition}
 
 \begin{theorem}[Progress]
-    If $x:\tau@\epsilon \notin \G$ and $\G \V M : \tau @ A$ then $ M \in V^A $ or $\exists M'$ such that $M \longrightarrow M'$.
+    If $x:\tau @\epsilon \notin \G$ and $\G \V M : \tau  @ A$ then $ M \in V^A $ or $\exists M'$ such that $M \longrightarrow M'$.
 \end{theorem}
 
 
 \section{Related Work}
+
+\begin{itemize}
+   \item On Cross-Stage Persistence in Multi-Stage\cite{Hanada2014}
+   \item Eliminating Array Bound Checking Through Dependent Types\cite{Xi98}
+   \item MetaML and Multi-stage Programming with Explicit Annotations\cite{MetaML}
+   \item Idris, a general-purpose dependently typed programming language: Design and implementation\cite{brady2013idris}
+   \item A Logical Foundation for Environment Classifiers\cite{Tsukada}
+   \item Environment classifiers\cite{taha2003environment}
+   \item A framework for defining logics\cite{harper1993framework}
+   \item The Design and Implementation of {BER} MetaOCaml - System Description\cite{oleg2014}
+   \item Refined Environment Classifiers\cite{kiselyov2016refined}
+   \item Staging with control: type-safe multi-stage programming with control operators\cite{oishi2017staging}
+\end{itemize}
 
 \section{Conclusions}
 
