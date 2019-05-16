@@ -2531,7 +2531,7 @@ $A \neq \epsilon$\\
                                     &&& \quad\   \mid\ \TBL_\alpha v^{A'} (\text{if } A'\alpha = A \text{ and } A' \neq \epsilon) & \\
                                     &&& \quad\   \mid \%_\alpha v^{A'} (\text{if } A'\alpha = A) & \\
     \textrm{Redexes} && R^\epsilon & ::= (\lambda x:\tau.M)\ v^\epsilon \mid (\Lambda\alpha.v^\epsilon)\ \epsilon & \\
-                     && R^\alpha & ::=\ \TBL_\alpha \TB_\alpha M & \\
+                     && R^\alpha & ::=\ \TBL_\alpha \TB_\alpha v^\alpha & \\
 \end{align*}
 
 \begin{dfn}[Reduction]
@@ -2709,7 +2709,8 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
         \item $ A = \epsilon$
         
             This case is impossible because the stage of the conclusion of \TTBL\ cannot be $\epsilon$.
-        \item $ A = \alpha $
+
+        \item Otherwise
         
             The derivation is $\MD{1}$.
 
@@ -2734,13 +2735,20 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
                 
                 \begin{itemize}
                     \item $ M = \TB_\alpha E^\alpha_B[R^B] $
+                    
+                        $ \TBL_\alpha \TB_\alpha E^\alpha_B[R^B] \longrightarrow_s E^\alpha_B[R^B]$ doesn't hold because $ E^\alpha_B[R^B] \notin v^\alpha$.
+                        So, given $B, E^\epsilon_B, R^B$ are the unique tuples satisfies the condition.
                     \item Otherwise
+                    
+                        It is obvious from the induction hypothesis and the definition of $E^A_B$.
                 \end{itemize}
             \end{itemize}
 
-        \item Otherwise
-
     \end{itemize}
+
+    \item \TIns
+    
+    \item \TApp
 
     \item \TConv
     
