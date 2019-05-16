@@ -141,10 +141,10 @@ Vectors with lengths are a famous example of dependent types and they enable us 
 In this paper, we design \LMD by introducing dependent type into $\lambda^{\TW\%}$.
 You can make more efficient programs from existing dependent typed programs with \LMD.
 
-It has a simple, substitution-based full-reduction semantics and enjoys basic properties of subject reduction, confluence, strong normalization, and progress.
+It has a simple, substitution-based full-reduction semantics and enjoys basic properties of subject reduction, confluence, and strong normalization, and progress.
+It also includes an evaluation context which satisfies unique decomposition.
 
-The main technical points of this paper are how to deal with Cross Stage Persistence of multi-stage calculuses in a dependent type system.
-CSP is a function of a multi-stage calculus which allows using a value in quoted code.
+The main technical points of this paper are how to deal with Cross Stage Persistence of multi-stage calculuses which allows using a value in quoted code in a dependent type system.
 
 The first point is CSP in kinding rules.
 $\lambda^{\TW\%}$ includes kinding rules because dependent types need them
@@ -157,7 +157,7 @@ We give reasonable equivalence rules to handle them.
 \keywords{Multistage programming \and Dependent type}
 \end{abstract}
 
-\blue{203 words. The abstract should briefly summarize the contents of the paper in 150--250 words.}
+\blue{213 words. The abstract should briefly summarize the contents of the paper in 150--250 words.}
 %
 %
 %
@@ -173,6 +173,7 @@ We give reasonable equivalence rules to handle them.
 \section{Informal Overview of \LMD}
 \subsection{\LLF}
 \subsection{\LTP}
+\subsection{\LMD}
 
 \section{Formal Definition of \LMD}
 \subsection{Syntax}
@@ -206,12 +207,47 @@ And take a minimum compatible relationship on terms.
     $ M \longrightarrow_\Lambda M' $, $ M \longrightarrow_\blacklozenge M' $ or $ M \longrightarrow_\beta M' $.
 \end{definition}
 
-
 \subsection{Type System}
-\subsubsection{Kinding Rules}
 \subsubsection{Equivalence Rules}
 
-\subsection{Properties}
+\begin{definition}[Values]
+$A \neq \epsilon$\\
+\begin{align*}
+    \textrm{Values} && v^\epsilon \in V^\epsilon & ::= \lambda x:\tau.M \mid\ \TB_\alpha v^\alpha \mid \Lambda\alpha.v^\epsilon & \\
+                    && v^A \in V^A & ::= x \mid \lambda x:\tau.v^A \mid v^A\ v^A \mid\ \TB_\alpha v^{A\alpha} 
+                                           \mid \Lambda\alpha.v^A \mid v^A\ \epsilon &\\
+                                    &&& \quad\   \mid\ \TBL_\alpha v^{A'} (\text{if } A'\alpha = A \text{and } A' \neq \epsilon) & \\
+                                    &&& \quad\   \mid \%_\alpha v^{A'} (\text{if } A'\alpha = A) & \\
+    \textrm{Redexes} && R^\epsilon & ::= (\lambda x:\tau.M)\ v^\epsilon \mid (\Lambda\alpha.v^\epsilon)\ \epsilon & \\
+                     && R^\alpha & ::=\ \TBL_\alpha \TB_\alpha M & \\
+\end{align*}
+\end{definition}
+
+
+\begin{definition}[Staged Reduction]
+$A \neq \epsilon$\\
+\begin{align*}
+    E^A_\epsilon [(\lambda x:\tau.M)\ v^\epsilon] & \longrightarrow_s E^A_\epsilon[M[x\mapsto v^\epsilon]] \\
+    E^A_\epsilon [(\Lambda\alpha.v^\epsilon)\ \epsilon] & \longrightarrow_s E^A_\epsilon[v^\epsilon[\alpha\mapsto \epsilon]] \\
+    E^A_\alpha [\TBL_\alpha \TB_\alpha v^\alpha] & \longrightarrow_s E^A_\alpha[v^\alpha] \\
+\end{align*}
+\end{definition}
+
+\begin{definition}[Evaluation Context]
+$A \neq \epsilon$\\
+\begin{align*}
+    E^\epsilon_B \in ECtx^\epsilon_B & ::= \square\ (\text{if\ } B = \epsilon) \mid E^\epsilon_B\ M \mid v^e\ E^\epsilon_B
+                                           \mid \TB_\alpha E^\alpha_B \mid \Lambda\alpha.E^\epsilon_B
+                                           \mid E^\epsilon_B\ \epsilon  \\
+    E^A_B \in ECtx^A_B & ::= \square\ (\text{if } A = B) \mid \lambda x:\tau.E^A_B \mid E^A_B\ M \mid v^A\ E^A_B
+                                           \mid E^\epsilon_B \mid \TB_\alpha E^{A\alpha}_B
+                                           \mid \TBL_\alpha E^{A'}_B \ (\text{where } A'\alpha = A) \\
+                                           & \quad \mid \Lambda\alpha.E^\epsilon_B
+                                           \mid E^A_B\ \epsilon \mid \%_\alpha\ E^{A'}_B \ (\text{where } A'\alpha = A)\\
+\end{align*}
+\end{definition}
+
+\section{Properties of \LMD}
 
 \begin{theorem}[Substituition Lemma for Variables of Terms, Types or Kinds and Their Equivalence]
     \begin{flalign*}
@@ -269,23 +305,17 @@ And take a minimum compatible relationship on terms.
     there exists $O$ that satisfies $N \longrightarrow^* O$ and $L \longrightarrow^* O$.
 \end{theorem}
 
-\begin{definition}[Values]
-$A \neq \epsilon$\\
-\begin{align*}
-    \textrm{Values} && v^\epsilon \in V^\epsilon & ::= \lambda x:\tau.M \mid\ \TB_\alpha v^\alpha \mid \Lambda\alpha.v^\epsilon & \\
-                    && v^A \in V^A & ::= x \mid \lambda x:\tau.v^A \mid v^A\ v^A \mid\ \TB_\alpha v^{A\alpha} 
-                                           \mid \Lambda\alpha.v^A \mid v^A\ \epsilon &\\
-                                    &&& \quad\   \mid\ \TBL_\alpha v^{A'} (\text{if } A'\alpha = A \text{and } A' \neq \epsilon) & \\
-                                    &&& \quad\   \mid \%_\alpha v^{A'} (\text{if } A'\alpha = A) & \\
-    \textrm{Redexes} && R^\epsilon & ::= (\lambda x:\tau.M)\ v^\epsilon \mid (\Lambda\alpha.v^\epsilon)\ \epsilon & \\
-                     && R^\alpha & ::=\ \TBL_\alpha \TB_\alpha M & \\
-\end{align*}
-\end{definition}
-
 \begin{theorem}[Progress]
     If $x:\tau @\epsilon \notin \G$ and $\G \V M : \tau  @ A$ then $ M \in V^A $ or $\exists M'$ such that $M \longrightarrow M'$.
 \end{theorem}
 
+\begin{theorem}[Unique Decomposition]
+    If $x:\tau@\epsilon \notin \G$ and $\G \V M : \tau @ A$ then 1 or 2 is true.
+    \begin{enumerate}
+        \item $ M \in V^A$
+        \item $\exists ! B, E^A_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
+    \end{enumerate}
+\end{theorem}
 
 \section{Related Work}
 
