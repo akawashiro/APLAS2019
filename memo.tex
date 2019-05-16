@@ -145,8 +145,7 @@
     \textrm{Types} && \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} M \mid \F\alpha.\tau \\
     \textrm{Kinds} && K,J,I,H,G & ::= * \mid \Pi x:\tau.K\\
     \textrm{Contexts} && \Gamma & ::= \phi \mid 
-    \Gamma,x:\tau@A\ (x\not\in\textrm{FV}(\G)) \mid 
-    \Gamma,X::K@A\ (X\not\in \textrm{FV}(\G))\\
+    \Gamma,x:\tau@A\ (x\not\in\textrm{FV}(\G)) \\
     \textrm{Transition variables} && & \alpha,\beta,\gamma,... \\
     \textrm{Transition} && & A,B,C,... \\
     \textrm{Variables} && & x,y,z,... \\
@@ -157,7 +156,6 @@
 \begin{center}
     \infrule{}{\G\V*\iskind @A}{\WStar} \andalso
     \infrule{\G\V \tau::*@A \andalso \G,x:\tau@A\V K\iskind @A}{\G\V(\Pi x:\tau.K)\iskind @A}{\WAbs}\andalso
-    \infrule{\G\V K\iskind @A}{\G\V K\iskind @A\alpha}{\WCsp}\\[2mm]
 \end{center}
 
 \figheader{Kinding}{\rulefbox{\G \V T::K @ A}}
@@ -168,7 +166,7 @@
     \infrule{\G\V \tau::K@A \andalso \G\V K\equiv J@A}{\G\V \tau::J@A}{\KConv} \\[2mm]
     \infrule{\G\V \tau::*@A\alpha}{\G\V\TW_\alpha \tau::*@A}{\KTW}\andalso
     \infrule{\G\V \tau::K@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\V\forall\alpha.\tau::K@A}{\KGen} \andalso
-    \infrule{\G\V \tau::K@A}{\G\V \tau::K@A\alpha}{\KCsp}
+    \infrule{\G\V \tau::*@A}{\G\V \tau::*@A\alpha}{\KCsp}
 \end{center}
 
 \figheader{Typing}{\rulefbox{\G\V M:\tau @A}}
@@ -503,6 +501,16 @@ And take a minimum compatible relationship on terms.
         & staged\_intepreter : \Exp \to \forall\alpha.\TW_\alpha(\I \to \I) \\
         \text{let}\ & tested\_staged\_intepreter\ str = (\rI\ (staged\_intepreter\ str)) \\
         & tested\_staged\_intepreter : \Exp \to (\RI\ (staged\_intepreter\ "\lambda x:\I.x" == \Lambda\alpha.\TB_\alpha (\lambda x:\I.x)) \\
+    \end{align*}
+\end{ex}
+
+\begin{ex}
+    \newcommand{\I}{\textrm{Int}}
+    \newcommand{\M}{\textrm{Mat}}
+    \begin{align*}
+        \text{mulmat} &: \Pi x:\I.\Pi y:\I.(\TW_\alpha \Pi z:\I.(\M\ \%_\alpha x\ \%_\alpha y) \to (\M\ \%_\alpha y\ z) \to (\M\ \%_\alpha x\ z)) \\
+        \text{mulmat}\ 3\ 5 &: \TW_\alpha \Pi z:\I.(\M\ \%_\alpha 3\ \%_\alpha 5) \to (\M\ \%_\alpha 5\ z) \to (\M\ \%_\alpha 3\ z) \\
+        & (\E \TW_\alpha \Pi z:\I.(\M\ 3\ 5) \to (\M\ 5\ z) \to (\M\ 3\ z) ) \\
     \end{align*}
 \end{ex}
 
