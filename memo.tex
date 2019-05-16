@@ -2748,7 +2748,100 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 
     \item \TIns
     
+        \begin{itemize}
+            \item $ A = \epsilon$
+    
+            The derivation is $\MD{1}$.
+
+            $\MD{1}$ = \infer[\TIns]
+            {\G \V M\ \epsilon :\tau[\alpha \mapsto \epsilon] @ \epsilon}
+            {\ID{\G \V M : \forall\alpha.\tau @ \epsilon}}
+
+            From the induction hypothesis, 1 or 2 is true.
+    
+            \begin{enumerate}
+                \item $ M \in V^\epsilon$
+                \item $\exists ! B, E^\epsilon_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^\epsilon_B[R^B]$.
+            \end{enumerate}
+
+            \begin{itemize}
+                \item $ M \in V^\epsilon$
+                
+                    Use Inversion Lemma for all shape in $v^\epsilon$, the case of $ M = \Lambda\alpha.v^\epsilon$ is only reasonable.
+
+                    Then, $ \Lambda\alpha.v^\epsilon\ \epsilon = E^\epsilon_\epsilon [R^\epsilon]$
+                \item $\exists ! B, E^\epsilon_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^\epsilon_B[R^B]$
+
+                    Because $ E^\epsilon_B[R^B] \neq \Lambda\alpha.v^\epsilon$, we can decompose $E^\epsilon_B[R^B]\ \epsilon$ uniquely.
+            \end{itemize}
+
+            \item $ A \neq \epsilon $
+            
+            The derivation is $\MD{1}$.
+
+            $\MD{1}$ = \infer[\TIns]
+            {\G \V M\ \epsilon :\tau[\alpha \mapsto \epsilon] @ A}
+            {\ID{\G \V M : \forall\alpha.\tau @ A}}
+
+            From the induction hypothesis, 1 or 2 is true.
+    
+            \begin{enumerate}
+                \item $ M \in V^A$
+                \item $\exists ! B, E^A_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
+            \end{enumerate}
+
+            \begin{itemize}
+                \item $ M \in V^A$
+               
+                    It is clear that $v^A\ \epsilon \in V^A$.
+
+                \item $\exists ! B, E^A_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^A_B[R^B]$
+
+                    Because we cannot $\Lambda$ reduction at stage $A$, we can decompose $E^A_B[R^B]\ \epsilon$ uniquely.
+            \end{itemize}
+
+
+        \end{itemize}
+
     \item \TApp
+    
+        \begin{itemize}
+            \item $ A = \epsilon$
+    
+            The derivation is $\MD{1}$.
+
+            $\MD{1}$ = \infer[\TApp]
+            {\G \V M\ N :\tau[\tau \mapsto N] @ \epsilon}
+            {\ID{\G \V M : \Pi x:\sigma.\tau @ \epsilon} \andalso \ID{\G \V N : \sigma @ \epsilon}}
+
+            From the induction hypothesis, 1 or 2 is true.
+    
+            \begin{enumerate}
+                \item $ M \in V^\epsilon$ and $ N \in V^\epsilon$
+                \item $ M \in V^\epsilon$ and $\exists ! B, E^\epsilon_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $N = E^\epsilon_B[R^B]$
+                \item $\exists ! B, E^\epsilon_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^\epsilon_B[R^B]$ and $ N \in V^\epsilon$
+                \item $\exists ! B, E^\epsilon_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^\epsilon_B[R^B]$ and $\exists ! B', E^\epsilon_{B'}, R^{B'}$ such that ($B' = \epsilon$ or $B' = \beta$) and $N = E^\epsilon_{B'}[R^{B'}]$
+            \end{enumerate}
+
+            \begin{itemize}
+                \item Case of 1
+                
+                    Use Inversion Lemma for all shape in $v^\epsilon$, the case of $ M = \lambda x:\sigma.v^\epsilon$ is only reasonable.
+
+                    Then $M N = R^\epsilon$.
+                
+                \item Otherwise
+
+                    It is clear.
+            \end{itemize}
+
+            \item $ A \neq \epsilon $
+                
+                $M N \notin R^\epsilon$ because $ A \neq \epsilon$.
+                So, we can decompose uniquely.
+
+        \end{itemize}
+
 
     \item \TConv
     
