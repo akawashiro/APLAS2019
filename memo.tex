@@ -48,7 +48,7 @@
 
 \newcommand{\G}{\Gamma}
 \newcommand{\D}{\Delta}
-\newcommand{\V}{\vdash}
+\newcommand{\V}{\vdash_\Sigma}
 \newcommand{\VT}{\vdash\hspace{-.50em}\raisebox{0.28em}{\tiny{$\TB$}}}
 \newcommand{\iskind}{\text{\ kind}}
 \newcommand{\TW}{\triangleright}
@@ -75,6 +75,7 @@
 \newcommand{\KGen}{\textsc{K-Gen}}
 \newcommand{\KCsp}{\textsc{K-Csp}}
 
+\newcommand{\TConst}{\textsc{T-Const}}
 \newcommand{\TVar}{\textsc{T-Var}}
 \newcommand{\TAbs}{\textsc{T-Abs}}
 \newcommand{\TApp}{\textsc{T-App}}
@@ -140,11 +141,12 @@
 \figheader{Syntax}{}
 
 \begin{align*}
-    \textrm{Terms} && M,N,L,O,P & ::= x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M 
+    \textrm{Terms} && M,N,L,O,P & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M 
     \mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ \epsilon \mid \%_\alpha M\\ 
     \textrm{Types} && \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} M \mid \F\alpha.\tau \\
     \textrm{Kinds} && K,J,I,H,G & ::= * \mid \Pi x:\tau.K\\
-    \textrm{Contexts} && \Gamma & ::= \phi \mid 
+    \textrm{Contexts} && \Gamma & ::= \phi \mid \\
+    \textrm{Signature} && \Sigma & ::= \phi \mid X::K \mid c:\tau \\
     \Gamma,x:\tau@A\ (x\not\in\textrm{FV}(\G)) \\
     \textrm{Transition variables} && & \alpha,\beta,\gamma,... \\
     \textrm{Transition} && & A,B,C,... \\
@@ -160,7 +162,7 @@
 
 \figheader{Kinding}{\rulefbox{\G \V T::K @ A}}
 \begin{center}
-    \infrule{X::K@A \in \G \andalso \G\V K\iskind @A}{\G \V X::K@A}{\KVar} \andalso
+    \infrule{X::K \in \Sigma \andalso \G\V K\iskind @A}{\G \V X::K@A}{\KVar} \andalso
     \infrule{\G\V \tau :: *@A \andalso \G,x:\tau@A\V \sigma::J@A}{\G\V(\Pi x:\tau.\sigma) :: (\Pi x:\tau.J)@A}{\KAbs} \\[2mm]
     \infrule{\G\V \sigma:: (\Pi x:\tau.K)@A \andalso \G\V M:\tau@A}{\G\V \sigma\ M::K[x\mapsto M]@A}{\KApp} \andalso
     \infrule{\G\V \tau::K@A \andalso \G\V K\equiv J@A}{\G\V \tau::J@A}{\KConv} \\[2mm]
@@ -171,7 +173,8 @@
 
 \figheader{Typing}{\rulefbox{\G\V M:\tau @A}}
 \begin{center}
-    \infrule{x:\tau@A \in \G \andalso \G\V \tau::*@A}{\G \V x:\tau@A}{\TVar} \andalso
+    \infrule{c:\tau \in \Sigma \andalso \G\V \tau::*@A}{\G \V c:\tau@A}{\TConst} \andalso
+    \infrule{x:\tau@A \in \G \andalso \G\V \tau::*@A}{\G \V x:\tau@A}{\TVar} \\[2mm]
     \infrule{\G\V \sigma::*@A\andalso\G,x:\sigma@A\V M:\tau@A}{\G\V(\lambda (x:\sigma).M):(\Pi (x:\sigma).\tau)@A}{\textsc{T-Abs}} \\[2mm]
     \infrule{\G\V M:(\Pi (x:\sigma).\tau)@A \andalso \G\V N:\sigma@A}{\G\V M\ N : \tau[x\mapsto N]@A}{\textsc{T-App}} \andalso
     \infrule{\G\V M:\tau@A \andalso \G\V \tau\equiv \sigma :: K@A}{\G\V M:\sigma@A}{\textsc{T-Conv}} \\[2mm]
