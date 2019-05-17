@@ -187,7 +187,7 @@ In the next section, we will discuss on properties of \LMD.
     \textrm{Transition} && & A,B,C \\
     \textrm{Signature} && \Sigma & ::= \phi \mid X::K \mid c:\tau \\
     \textrm{Kinds} && K,J,I,H,G & ::= * \mid \Pi x:\tau.K\\
-    \textrm{Types} && \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} M \mid \F\alpha.\tau \\
+    \textrm{Types} && \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} \tau \mid \F\alpha.\tau \\
     \textrm{Terms} && M,N,L,O,P & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M 
     \mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ \epsilon \mid \%_\alpha M\\ 
     \textrm{Contexts} && \Gamma & ::= \phi \mid  \Gamma,x:\tau@A\ (x\not\in\textrm{FV}(\G)) \\
@@ -204,7 +204,9 @@ Because we adopted a \LLF like system, constants and type variables for base typ
 A kind is $*$ or $\Pi x:\tau.K$. Types of terms have $*$ kinds and dependent types have $\Pi$ kinds.
 
 A type is a type variable which are declared in the signature, a dependent type, a dependent type applied a term, a code type, or an $\alpha$-closed type.
-
+A dependent type is a type depending on values such as a vector with its length.
+A code type $\TW_\alpha \tau$ denotes a code fragment of a term of type $\tau$.
+An $\alpha$-closed type corresponds to a runnable code fragment.
 
 \subsection{Reduction}
 
