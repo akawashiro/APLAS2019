@@ -197,13 +197,13 @@ A transition, denoted by $A$ and $B$, is a finite sequence of transition variabl
 $\epsilon$ is a symbol for an empty transition.
 
 Signatures are sequences of pairs of a constant and its type or a type variable and its kind.
-Because we adopted a \LLF like system, constants and type variables for base types are given in the signature $\Sigma$.
+Because we adopted a \LLF-like system, constants and type variables for base types are given in the signature $\Sigma$.
 
 A kind is $*$ or $\Pi x:\tau.K$. Types of terms have $*$ kinds and dependent types have $\Pi$ kinds.
 
-A type is a type variable which are declared in the signature, a dependent type, a dependent type applied a term, a code type, or an $\alpha$-closed type.
+A type is a type variable which is declared in the signature, a dependent type, a dependent type applied a term, a code type, or an $\alpha$-closed type.
 A dependent type $\Pi x:\tau.\tau$ is a type depending on values such as a vector with its length.
-A function type in ordinary type systems are omitted because it is an specialized case of a dependent type.
+A function type in ordinary type systems is omitted because it is a specialized case of a dependent type.
 A code type $\TW_\alpha \tau$ denotes a code fragment of a term of type $\tau$.
 An $\alpha$-closed type corresponds to a runnable code fragment.
 
