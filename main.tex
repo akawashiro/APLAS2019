@@ -171,21 +171,26 @@ We give reasonable equivalence rules to handle them.
 \subsection{\LMD}
 
 \section{Formal Definition of \LMD}
+
+In this section, we present \LMD in detail. we will define syntax, full reduction, type system including type equivalence rules, values, and evaluation context which take stages into account.
+In the next section, we will discuss on properties of \LMD.
+
 \subsection{Syntax}
 
 \begin{align*}
-    \textrm{Terms} && M,N,L,O,P & ::= x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M 
+    \textrm{Terms} && M,N,L,O,P & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M 
     \mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ \epsilon \mid \%_\alpha M\\ 
     \textrm{Types} && \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} M \mid \F\alpha.\tau \\
     \textrm{Kinds} && K,J,I,H,G & ::= * \mid \Pi x:\tau.K\\
-    \textrm{Contexts} && \Gamma & ::= \phi \mid 
-    \Gamma,x:\tau @A\ (x\not\in\textrm{FV}(\G)) \mid 
-    \Gamma,X::K @A\ (X\not\in \textrm{FV}(\G))\\
-    \textrm{Transition variables} && & \alpha,\beta,\gamma, \dots \\
-    \textrm{Transition} && & A,B,C,\dots \\
-    \textrm{Variables} && & x,y,z,\dots \\
-    \textrm{Type variables} && & X,Y,Z,\dots \\
+    \textrm{Contexts} && \Gamma & ::= \phi \mid  \Gamma,x:\tau@A\ (x\not\in\textrm{FV}(\G)) \\
+    \textrm{Signature} && \Sigma & ::= \phi \mid X::K \mid c:\tau \\
+    \textrm{Transition variables} && & \alpha,\beta,\gamma,... \\
+    \textrm{Transition} && & A,B,C,... \\
+    \textrm{Variables} && & x,y,z,... \\
+    \textrm{Type variables} && & X,Y,Z,... \\
 \end{align*}
+
+
 
 \subsection{Reduction}
 
@@ -203,7 +208,7 @@ And take a minimum compatible relationship on terms.
 \end{definition}
 
 \subsection{Type System}
-\subsubsection{Equivalence Rules}
+\subsubsection{Type Equivalence Rules}
 
 \begin{definition}[Values]
 $A \neq \epsilon$\\

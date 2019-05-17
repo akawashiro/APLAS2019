@@ -145,9 +145,8 @@
     \mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ \epsilon \mid \%_\alpha M\\ 
     \textrm{Types} && \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} M \mid \F\alpha.\tau \\
     \textrm{Kinds} && K,J,I,H,G & ::= * \mid \Pi x:\tau.K\\
-    \textrm{Contexts} && \Gamma & ::= \phi \mid \\
+    \textrm{Contexts} && \Gamma & ::= \phi \mid \Gamma,x:\tau@A\ (x\not\in\textrm{FV}(\G)) \\
     \textrm{Signature} && \Sigma & ::= \phi \mid X::K \mid c:\tau \\
-    \Gamma,x:\tau@A\ (x\not\in\textrm{FV}(\G)) \\
     \textrm{Transition variables} && & \alpha,\beta,\gamma,... \\
     \textrm{Transition} && & A,B,C,... \\
     \textrm{Variables} && & x,y,z,... \\
