@@ -128,7 +128,6 @@ Atsushi Igarashi\inst{2}\orcidID{0000-0002-5143-9764}}
 %
 \begin{abstract}
 
-
 We develop yet another typed multi-stage calculus \LMD.
 It extends Hanada and Igarashi's \LTP with dependent types.
 
@@ -136,23 +135,22 @@ A multi-stage calculus enables us to generate and execute codes at runtime.
 It can improve the performance of programs by generating optimized codes for given inputs.
 
 Dependent types are types dependent on values. 
-Vectors with lengths are a famous example of dependent types and they enable us to omit boundary checking.
+A vector with its length is a famous example of dependent types and it enables us to omit boundary checking.
 
 In this paper, we design \LMD by introducing dependent type into $\lambda^{\TW\%}$.
 You can make more efficient programs from existing dependent typed programs with \LMD.
 
-It has a simple, substitution-based full-reduction semantics and enjoys basic properties of subject reduction, confluence, and strong normalization, and progress.
+\LMD has a simple, substitution-based full-reduction semantics and enjoys basic properties of subject reduction, confluence, and strong normalization, and progress.
 It also includes an evaluation context which satisfies unique decomposition.
 
 The main technical points of this paper are how to deal with Cross Stage Persistence of multi-stage calculuses which allows using a value in quoted code in a dependent type system.
-Especially, handling CSP in equivalence rules of dependent types wasn't clear.
-Parameters of dependent types may contain cross-staged terms.
-We give reasonable equivalence rules to handle them.
+Especially, the way of handling CSP in equivalence rules of dependent types wasn't clear.
+In this paper, we give reasonable equivalence rules to handle them.
 
 \keywords{Multistage programming \and Dependent type}
 \end{abstract}
 
-\blue{213 words. The abstract should briefly summarize the contents of the paper in 150--250 words.}
+\blue{181 words. The abstract should briefly summarize the contents of the paper in 150--250 words.}
 %
 %
 %
