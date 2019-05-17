@@ -177,19 +177,33 @@ In the next section, we will discuss on properties of \LMD.
 
 \subsection{Syntax}
 
+\LMD is defined by the following grammar.
+
 \begin{align*}
+    \textrm{Type variables} && & X,Y,Z \\
+    \textrm{Constants} && & c \\
+    \textrm{Variables} && & x,y,z \\
+    \textrm{Transition variables} && & \alpha,\beta,\gamma \\
+    \textrm{Transition} && & A,B,C \\
+    \textrm{Signature} && \Sigma & ::= \phi \mid X::K \mid c:\tau \\
+    \textrm{Kinds} && K,J,I,H,G & ::= * \mid \Pi x:\tau.K\\
+    \textrm{Types} && \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} M \mid \F\alpha.\tau \\
     \textrm{Terms} && M,N,L,O,P & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M 
     \mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ \epsilon \mid \%_\alpha M\\ 
-    \textrm{Types} && \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} M \mid \F\alpha.\tau \\
-    \textrm{Kinds} && K,J,I,H,G & ::= * \mid \Pi x:\tau.K\\
     \textrm{Contexts} && \Gamma & ::= \phi \mid  \Gamma,x:\tau@A\ (x\not\in\textrm{FV}(\G)) \\
-    \textrm{Signature} && \Sigma & ::= \phi \mid X::K \mid c:\tau \\
-    \textrm{Transition variables} && & \alpha,\beta,\gamma,... \\
-    \textrm{Transition} && & A,B,C,... \\
-    \textrm{Variables} && & x,y,z,... \\
-    \textrm{Type variables} && & X,Y,Z,... \\
 \end{align*}
 
+The metavariables $X, Y, \text{and} Z$ range over the type variables, $c$ ranges over constants, the metavariables $x, y, \text{and}, z$ range over the variables.
+The metavariables $\alpha, \beta, \text{and} \gamma$ range over the transition variables.
+A transition, denoted by $A$ and $B$, is a finite sequence of transition variables.
+$\epsilon$ is a symbol for an empty transition.
+
+Signatures are sequences of pairs of a constant and its type or a type variable and its kind.
+Because we adopted a \LLF like system, constants and type variables for base types are given in the signature $\Sigma$.
+
+A kind is $*$ or $\Pi x:\tau.K$. Types of terms have $*$ kinds and dependent types have $\Pi$ kinds.
+
+A type is a type variable which are declared in the signature, a dependent type, a dependent type applied a term, a code type, or an $\alpha$-closed type.
 
 
 \subsection{Reduction}
