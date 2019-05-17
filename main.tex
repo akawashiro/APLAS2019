@@ -145,12 +145,7 @@ It has a simple, substitution-based full-reduction semantics and enjoys basic pr
 It also includes an evaluation context which satisfies unique decomposition.
 
 The main technical points of this paper are how to deal with Cross Stage Persistence of multi-stage calculuses which allows using a value in quoted code in a dependent type system.
-
-The first point is CSP in kinding rules.
-$\lambda^{\TW\%}$ includes kinding rules because dependent types need them
-but the relationship between kinds and stages wasn't clear.
-
-The second point is CSP in equivalence rules.
+Especially, handling CSP in equivalence rules of dependent types wasn't clear.
 Parameters of dependent types may contain cross-staged terms.
 We give reasonable equivalence rules to handle them.
 
