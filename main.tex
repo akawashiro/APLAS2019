@@ -183,8 +183,8 @@ In the next section, we will discuss on properties of \LMD.
     \textrm{Type variables} && & X,Y,Z \\
     \textrm{Constants} && & c \\
     \textrm{Variables} && & x,y,z \\
-    \textrm{Transition variables} && & \alpha,\beta,\gamma \\
-    \textrm{Transition} && & A,B,C \\
+    \textrm{Stage variables} && & \alpha,\beta,\gamma \\
+    \textrm{Stage} && & A,B,C \\
     \textrm{Signature} && \Sigma & ::= \phi \mid X::K \mid c:\tau \\
     \textrm{Kinds} && K,J,I,H,G & ::= * \mid \Pi x:\tau.K\\
     \textrm{Types} && \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} \tau \mid \F\alpha.\tau \\
@@ -204,9 +204,16 @@ Because we adopted a \LLF like system, constants and type variables for base typ
 A kind is $*$ or $\Pi x:\tau.K$. Types of terms have $*$ kinds and dependent types have $\Pi$ kinds.
 
 A type is a type variable which are declared in the signature, a dependent type, a dependent type applied a term, a code type, or an $\alpha$-closed type.
-A dependent type is a type depending on values such as a vector with its length.
+A dependent type $\Pi x:\tau.\tau$ is a type depending on values such as a vector with its length.
+A function type in ordinary type systems are omitted because it is an specialized case of a dependent type.
 A code type $\TW_\alpha \tau$ denotes a code fragment of a term of type $\tau$.
 An $\alpha$-closed type corresponds to a runnable code fragment.
+
+In addition to normal terms in Simply Typed Lambda Calculus, there are five more forms.
+$\TB_\alpha M$ represents a code fragment, and $\TB_\alpha M$ represents unquote.
+$\Lambda\alpha.M$ is a stage variable abstraction.
+$M\ \epsilon$ is an application of $\epsilon$ to a stage variable.
+$\%_\alpha M$ is a primitive operator for cross-stage persistence.
 
 \subsection{Reduction}
 
