@@ -213,20 +213,31 @@ $\Lambda\alpha.M$ is a stage variable abstraction.
 $M\ \epsilon$ is an application of $\epsilon$ to a stage variable.
 $\%_\alpha M$ is a primitive operator for cross-stage persistence.
 
+% 演算子の結合順序
+
+% 自由変数
+
 \subsection{Reduction}
 
 \begin{definition}[Reduction]
+There are three reduction rules ($\longrightarrow_\beta, \longrightarrow_\blacklozenge, \longrightarrow_\Lambda$) in \LMD.
+Congruence rules which are omitted from the defnition.
 \begin{align*}
     & (\lambda x:\tau.M) N \longrightarrow_\beta M[x \mapsto N] \\
     % & (\Pi x:\tau.\sigma) M \longrightarrow_\gamma \sigma[x \mapsto M] \\
-    & \TBL_\alpha (\TB_\alpha M)\longrightarrow_\blacklozenge M \\
-    & (\Lambda \alpha.M) \epsilon \longrightarrow_\Lambda M[\alpha \mapsto \epsilon]
+    & \TBL_\alpha \TB_\alpha M \longrightarrow_\blacklozenge M \\
+    & (\Lambda \alpha.M)\ \epsilon \longrightarrow_\Lambda M[\alpha \mapsto \epsilon]
 \end{align*}
-And take a minimum compatible relationship on terms.
-
-    $ M \longrightarrow M'$ iff 
-    $ M \longrightarrow_\Lambda M' $, $ M \longrightarrow_\blacklozenge M' $ or $ M \longrightarrow_\beta M' $.
+We write $ M \longrightarrow M'$ iff $ M \longrightarrow_\beta M'$, $ M \longrightarrow_\blacklozenge M'$, or $ M \longrightarrow_\Lambda M'$.
 \end{definition}
+
+$\longrightarrow_\beta$ is normal $\beta-$reduction in lambda calculus.
+$\longrightarrow_\blacklozenge$ means that when a quoted code is unquoted, it become the original code.
+$\longrightarrow_\Lambda$ means that a stage abstraction applied to the empty stage $\epsilon$ reduces to the body of abstraction
+where $\epsilon$ is substituted to the stage variable.
+There is no reduction rule for CSP as with Hanada and Igarashi \cite{Hanada2014}.
+$\%_\alpha$, the symbol for CSP, is disappeared when $\epsilon$ is substituted to $\alpha$.
+$\TB_\alpha$ and $\TBL_\alpha$ is disappeared in the same way as $\%_\alpha$.
 
 \subsection{Type System}
 \subsubsection{Type Equivalence Rules}
