@@ -219,6 +219,23 @@ $\%_\alpha M$ is a primitive operator for cross-stage persistence.
 
 \subsection{Reduction}
 
+In this section, we define full reduction for \LMD.
+Before giving the definition of reduction, we define two substitutions.
+Substituition $M[x\mapsto N]$ is the normal capture-avoiding substitution, and we omit its defnition here.
+Substituition $M[\alpha \mapsto \epsilon]$ is defined below.
+
+\begin{align*}
+    % \newcommand{\SB}{}
+    (\lambda x:\tau.M)[\alpha \mapsto \epsilon] &= \lambda x:\tau[\alpha \mapsto \epsilon].M[\alpha \mapsto \epsilon] \\
+    (M\ N)[\alpha \mapsto \epsilon] &= (M[\alpha \mapsto \epsilon])\ (N[\alpha \mapsto \epsilon]) \\
+    (\TB_\beta M)[\alpha \mapsto \epsilon] &= \TB_{\beta[\alpha \mapsto \epsilon]} M[\alpha \mapsto \epsilon] \\
+    (\TBL_\beta M)[\alpha \mapsto \epsilon] &= \TBL_{\beta[\alpha \mapsto \epsilon]} M[\alpha \mapsto \epsilon] \\
+    (\Lambda\beta.M)[\alpha \mapsto \epsilon] &= \Lambda\beta.M[\alpha \mapsto \epsilon] & (\text{if } \alpha \neq \beta) \\
+    (\Lambda\beta.M)[\alpha \mapsto \epsilon] &= \Lambda\beta.M & (\text{if } \alpha = \beta) \\
+    (M\ \epsilon)[\alpha \mapsto \epsilon] &= M[\alpha \mapsto \epsilon]\ \epsilon \\
+    (\%_\beta M)[\alpha \mapsto \epsilon] &= \%_{\beta[\alpha \mapsto \epsilon]}M[\alpha \mapsto \epsilon] 
+\end{align*}
+
 \begin{definition}[Reduction]
 There are three reduction rules ($\longrightarrow_\beta, \longrightarrow_\blacklozenge, \longrightarrow_\Lambda$) in \LMD.
 Congruence rules which are omitted from the defnition.
@@ -235,6 +252,7 @@ $\longrightarrow_\beta$ is normal $\beta-$reduction in lambda calculus.
 $\longrightarrow_\blacklozenge$ means that when a quoted code is unquoted, it become the original code.
 $\longrightarrow_\Lambda$ means that a stage abstraction applied to the empty stage $\epsilon$ reduces to the body of abstraction
 where $\epsilon$ is substituted to the stage variable.
+Application of a non-$\epsilon$ stage to a stage abstraction is prohibited in order to simplify \LMD.
 There is no reduction rule for CSP as with Hanada and Igarashi \cite{Hanada2014}.
 $\%_\alpha$, the symbol for CSP, is disappeared when $\epsilon$ is substituted to $\alpha$.
 $\TB_\alpha$ and $\TBL_\alpha$ is disappeared in the same way as $\%_\alpha$.
