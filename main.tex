@@ -27,9 +27,9 @@
 \newcommand{\red}[1]{\textcolor{red}{#1 }}
 \newcommand{\blue}[1]{\textcolor{blue}{#1 }}
 
-\newcommand{\LTP}{$\lambda^{\triangleright\%}$}
-\newcommand{\LMD}{$\lambda^{\textrm{MD}}$}
-\newcommand{\LLF}{$\lambda^{\textrm{LF}}$}
+\newcommand{\LTP}{$\lambda^{\triangleright\%}$\ }
+\newcommand{\LMD}{$\lambda^{\textrm{MD}}$\ }
+\newcommand{\LLF}{$\lambda^{\textrm{LF}}$\ }
 
 \newcommand{\G}{\Gamma}
 \newcommand{\D}{\Delta}
@@ -252,7 +252,7 @@ Substituition $M[\alpha \mapsto \epsilon]$ is defined below.
 
 \begin{definition}[Reduction]
 There are three reduction rules ($\longrightarrow_\beta, \longrightarrow_\blacklozenge, \longrightarrow_\Lambda$) in \LMD.
-Congruence rules which are omitted from the defnition.
+Congruence rules which are omitted from the definition.
 \begin{align*}
     & (\lambda x:\tau.M) N \longrightarrow_\beta M[x \mapsto N] \\
     % & (\Pi x:\tau.\sigma) M \longrightarrow_\gamma \sigma[x \mapsto M] \\
@@ -272,6 +272,20 @@ $\%_\alpha$, the symbol for CSP, is disappeared when $\epsilon$ is substituted t
 $\TB_\alpha$ and $\TBL_\alpha$ is disappeared in the same way as $\%_\alpha$.
 
 \subsection{Type System}
+
+% 総論
+
+In this section, we define the type system of \LMD.
+Especially, we discuss on the type equality of \LMD in detail
+because it is the main contribution of this paper.
+\LMD is developed on the basis of \LTP but there is no type equivalence rules in \LTP.
+
+\begin{definition}[Typing]
+    The typing relation $ \G \V M : \tau @ A $ is the least relation closed under the rules in Figure \ref{fig:typing-rules}.
+\end{definition}
+
+% 各論
+The rules \TVar, \TAbs, and \TApp are almost same as those in simply typed lambda calculus if you ignore stage annotations.
 
 \begin{figure}
 \begin{center}
