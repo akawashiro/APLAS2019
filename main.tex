@@ -43,7 +43,7 @@
 \newcommand{\TBL}{\blacktriangleleft}
 \newcommand{\E}{\equiv}
 \newcommand{\FV}{\text{FV}}
-\newcommand{\FTV}{\text{FTV}}
+\newcommand{\FTV}{\text{FSV}}
 
 \newcommand{\WStar}{\textsc{W-Star}}
 \newcommand{\WAbs}{\textsc{W-Abs}}
@@ -161,7 +161,7 @@ In this paper, we give reasonable equivalence rules to handle them.
 \subsection{Dependent Types}
 \subsubsection{Introduction to Dependent Types}
 \subsubsection{Application to Omitting Boundary Checking}
-\subsection{Organaization of the Paper}
+\subsection{Organization of the Paper}
 
 \section{Informal Overview of \LMD}
 \subsection{\LLF}
@@ -214,14 +214,23 @@ $M\ \epsilon$ is an application of $\epsilon$ to a stage variable.
 $\%_\alpha M$ is a primitive operator for cross-stage persistence.
 
 % 演算子の結合順序
+Connection degree of $\TB_\alpha, \TBL_\alpha, \%_\alpha$ is stronger than the two forms of applications
+and applications are left-associative
+and two abstractions extends as far to the right as possible.
 
 % 自由変数
+
+As usual, the variable $x$ is bound in $\lambda x:\tau.M$
+and the transition variable $\alpha$ is bound in $\Lambda \alpha.M$.
+We identify $\alpha$-convertible terms and assume the names of bound variables are pairwise distinct.
+We write $\FV(M)$ and $\FTV(M)$ for the set of free variables and the set of free stage variables in $M$, respectively.
+We omit their definitions.
 
 \subsection{Reduction}
 
 In this section, we define full reduction for \LMD.
 Before giving the definition of reduction, we define two substitutions.
-Substituition $M[x\mapsto N]$ is the normal capture-avoiding substitution, and we omit its defnition here.
+Substituition $M[x\mapsto N]$ is the normal capture-avoiding substitution, and we omit its definition here.
 Substituition $M[\alpha \mapsto \epsilon]$ is defined below.
 
 \begin{align*}
