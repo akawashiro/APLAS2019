@@ -60,6 +60,7 @@
 \newcommand{\KGen}{\textsc{K-Gen}}
 \newcommand{\KCsp}{\textsc{K-Csp}}
 
+\newcommand{\TConst}{\textsc{T-Const}}
 \newcommand{\TVar}{\textsc{T-Var}}
 \newcommand{\TAbs}{\textsc{T-Abs}}
 \newcommand{\TApp}{\textsc{T-App}}
@@ -224,7 +225,6 @@ and applications are left-associative
 and two abstractions extends as far to the right as possible.
 
 % 自由変数
-
 As usual, the variable $x$ is bound in $\lambda x:\tau.M$
 and the transition variable $\alpha$ is bound in $\Lambda \alpha.M$.
 We identify $\alpha$-convertible terms and assume the names of bound variables are pairwise distinct.
@@ -272,6 +272,24 @@ $\%_\alpha$, the symbol for CSP, is disappeared when $\epsilon$ is substituted t
 $\TB_\alpha$ and $\TBL_\alpha$ is disappeared in the same way as $\%_\alpha$.
 
 \subsection{Type System}
+
+\begin{figure}
+\begin{center}
+    \infrule{c:\tau \in \Sigma \andalso \G\V \tau::*@A}{\G \V c:\tau@A}{\TConst} \andalso
+    \infrule{x:\tau@A \in \G \andalso \G\V \tau::*@A}{\G \V x:\tau@A}{\TVar} \\[2mm]
+    \infrule{\G\V \sigma::*@A\andalso\G,x:\sigma@A\V M:\tau@A}{\G\V(\lambda (x:\sigma).M):(\Pi (x:\sigma).\tau)@A}{\textsc{T-Abs}} \\[2mm]
+    \infrule{\G\V M:(\Pi (x:\sigma).\tau)@A \andalso \G\V N:\sigma@A}{\G\V M\ N : \tau[x\mapsto N]@A}{\textsc{T-App}} \andalso
+    \infrule{\G\V M:\tau@A \andalso \G\V \tau\equiv \sigma :: K@A}{\G\V M:\sigma@A}{\textsc{T-Conv}} \\[2mm]
+    \infrule{\G\V M:\tau@{A\alpha}}{\G\V\TB_{\alpha}M:\TW_{\alpha}\tau@A}{\textsc{T-$\TB$}} \andalso
+    \infrule{\G\V M:\TW_{\alpha}\tau@A}{\G\V\TBL_{\alpha}M:\tau@{A\alpha}}{\TTBL} \\[2mm]
+    \infrule{\G\V M:\tau@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\V\Lambda\alpha.M:\forall\alpha.\tau@A}{\textsc{T-Gen}} \andalso
+    \infrule{\G\V M:\forall\alpha.\tau@A}{\G\V M\ \epsilon:\tau[\alpha \mapsto \epsilon]@A}{\textsc{T-Ins}} \andalso
+    \infrule{\G\V M:\tau@A}{\G\V \%_\alpha M:\tau@{A\alpha}}{\textsc{T-Csp}} \andalso
+    \caption{Typing Rules}
+    \label{fig:typing-rules}
+\end{center}
+\end{figure}
+
 \subsubsection{Type Equivalence Rules}
 
 \begin{definition}[Values]
