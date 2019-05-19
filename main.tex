@@ -183,11 +183,11 @@ In the next section, we will discuss on properties of \LMD.
     \textrm{Variables} && & x,y,z \\
     \textrm{Stage variables} && & \alpha,\beta,\gamma \\
     \textrm{Stage} && & A,B,C \\
-    \textrm{Signature} && \Sigma & ::= \phi \mid X::K \mid c:\tau \\
     \textrm{Kinds} && K,J,I,H,G & ::= * \mid \Pi x:\tau.K\\
     \textrm{Types} && \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} \tau \mid \F\alpha.\tau \\
     \textrm{Terms} && M,N,L,O,P & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M 
     \mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ \epsilon \mid \%_\alpha M\\ 
+    \textrm{Signature} && \Sigma & ::= \phi \mid X::K \mid c:\tau \\
     \textrm{Contexts} && \Gamma & ::= \phi \mid  \Gamma,x:\tau@A\ (x\not\in\textrm{FV}(\G)) \\
 \end{align*}
 
@@ -195,9 +195,6 @@ The metavariables $X, Y, \text{and} Z$ range over the type variables, $c$ ranges
 The metavariables $\alpha, \beta, \text{and} \gamma$ range over the transition variables.
 A transition, denoted by $A$ and $B$, is a finite sequence of transition variables.
 $\epsilon$ is a symbol for an empty transition.
-
-Signatures are sequences of pairs of a constant and its type or a type variable and its kind.
-Because we adopted a \LLF-like system, constants and type variables for base types are given in the signature $\Sigma$.
 
 A kind is $*$ or $\Pi x:\tau.K$. Types of terms have $*$ kinds and dependent types have $\Pi$ kinds.
 
@@ -212,6 +209,14 @@ $\TB_\alpha M$ represents a code fragment, and $\TB_\alpha M$ represents unquote
 $\Lambda\alpha.M$ is a stage variable abstraction.
 $M\ \epsilon$ is an application of $\epsilon$ to a stage variable.
 $\%_\alpha M$ is a primitive operator for cross-stage persistence.
+
+Signatures are sequences of pairs of a constant and its type or a type variable and its kind.
+Because we adopted a \LLF-like system, constants and type variables for base types are given in the signature $\Sigma$.
+
+% Contexts
+Contexts are sequences of triplexes of a variable, its type, and its stage.
+In order to restrict contexts to only well-formed ones, there is a condition of $x\notin\FV(\G)$.
+Because of this condition, there is no type with free variables in contexts.
 
 % 演算子の結合順序
 Connection degree of $\TB_\alpha, \TBL_\alpha, \%_\alpha$ is stronger than the two forms of applications
