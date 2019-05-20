@@ -285,7 +285,15 @@ because it is the main contribution of this paper.
 \end{definition}
 
 % 各論
+
+% 通常のルール
 The rules \TVar, \TAbs, and \TApp are almost same as those in simply typed lambda calculus if you ignore stage annotations.
+
+% \TConst
+
+% 多段階計算のルール
+
+% \TConv
 
 \begin{figure}
 \begin{center}
@@ -306,6 +314,12 @@ The rules \TVar, \TAbs, and \TApp are almost same as those in simply typed lambd
 
 \subsubsection{Type Equivalence Rules}
 
+% Normal Conversion Rules
+
+% \QCsp
+
+% Example of QCsp (mulmat)
+
 \begin{definition}[Values]
 $A \neq \epsilon$\\
 \begin{align*}
@@ -317,6 +331,9 @@ $A \neq \epsilon$\\
     \textrm{Redexes} && R^\epsilon & ::= (\lambda x:\tau.M)\ v^\epsilon \mid (\Lambda\alpha.v^\epsilon)\ \epsilon & \\
                      && R^\alpha & ::=\ \TBL_\alpha \TB_\alpha M & \\
 \end{align*}
+
+% Valueの説明
+
 \end{definition}
 
 
