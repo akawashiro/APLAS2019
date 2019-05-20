@@ -13,7 +13,7 @@
 \usepackage{mathtools}
 \usepackage{float}
 \usepackage{xparse}
-\usepackage{ebproof}
+% \usepackage{ebproof}
 \usepackage{lscape}
 \usepackage{mdframed}
 
@@ -33,7 +33,7 @@
 
 \newcommand{\G}{\Gamma}
 \newcommand{\D}{\Delta}
-\newcommand{\V}{\vdash}
+\newcommand{\V}{\vdash_\Sigma}
 \newcommand{\VT}{\vdash\hspace{-.50em}\raisebox{0.28em}{\tiny{$\TB$}}}
 \newcommand{\iskind}{\text{\ kind}}
 \newcommand{\TW}{\triangleright}
@@ -114,41 +114,41 @@
 % an abbreviated paper title here
 %
 \author{Akira Kawata\inst{1} \and
-Atsushi Igarashi\inst{2}\orcidID{0000-0002-5143-9764}}
+    Atsushi Igarashi\inst{2}\orcidID{0000-0002-5143-9764}}
 %
 \authorrunning{A. Kawata, A. Igarashi}
 % First names are abbreviated in the running head.
 % If there are more than two authors, 'et al.' is used.
 %
 \institute{Graduate School of Informatics, Kyoto University, Kyoto, Japan\\
-\email{akira@fos.kuis.kyoto-u.ac.jp} \and
-\email{igarashi@kuis.kyoto-u.ac.jp}
+    \email{akira@fos.kuis.kyoto-u.ac.jp} \and
+    \email{igarashi@kuis.kyoto-u.ac.jp}
 }
 %
 \maketitle              % typeset the header of the contribution
 %
 \begin{abstract}
 
-We develop yet another typed multi-stage calculus \LMD.
-It extends Hanada and Igarashi's \LTP with dependent types.
-
-A multi-stage calculus enables us to generate and execute codes at runtime.
-It can improve the performance of programs by generating optimized codes for given inputs.
-
-Dependent types are types dependent on values. 
-A vector with its length is a famous example of dependent types and it enables us to omit boundary checking.
-
-In this paper, we design \LMD by introducing dependent type into $\lambda^{\TW\%}$.
-You can make more efficient programs from existing dependent typed programs with \LMD.
-
-\LMD has a simple, substitution-based full-reduction semantics and enjoys basic properties of subject reduction, confluence, and strong normalization, and progress.
-It also includes an evaluation context which satisfies unique decomposition.
-
-The main technical points of this paper are how to deal with Cross Stage Persistence of multi-stage calculuses which allows using a value in quoted code in a dependent type system.
-Especially, the way of handling CSP in equivalence rules of dependent types wasn't clear.
-In this paper, we give reasonable equivalence rules to handle them.
-
-\keywords{Multistage programming \and Dependent type}
+    We develop yet another typed multi-stage calculus \LMD.
+    It extends Hanada and Igarashi's \LTP with dependent types.
+    
+    A multi-stage calculus enables us to generate and execute codes at runtime.
+    It can improve the performance of programs by generating optimized codes for given inputs.
+    
+    Dependent types are types dependent on values. 
+    A vector with its length is a famous example of dependent types and it enables us to omit boundary checking.
+    
+    In this paper, we design \LMD by introducing dependent type into $\lambda^{\TW\%}$.
+    You can make more efficient programs from existing dependent typed programs with \LMD.
+    
+    \LMD has a simple, substitution-based full-reduction semantics and enjoys basic properties of subject reduction, confluence, and strong normalization, and progress.
+    It also includes an evaluation context which satisfies unique decomposition.
+    
+    The main technical points of this paper are how to deal with Cross Stage Persistence of multi-stage calculuses which allows using a value in quoted code in a dependent type system.
+    Especially, the way of handling CSP in equivalence rules of dependent types wasn't clear.
+    In this paper, we give reasonable equivalence rules to handle them.
+    
+    \keywords{Multistage programming \and Dependent type}
 \end{abstract}
 
 \blue{181 words. The abstract should briefly summarize the contents of the paper in 150--250 words.}
@@ -179,17 +179,17 @@ In the next section, we will discuss on properties of \LMD.
 \LMD is defined by the following grammar.
 
 \begin{align*}
-    \textrm{Type variables} && & X,Y,Z \\
-    \textrm{Constants} && & c \\
-    \textrm{Variables} && & x,y,z \\
-    \textrm{Stage variables} && & \alpha,\beta,\gamma \\
-    \textrm{Stage} && & A,B,C \\
-    \textrm{Kinds} && K,J,I,H,G & ::= * \mid \Pi x:\tau.K\\
-    \textrm{Types} && \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} \tau \mid \F\alpha.\tau \\
-    \textrm{Terms} && M,N,L,O,P & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M 
-    \mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ \epsilon \mid \%_\alpha M\\ 
-    \textrm{Signature} && \Sigma & ::= \phi \mid X::K \mid c:\tau \\
-    \textrm{Contexts} && \Gamma & ::= \phi \mid  \Gamma,x:\tau@A\ (x\not\in\textrm{FV}(\G)) \\
+    \textrm{Type variables}  &  &                          & X,Y,Z                                                                             \\
+    \textrm{Constants}       &  &                          & c                                                                                 \\
+    \textrm{Variables}       &  &                          & x,y,z                                                                             \\
+    \textrm{Stage variables} &  &                          & \alpha,\beta,\gamma                                                               \\
+    \textrm{Stage}           &  &                          & A,B,C                                                                             \\
+    \textrm{Kinds}           &  & K,J,I,H,G                & ::= * \mid \Pi x:\tau.K                                                           \\
+    \textrm{Types}           &  & \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} \tau \mid \F\alpha.\tau \\
+    \textrm{Terms}           &  & M,N,L,O,P                & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M 
+    \mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ \epsilon \mid \%_\alpha M                                                                  \\ 
+    \textrm{Signature}       &  & \Sigma                   & ::= \phi \mid X::K \mid c:\tau                                                    \\
+    \textrm{Contexts}        &  & \Gamma                   & ::= \phi \mid  \Gamma,x:\tau@A\ (x\not\in\textrm{FV}(\G))                         \\
 \end{align*}
 
 The metavariables $X, Y, \text{and} Z$ range over the type variables, $c$ ranges over constants, the metavariables $x, y, \text{and}, z$ range over the variables.
@@ -240,26 +240,26 @@ Substituition $M[\alpha \mapsto \epsilon]$ is defined below.
 
 \begin{align*}
     % \newcommand{\SB}{}
-    (\lambda x:\tau.M)[\alpha \mapsto \epsilon] &= \lambda x:\tau[\alpha \mapsto \epsilon].M[\alpha \mapsto \epsilon] \\
-    (M\ N)[\alpha \mapsto \epsilon] &= (M[\alpha \mapsto \epsilon])\ (N[\alpha \mapsto \epsilon]) \\
-    (\TB_\beta M)[\alpha \mapsto \epsilon] &= \TB_{\beta[\alpha \mapsto \epsilon]} M[\alpha \mapsto \epsilon] \\
-    (\TBL_\beta M)[\alpha \mapsto \epsilon] &= \TBL_{\beta[\alpha \mapsto \epsilon]} M[\alpha \mapsto \epsilon] \\
-    (\Lambda\beta.M)[\alpha \mapsto \epsilon] &= \Lambda\beta.M[\alpha \mapsto \epsilon] & (\text{if } \alpha \neq \beta) \\
-    (\Lambda\beta.M)[\alpha \mapsto \epsilon] &= \Lambda\beta.M & (\text{if } \alpha = \beta) \\
-    (M\ \epsilon)[\alpha \mapsto \epsilon] &= M[\alpha \mapsto \epsilon]\ \epsilon \\
-    (\%_\beta M)[\alpha \mapsto \epsilon] &= \%_{\beta[\alpha \mapsto \epsilon]}M[\alpha \mapsto \epsilon] 
+    (\lambda x:\tau.M)[\alpha \mapsto \epsilon] & = \lambda x:\tau[\alpha \mapsto \epsilon].M[\alpha \mapsto \epsilon]                                  \\
+    (M\ N)[\alpha \mapsto \epsilon]             & = (M[\alpha \mapsto \epsilon])\ (N[\alpha \mapsto \epsilon])                                          \\
+    (\TB_\beta M)[\alpha \mapsto \epsilon]      & = \TB_{\beta[\alpha \mapsto \epsilon]} M[\alpha \mapsto \epsilon]                                     \\
+    (\TBL_\beta M)[\alpha \mapsto \epsilon]     & = \TBL_{\beta[\alpha \mapsto \epsilon]} M[\alpha \mapsto \epsilon]                                    \\
+    (\Lambda\beta.M)[\alpha \mapsto \epsilon]   & = \Lambda\beta.M[\alpha \mapsto \epsilon]                            & (\text{if } \alpha \neq \beta) \\
+    (\Lambda\beta.M)[\alpha \mapsto \epsilon]   & = \Lambda\beta.M                                                     & (\text{if } \alpha = \beta)    \\
+    (M\ \epsilon)[\alpha \mapsto \epsilon]      & = M[\alpha \mapsto \epsilon]\ \epsilon                                                                \\
+    (\%_\beta M)[\alpha \mapsto \epsilon]       & = \%_{\beta[\alpha \mapsto \epsilon]}M[\alpha \mapsto \epsilon] 
 \end{align*}
 
 \begin{definition}[Reduction]
-There are three reduction rules ($\longrightarrow_\beta, \longrightarrow_\blacklozenge, \longrightarrow_\Lambda$) in \LMD.
-Congruence rules which are omitted from the definition.
-\begin{align*}
-    & (\lambda x:\tau.M) N \longrightarrow_\beta M[x \mapsto N] \\
-    % & (\Pi x:\tau.\sigma) M \longrightarrow_\gamma \sigma[x \mapsto M] \\
-    & \TBL_\alpha \TB_\alpha M \longrightarrow_\blacklozenge M \\
-    & (\Lambda \alpha.M)\ \epsilon \longrightarrow_\Lambda M[\alpha \mapsto \epsilon]
-\end{align*}
-We write $ M \longrightarrow M'$ iff $ M \longrightarrow_\beta M'$, $ M \longrightarrow_\blacklozenge M'$, or $ M \longrightarrow_\Lambda M'$.
+    There are three reduction rules ($\longrightarrow_\beta, \longrightarrow_\blacklozenge, \longrightarrow_\Lambda$) in \LMD.
+    Congruence rules which are omitted from the definition.
+    \begin{align*}
+         & (\lambda x:\tau.M) N \longrightarrow_\beta M[x \mapsto N]                       \\
+        % & (\Pi x:\tau.\sigma) M \longrightarrow_\gamma \sigma[x \mapsto M] \\
+         & \TBL_\alpha \TB_\alpha M \longrightarrow_\blacklozenge M                        \\
+         & (\Lambda \alpha.M)\ \epsilon \longrightarrow_\Lambda M[\alpha \mapsto \epsilon]
+    \end{align*}
+    We write $ M \longrightarrow M'$ iff $ M \longrightarrow_\beta M'$, $ M \longrightarrow_\blacklozenge M'$, or $ M \longrightarrow_\Lambda M'$.
 \end{definition}
 
 $\longrightarrow_\beta$ is normal $\beta-$reduction in lambda calculus.
@@ -287,32 +287,68 @@ because it is the main contribution of this paper.
 % 各論
 
 % 通常のルール
-The rules \TVar, \TAbs, and \TApp are almost same as those in simply typed lambda calculus if you ignore stage annotations.
-
-% \TConst
-
-% 多段階計算のルール
-
-% \TConv
+The rules \TVar , \TAbs, and \TApp\ are almost same as those in simply typed lambda calculus if you ignore stage annotations.
+The rule \TVar\ means that a variable can appear only at the stage in which it is declared.
+The rule \TConst\ means any constants in the signature can appear at any stage.
+For example, if we have a signature $\Sigma$ which is $\textrm{bool} :: *, \textrm{true}: \textrm{bool}, \textrm{false}: \textrm{bool}$,
+the following derivation tree in Figure \ref{fig:tconst-derivation-tree} is admissible.
 
 \begin{figure}
-\begin{center}
-    \infrule{c:\tau \in \Sigma \andalso \G\V \tau::*@A}{\G \V c:\tau@A}{\TConst} \andalso
-    \infrule{x:\tau@A \in \G \andalso \G\V \tau::*@A}{\G \V x:\tau@A}{\TVar} \\[2mm]
-    \infrule{\G\V \sigma::*@A\andalso\G,x:\sigma@A\V M:\tau@A}{\G\V(\lambda (x:\sigma).M):(\Pi (x:\sigma).\tau)@A}{\textsc{T-Abs}} \\[2mm]
-    \infrule{\G\V M:(\Pi (x:\sigma).\tau)@A \andalso \G\V N:\sigma@A}{\G\V M\ N : \tau[x\mapsto N]@A}{\textsc{T-App}} \andalso
-    \infrule{\G\V M:\tau@A \andalso \G\V \tau\equiv \sigma :: K@A}{\G\V M:\sigma@A}{\textsc{T-Conv}} \\[2mm]
-    \infrule{\G\V M:\tau@{A\alpha}}{\G\V\TB_{\alpha}M:\TW_{\alpha}\tau@A}{\textsc{T-$\TB$}} \andalso
-    \infrule{\G\V M:\TW_{\alpha}\tau@A}{\G\V\TBL_{\alpha}M:\tau@{A\alpha}}{\TTBL} \\[2mm]
-    \infrule{\G\V M:\tau@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\V\Lambda\alpha.M:\forall\alpha.\tau@A}{\textsc{T-Gen}} \andalso
-    \infrule{\G\V M:\forall\alpha.\tau@A}{\G\V M\ \epsilon:\tau[\alpha \mapsto \epsilon]@A}{\textsc{T-Ins}} \andalso
-    \infrule{\G\V M:\tau@A}{\G\V \%_\alpha M:\tau@{A\alpha}}{\textsc{T-Csp}} \andalso
-    \caption{Typing Rules}
-    \label{fig:typing-rules}
-\end{center}
+	\begin{center}
+		\begin{minipage}{0.50\hsize}
+			\infer[\TConst]
+			{\G \V \textrm{true}:\textrm{bool}@\alpha\beta}
+			{\textrm{true}:\textrm{bool} \in \Sigma \andalso
+				\ID{\G\V\textrm{bool}::*@\alpha\beta} \andalso
+			}
+			\caption{A derivation tree using \TConst}
+			\label{fig:tconst-derivation-tree}
+		\end{minipage}
+	\end{center}
+\end{figure}
+
+% 多段階計算のルール
+The rules \TTB, \TTBL, \TGen, \TIns, and \TCsp are rules for a multistage calculus.
+They are corresponding to quoting a code, unquoting a code, making a stage abstraction, 
+application of $\epsilon$ stage to a stage abstraction, and cross-stage persistence, respectively.
+Please check Hanada and Igarashi \cite{Hanada2014} and Tsukada and Igarashi \cite{Tsukada} for details of these rules.
+
+% \TConv
+The main technical point of this paper is \TConv and type equivalence rules needed in \TConv.
+
+\begin{figure}
+	\begin{center}
+		\infrule{c:\tau \in \Sigma \andalso \G\V \tau::*@A}{\G \V c:\tau@A}{\TConst} \andalso
+		\infrule{x:\tau@A \in \G \andalso \G\V \tau::*@A}{\G \V x:\tau@A}{\TVar} \\[2mm]
+		\infrule{\G\V \sigma::*@A\andalso\G,x:\sigma@A\V M:\tau@A}{\G\V(\lambda (x:\sigma).M):(\Pi (x:\sigma).\tau)@A}{\textsc{T-Abs}} \\[2mm]
+		\infrule{\G\V M:(\Pi (x:\sigma).\tau)@A \andalso \G\V N:\sigma@A}{\G\V M\ N : \tau[x\mapsto N]@A}{\textsc{T-App}} \andalso
+		\infrule{\G\V M:\tau@A \andalso \G\V \tau\equiv \sigma :: K@A}{\G\V M:\sigma@A}{\textsc{T-Conv}} \\[2mm]
+		\infrule{\G\V M:\tau@{A\alpha}}{\G\V\TB_{\alpha}M:\TW_{\alpha}\tau@A}{\textsc{T-$\TB$}} \andalso
+		\infrule{\G\V M:\TW_{\alpha}\tau@A}{\G\V\TBL_{\alpha}M:\tau@{A\alpha}}{\TTBL} \\[2mm]
+		\infrule{\G\V M:\tau@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\V\Lambda\alpha.M:\forall\alpha.\tau@A}{\textsc{T-Gen}} \andalso
+		\infrule{\G\V M:\forall\alpha.\tau@A}{\G\V M\ \epsilon:\tau[\alpha \mapsto \epsilon]@A}{\textsc{T-Ins}} \andalso
+		\infrule{\G\V M:\tau@A}{\G\V \%_\alpha M:\tau@{A\alpha}}{\textsc{T-Csp}} \andalso
+		\caption{Typing Rules}
+		\label{fig:typing-rules}
+	\end{center}
 \end{figure}
 
 \subsubsection{Type Equivalence Rules}
+
+\begin{figure}
+	\begin{center}
+		\infrule{\G\V \tau \E \sigma :: *@A \andalso \G,x:\tau@A \V \rho \E \pi :: *@A}{\G\V\Pi x:\tau.\rho \E \Pi x:\sigma.\pi :: *@A}{\QTAbs} \andalso
+		\infrule{\G\V \tau \E \sigma :: (\Pi x:\rho.K)@A \andalso \G\V M \E N : \rho @A}{\G\V \tau\ M \E \sigma\ N :: K[x \mapsto M]@A}{\QTApp} \\[2mm]
+		\infrule{\G\V \tau \E \sigma :: *@{A\alpha}}{\G\V \TW_{\alpha} \tau \E \TW_{\alpha} \sigma :: *@A}{\textsc{QT-$\TW$}}\andalso
+		\infrule{\G\V \tau \E \sigma :: *@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\V \forall\alpha.\tau \E  \forall\alpha.\sigma :: *@A}{\textsc{QT-Gen}} \andalso
+		\infrule{\G\V \tau \E \sigma :: K@A}{\G\V \tau \E \sigma :: K@{A\alpha}}{\textsc{QT-Csp}} \\[4mm]
+		\infrule{\G\V \tau::K@A}{\G\V \tau\E\tau :: K@A}{\textsc{QT-Refl}} \andalso
+		\infrule{\G\V \tau \E \sigma :: K@A}{\G\V \sigma \E \tau :: K@A}{\textsc{QT-Sym}} \andalso
+		\infrule{\G\V \tau \E \sigma :: K@A \andalso \G\V \sigma \E \rho  :: K@A}{\G\V \tau \E \rho  :: K@A}{\textsc{QT-Trans}} \\[4mm]
+		\caption{Type Equivalence Rules}
+		\label{fig:type-equivalence-rules}
+	\end{center}
+\end{figure}
 
 % Normal Conversion Rules
 
@@ -321,148 +357,147 @@ The rules \TVar, \TAbs, and \TApp are almost same as those in simply typed lambd
 % Example of QCsp (mulmat)
 
 \begin{definition}[Values]
-$A \neq \epsilon$\\
-\begin{align*}
-    \textrm{Values} && v^\epsilon \in V^\epsilon & ::= \lambda x:\tau.M \mid\ \TB_\alpha v^\alpha \mid \Lambda\alpha.v^\epsilon & \\
-                    && v^A \in V^A & ::= x \mid \lambda x:\tau.v^A \mid v^A\ v^A \mid\ \TB_\alpha v^{A\alpha} 
-                                           \mid \Lambda\alpha.v^A \mid v^A\ \epsilon &\\
-                                    &&& \quad\   \mid\ \TBL_\alpha v^{A'} (\text{if } A'\alpha = A \text{and } A' \neq \epsilon) & \\
-                                    &&& \quad\   \mid \%_\alpha v^{A'} (\text{if } A'\alpha = A) & \\
-    \textrm{Redexes} && R^\epsilon & ::= (\lambda x:\tau.M)\ v^\epsilon \mid (\Lambda\alpha.v^\epsilon)\ \epsilon & \\
-                     && R^\alpha & ::=\ \TBL_\alpha \TB_\alpha M & \\
-\end{align*}
-
-% Valueの説明
-
+	$A \neq \epsilon$\\
+	\begin{align*}
+		\textrm{Values}  &  & v^\epsilon \in V^\epsilon & ::= \lambda x:\tau.M \mid\ \TB_\alpha v^\alpha \mid \Lambda\alpha.v^\epsilon                                       & \\
+		                 &  & v^A \in V^A               & ::= x \mid \lambda x:\tau.v^A \mid v^A\ v^A \mid\ \TB_\alpha v^{A\alpha} \mid \Lambda\alpha.v^A \mid v^A\ \epsilon & \\
+		                 &  &                           & \quad\   \mid\ \TBL_\alpha v^{A'} (\text{if } A'\alpha = A \text{and } A' \neq \epsilon)                           & \\
+		                 &  &                           & \quad\   \mid \%_\alpha v^{A'} (\text{if } A'\alpha = A)                                                           & \\
+		\textrm{Redexes} &  & R^\epsilon                & ::= (\lambda x:\tau.M)\ v^\epsilon \mid (\Lambda\alpha.v^\epsilon)\ \epsilon                                       & \\
+		                 &  & R^\alpha                  & ::=\ \TBL_\alpha \TB_\alpha M                                                                                      & \\
+	\end{align*}
+	
+	% Valueの説明
+	
 \end{definition}
 
 
 \begin{definition}[Staged Reduction]
-$A \neq \epsilon$\\
-\begin{align*}
-    E^A_\epsilon [(\lambda x:\tau.M)\ v^\epsilon] & \longrightarrow_s E^A_\epsilon[M[x\mapsto v^\epsilon]] \\
-    E^A_\epsilon [(\Lambda\alpha.v^\epsilon)\ \epsilon] & \longrightarrow_s E^A_\epsilon[v^\epsilon[\alpha\mapsto \epsilon]] \\
-    E^A_\alpha [\TBL_\alpha \TB_\alpha v^\alpha] & \longrightarrow_s E^A_\alpha[v^\alpha] \\
-\end{align*}
+	$A \neq \epsilon$\\
+	\begin{align*}
+		E^A_\epsilon [(\lambda x:\tau.M)\ v^\epsilon]       & \longrightarrow_s E^A_\epsilon[M[x\mapsto v^\epsilon]]             \\
+		E^A_\epsilon [(\Lambda\alpha.v^\epsilon)\ \epsilon] & \longrightarrow_s E^A_\epsilon[v^\epsilon[\alpha\mapsto \epsilon]] \\
+		E^A_\alpha [\TBL_\alpha \TB_\alpha v^\alpha]        & \longrightarrow_s E^A_\alpha[v^\alpha]                             \\
+	\end{align*}
 \end{definition}
 
 \begin{definition}[Evaluation Context]
-$A \neq \epsilon$\\
-\begin{align*}
-    E^\epsilon_B \in ECtx^\epsilon_B & ::= \square\ (\text{if\ } B = \epsilon) \mid E^\epsilon_B\ M \mid v^e\ E^\epsilon_B
-                                           \mid \TB_\alpha E^\alpha_B \mid \Lambda\alpha.E^\epsilon_B
-                                           \mid E^\epsilon_B\ \epsilon  \\
-    E^A_B \in ECtx^A_B & ::= \square\ (\text{if } A = B) \mid \lambda x:\tau.E^A_B \mid E^A_B\ M \mid v^A\ E^A_B
-                                           \mid E^\epsilon_B \mid \TB_\alpha E^{A\alpha}_B
-                                           \mid \TBL_\alpha E^{A'}_B \ (\text{where } A'\alpha = A) \\
-                                           & \quad \mid \Lambda\alpha.E^\epsilon_B
-                                           \mid E^A_B\ \epsilon \mid \%_\alpha\ E^{A'}_B \ (\text{where } A'\alpha = A)\\
-\end{align*}
+	$A \neq \epsilon$\\
+	\begin{align*}
+		E^\epsilon_B \in ECtx^\epsilon_B & ::= \square\ (\text{if\ } B = \epsilon) \mid E^\epsilon_B\ M \mid v^e\ E^\epsilon_B
+		\mid \TB_\alpha E^\alpha_B \mid \Lambda\alpha.E^\epsilon_B
+		\mid E^\epsilon_B\ \epsilon                                                                                                \\
+		E^A_B \in ECtx^A_B               & ::= \square\ (\text{if } A = B) \mid \lambda x:\tau.E^A_B \mid E^A_B\ M \mid v^A\ E^A_B
+		\mid E^\epsilon_B \mid \TB_\alpha E^{A\alpha}_B
+		\mid \TBL_\alpha E^{A'}_B \ (\text{where } A'\alpha = A)                                                                   \\
+		                                 & \quad \mid \Lambda\alpha.E^\epsilon_B
+		\mid E^A_B\ \epsilon \mid \%_\alpha\ E^{A'}_B \ (\text{where } A'\alpha = A)                                               \\
+	\end{align*}
 \end{definition}
 
 \section{Properties of \LMD}
 
 \begin{theorem}[Substituition Lemma for Variables of Terms, Types or Kinds and Their Equivalence]
-    \begin{flalign*}
-        \text{If\ } \G,z:\xi @B \V M:\tau @A \text{\ and\ } \G\V P:\xi @B
-        &\text{\ then\ } \G\V M[z \mapsto P]:\tau[z \mapsto P] @A.&\\
-        \text{If\ } \G,z:\xi @B \V \tau::K @A \text{\ and\ } \G\V P:\xi @B
-        &\text{\ then\ } \G\V \tau[z \mapsto P]::K[z \mapsto P] @A.&\\
-        \text{If\ } \G,z:\xi @B \V K\iskind @A \text{\ and\ } \G\V P:\xi @B
-        &\text{\ then\ } \G\V K[z \mapsto P] \iskind  @A.&\\
-        \text{If\ } \G,z:\xi @B \V M\E N : \tau @A \text{\ and\ } \G\V P:\xi @B
-        &\text{\ then\ } \G\V M[z \mapsto P]\E N[z \mapsto P] : \tau[z \mapsto P] @A.&\\
-        \text{If\ } \G,z:\xi @B \V \tau\E \sigma : K @A \text{\ and\ } \G\V P:\xi @B
-        &\text{\ then\ } \G\V \tau[z \mapsto P]\E \sigma[z \mapsto P] : K[z \mapsto P] @A.&\\
-        \text{If\ } \G,z:\xi @B \V K\E J @A \text{\ and\ } \G\V P:\xi @B
-        &\text{\ then\ } \G\V K[z \mapsto P]\E J[z \mapsto P] @A.&
-    \end{flalign*}    
+	\begin{flalign*}
+		\text{If\ } \G,z:\xi @B \V M:\tau @A \text{\ and\ } \G\V P:\xi @B
+		&\text{\ then\ } \G\V M[z \mapsto P]:\tau[z \mapsto P] @A.&\\
+		\text{If\ } \G,z:\xi @B \V \tau::K @A \text{\ and\ } \G\V P:\xi @B
+		&\text{\ then\ } \G\V \tau[z \mapsto P]::K[z \mapsto P] @A.&\\
+		\text{If\ } \G,z:\xi @B \V K\iskind @A \text{\ and\ } \G\V P:\xi @B
+		&\text{\ then\ } \G\V K[z \mapsto P] \iskind  @A.&\\
+		\text{If\ } \G,z:\xi @B \V M\E N : \tau @A \text{\ and\ } \G\V P:\xi @B
+		&\text{\ then\ } \G\V M[z \mapsto P]\E N[z \mapsto P] : \tau[z \mapsto P] @A.&\\
+		\text{If\ } \G,z:\xi @B \V \tau\E \sigma : K @A \text{\ and\ } \G\V P:\xi @B
+		&\text{\ then\ } \G\V \tau[z \mapsto P]\E \sigma[z \mapsto P] : K[z \mapsto P] @A.&\\
+		\text{If\ } \G,z:\xi @B \V K\E J @A \text{\ and\ } \G\V P:\xi @B
+		&\text{\ then\ } \G\V K[z \mapsto P]\E J[z \mapsto P] @A.&
+	\end{flalign*}
 \end{theorem}
 
 \begin{theorem}[Stage Substituition Lemma for Variables of Terms, Types or Kinds and Their Equivalence]
-    \begin{flalign*}
-        \text{If\ } \G \V M:\tau @A
-        &\text{\ then\ } \G[\beta \mapsto \epsilon]\V M[\beta \mapsto \epsilon]:\tau[\beta \mapsto \epsilon] @A[\beta \mapsto \epsilon].&\\
-        \text{If\ } \G \V \tau::K @A
-        &\text{\ then\ } \G[\beta \mapsto \epsilon]\V \tau[\beta \mapsto \epsilon]::K[\beta \mapsto \epsilon] @A[\beta \mapsto \epsilon].&\\
-        \text{If\ } \G \V K\iskind @A
-        &\text{\ then\ } \G[\beta \mapsto \epsilon]\V K[\beta \mapsto \epsilon] \iskind @A[\beta \mapsto \epsilon].&\\
-        \text{If\ } \G \V M\E N : \tau @A
-        &\text{\ then\ } \G[\beta \mapsto \epsilon]\V M[\beta \mapsto \epsilon]\E N[\beta \mapsto \epsilon] : \tau[\beta \mapsto \epsilon]  @A[\beta \mapsto \epsilon].&\\
-        \text{If\ } \G \V \tau\E \sigma : K @A
-        &\text{\ then\ } \G[\beta \mapsto \epsilon]\V \tau[\beta \mapsto \epsilon]\E \sigma[\beta \mapsto \epsilon] : K[\beta \mapsto \epsilon] @A[\beta \mapsto \epsilon].&\\
-        \text{If\ } \G \V K\E J @A
-        &\text{\ then\ } \G[\beta \mapsto \epsilon]\V K[\beta \mapsto \epsilon]\E J[\beta \mapsto \epsilon] @A[\beta \mapsto \epsilon].&
-    \end{flalign*}
+	\begin{flalign*}
+		\text{If\ } \G \V M:\tau @A
+		&\text{\ then\ } \G[\beta \mapsto \epsilon]\V M[\beta \mapsto \epsilon]:\tau[\beta \mapsto \epsilon] @A[\beta \mapsto \epsilon].&\\
+		\text{If\ } \G \V \tau::K @A
+		&\text{\ then\ } \G[\beta \mapsto \epsilon]\V \tau[\beta \mapsto \epsilon]::K[\beta \mapsto \epsilon] @A[\beta \mapsto \epsilon].&\\
+		\text{If\ } \G \V K\iskind @A
+		&\text{\ then\ } \G[\beta \mapsto \epsilon]\V K[\beta \mapsto \epsilon] \iskind @A[\beta \mapsto \epsilon].&\\
+		\text{If\ } \G \V M\E N : \tau @A
+		&\text{\ then\ } \G[\beta \mapsto \epsilon]\V M[\beta \mapsto \epsilon]\E N[\beta \mapsto \epsilon] : \tau[\beta \mapsto \epsilon]  @A[\beta \mapsto \epsilon].&\\
+		\text{If\ } \G \V \tau\E \sigma : K @A
+		&\text{\ then\ } \G[\beta \mapsto \epsilon]\V \tau[\beta \mapsto \epsilon]\E \sigma[\beta \mapsto \epsilon] : K[\beta \mapsto \epsilon] @A[\beta \mapsto \epsilon].&\\
+		\text{If\ } \G \V K\E J @A
+		&\text{\ then\ } \G[\beta \mapsto \epsilon]\V K[\beta \mapsto \epsilon]\E J[\beta \mapsto \epsilon] @A[\beta \mapsto \epsilon].&
+	\end{flalign*}
 \end{theorem}
 
 \begin{theorem}[Preservation for term on $\beta$ reduction]
-    If $\G\V M:\tau @A$ and $M \longrightarrow_{\beta} M'$, then $\G\V M':\tau @A$\\
+	If $\G\V M:\tau @A$ and $M \longrightarrow_{\beta} M'$, then $\G\V M':\tau @A$\\
 \end{theorem}
 
 \begin{theorem}[Preservation for term on $\TBL\TB$ reduction]
-    If $\G\V M:\tau @A$ and $M\longrightarrow_\blacklozenge N$, then $\G\V N:\tau @A$\\
+	If $\G\V M:\tau @A$ and $M\longrightarrow_\blacklozenge N$, then $\G\V N:\tau @A$\\
 \end{theorem}
 
 \begin{theorem}[Preservation for term on $\Lambda$ reduction]
-    If $\G\V M:\tau @A$ and $M \longrightarrow_{\Lambda} N$, then $\G\V N:\tau @A$.
+	If $\G\V M:\tau @A$ and $M \longrightarrow_{\Lambda} N$, then $\G\V N:\tau @A$.
 \end{theorem}
 
 \begin{theorem}[Strong Normalization]
-    If $\G\V^A t:T$ then there is no infinite sequence of terms $(t_i)_{i\ge1}$ and $t_i \longrightarrow_{\beta, \TBL \TB,\Lambda} t_{i+1}$ for $i\ge 1$
+	If $\G\V^A t:T$ then there is no infinite sequence of terms $(t_i)_{i\ge1}$ and $t_i \longrightarrow_{\beta, \TBL \TB,\Lambda} t_{i+1}$ for $i\ge 1$
 \end{theorem}
 
 \begin{theorem}[Confluence(Church-Rosser Property)]
-    Define $M \longrightarrow N$ as $M \longrightarrow_{\beta} N$ or $M\longrightarrow_\blacklozenge N$ or  $M \longrightarrow_{\Lambda} N$.\\
-    For any term $M$, if $M \longrightarrow^* N$ and $M \longrightarrow^* L$,
-    there exists $O$ that satisfies $N \longrightarrow^* O$ and $L \longrightarrow^* O$.
+	Define $M \longrightarrow N$ as $M \longrightarrow_{\beta} N$ or $M\longrightarrow_\blacklozenge N$ or  $M \longrightarrow_{\Lambda} N$.\\
+	For any term $M$, if $M \longrightarrow^* N$ and $M \longrightarrow^* L$,
+	there exists $O$ that satisfies $N \longrightarrow^* O$ and $L \longrightarrow^* O$.
 \end{theorem}
 
 \begin{theorem}[Progress]
-    If $x:\tau @\epsilon \notin \G$ and $\G \V M : \tau  @ A$ then $ M \in V^A $ or $\exists M'$ such that $M \longrightarrow M'$.
+	If $x:\tau @\epsilon \notin \G$ and $\G \V M : \tau  @ A$ then $ M \in V^A $ or $\exists M'$ such that $M \longrightarrow M'$.
 \end{theorem}
 
 \begin{theorem}[Unique Decomposition]
-    If $x:\tau@\epsilon \notin \G$ and $\G \V M : \tau @ A$ then 1 or 2 is true.
-    \begin{enumerate}
-        \item $ M \in V^A$
-        \item $\exists ! B, E^A_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
-    \end{enumerate}
+	If $x:\tau@\epsilon \notin \G$ and $\G \V M : \tau @ A$ then 1 or 2 is true.
+	\begin{enumerate}
+		\item $ M \in V^A$
+		\item $\exists ! B, E^A_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
+	\end{enumerate}
 \end{theorem}
 
 \section{Related Work}
 
 \begin{itemize}
-   \item On Cross-Stage Persistence in Multi-Stage\cite{Hanada2014}
-
-   CSPも入りました
-   \item Eliminating Array Bound Checking Through Dependent Types\cite{Xi98}
-   \item MetaML and Multi-stage Programming with Explicit Annotations\cite{MetaML}
-   \item Idris, a general-purpose dependently typed programming language: Design and implementation\cite{brady2013idris}
-   \item A Logical Foundation for Environment Classifiers\cite{Tsukada}
-   \item Environment classifiers\cite{taha2003environment}
-   \item A framework for defining logics\cite{harper1993framework}
-
-    $\Sigma$ の使い方を確認した
-   \item The Design and Implementation of {BER} MetaOCaml - System Description\cite{oleg2014}
-   \item Refined Environment Classifiers\cite{kiselyov2016refined}
-   \item Staging with control: type-safe multi-stage programming with control operators\cite{oishi2017staging}
-   \item \red{Partial evaluation and automatic program generation}\cite{jones1993partial}
-   \item \red{Efficient multi-level generating extensions for program specialization}\cite{gluck1995efficient}
-   \item Dependent types in practical programming\cite{xi1999dependent}
-
-        Section of Applicationを読んだ。Dead Code EliminationやLoop Unrollingにも使えるらしい。
-
-   \item A dependently typed assembly language\cite{xi2001dependently}
-
-   DTALの定義と制約solverを用いた型検査の定義
-   \item \red{Run-time code generation and Modal-ML}\cite{wickline1998run}
-   \item \red{C and tcc: a language and compiler for dynamic code generation}\cite{poletto1999c}
-   \item \red{Run-time bytecode specialization}\cite{masuhara2001run}
-   \item \red{A tour of Tempo: A program specializer for the C language}\cite{consel2004tour}
-   \item \red{Optimizing ML with run-time code generation}\cite{lee1996optimizing}
-   \item \red{Efficient incremental run-time specialization for free}\cite{marlet1999efficient}
-
+	\item On Cross-Stage Persistence in Multi-Stage\cite{Hanada2014}
+	      
+	      CSPも入りました
+	\item Eliminating Array Bound Checking Through Dependent Types\cite{Xi98}
+	\item MetaML and Multi-stage Programming with Explicit Annotations\cite{MetaML}
+	\item Idris, a general-purpose dependently typed programming language: Design and implementation\cite{brady2013idris}
+	\item A Logical Foundation for Environment Classifiers\cite{Tsukada}
+	\item Environment classifiers\cite{taha2003environment}
+	\item A framework for defining logics\cite{harper1993framework}
+	      
+	      $\Sigma$ の使い方を確認した
+	\item The Design and Implementation of {BER} MetaOCaml - System Description\cite{oleg2014}
+	\item Refined Environment Classifiers\cite{kiselyov2016refined}
+	\item Staging with control: type-safe multi-stage programming with control operators\cite{oishi2017staging}
+	\item \red{Partial evaluation and automatic program generation}\cite{jones1993partial}
+	\item \red{Efficient multi-level generating extensions for program specialization}\cite{gluck1995efficient}
+	\item Dependent types in practical programming\cite{xi1999dependent}
+	      
+	      Section of Applicationを読んだ。Dead Code EliminationやLoop Unrollingにも使えるらしい。
+	      
+	\item A dependently typed assembly language\cite{xi2001dependently}
+	      
+	      DTALの定義と制約solverを用いた型検査の定義
+	\item \red{Run-time code generation and Modal-ML}\cite{wickline1998run}
+	\item \red{C and tcc: a language and compiler for dynamic code generation}\cite{poletto1999c}
+	\item \red{Run-time bytecode specialization}\cite{masuhara2001run}
+	\item \red{A tour of Tempo: A program specializer for the C language}\cite{consel2004tour}
+	\item \red{Optimizing ML with run-time code generation}\cite{lee1996optimizing}
+	\item \red{Efficient incremental run-time specialization for free}\cite{marlet1999efficient}
+	      
 \end{itemize}
 
 \section{Conclusions}
