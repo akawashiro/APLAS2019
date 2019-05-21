@@ -235,8 +235,8 @@ We omit their definitions.
 
 In this section, we define full reduction for \LMD.
 Before giving the definition of reduction, we define two substitutions.
-Substituition $M[x\mapsto N]$ is the normal capture-avoiding substitution, and we omit its definition here.
-Substituition $M[\alpha \mapsto \epsilon]$ is defined below.
+Substitution $M[x\mapsto N]$ is the normal capture-avoiding substitution, and we omit its definition here.
+Substitution $M[\alpha \mapsto \epsilon]$ is defined below.
 
 \begin{align*}
     % \newcommand{\SB}{}
@@ -263,7 +263,7 @@ Substituition $M[\alpha \mapsto \epsilon]$ is defined below.
 \end{definition}
 
 $\longrightarrow_\beta$ is normal $\beta-$reduction in lambda calculus.
-$\longrightarrow_\blacklozenge$ means that when a quoted code is unquoted, it become the original code.
+$\longrightarrow_\blacklozenge$ means that when a quoted code is unquoted, it becomes the original code.
 $\longrightarrow_\Lambda$ means that a stage abstraction applied to the empty stage $\epsilon$ reduces to the body of abstraction
 where $\epsilon$ is substituted to the stage variable.
 Application of a non-$\epsilon$ stage to a stage abstraction is prohibited in order to simplify \LMD.
@@ -278,7 +278,7 @@ $\TB_\alpha$ and $\TBL_\alpha$ is disappeared in the same way as $\%_\alpha$.
 In this section, we define the type system of \LMD.
 Especially, we discuss on the type equality of \LMD in detail
 because it is the main contribution of this paper.
-\LMD is developed on the basis of \LTP but there is no type equivalence rules in \LTP.
+\LMD is developed on the basis of \LTP but there are no type equivalence rules in \LTP.
 
 \begin{definition}[Typing]
     The typing relation $ \G \V M : \tau @ A $ is the least relation closed under the rules in Figure \ref{fig:typing-rules}.
@@ -288,7 +288,7 @@ because it is the main contribution of this paper.
 
 % 通常のルール
 We show typing rules of \LMD in Figure \ref{fig:typing-rules}.
-The rules \TVar , \TAbs, and \TApp\ are almost same as those in simply typed lambda calculus 
+The rules \TVar , \TAbs, and \TApp\ are almost the same as those in simply typed lambda calculus 
 if you ignore stage annotations and kind checking.
 The rule \TVar\ means that a variable can appear only at the stage in which it is declared.
 It checks the type of variable $x$, $\tau$, has the proper kind for terms, $*$.
@@ -351,7 +351,7 @@ We show the rules in Figure \ref{fig:type-equivalence-rules}.
 % 2つの設計手法と今回採用した理由
 When we design type equivalence rules of \LMD, there are two design choices.
 One is defining type equivalence by $\beta$-equality after we define $\beta$-reduction of types.
-Another is defining type equivalence directly by combination of type equivalence rules.
+Another is defining type equivalence directly by a combination of type equivalence rules.
 We adopt the latter one because it is convenient to handle CSP in the type equivalence.
 
 % \QCsp以外の説明
