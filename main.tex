@@ -287,11 +287,15 @@ because it is the main contribution of this paper.
 % 各論
 
 % 通常のルール
-The rules \TVar , \TAbs, and \TApp\ are almost same as those in simply typed lambda calculus if you ignore stage annotations.
+The rules \TVar , \TAbs, and \TApp\ are almost same as those in simply typed lambda calculus 
+if you ignore stage annotations and kind checking.
 The rule \TVar\ means that a variable can appear only at the stage in which it is declared.
+It checks the type of variable $x$, $\tau$, has the proper kind for terms, $*$.
+\TAbs\ also checks the kind of the type.
+
 The rule \TConst\ means any constants in the signature can appear at any stage.
 For example, if we have a signature $\Sigma$ which is $\textrm{bool} :: *, \textrm{true}: \textrm{bool}, \textrm{false}: \textrm{bool}$,
-the following derivation tree in Figure \ref{fig:tconst-derivation-tree} is admissible.
+the derivation tree in Figure \ref{fig:tconst-derivation-tree} is admissible.
 
 \begin{figure}
 	\begin{center}
@@ -315,6 +319,11 @@ Please check Hanada and Igarashi \cite{Hanada2014} and Tsukada and Igarashi \cit
 
 % \TConv
 The main technical point of this paper is \TConv and type equivalence rules needed in \TConv.
+This rule allows ut to replace a type with another type that is equivalent.
+In a type system which includes dependent types, this kind of rule is essential
+because two types which have different shapes may be equivalent.
+For example, when we use a matrix type which have their sizes ($\textrm{Mat}\ n\ m$),
+$\textrm{Mat}\ 5\ 3$ is equivalent to $\textrm{Mat}\ (4+1)\ (1+2)$ obviously.
 
 \begin{figure}
 	\begin{center}
