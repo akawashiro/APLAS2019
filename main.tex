@@ -287,6 +287,7 @@ because it is the main contribution of this paper.
 % 各論
 
 % 通常のルール
+We show typing rules of \LMD in Figure \ref{fig:typing-rules}.
 The rules \TVar , \TAbs, and \TApp\ are almost same as those in simply typed lambda calculus 
 if you ignore stage annotations and kind checking.
 The rule \TVar\ means that a variable can appear only at the stage in which it is declared.
@@ -318,7 +319,7 @@ application of $\epsilon$ stage to a stage abstraction, and cross-stage persiste
 Please check Hanada and Igarashi \cite{Hanada2014} and Tsukada and Igarashi \cite{Tsukada} for details of these rules.
 
 % \TConv
-The main technical point of this paper is \TConv and type equivalence rules needed in \TConv.
+The main technical point of this paper is \TConv\ and type equivalence rules needed in \TConv.
 This rule allows ut to replace a type with another type that is equivalent.
 In a type system which includes dependent types, this kind of rule is essential
 because two types which have different shapes may be equivalent.
@@ -342,7 +343,18 @@ $\textrm{Mat}\ 5\ 3$ is equivalent to $\textrm{Mat}\ (4+1)\ (1+2)$ obviously.
 	\end{center}
 \end{figure}
 
-\subsubsection{Type Equivalence Rules}
+\subsubsection{Type Equivalence Rules\\}
+
+As mentioned above, type equivalence rules are needed in \LMD.
+We show the rules in Figure \ref{fig:type-equivalence-rules}.
+
+% 2つの設計手法と今回採用した理由
+
+% \QCsp以外の説明
+
+% \QCspの説明
+
+ % mulmatの例
 
 \begin{figure}
 	\begin{center}
