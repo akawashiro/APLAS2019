@@ -349,6 +349,10 @@ As mentioned above, type equivalence rules are needed in \LMD.
 We show the rules in Figure \ref{fig:type-equivalence-rules}.
 
 % 2つの設計手法と今回採用した理由
+When we design type equivalence rules of \LMD, there are two design choices.
+One is defining type equivalence by $\beta$-equality after we define $\beta$-reduction of types.
+Another is defining type equivalence directly by combination of type equivalence rules.
+We adopt the latter one because it is convenient to handle CSP in the type equivalence.
 
 % \QCsp以外の説明
 
@@ -371,11 +375,42 @@ We show the rules in Figure \ref{fig:type-equivalence-rules}.
 	\end{center}
 \end{figure}
 
+\begin{figure}
+	\begin{center}
+		\infrule{\G\V \tau \E \sigma :: *@A \andalso \G,x:\tau@A \V M \E N : \rho @A}{\G\V\lambda x:\tau.M \E \lambda x:\sigma.N : (\Pi x:\tau.\rho)@A}{\QAbs} \andalso
+		\infrule{\G\V M \E L : (\Pi x:\sigma.\tau)@A \andalso \G\V N \E O : \sigma@A}{\G\V M\ N \E L\ O : \tau[x \mapsto N]@A}{\QApp} \\[2mm]
+		\infrule{\G\V M \E N : \tau@{A\alpha}}{\G\V \TB_\alpha M \E \TB_\alpha N : \TW_\alpha \tau@A}{\QTB} \andalso
+		\infrule{\G\V M \E N : \TW_\alpha \tau@A}{\G\V \TBL_\alpha M \E \TBL_\alpha N : \tau@{A\alpha}}{\QTBL} \\[2mm]
+		\infrule{\G\V M\E N : \tau@A \andalso \alpha \notin \FTV(\G)\cup\FTV(A)}{\G\V \Lambda\alpha.M \E \Lambda\alpha.N : \forall\alpha.\tau@A}{\QGen} \andalso
+		\infrule{\G\V M \E N:\forall\alpha.\tau@A}{\G\V M\ \epsilon \E N\ \epsilon : \tau[\alpha \mapsto \epsilon]@A}{\QIns}\andalso
+		\infrule{\G\V M \E N : \tau @A}{\G\V\%_\alpha M \E \%_\alpha N : \tau@{A\alpha}}{\QCsp} \\[4mm]
+		\infrule{\G\V M:\tau@A}{\G\V M\E M : \tau@A}{\QRefl} \andalso
+		\infrule{\G\V M\E N : \tau@A}{\G\V N\E M : \tau@A}{\QSym} \andalso
+		\infrule{\G\V M\E N : \tau@A \andalso \G\V N\E L : \tau@A}{\G\V M\E L : \tau@A}{\QTrans} \\[4mm]
+		\infrule{\G,x:\sigma@A\V M:\tau@A \andalso \G\V N:\sigma@A}{\G\V(\lambda x:\sigma.M)\ N\E M[x\mapsto N] : \tau[x \mapsto N]@A}{\QBeta} \andalso
+		\infrule{\G\V M:(\Pi x:\sigma.\tau)@A \andalso x\notin \text{FV}(M)}{\G\V(\lambda x:\sigma.M\ x)\E M: (\Pi x:\sigma.\tau)@A}{\QEta} \\[2mm]
+		\infrule{\G\V M \E N : \tau@A}{\G\V \TBL_\alpha(\TB_\alpha M) \E N : \tau @A}{\QTBLTB} \andalso
+		\infrule{\G\V (\Lambda\alpha.M) : \forall\alpha.\tau@A}{\G\V (\Lambda\alpha.M)\ \epsilon \E M[\alpha \mapsto \epsilon] : \tau[\alpha \mapsto \epsilon]@A}{\QLambda} \\[2mm]
+		\infrule{\G\V M:\tau@{A\alpha} \andalso \G\V M:\tau@A}{\G\V\%_\alpha M \E M : \tau@{A\alpha}}{\QPercent} \andalso
+		\caption{Tem Equivalence Rules}
+		\label{fig:tem-equivalence-rules}
+	\end{center}
+\end{figure}
+
 % Normal Conversion Rules
 
 % \QCsp
 
 % Example of QCsp (mulmat)
+{
+\newcommand{\I}{\textrm{Int}}
+\newcommand{\M}{\textrm{Mat}}
+\begin{align*}
+	\text{mulmat}       & : \Pi x:\I.\Pi y:\I.(\TW_\alpha \Pi z:\I.(\M\ z\ \%_\alpha y) \to (\M\ \%_\alpha y\ \%_\alpha x) \to (\M\ z\ \%_\alpha x)) \\
+	\text{mulmat}\ 3\ 5 & : \TW_\alpha \Pi z:\I.(\M\ z\ \%_\alpha 5) \to (\M\ \%_\alpha 5\ \%_\alpha 3) \to (\M\ z\ \%_\alpha 3)                     \\
+	                    & (\E \TW_\alpha \Pi z:\I.(\M\ z\ 5) \to (\M\ 5\ 3) \to (\M\ z\ 3) )                                                         \\
+\end{align*}
+}
 
 \begin{definition}[Values]
 	$A \neq \epsilon$\\
