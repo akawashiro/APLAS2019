@@ -376,11 +376,28 @@ The equivalence of terms is defined in Figure \ref{fig:term-equivalence-rules}.
 \QAbs, \QApp, \QTB, \QTBL, \QGen, \QIns, \QCsp\ are generated directly from the syntax of a term.
 \QRefl, \QSym, \QTrans\ exist in order to make the term equivalence relation an equivalence relationship as with the type equivalence.
 The rule \QBeta\ means when a term $M \longrightarrow_\beta M'$, $M$ is equivalent to $M'$.
-\QTBLTB and \QLambda are corresponding to $\longrightarrow_\blacklozenge$ and $\longrightarrow_\Lambda$, respectively.
+\QTBLTB and \QLambda\ are corresponding to $\longrightarrow_\blacklozenge$ and $\longrightarrow_\Lambda$, respectively.
 
-% \QCspの説明
+% \QPercentの説明
+The rule \QPercent is something special because it has no background of syntax or reductions.
+But we add this rule to \LMD\ because it is essential when you use dependent types in code type.
+For example, we can utilize a dependently typed multistage calculus to generate a code for matrix multiplication.
+When we know sizes of matrices before the multiplication,
+we can generate efficient code for multiplication by unrolling loops.
 
- % mulmatの例
+% Example of QCsp (mulmat)
+{
+\newcommand{\I}{\textrm{Int}}
+\newcommand{\M}{\textrm{Mat}}
+\begin{align*}
+	\text{mulmat}       & : \Pi x:\I.\Pi y:\I.(\TW_\alpha \Pi z:\I.(\M\ z\ \%_\alpha y) \to (\M\ \%_\alpha y\ \%_\alpha x) \to (\M\ z\ \%_\alpha x)) \\
+	\text{mulmat}\ 3\ 5 & : \TW_\alpha \Pi z:\I.(\M\ z\ \%_\alpha 5) \to (\M\ \%_\alpha 5\ \%_\alpha 3) \to (\M\ z\ \%_\alpha 3)                     \\
+	                    & (\E \TW_\alpha \Pi z:\I.(\M\ z\ 5) \to (\M\ 5\ 3) \to (\M\ z\ 3) )                                                         \\
+\end{align*}
+}
+
+
+% mulmatの例
 
 \begin{figure}
 	\begin{center}
@@ -407,17 +424,6 @@ The rule \QBeta\ means when a term $M \longrightarrow_\beta M'$, $M$ is equivale
 % Normal Conversion Rules
 
 % \QCsp
-
-% Example of QCsp (mulmat)
-{
-\newcommand{\I}{\textrm{Int}}
-\newcommand{\M}{\textrm{Mat}}
-\begin{align*}
-	\text{mulmat}       & : \Pi x:\I.\Pi y:\I.(\TW_\alpha \Pi z:\I.(\M\ z\ \%_\alpha y) \to (\M\ \%_\alpha y\ \%_\alpha x) \to (\M\ z\ \%_\alpha x)) \\
-	\text{mulmat}\ 3\ 5 & : \TW_\alpha \Pi z:\I.(\M\ z\ \%_\alpha 5) \to (\M\ \%_\alpha 5\ \%_\alpha 3) \to (\M\ z\ \%_\alpha 3)                     \\
-	                    & (\E \TW_\alpha \Pi z:\I.(\M\ z\ 5) \to (\M\ 5\ 3) \to (\M\ z\ 3) )                                                         \\
-\end{align*}
-}
 
 \begin{definition}[Values]
 	$A \neq \epsilon$\\
