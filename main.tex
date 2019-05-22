@@ -131,19 +131,14 @@
 
     We develop yet another typed multi-stage calculus \LMD.
     It extends Hanada and Igarashi's \LTP with dependent types.
-    
     A multi-stage calculus enables us to generate and execute codes at runtime.
     It can improve the performance of programs by generating optimized codes for given inputs.
-    
     Dependent types are types dependent on values. 
     A vector with its length is a famous example of dependent types and it enables us to omit boundary checking.
-    
     In this paper, we design \LMD by introducing dependent type into $\lambda^{\TW\%}$.
     You can make more efficient programs from existing dependent typed programs with \LMD.
-    
     \LMD has a simple, substitution-based full-reduction semantics and enjoys basic properties of subject reduction, confluence, and strong normalization, and progress.
     It also includes an evaluation context which satisfies unique decomposition.
-    
     The main technical points of this paper are how to deal with Cross Stage Persistence of multi-stage calculuses which allows using a value in quoted code in a dependent type system.
     Especially, the way of handling CSP in equivalence rules of dependent types wasn't clear.
     In this paper, we give reasonable equivalence rules to handle them.
@@ -355,25 +350,34 @@ Another is defining type equivalence directly by a combination of type equivalen
 We adopt the latter one because it is convenient to handle CSP in the type equivalence.
 
 % \QCsp以外の説明
-
-% \QCspの説明
-
- % mulmatの例
+We show type equivalence rules in Figure \ref{fig:type-equivalence-rules}.
+All rules except \QTRefl, \QTSym, \QTTrans, and \QTApp\ are generated naturally from the typing rules.
+\QTRefl, \QTSym, \QTTrans\ exist in order to make the type equivalence relation an equivalence relationship.
+The rule \QTApp means that if there are two equivalent $\Pi$ type and two equivalent terms,
+the result of applications are also equivalent.
+A judgement of $\G \V M \E N : \rho @ A$ means that $M$ and $N$ are equivalent.
 
 \begin{figure}
 	\begin{center}
-		\infrule{\G\V \tau \E \sigma :: *@A \andalso \G,x:\tau@A \V \rho \E \pi :: *@A}{\G\V\Pi x:\tau.\rho \E \Pi x:\sigma.\pi :: *@A}{\QTAbs} \andalso
+		\infrule{\G\V \tau \E \sigma :: *@A \andalso \G,x:\tau@A \V \rho \E \pi :: *@A}{\G\V\Pi x:\tau.\rho \E \Pi x:\sigma.\pi :: *@A}{\QTAbs} \\[2mm]
 		\infrule{\G\V \tau \E \sigma :: (\Pi x:\rho.K)@A \andalso \G\V M \E N : \rho @A}{\G\V \tau\ M \E \sigma\ N :: K[x \mapsto M]@A}{\QTApp} \\[2mm]
 		\infrule{\G\V \tau \E \sigma :: *@{A\alpha}}{\G\V \TW_{\alpha} \tau \E \TW_{\alpha} \sigma :: *@A}{\textsc{QT-$\TW$}}\andalso
-		\infrule{\G\V \tau \E \sigma :: *@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\V \forall\alpha.\tau \E  \forall\alpha.\sigma :: *@A}{\textsc{QT-Gen}} \andalso
-		\infrule{\G\V \tau \E \sigma :: K@A}{\G\V \tau \E \sigma :: K@{A\alpha}}{\textsc{QT-Csp}} \\[4mm]
+		\infrule{\G\V \tau \E \sigma :: K@A}{\G\V \tau \E \sigma :: K@{A\alpha}}{\textsc{QT-Csp}} \\[2mm]
+		\infrule{\G\V \tau \E \sigma :: *@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\V \forall\alpha.\tau \E  \forall\alpha.\sigma :: *@A}{\textsc{QT-Gen}} \\[2mm]
 		\infrule{\G\V \tau::K@A}{\G\V \tau\E\tau :: K@A}{\textsc{QT-Refl}} \andalso
-		\infrule{\G\V \tau \E \sigma :: K@A}{\G\V \sigma \E \tau :: K@A}{\textsc{QT-Sym}} \andalso
-		\infrule{\G\V \tau \E \sigma :: K@A \andalso \G\V \sigma \E \rho  :: K@A}{\G\V \tau \E \rho  :: K@A}{\textsc{QT-Trans}} \\[4mm]
+		\infrule{\G\V \tau \E \sigma :: K@A}{\G\V \sigma \E \tau :: K@A}{\textsc{QT-Sym}} \\[2mm]
+		\infrule{\G\V \tau \E \sigma :: K@A \andalso \G\V \sigma \E \rho  :: K@A}{\G\V \tau \E \rho  :: K@A}{\textsc{QT-Trans}}
 		\caption{Type Equivalence Rules}
 		\label{fig:type-equivalence-rules}
 	\end{center}
 \end{figure}
+
+The equivalence of terms is defined in Figure \ref{fig:term-equivalence-rules}.
+\QRefl, \QSym, \QTrans\ exist in order to make the term equivalence relation an equivalence relationship as with the type equivalence.
+
+% \QCspの説明
+
+ % mulmatの例
 
 \begin{figure}
 	\begin{center}
@@ -393,7 +397,7 @@ We adopt the latter one because it is convenient to handle CSP in the type equiv
 		\infrule{\G\V (\Lambda\alpha.M) : \forall\alpha.\tau@A}{\G\V (\Lambda\alpha.M)\ \epsilon \E M[\alpha \mapsto \epsilon] : \tau[\alpha \mapsto \epsilon]@A}{\QLambda} \\[2mm]
 		\infrule{\G\V M:\tau@{A\alpha} \andalso \G\V M:\tau@A}{\G\V\%_\alpha M \E M : \tau@{A\alpha}}{\QPercent} \andalso
 		\caption{Tem Equivalence Rules}
-		\label{fig:tem-equivalence-rules}
+		\label{fig:term-equivalence-rules}
 	\end{center}
 \end{figure}
 
