@@ -416,7 +416,11 @@ The last integer to decide the size of multiplier matrix is given at runtime.
 You can generate a code by applying two integers to $\text{mulmat}$.
 We applied 3 and 5 in the second line and got $\TW_\alpha \Pi z:\I.(\M\ z\ \%_\alpha 5) \to (\M\ \%_\alpha 5\ \%_\alpha 3) \to (\M\ z\ \%_\alpha 3)$.
 But this type is difficult to combine with other code because there are two $\%_\alpha$ for CSP.
-\QPercent\ states that we can erase this $\%_\alpha$ under some conditions.
+\QPercent\ states that we can erase this $\%_\alpha$ under a conditions which is explained in the next paragraph.
+
+The condition is that a CSPed value equals to the original value when it has the same type in the original stage.
+For example, $\V \%_\alpha 5 \E 5 @ \alpha$ because $ \V 5 : \I @ \alpha $ from \TConst\ and  $ \V \%_\alpha 5 : \I @ \alpha$.
+In other words, we can remove a $\%_\alpha$ symbol of a value when it doesn't change the type.
 
 % Example of QCsp (mulmat)
 {
@@ -427,7 +431,7 @@ But this type is difficult to combine with other code because there are two $\%_
 \end{align*}
 }
 
-% Describe "some conditions".
+At the end of definition section, we define values, a staged reduction, and evaluation contexts of \LMD.
 
 \begin{definition}[Values]
 	$A \neq \epsilon$\\
@@ -439,9 +443,6 @@ But this type is difficult to combine with other code because there are two $\%_
 		\textrm{Redexes} &  & R^\epsilon                & ::= (\lambda x:\tau.M)\ v^\epsilon \mid (\Lambda\alpha.v^\epsilon)\ \epsilon                                       & \\
 		                 &  & R^\alpha                  & ::=\ \TBL_\alpha \TB_\alpha M                                                                                      & \\
 	\end{align*}
-	
-	% Valueの説明
-	
 \end{definition}
 
 
