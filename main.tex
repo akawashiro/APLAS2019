@@ -431,7 +431,13 @@ In other words, we can remove a $\%_\alpha$ symbol of a value when it doesn't ch
 \end{align*}
 }
 
-At the end of definition section, we define values, a staged reduction, and evaluation contexts of \LMD.
+The reduction given above is a full reduction and any redexes can be reduced in arbitrary order.
+But we need to fix a order of reduction when we implement a interpreter of \LMD and
+the order must be appropriate in terms of stages.
+
+We will define deterministic call-by-value staged semantics which can be used as a basis of a \LMD\ interpreter.
+In this reduction, $\longrightarrow_\beta$ and $\longrightarrow_\Lambda$ are allowed only at stage $\epsilon$ and 
+$\longrightarrow_\blacklozenge$ is allowed only at stage $\alpha$.
 
 \begin{definition}[Values]
 	$A \neq \epsilon$\\
