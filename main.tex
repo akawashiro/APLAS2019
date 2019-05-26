@@ -544,20 +544,17 @@ because there are six types of judgement and two types of substitution in \LMD.
 	Straightforward induction on derivations.
 \end{proof}
 
-\begin{theorem}[Preservation for term on $\beta$ reduction]
-	If $\G\V M:\tau @A$ and $M \longrightarrow_{\beta} M'$, then $\G\V M':\tau @A$\\
+\begin{theorem}[Preservation]
+	If $\G\V M:\tau @A$ and $M \longrightarrow M'$, then $\G\V M':\tau @A$\\
 \end{theorem}
 
-\begin{theorem}[Preservation for term on $\TBL\TB$ reduction]
-	If $\G\V M:\tau @A$ and $M\longrightarrow_\blacklozenge N$, then $\G\V N:\tau @A$\\
-\end{theorem}
-
-\begin{theorem}[Preservation for term on $\Lambda$ reduction]
-	If $\G\V M:\tau @A$ and $M \longrightarrow_{\Lambda} N$, then $\G\V N:\tau @A$.
-\end{theorem}
+\begin{proof}
+	Straightforward induction on derivations.
+\end{proof}
 
 \begin{theorem}[Strong Normalization]
-	If $\G\V^A t:T$ then there is no infinite sequence of terms $(t_i)_{i\ge1}$ and $t_i \longrightarrow_{\beta, \TBL \TB,\Lambda} t_{i+1}$ for $i\ge 1$
+	If $\G\V^A M:\tau$ then there is no infinite sequence of terms $(M_i)_{i\ge1}$ and 
+	$M_i \longrightarrow M_{i+1}$ for $i\ge 1$
 \end{theorem}
 
 \begin{theorem}[Confluence(Church-Rosser Property)]
