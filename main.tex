@@ -440,28 +440,28 @@ In this reduction, $\longrightarrow_\beta$ and $\longrightarrow_\Lambda$ are all
 $\longrightarrow_\blacklozenge$ is allowed only at stage $\alpha$.
 
 \begin{definition}[Values]
-	$A \neq \epsilon$\\
+	The family $V^A$ of sets of values, ranged over by $v^A$ and 
+	the sets of $\epsilon$-redexes (ranged over by $R^\epsilon$) and $\alpha$-redexes (ranged over by $R^\alpha$)
+	are defined by following grammar. In the grammar $A \neq \epsilon$.
 	\begin{align*}
 		\textrm{Values}  &  & v^\epsilon \in V^\epsilon & ::= \lambda x:\tau.M \mid\ \TB_\alpha v^\alpha \mid \Lambda\alpha.v^\epsilon                                       & \\
 		                 &  & v^A \in V^A               & ::= x \mid \lambda x:\tau.v^A \mid v^A\ v^A \mid\ \TB_\alpha v^{A\alpha} \mid \Lambda\alpha.v^A \mid v^A\ \epsilon & \\
-		                 &  &                           & \quad\   \mid\ \TBL_\alpha v^{A'} (\text{if } A'\alpha = A \text{and } A' \neq \epsilon)                           & \\
+		                 &  &                           & \quad\   \mid\ \TBL_\alpha v^{A'} (\text{if } A'\alpha = A \text{ and } A' \neq \epsilon)                           & \\
 		                 &  &                           & \quad\   \mid \%_\alpha v^{A'} (\text{if } A'\alpha = A)                                                           & \\
 		\textrm{Redexes} &  & R^\epsilon                & ::= (\lambda x:\tau.M)\ v^\epsilon \mid (\Lambda\alpha.v^\epsilon)\ \epsilon                                       & \\
 		                 &  & R^\alpha                  & ::=\ \TBL_\alpha \TB_\alpha M                                                                                      & \\
 	\end{align*}
 \end{definition}
 
-
-\begin{definition}[Staged Reduction]
-	$A \neq \epsilon$\\
-	\begin{align*}
-		E^A_\epsilon [(\lambda x:\tau.M)\ v^\epsilon]       & \longrightarrow_s E^A_\epsilon[M[x\mapsto v^\epsilon]]             \\
-		E^A_\epsilon [(\Lambda\alpha.v^\epsilon)\ \epsilon] & \longrightarrow_s E^A_\epsilon[v^\epsilon[\alpha\mapsto \epsilon]] \\
-		E^A_\alpha [\TBL_\alpha \TB_\alpha v^\alpha]        & \longrightarrow_s E^A_\alpha[v^\alpha]                             \\
-	\end{align*}
-\end{definition}
+Values at $\epsilon$ stage are a $\lambda$ abstraction, a quoted code, or a $\Lambda$ abstraction.
+The body of a $\lambda$ abstraction can be any term but the body of $\Lambda$ abstraction only can be a value.
+This restriction means that the body of $Lambda$ abstraction must evaluated before application of an $\epsilon$ stage.
+Values at non-$\epsilon$ stage includes all term except $\TBL_\alpha v^\epsilon$.
+This is because $\TBL_\alpha v^\epsilon$ is a redex.
 
 \begin{definition}[Evaluation Context]
+	The family of sets $ECtx^A_B$ of evaluation contexts, ranged over by $E^A_B$, is defined by the following grammar,
+	$A$ is nonempty. (Although $B,A'$ can be empty.)
 	$A \neq \epsilon$\\
 	\begin{align*}
 		E^\epsilon_B \in ECtx^\epsilon_B & ::= \square\ (\text{if\ } B = \epsilon) \mid E^\epsilon_B\ M \mid v^e\ E^\epsilon_B
@@ -474,6 +474,25 @@ $\longrightarrow_\blacklozenge$ is allowed only at stage $\alpha$.
 		\mid E^A_B\ \epsilon \mid \%_\alpha\ E^{A'}_B \ (\text{where } A'\alpha = A)                                               \\
 	\end{align*}
 \end{definition}
+
+We write $E^A_B[M]$ for a term obtained by filling the hole in $E^A_B$ with $M$.
+
+\begin{definition}[Staged Reduction]
+	The staged reduction relation, written $M \longrightarrow_s M'$, is defined by 
+	the least relation closed under the rules in Figure \ref{fig:staged-reduction}.
+\end{definition}
+
+\begin{figure}
+	\begin{center}
+		\begin{align*}
+			E^A_\epsilon [(\lambda x:\tau.M)\ v^\epsilon]       & \longrightarrow_s E^A_\epsilon[M[x\mapsto v^\epsilon]]             \\
+			E^A_\epsilon [(\Lambda\alpha.v^\epsilon)\ \epsilon] & \longrightarrow_s E^A_\epsilon[v^\epsilon[\alpha\mapsto \epsilon]] \\
+			E^A_\alpha [\TBL_\alpha \TB_\alpha v^\alpha]        & \longrightarrow_s E^A_\alpha[v^\alpha]                             \\
+		\end{align*}
+		\caption{Staged Reduction}
+		\label{fig:staged-reduction}
+	\end{center}
+\end{figure}
 
 \section{Properties of \LMD}
 
