@@ -496,7 +496,13 @@ We write $E^A_B[M]$ for a term obtained by filling the hole in $E^A_B$ with $M$.
 
 \section{Properties of \LMD}
 
-\begin{theorem}[Substituition Lemma for Variables of Terms, Types or Kinds and Their Equivalence]
+In this section, we prove some properties of \LMD: subject reduction, strong normalization, confluence,
+unique decomposition of evaluation contexts, and progress.
+
+Substitution lemma for \LMD\ is little more complicated than ordinary one 
+because there are six types of judgement and two types of substitution in \LMD.
+
+\begin{theorem}[Substituition Lemma]
 	\begin{flalign*}
 		\text{If\ } \G,z:\xi @B \V M:\tau @A \text{\ and\ } \G\V P:\xi @B
 		&\text{\ then\ } \G\V M[z \mapsto P]:\tau[z \mapsto P] @A.&\\
@@ -513,7 +519,11 @@ We write $E^A_B[M]$ for a term obtained by filling the hole in $E^A_B$ with $M$.
 	\end{flalign*}
 \end{theorem}
 
-\begin{theorem}[Stage Substituition Lemma for Variables of Terms, Types or Kinds and Their Equivalence]
+\begin{proof}
+	Straightforward induction on derivations.
+\end{proof}
+
+\begin{theorem}[Stage Substituition Lemma]
 	\begin{flalign*}
 		\text{If\ } \G \V M:\tau @A
 		&\text{\ then\ } \G[\beta \mapsto \epsilon]\V M[\beta \mapsto \epsilon]:\tau[\beta \mapsto \epsilon] @A[\beta \mapsto \epsilon].&\\
@@ -529,6 +539,10 @@ We write $E^A_B[M]$ for a term obtained by filling the hole in $E^A_B$ with $M$.
 		&\text{\ then\ } \G[\beta \mapsto \epsilon]\V K[\beta \mapsto \epsilon]\E J[\beta \mapsto \epsilon] @A[\beta \mapsto \epsilon].&
 	\end{flalign*}
 \end{theorem}
+
+\begin{proof}
+	Straightforward induction on derivations.
+\end{proof}
 
 \begin{theorem}[Preservation for term on $\beta$ reduction]
 	If $\G\V M:\tau @A$ and $M \longrightarrow_{\beta} M'$, then $\G\V M':\tau @A$\\
