@@ -105,6 +105,9 @@
 \newcommand{\ID}[1]{\infer[]{#1}{\vdots}}
 \newcommand{\MD}[1]{\mathcal{D}_#1}
 
+\newcommand{\I}{\textrm{Int}}
+\newcommand{\M}{\textrm{Mat}}
+
 \begin{document}
 %
 \title{A Dependently Typed Multi-Stage Calculus\thanks{Supported by organization x.}}
@@ -208,6 +211,7 @@ $\%_\alpha M$ is a primitive operator for cross-stage persistence.
 
 Signatures are sequences of pairs of a constant and its type or a type variable and its kind.
 Because we adopted a \LLF-like system, constants and type variables for base types are given in the signature $\Sigma$.
+For example, when we use integers in \LMD, $\Sigma = \I :: *, 1:\I, 2:\I, \cdots$.
 
 % Contexts
 Contexts are sequences of triplexes of a variable, its type, and its stage.
@@ -271,6 +275,9 @@ $\TB_\alpha$ and $\TBL_\alpha$ is disappeared in the same way as $\%_\alpha$.
 % 総論
 
 In this section, we define the type system of \LMD.
+\LMD\ is little complicated because it contains dependent types.
+It contains typing, kinding, well-formed kinding, term equality, type equality, and kind equality.
+
 Especially, we discuss on the type equality of \LMD in detail
 because it is the main contribution of this paper.
 \LMD is developed on the basis of \LTP but there are no type equivalence rules in \LTP.
@@ -407,8 +414,6 @@ For example, we can utilize a dependently typed multistage calculus to generate 
 When we know sizes of matrices before the multiplication,
 we can generate efficient code for multiplication by unrolling loops.
 
-\newcommand{\I}{\textrm{Int}}
-\newcommand{\M}{\textrm{Mat}}
 
 $\text{mulmat}$ function in following code fragment generate a code for matrix multiplication.
 $\text{mulmat}$ takes two integer which are the size of multiplicand matrix and generate a code.
