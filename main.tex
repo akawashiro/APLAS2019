@@ -163,8 +163,47 @@
 \subsection{Organization of the Paper}
 
 \section{Informal Overview of \LMD}
-\subsection{\LLF}
+
+In this section, we check \LMD informally after checking \LTP and \LLF which are the basis of \LMD.
+
 \subsection{\LTP}
+
+% quote and unquote
+
+In \LTP, quote and unquote are written $\TB_\alpha M$ and $\TBL_\alpha M$, respectively.
+The type of $\TB_\alpha M$ is $\TW_\alpha \tau$ when $M$ has $\tau$ type.
+The type of $\TBL_\alpha M$ is $\tau$ when $M$ has $\TW_\alpha \tau$.
+Please notice that $\TBL_\alpha M$ is well-typed, $M$ has a code type from the typing rule of \LTP.
+
+% transition variable
+
+The subscription $\alpha$ is a transition variable which is called a stage variable in \LMD.
+It is used to show the thickness of quoting.
+For example, $\TB_\alpha 1$ is a fragment of code which becomes $1$ after run it once and
+$\TB_\alpha \TB_\beta 1$ becomes $1$ after run it twice.
+
+% transition
+
+A sequence of transition variables is a transition which is called a stage in \LMD.
+In \LTP, all judgement has a transition.
+Especially, terms without quoting exist at the empty transition which is represented by $\epsilon$.
+For example, $(\lambda x:\I.x)\ (1+2)$ is at $\epsilon$ transition and 
+$\TB_\alpha (\lambda x:\I.x)$ is at $\alpha$ transition.
+
+% transition abstraction
+
+There are abstraction for transition variables and application for transition abstraction in \LTP.
+They looks like $\Lambda\alpha.M$ and $M\ A$, respectively.
+
+% transition application
+
+% run
+
+% CSP
+
+% omitting residualization
+
+\subsection{\LLF}
 \subsection{\LMD}
 
 \section{Formal Definition of \LMD}
