@@ -16,6 +16,7 @@
 % \usepackage{ebproof}
 \usepackage{lscape}
 \usepackage{mdframed}
+\usepackage{xspace}
 
 % Used for displaying a sample figure. If possible, figure files should
 % be included in EPS format.
@@ -27,9 +28,9 @@
 \newcommand{\red}[1]{\textcolor{red}{#1 }}
 \newcommand{\blue}[1]{\textcolor{blue}{#1 }}
 
-\newcommand{\LTP}{$\lambda^{\triangleright\%}$\ }
-\newcommand{\LMD}{$\lambda^{\textrm{MD}}$\ }
-\newcommand{\LLF}{$\lambda^{\textrm{LF}}$\ }
+\newcommand{\LTP}{$\lambda^{\triangleright\%}$\xspace}
+\newcommand{\LMD}{$\lambda^{\textrm{MD}}$\xspace}
+\newcommand{\LLF}{$\lambda^{\textrm{LF}}$\xspace}
 
 \newcommand{\G}{\Gamma}
 \newcommand{\D}{\Delta}
@@ -174,13 +175,19 @@ In \LTP, quote and unquote are written $\TB_\alpha M$ and $\TBL_\alpha M$, respe
 The type of $\TB_\alpha M$ is $\TW_\alpha \tau$ when $M$ has $\tau$ type.
 The type of $\TBL_\alpha M$ is $\tau$ when $M$ has $\TW_\alpha \tau$.
 Please notice that $\TBL_\alpha M$ is well-typed, $M$ has a code type from the typing rule of \LTP.
+In addition to normal $\beta$-reduction, there is an reduction rule for unquoted quoted code.
+\begin{align*}
+	\TBL_\alpha (\TB_\alpha M) \longrightarrow M
+\end{align*}
+It means when a quoted code fragment is unquoted, it returns back to the original code fragment.
+\red{This reduction is called $\longrightarrow_\Lambda$ in \LMD.}
 
 % transition variable
 
 The subscription $\alpha$ is a transition variable which is called a stage variable in \LMD.
 It is used to show the thickness of quoting.
-For example, $\TB_\alpha 1$ is a fragment of code which becomes $1$ after run it once and
-$\TB_\alpha \TB_\beta 1$ becomes $1$ after run it twice.
+For example, $\TB_\alpha (\lambda x:\I.x+10)$ is a fragment of code which becomes $(\lambda x:\I.x+10)$ after run it once and
+\red{$\TB_\alpha \TB_\beta (\lambda x:\I.x+10)$ becomes $(\lambda x:\I.x+10)$ after run it twice.}
 
 % transition
 
@@ -190,12 +197,22 @@ Especially, terms without quoting exist at the empty transition which is represe
 For example, $(\lambda x:\I.x)\ (1+2)$ is at $\epsilon$ transition and 
 $\TB_\alpha (\lambda x:\I.x)$ is at $\alpha$ transition.
 
-% transition abstraction
+% transition abstraction and application
 
 There are abstraction for transition variables and application for transition abstraction in \LTP.
 They looks like $\Lambda\alpha.M$ and $M\ A$, respectively.
+A transition abstraction binds a transition variable in a term.
+For example, all $\alpha$ in $\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x))$ are bound.
+It is only natural there is a rule for transition application in \LTP.
+The rule is following.
 
-% transition application
+\begin{align*}
+	(\Lambda\alpha.M)\ A \longrightarrow M[\alpha\mapsto A]
+\end{align*}
+
+For example, $\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x))\ (\beta\gamma)$ reduces to $\TB_{\beta\gamma} (\lambda x:\I.x)$.
+\red{Although we can apply any transition to a transition abstraction in \LTP,
+we restrict the transitions only to $\epsilon$ transition in \LMD to simplify the system.}
 
 % run
 
