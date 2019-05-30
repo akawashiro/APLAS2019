@@ -214,9 +214,24 @@ For example, $\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x))\ (\beta\gamma)$ reduce
 \red{Although we can apply any transition to a transition abstraction in \LTP,
 we restrict the transitions only to $\epsilon$ transition in \LMD to simplify the system.}
 
+% transition-related symbols disappears when the empty transition is substituted.
+
+Another important rule about a transition variable is 
+that a transition variable related symbol disappears when the empty transition is substituted to the transition variable.
+For example, $(\TB_\epsilon (\lambda x:\I.x))$ is equivalent to $(\lambda x:\I.x)$.
+This rule is applied all transition variable related symbols: $\TB_\alpha, \TBL_\alpha$, and $\%_\alpha$.
+
 % run
+The main purpose of transition abstractions and transition applications are to represent {\bf{run}} operator.
+In multistage calculus, {\bf{run}} is a very important operator.
+It changes quoted code to the original code.
+{\bf{run}} is realized with application of the empty transition $\epsilon$.
+For example, $\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x))\ \epsilon$ becomes $\lambda x:\I.x$
+because $\TB_\epsilon$ is disappeared.
 
 % CSP
+CSP, cross-stage persistence is an important feature of multistage calculus.
+\red{It enable us to embed value at an outer transition into an inner transition}.
 
 % omitting residualization
 
