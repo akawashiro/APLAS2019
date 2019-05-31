@@ -230,13 +230,22 @@ For example, $\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x))\ \epsilon$ becomes $\l
 because $\TB_\epsilon$ is disappeared.
 
 % CSP
-CSP, cross-stage persistence is an important feature of multistage calculus.
+CSP, cross-stage persistence, is an important feature of multistage calculus.
 \red{It enable us to embed value at an outer transition into an inner transition}.
+$\%$ is dedicated for CSP in \LTP.
+For example, $\lambda a:\I.\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x+\%_\alpha a))$
 
 % omitting residualization
 
-\subsection{\LLF}
-\subsection{\LMD}
+There is another important function called program residualization in \LTP.
+It means that a generated code can be dumped into a file.
+We can load the dumped file and run it.
+The difficulty is arise when program residualization is used with CSP.
+Transition variables are classified to two kinds in \LTP in order to deal with this difficulty.
+
+\subsection{Extending \LTP with Dependent Types}
+
+Next, we develop \LMD by extending \LTP with dependent types.
 
 \section{Formal Definition of \LMD}
 
