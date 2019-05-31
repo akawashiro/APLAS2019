@@ -243,6 +243,14 @@ We can load the dumped file and run it.
 The difficulty is arise when program residualization is used with CSP.
 Transition variables are classified to two kinds in \LTP in order to deal with this difficulty.
 
+\subsection{Dependent Types}
+
+% Dependent Types
+
+% Kind, Well-formed kind
+
+% Type Equality
+
 \subsection{Extending \LTP with Dependent Types}
 
 Next, we develop \LMD by extending \LTP with dependent types.
@@ -357,13 +365,30 @@ $\TB_\alpha$ and $\TBL_\alpha$ is disappeared in the same way as $\%_\alpha$.
 In this section, we define the type system of \LMD.
 \LMD\ is little complicated because it contains dependent types.
 It contains typing, kinding, well-formed kinding, term equality, type equality, and kind equality.
+In other words, there are six types of judgement in \LMD.
+We show them in Figure \ref{fig:LMD-six-judgements}.
+
+\begin{figure}
+	\begin{center}
+		\begin{align*}
+			\G & \V M : \tau @ A \\
+			\G & \V \tau :: K @ A \\
+			\G & \V K \iskind @ A \\
+			\G & \V M \E N @ A \\
+			\G & \V \tau \E \sigma \\
+			\G & \V K \E J @ A
+		\end{align*}
+		\caption{Six types of judgement in \LMD}
+		\label{fig:LMD-six-judgements}
+	\end{center}
+\end{figure}
 
 Especially, we discuss on the type equality of \LMD in detail
 because it is the main contribution of this paper.
 \LMD is developed on the basis of \LTP but there are no type equivalence rules in \LTP.
 
 \begin{definition}[Typing]
-    The typing relation $ \G \V M : \tau @ A $ is the least relation closed under the rules in Figure \ref{fig:typing-rules}.
+	The typing relation $ \G \V M : \tau @ A $ is the least relation closed under the rules in Figure \ref{fig:typing-rules}.
 \end{definition}
 
 % 各論
@@ -507,14 +532,14 @@ The condition is that a CSPed value equals to the original value when it has the
 For example, $\V \%_\alpha 5 \E 5 @ \alpha$ because $ \V 5 : \I @ \alpha $ from \TConst\ and  $ \V \%_\alpha 5 : \I @ \alpha$.
 In other words, we can remove a $\%_\alpha$ symbol of a value when it doesn't change the type.
 
-% Example of QCsp (mulmat)
-{
-\begin{align*}
-	\text{mulmat}       & : \Pi x:\I.\Pi y:\I.(\TW_\alpha \Pi z:\I.(\M\ z\ \%_\alpha y) \to (\M\ \%_\alpha y\ \%_\alpha x) \to (\M\ z\ \%_\alpha x)) \\
-	\text{mulmat}\ 3\ 5 & : \TW_\alpha \Pi z:\I.(\M\ z\ \%_\alpha 5) \to (\M\ \%_\alpha 5\ \%_\alpha 3) \to (\M\ z\ \%_\alpha 3)                     \\
-	                    & (\E \TW_\alpha \Pi z:\I.(\M\ z\ 5) \to (\M\ 5\ 3) \to (\M\ z\ 3) )                                                         \\
-\end{align*}
-}
+	% Example of QCsp (mulmat)
+	{
+		\begin{align*}
+			\text{mulmat}       & : \Pi x:\I.\Pi y:\I.(\TW_\alpha \Pi z:\I.(\M\ z\ \%_\alpha y) \to (\M\ \%_\alpha y\ \%_\alpha x) \to (\M\ z\ \%_\alpha x)) \\
+			\text{mulmat}\ 3\ 5 & : \TW_\alpha \Pi z:\I.(\M\ z\ \%_\alpha 5) \to (\M\ \%_\alpha 5\ \%_\alpha 3) \to (\M\ z\ \%_\alpha 3)                     \\
+			                    & (\E \TW_\alpha \Pi z:\I.(\M\ z\ 5) \to (\M\ 5\ 3) \to (\M\ z\ 3) )                                                         \\
+		\end{align*}
+	}
 
 This kind of type equality is very useful when we combine $\text{mulmat}\ 3\ 5$ with another code.
 We cannot remove $\%_\alpha$ in the type without \QPercent and it makes very difficult to combine
@@ -535,7 +560,7 @@ $\longrightarrow_\blacklozenge$ is allowed only at stage $\alpha$.
 	\begin{align*}
 		\textrm{Values}  &  & v^\epsilon \in V^\epsilon & ::= \lambda x:\tau.M \mid\ \TB_\alpha v^\alpha \mid \Lambda\alpha.v^\epsilon                                       & \\
 		                 &  & v^A \in V^A               & ::= x \mid \lambda x:\tau.v^A \mid v^A\ v^A \mid\ \TB_\alpha v^{A\alpha} \mid \Lambda\alpha.v^A \mid v^A\ \epsilon & \\
-		                 &  &                           & \quad\   \mid\ \TBL_\alpha v^{A'} (\text{if } A'\alpha = A \text{ and } A' \neq \epsilon)                           & \\
+		                 &  &                           & \quad\   \mid\ \TBL_\alpha v^{A'} (\text{if } A'\alpha = A \text{ and } A' \neq \epsilon)                          & \\
 		                 &  &                           & \quad\   \mid \%_\alpha v^{A'} (\text{if } A'\alpha = A)                                                           & \\
 		\textrm{Redexes} &  & R^\epsilon                & ::= (\lambda x:\tau.M)\ v^\epsilon \mid (\Lambda\alpha.v^\epsilon)\ \epsilon                                       & \\
 		                 &  & R^\alpha                  & ::=\ \TBL_\alpha \TB_\alpha M                                                                                      & \\
