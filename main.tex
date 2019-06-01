@@ -30,7 +30,7 @@
 
 \newcommand{\LTP}{$\lambda^{\triangleright\%}$\xspace}
 \newcommand{\LMD}{$\lambda^{\textrm{MD}}$\xspace}
-\newcommand{\LLF}{$\lambda^{\textrm{LF}}$\xspace}
+\newcommand{\LLF}{$\lambda\textrm{LF}$\xspace}
 
 \newcommand{\G}{\Gamma}
 \newcommand{\D}{\Delta}
@@ -199,6 +199,21 @@ Especially, terms without quoting exist at the empty transition which is represe
 For example, $(\lambda x:\I.x)\ (1+2)$ is at $\epsilon$ transition and 
 $\TB_\alpha (\lambda x:\I.x)$ is at $\alpha$ transition.
 
+% transition in typing rules
+
+\blue{Should we use $\vdash^A$? or $\vdash @ A$?}
+
+A type judgement of \LTP is of the form $\G \vdash M : \tau @ A$.
+Transition $A$ means in which transition $M$ exists.
+Therefore, transitions appear in typing rules, too.
+\begin{center}
+	\infrule{\G\vdash M:\tau@{A\alpha}}{\G\vdash \TB_{\alpha}M:\TW_{\alpha}\tau@A}{\TTB} \andalso
+	\infrule{\G\vdash M:\TW_{\alpha}\tau@A}{\G\vdash \TBL_{\alpha}M:\tau@{A\alpha}}{\TTBL}
+\end{center}
+\TTB, corresponding to quoting, means 
+if $M$ is typed $\tau$ at transition $A\alpha$ then $\TB_{\alpha}M$, quoted $M$, is typed $\TW_{\alpha}\tau$ at $A$.
+\TTBL is converse of \TTB.
+
 % transition abstraction and application
 
 There are abstraction for transition variables and application for transition abstraction in \LTP.
@@ -273,7 +288,7 @@ $\G \vdash K \E J$ means a kind $K$ and a kind $J$ are equivalent under the envi
 
 \subsection{Extending \LTP with Dependent Types}
 
-Next, we develop \LMD by extending \LTP with dependent types.
+Next, we develop \LMD by extending \LTP with \LLF-like dependent types.
 
 \section{Formal Definition of \LMD}
 
@@ -460,7 +475,7 @@ $\textrm{Mat}\ 5\ 3$ is equivalent to $\textrm{Mat}\ (4+1)\ (1+2)$ obviously.
 		\infrule{\G\V \sigma::*@A\andalso\G,x:\sigma@A\V M:\tau@A}{\G\V(\lambda (x:\sigma).M):(\Pi (x:\sigma).\tau)@A}{\textsc{T-Abs}} \\[2mm]
 		\infrule{\G\V M:(\Pi (x:\sigma).\tau)@A \andalso \G\V N:\sigma@A}{\G\V M\ N : \tau[x\mapsto N]@A}{\textsc{T-App}} \andalso
 		\infrule{\G\V M:\tau@A \andalso \G\V \tau\equiv \sigma :: K@A}{\G\V M:\sigma@A}{\textsc{T-Conv}} \\[2mm]
-		\infrule{\G\V M:\tau@{A\alpha}}{\G\V\TB_{\alpha}M:\TW_{\alpha}\tau@A}{\textsc{T-$\TB$}} \andalso
+		\infrule{\G\V M:\tau@{A\alpha}}{\G\V\TB_{\alpha}M:\TW_{\alpha}\tau@A}{\TTB} \andalso
 		\infrule{\G\V M:\TW_{\alpha}\tau@A}{\G\V\TBL_{\alpha}M:\tau@{A\alpha}}{\TTBL} \\[2mm]
 		\infrule{\G\V M:\tau@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\V\Lambda\alpha.M:\forall\alpha.\tau@A}{\textsc{T-Gen}} \andalso
 		\infrule{\G\V M:\forall\alpha.\tau@A}{\G\V M\ \epsilon:\tau[\alpha \mapsto \epsilon]@A}{\textsc{T-Ins}} \andalso
