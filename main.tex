@@ -151,6 +151,8 @@
 \end{abstract}
 
 \blue{181 words. The abstract should briefly summarize the contents of the paper in 150--250 words.}
+\blue{コードとかはボールドを使ったほうが良いかもしれない。}
+\red{Suspicious senetences are colored red.}
 %
 %
 %
@@ -245,11 +247,29 @@ Transition variables are classified to two kinds in \LTP in order to deal with t
 
 \subsection{Dependent Types}
 
-% Dependent Types
+% \LLF
+\LLF is a simple \red{system} of dependent types introduced in \cite{attapl}.
+It is based on Edinburgh LF\cite{harper1993framework}.
+Therefore, all constants and base types are declared in the signature.
+The \LLF type theory generalizes simply typed lambda calculus
+by replacing the function type $\tau\to\sigma$ with the dependent product type $\Pi x:\tau.\sigma$.
 
 % Kind, Well-formed kind
+In addition to ordinary typing rules like simply typed lambda calculus,
+there are kinding rules, well-formed kinding rules, term equivalence rules, type equivalence rules, and kind equivalence rules in \LLF.
+Kinding rules and well-formed kinding rules are 
+introduced in order to prohibit making illegal types such as $\textrm{Vect}\ \textrm{Bool}$.
+For a well-formed type $\tau$, $\G \vdash \tau :: K$ means that $\tau$ has a kind $K$ under the environment $\G$ and 
+for a well-formed kind $K$, $\G \vdash K$ means that $K$ is a well-formed kind under en environment $\G$.
 
 % Type Equality
+Type equality rules are needed because the type equivalence is not obivious unlike simply typed lambda calculus.
+For example, $\textrm{Vect}\ 7$ should be equivalent to $\textrm{Vect}\ (3+4)$
+but they are not equivalent seemingly. Thus, we must define equivalence rules.
+In \LLF, equivalence is expressed with a symbol of $\E$.
+$\G \vdash M \E N$ means a term $M$ and a term $N$ are equivalent under the environment $\G$.
+$\G \vdash \tau \E \sigma$ means a type $\tau$ and a type $\sigma$ are equivalent under the environment $\G$.
+$\G \vdash K \E J$ means a kind $K$ and a kind $J$ are equivalent under the environment $\G$.
 
 \subsection{Extending \LTP with Dependent Types}
 
