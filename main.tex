@@ -238,7 +238,7 @@ that a transition variable related symbol disappears when the empty transition i
 For example, $(\TB_\epsilon (\lambda x:\I.x))$ is equivalent to $(\lambda x:\I.x)$.
 This rule is applied all transition variable related symbols: $\TB_\alpha, \TBL_\alpha$, and $\%_\alpha$.
 
-% run
+% Run
 The main purpose of transition abstractions and transition applications are to represent {\bf{run}} operator.
 In multistage calculus, {\bf{run}} is a very important operator.
 It changes quoted code to the original code.
@@ -252,7 +252,7 @@ CSP, cross-stage persistence, is an important feature of multistage calculus.
 $\%$ is dedicated for CSP in \LTP.
 For example, $\lambda a:\I.\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x+\%_\alpha a))$
 
-% omitting residualization
+% Omitting Residualization
 
 There is another important function called program residualization in \LTP.
 It means that a generated code can be dumped into a file.
@@ -260,7 +260,7 @@ We can load the dumped file and run it.
 The difficulty is arise when program residualization is used with CSP.
 Transition variables are classified to two kinds in \LTP in order to deal with this difficulty.
 
-\subsection{Dependent Types}
+\subsection{\LLF}
 
 % \LLF
 \LLF is a simple \red{system} of dependent types introduced in \cite{attapl}.
@@ -289,6 +289,31 @@ $\G \vdash K \E J$ means a kind $K$ and a kind $J$ are equivalent under the envi
 \subsection{Extending \LTP with Dependent Types}
 
 Next, we develop \LMD by extending \LTP with \LLF-like dependent types.
+From here, we use the word of stage instead of transition 
+because \red{we develop a multistage calculus not a multitransition calculus.}
+
+% Kidinding and Well-formed Kinding Rules
+
+In order to extend \LMD with dependent types, we need kinding rules and well-formed kinding rules.
+It was lucky that almost all rules are determined easily.
+This is because multistage calculus and dependent types are almost \red{orthogonal}.
+Therefore, we can get kinding rules and well-formed kinding rules of \LMD just by 
+attaching stage anotations to ones of \LLF.
+For example, \KAbs' is a kinding rule for a dependent type in \LLF and \KAbs\ is a corresponding one.
+\begin{center}
+	\infrule{\G\vdash \tau :: * \andalso \G,x:\tau@A\vdash \sigma::J}{\G\vdash(\Pi x:\tau.\sigma) :: (\Pi x:\tau.J)}{\KAbs'} \\[2mm]
+	\infrule{\G\V \tau :: *@A \andalso \G,x:\tau@A\V \sigma::J@A}{\G\V(\Pi x:\tau.\sigma) :: (\Pi x:\tau.J)@A}{\KAbs} \\[2mm]
+\end{center}
+
+% Constants and Base Types
+
+The way of handling of constants and base types is diffrence between \LMD and \LTP.
+We adopt signature $\Sigma$ to handle constants and base types.
+This is because signature simplify kinding rules relating to type variables.
+
+% Equivalence Rules
+
+% Q-% rule
 
 \section{Formal Definition of \LMD}
 
@@ -542,7 +567,7 @@ The rule \QBeta\ means when a term $M \longrightarrow_\beta M'$, $M$ is equivale
 		\infrule{\G\V M \E N : \tau@A}{\G\V \TBL_\alpha(\TB_\alpha M) \E N : \tau @A}{\QTBLTB} \\[2mm]
 		\infrule{\G\V (\Lambda\alpha.M) : \forall\alpha.\tau@A}{\G\V (\Lambda\alpha.M)\ \epsilon \E M[\alpha \mapsto \epsilon] : \tau[\alpha \mapsto \epsilon]@A}{\QLambda} \\[2mm]
 		\infrule{\G\V M:\tau@{A\alpha} \andalso \G\V M:\tau@A}{\G\V\%_\alpha M \E M : \tau@{A\alpha}}{\QPercent}
-		\caption{Tem Equivalence Rules}
+		\caption{Term Equivalence Rules}
 		\label{fig:term-equivalence-rules}
 	\end{center}
 \end{figure}
