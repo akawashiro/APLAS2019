@@ -107,6 +107,7 @@
 \newcommand{\MD}[1]{\mathcal{D}_#1}
 
 \newcommand{\I}{\textrm{Int}}
+\newcommand{\B}{\textrm{Bool}}
 \newcommand{\M}{\textrm{Mat}}
 
 \begin{document}
@@ -182,14 +183,16 @@ In addition to normal $\beta$-reduction, there is an reduction rule for unquoted
 	\TBL_\alpha (\TB_\alpha M) \longrightarrow M
 \end{align*}
 It means when a quoted code fragment is unquoted, it returns back to the original code fragment.
-\red{This reduction is called $\longrightarrow_\Lambda$ in \LMD.}
+This reduction is called $\longrightarrow_\Lambda$ in \LMD.
+\red{この文はここに来るべきなのか? LTPの説明ではないが}
 
 % transition variable
 
 The subscription $\alpha$ is a transition variable which is called a stage variable in \LMD.
 It is used to show the thickness of quoting.
 For example, $\TB_\alpha (\lambda x:\I.x+10)$ is a fragment of code which becomes $(\lambda x:\I.x+10)$ after run it once and
-\red{$\TB_\alpha \TB_\beta (\lambda x:\I.x+10)$ becomes $(\lambda x:\I.x+10)$ after run it twice.}
+$\TB_\alpha \TB_\beta (\lambda x:\I.x+10)$ becomes $(\lambda x:\I.x+10)$ after run it twice.
+\red{run twiceは表現が微妙}
 
 % transition
 
@@ -201,7 +204,7 @@ $\TB_\alpha (\lambda x:\I.x)$ is at $\alpha$ transition.
 
 % transition in typing rules
 
-\blue{Should we use $\vdash^A$? or $\vdash @ A$?}
+\red{LTPに合わせて$\vdash^A$を使うべきか? それともLMDに合わせて$\vdash @ A$を使うべきか?}
 
 A type judgement of \LTP is of the form $\G \vdash M : \tau @ A$.
 Transition $A$ means in which transition $M$ exists.
@@ -228,8 +231,9 @@ The rule is following.
 \end{align*}
 
 For example, $\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x))\ (\beta\gamma)$ reduces to $\TB_{\beta\gamma} (\lambda x:\I.x)$.
-\red{Although we can apply any transition to a transition abstraction in \LTP,
-we restrict the transitions only to $\epsilon$ transition in \LMD to simplify the system.}
+Although we can apply any transition to a transition abstraction in \LTP,
+we restrict the transitions only to $\epsilon$ transition in \LMD to simplify the system.
+\red{この文はここに来るべきなのか? LTPの説明ではないが}
 
 % transition-related symbols disappears when the empty transition is substituted.
 
@@ -248,7 +252,8 @@ because $\TB_\epsilon$ is disappeared.
 
 % CSP
 CSP, cross-stage persistence, is an important feature of multistage calculus.
-\red{It enable us to embed value at an outer transition into an inner transition}.
+It enable us to embed value at an outer transition into an inner transition.
+\red{inner / outer は適切か?}
 $\%$ is dedicated for CSP in \LTP.
 For example, $\lambda a:\I.\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x+\%_\alpha a))$
 
@@ -263,7 +268,8 @@ Transition variables are classified to two kinds in \LTP in order to deal with t
 \subsection{\LLF}
 
 % \LLF
-\LLF is a simple \red{system} of dependent types introduced in \cite{attapl}.
+\LLF is a simple system of dependent types introduced in \cite{attapl}.
+\red{system / type system / calculus ?}
 It is based on Edinburgh LF\cite{harper1993framework}.
 Therefore, all constants and base types are declared in the signature.
 The \LLF type theory generalizes simply typed lambda calculus
@@ -290,28 +296,36 @@ $\G \vdash K \E J$ means a kind $K$ and a kind $J$ are equivalent under the envi
 
 Next, we develop \LMD by extending \LTP with \LLF-like dependent types.
 From here, we use the word of stage instead of transition 
-because \red{we develop a multistage calculus not a multitransition calculus.}
-
-% Kidinding and Well-formed Kinding Rules
-
-In order to extend \LMD with dependent types, we need kinding rules and well-formed kinding rules.
-It was lucky that almost all rules are determined easily.
-This is because multistage calculus and dependent types are almost \red{orthogonal}.
-Therefore, we can get kinding rules and well-formed kinding rules of \LMD just by 
-attaching stage anotations to ones of \LLF.
-For example, \KAbs' is a kinding rule for a dependent type in \LLF and \KAbs\ is a corresponding one.
-\begin{center}
-	\infrule{\G\vdash \tau :: * \andalso \G,x:\tau@A\vdash \sigma::J}{\G\vdash(\Pi x:\tau.\sigma) :: (\Pi x:\tau.J)}{\KAbs'} \\[2mm]
-	\infrule{\G\V \tau :: *@A \andalso \G,x:\tau@A\V \sigma::J@A}{\G\V(\Pi x:\tau.\sigma) :: (\Pi x:\tau.J)@A}{\KAbs} \\[2mm]
-\end{center}
+because we develop a multistage calculus not a multitransition calculus.
+\red{stageのほうが言葉としてふさわしいと言いたい}
+There are three technical points in the extension from \LTP to \LMD.
 
 % Constants and Base Types
 
-The way of handling of constants and base types is diffrence between \LMD and \LTP.
-We adopt signature $\Sigma$ to handle constants and base types.
-This is because signature simplify kinding rules relating to type variables.
+First, the way of handling of constants and base types is diffrence between \LMD and \LTP.
+We adopt a signature $\Sigma$ to handle constants and base types.
+This is because a signature simplify kinding rules relating to type variables.
+A signature $\Sigma$ is composed of pairs of a base type and its kind or a constant and its type.
+For example, if you want to use boolean, $\Sigma = \B::*, \text{true}:\B, \text{false}:\B$
+\red{具体的な導出例を出したほうがよいか? また、なぜsimpleになるのを書くべきか?}
+
+% Kidinding and Well-formed Kinding Rules
+
+Second, we need kinding rules and well-formed kinding rules in order to extend \LMD with dependent types.
+It was lucky that almost all rules are determined easily.
+This is because multistage calculus and dependent types are almost orthogonal.
+\red{orthogonal は抽象的すぎるか?}
+Therefore, we can get kinding rules and well-formed kinding rules of \LMD just by 
+attaching stage anotations to ones of \LLF.
+For example, \KAbs-LF is a kinding rule for a dependent type in \LLF and \KAbs\ is a corresponding one.
+\begin{center}
+	\infrule{\G\vdash \tau :: * \andalso \G,x:\tau@A\vdash \sigma::J}{\G\vdash(\Pi x:\tau.\sigma) :: (\Pi x:\tau.J)}{\KAbs-LF} \\[2mm]
+	\infrule{\G\V \tau :: *@A \andalso \G,x:\tau@A\V \sigma::J@A}{\G\V(\Pi x:\tau.\sigma) :: (\Pi x:\tau.J)@A}{\KAbs} \\[2mm]
+\end{center}
 
 % Equivalence Rules
+
+Third, we also need type equivalence rules in \LMD as a dependent type system.
 
 % Q-% rule
 
