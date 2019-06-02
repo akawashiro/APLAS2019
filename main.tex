@@ -326,8 +326,24 @@ For example, \KAbs-LF is a kinding rule for a dependent type in \LLF and \KAbs\ 
 % Equivalence Rules
 
 Third, we also need type equivalence rules in \LMD as a dependent type system.
+Although there are new primitives relating to stages which aren't in \LLF,
+we can design all rules except \QPercent\ easily.
+\red{design?}
+\red{この段落が短い。後ろとくっつけてもいいが、段落の趣旨がボケる。}
 
 % Q-% rule
+
+The biggest problem in extension is handling the CSP symbol $\%_\alpha$ in \LMD.
+The equvalence simple rule to handle CSP is \QCsp.
+\begin{center}
+	\infrule{\G\V M \E N : \tau @A}{\G\V\%_\alpha M \E \%_\alpha N : \tau@{A\alpha}}{\QCsp}
+\end{center}
+However, this rule isn't enough when the parameters of dependent types are cross-staed.
+We will discuss on this problem in later section and solve this problem with the new rule \QPercent.
+\begin{center}
+	\infrule{\G\V M:\tau@{A\alpha} \andalso \G\V M:\tau@A}{\G\V\%_\alpha M \E M : \tau@{A\alpha}}{\QPercent}
+\end{center}
+\red{この段落でQ-Cspの持つ問題点を指摘すべきか? ただ、ここでmulmatの例を使うと3章と被る。}
 
 \section{Formal Definition of \LMD}
 
@@ -339,17 +355,17 @@ In the next section, we will discuss on properties of \LMD.
 \LMD is defined by the following grammar.
 
 \begin{align*}
-    \textrm{Type variables}  &  &                          & X,Y,Z                                                                             \\
-    \textrm{Constants}       &  &                          & c                                                                                 \\
-    \textrm{Variables}       &  &                          & x,y,z                                                                             \\
-    \textrm{Stage variables} &  &                          & \alpha,\beta,\gamma                                                               \\
-    \textrm{Stage}           &  &                          & A,B,C                                                                             \\
-    \textrm{Kinds}           &  & K,J,I,H,G                & ::= * \mid \Pi x:\tau.K                                                           \\
-    \textrm{Types}           &  & \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} \tau \mid \F\alpha.\tau \\
-    \textrm{Terms}           &  & M,N,L,O,P                & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M 
-    \mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ \epsilon \mid \%_\alpha M                                                                  \\ 
-    \textrm{Signature}       &  & \Sigma                   & ::= \phi \mid X::K \mid c:\tau                                                    \\
-    \textrm{Contexts}        &  & \Gamma                   & ::= \phi \mid  \Gamma,x:\tau@A\ (x\not\in\textrm{FV}(\G))                         \\
+	\textrm{Type variables}  &  &                          & X,Y,Z                                                                             \\
+	\textrm{Constants}       &  &                          & c                                                                                 \\
+	\textrm{Variables}       &  &                          & x,y,z                                                                             \\
+	\textrm{Stage variables} &  &                          & \alpha,\beta,\gamma                                                               \\
+	\textrm{Stage}           &  &                          & A,B,C                                                                             \\
+	\textrm{Kinds}           &  & K,J,I,H,G                & ::= * \mid \Pi x:\tau.K                                                           \\
+	\textrm{Types}           &  & \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} \tau \mid \F\alpha.\tau \\
+	\textrm{Terms}           &  & M,N,L,O,P                & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M 
+	\mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ \epsilon \mid \%_\alpha M                                                                  \\ 
+	\textrm{Signature}       &  & \Sigma                   & ::= \phi \mid X::K \mid c:\tau                                                    \\
+	\textrm{Contexts}        &  & \Gamma                   & ::= \phi \mid  \Gamma,x:\tau@A\ (x\not\in\textrm{FV}(\G))                         \\
 \end{align*}
 
 The metavariables $X, Y, \text{and} Z$ range over the type variables, $c$ ranges over constants, the metavariables $x, y, \text{and}, z$ range over the variables.
@@ -400,27 +416,27 @@ Substitution $M[x\mapsto N]$ is the normal capture-avoiding substitution, and we
 Substitution $M[\alpha \mapsto \epsilon]$ is defined below.
 
 \begin{align*}
-    % \newcommand{\SB}{}
-    (\lambda x:\tau.M)[\alpha \mapsto \epsilon] & = \lambda x:\tau[\alpha \mapsto \epsilon].M[\alpha \mapsto \epsilon]                                  \\
-    (M\ N)[\alpha \mapsto \epsilon]             & = (M[\alpha \mapsto \epsilon])\ (N[\alpha \mapsto \epsilon])                                          \\
-    (\TB_\beta M)[\alpha \mapsto \epsilon]      & = \TB_{\beta[\alpha \mapsto \epsilon]} M[\alpha \mapsto \epsilon]                                     \\
-    (\TBL_\beta M)[\alpha \mapsto \epsilon]     & = \TBL_{\beta[\alpha \mapsto \epsilon]} M[\alpha \mapsto \epsilon]                                    \\
-    (\Lambda\beta.M)[\alpha \mapsto \epsilon]   & = \Lambda\beta.M[\alpha \mapsto \epsilon]                            & (\text{if } \alpha \neq \beta) \\
-    (\Lambda\beta.M)[\alpha \mapsto \epsilon]   & = \Lambda\beta.M                                                     & (\text{if } \alpha = \beta)    \\
-    (M\ \epsilon)[\alpha \mapsto \epsilon]      & = M[\alpha \mapsto \epsilon]\ \epsilon                                                                \\
-    (\%_\beta M)[\alpha \mapsto \epsilon]       & = \%_{\beta[\alpha \mapsto \epsilon]}M[\alpha \mapsto \epsilon] 
+	% \newcommand{\SB}{}
+	(\lambda x:\tau.M)[\alpha \mapsto \epsilon] & = \lambda x:\tau[\alpha \mapsto \epsilon].M[\alpha \mapsto \epsilon]                                  \\
+	(M\ N)[\alpha \mapsto \epsilon]             & = (M[\alpha \mapsto \epsilon])\ (N[\alpha \mapsto \epsilon])                                          \\
+	(\TB_\beta M)[\alpha \mapsto \epsilon]      & = \TB_{\beta[\alpha \mapsto \epsilon]} M[\alpha \mapsto \epsilon]                                     \\
+	(\TBL_\beta M)[\alpha \mapsto \epsilon]     & = \TBL_{\beta[\alpha \mapsto \epsilon]} M[\alpha \mapsto \epsilon]                                    \\
+	(\Lambda\beta.M)[\alpha \mapsto \epsilon]   & = \Lambda\beta.M[\alpha \mapsto \epsilon]                            & (\text{if } \alpha \neq \beta) \\
+	(\Lambda\beta.M)[\alpha \mapsto \epsilon]   & = \Lambda\beta.M                                                     & (\text{if } \alpha = \beta)    \\
+	(M\ \epsilon)[\alpha \mapsto \epsilon]      & = M[\alpha \mapsto \epsilon]\ \epsilon                                                                \\
+	(\%_\beta M)[\alpha \mapsto \epsilon]       & = \%_{\beta[\alpha \mapsto \epsilon]}M[\alpha \mapsto \epsilon] 
 \end{align*}
 
 \begin{definition}[Reduction]
-    There are three reduction rules ($\longrightarrow_\beta, \longrightarrow_\blacklozenge, \longrightarrow_\Lambda$) in \LMD.
-    Congruence rules which are omitted from the definition.
-    \begin{align*}
-         & (\lambda x:\tau.M) N \longrightarrow_\beta M[x \mapsto N]                       \\
-        % & (\Pi x:\tau.\sigma) M \longrightarrow_\gamma \sigma[x \mapsto M] \\
-         & \TBL_\alpha \TB_\alpha M \longrightarrow_\blacklozenge M                        \\
-         & (\Lambda \alpha.M)\ \epsilon \longrightarrow_\Lambda M[\alpha \mapsto \epsilon]
-    \end{align*}
-    We write $ M \longrightarrow M'$ iff $ M \longrightarrow_\beta M'$, $ M \longrightarrow_\blacklozenge M'$, or $ M \longrightarrow_\Lambda M'$.
+	There are three reduction rules ($\longrightarrow_\beta, \longrightarrow_\blacklozenge, \longrightarrow_\Lambda$) in \LMD.
+	Congruence rules which are omitted from the definition.
+	\begin{align*}
+		 & (\lambda x:\tau.M) N \longrightarrow_\beta M[x \mapsto N]                       \\
+		% & (\Pi x:\tau.\sigma) M \longrightarrow_\gamma \sigma[x \mapsto M] \\
+		 & \TBL_\alpha \TB_\alpha M \longrightarrow_\blacklozenge M                        \\
+		 & (\Lambda \alpha.M)\ \epsilon \longrightarrow_\Lambda M[\alpha \mapsto \epsilon]
+	\end{align*}
+	We write $ M \longrightarrow M'$ iff $ M \longrightarrow_\beta M'$, $ M \longrightarrow_\blacklozenge M'$, or $ M \longrightarrow_\Lambda M'$.
 \end{definition}
 
 $\longrightarrow_\beta$ is normal $\beta-$reduction in lambda calculus.
@@ -445,10 +461,10 @@ We show them in Figure \ref{fig:LMD-six-judgements}.
 \begin{figure}
 	\begin{center}
 		\begin{align*}
-			\G & \V M : \tau @ A \\
-			\G & \V \tau :: K @ A \\
-			\G & \V K \iskind @ A \\
-			\G & \V M \E N @ A \\
+			\G & \V M : \tau @ A   \\
+			\G & \V \tau :: K @ A  \\
+			\G & \V K \iskind @ A  \\
+			\G & \V M \E N @ A     \\
 			\G & \V \tau \E \sigma \\
 			\G & \V K \E J @ A
 		\end{align*}
