@@ -890,10 +890,19 @@ your interpreter works just as intended.
 
 \section{Related Works}
 
-The theory of dependent types was established in 1980s.
+There are many papers on dependent types 
+and most of them are affected with the pioneering work of Per Martin-L\"{o}f.
 $\lambda^\Pi$\cite{Meyer1986}, Calculus of Constructions\cite{coquand:inria-00076024}, 
-and Harper, Honsell and Plotkin\cite{harper1993framework} are famous papers on dependent types,
-which were published in that age.
+and Harper, Honsell and Plotkin\cite{harper1993framework} are famous papers on dependent types.
+In Advanced Topics in Types and Programming Languages\cite{attapl},
+a dependent type system \LLF is designed with the basis of \cite{harper1993framework}.
+We adopted \cite{attapl}-like dependent types for \LMD.
+
+One can use depent types in programming languages such as Idris\cite{brady2013idris} or
+interactive theorem provers such as Coq\cite{09thecoq} which based on \cite{coquand:inria-00076024}.
+\red{この段落要らないかも}
+
+Applications of dependent types for real problems were also 
 
 プログラミング言語における依存型の理論は1980年代半ばに確立された．
 この時期の依存型に関する論文として，
