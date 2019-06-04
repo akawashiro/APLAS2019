@@ -907,41 +907,18 @@ In Xi and Pfenning\cite{Xi98}, they extended SML with restricted dependent types
 and succeeded in reducing boundary checking of arrays.
 Xi also gave dead code elimination and loop unrolling as examples of dependent types application in \cite{xi1999dependent}.
 
-プログラミング言語における依存型の理論は1980年代半ばに確立された．
-この時期の依存型に関する論文として，
-MeyerとReinholdによる$\lambda^\Pi$\cite{Meyer1986}，
-CoquandとHuetによるCalculus of Constructions\cite{coquand:inria-00076024}，
-Harper，Honsell，Plotkinによる\LLF \cite{harper1993framework} が挙げられる．
-この中でも\LLF\cite{harper1993framework} は
-PierceによるAdvanced topics in types and programming languages\cite{attapl}
-で依存型を解説する際に基礎とされている．
-本研究では依存型の基礎として Aspinall, Hoffman \cite{attapl}を使った．
-% 
-依存型を扱えるプログラミング言語としてはIdris\cite{brady2013idris}が存在する．
-また，Coq\cite{09thecoq}やAgdaなどの定理証明支援システムでも依存型を使うことができる．
-% 
-依存型を実際にプログラムの安全性向上のために用いた研究としてはXiとPfenningによるもの\cite{Xi98}がある．
-この研究ではStandard MLを限定された形の依存型を使えるように拡張し，配列の境界検査の回数を減らすことに成功している．
-Dependent types in practical programming\cite{xi1999dependent}.
-% 
-一方，マルチステージプログラミングの型理論も長く研究されている．
-Daviesは$\lambda^\circ$\cite{davies1996temporal}でマルチステージプログラミングと様相論理の間にカリーハワード同型があることを明らかにした．
-しかし，$\lambda^\circ$にはコードの実行やCSPが存在しなかった．
+\red{Besides,} multistage calculi also have long history of research.
+Davis revealed there is Curry-Howard correspondence between a multistage calculus and modal logic in $\lambda^\circ$\cite{davies1996temporal}.
+However, $\lambda^\circ$ don't have operators for run and CSP.
+\red{runはboldかな?}
 
-TahaとSheardはMetaML\cite{MetaML}でコードの実行とCSPを導入した．
-さらにTahaとNielsenは$\lambda^\alpha$\cite{taha2003environment}でEnvironment Classiferを導入し，
-bracket，escape，run，cross-stage persistenceの4種類の操作を可能であり，型安全な型システムを構築した．
-また，TsukadaとIgarashiは$\lambda^\TW$\cite{Tsukada}で
-Environment Classiferを含む計算体系に対応する論理体系を発見し，
-Environment Classiferを$\epsilon$で置き換えることでコードの実行を表現できることを示した．
-
-HanadaとIgarashiは\LTP で\LTP にCSPを付け加えることに成功した．
-\LTP は本研究におけるマルチステージプログラミングの体系の基礎である．
-
-実際に使えるマルチステージプログラミング言語としてはBER MetaOCaml\cite{oleg2014}が挙げられる．
-MetaOCaml BERはコードの実行やCSPをサポートしている．
-
-いずれの体系も依存型を扱っておらず，我々の知る限り bracket, escape, run, CSP を持つ依存型システムは本研究が初めてである．
+Taha and Sheard introduced run and CSP to a multistage calculus in \cite{MetaML}.
+Additionally, Taha and Nielsen invented the concept of environment classifiers in $\lambda^\alpha$\cite{taha2003environment} and 
+construct the type system for $\lambda^\alpha$, which can handle quoting, unquoting, run, and CSP.
+In $\lambda^\TW$\cite{Tsukada}, Tsukada and Igarashi found modal logic which corresponds to a multistage calculus with environment classifiers and
+show that run can be represented as application of $\epsilon$ to transition abstractions.
+In \LTP\cite{Hanada2014}, Hanada and Igarashi extended $\lambda^\TW$ with CSP and discuss code residualization 
+which allows us to dump quoted code into an external file.
 
 \begin{itemize}
 	\item On Cross-Stage Persistence in Multi-Stage\cite{Hanada2014}
