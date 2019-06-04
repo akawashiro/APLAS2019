@@ -890,24 +890,23 @@ your interpreter works just as intended.
 
 \section{Related Works}
 
-There are many papers on dependent types 
-and most of them are affected with the pioneering work of Per Martin-L\"{o}f.
+There are many papers on dependent types and most of them are affected with the pioneering work of Per Martin-L\"{o}f.
 $\lambda^\Pi$\cite{Meyer1986}, Calculus of Constructions\cite{coquand:inria-00076024}, 
 and Harper, Honsell and Plotkin\cite{harper1993framework} are famous papers on dependent types.
 In Advanced Topics in Types and Programming Languages\cite{attapl},
 a dependent type system \LLF is designed with the basis of \cite{harper1993framework}.
 We adopted \cite{attapl}-like dependent types for \LMD.
 
-One can use depent types in programming languages such as Idris\cite{brady2013idris} or
+One can use dependent types in programming languages such as Idris\cite{brady2013idris} or
 interactive theorem provers such as Coq\cite{09thecoq} which based on \cite{coquand:inria-00076024}.
 \red{この段落要らない or 後ろとくっつけたほうが良いかも知れない?}
 
 Applications of dependent types for real problems were also researched.
 In Xi and Pfenning\cite{Xi98}, they extended SML with restricted dependent types
-and succeeded in reducing boundary checking of arrays.
+and succeeded in reducing the bounds checking of arrays.
 Xi also gave dead code elimination and loop unrolling as examples of dependent types application in \cite{xi1999dependent}.
 
-\red{Besides,} multistage calculi also have long history of research.
+\red{Besides,} multistage calculi also have a long history of research.
 Davis revealed there is Curry-Howard correspondence between a multistage calculus and modal logic in $\lambda^\circ$\cite{davies1996temporal}.
 However, $\lambda^\circ$ don't have operators for run and CSP.
 \red{runはboldかな?}
@@ -918,7 +917,7 @@ construct the type system for $\lambda^\alpha$, which can handle quoting, unquot
 In $\lambda^\TW$\cite{Tsukada}, Tsukada and Igarashi found modal logic which corresponds to a multistage calculus with environment classifiers and
 show that run can be represented as application of $\epsilon$ to transition abstractions.
 In \LTP\cite{Hanada2014}, Hanada and Igarashi extended $\lambda^\TW$ with CSP and discuss code residualization 
-which allows us to dump quoted code into an external file.
+which allows us to dump the quoted code into an external file.
 
 \begin{itemize}
 	\item On Cross-Stage Persistence in Multi-Stage\cite{Hanada2014}
