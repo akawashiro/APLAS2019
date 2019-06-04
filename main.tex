@@ -890,6 +890,8 @@ your interpreter works just as intended.
 
 \section{Related Works}
 
+% 依存型の歴史
+
 There are many papers on dependent types and most of them are affected with the pioneering work of Per Martin-L\"{o}f.
 $\lambda^\Pi$\cite{Meyer1986}, Calculus of Constructions\cite{coquand:inria-00076024}, 
 and Harper, Honsell and Plotkin\cite{harper1993framework} are famous papers on dependent types.
@@ -901,15 +903,19 @@ One can use dependent types in programming languages such as Idris\cite{brady201
 interactive theorem provers such as Coq\cite{09thecoq} which based on \cite{coquand:inria-00076024}.
 \red{この段落要らない or 後ろとくっつけたほうが良いかも知れない?}
 
+% 依存型の応用
+
 Applications of dependent types for real problems were also researched.
 In Xi and Pfenning\cite{Xi98}, they extended SML with restricted dependent types
 and succeeded in reducing the bounds checking of arrays.
 Xi also gave dead code elimination and loop unrolling as examples of dependent types application in \cite{xi1999dependent}.
 
+% 多段階計算の歴史
+
 \red{Besides,} multistage calculi also have a long history of research.
 Davis revealed there is Curry-Howard correspondence between a multistage calculus and modal logic in $\lambda^\circ$\cite{davies1996temporal}.
 However, $\lambda^\circ$ don't have operators for run and CSP.
-\red{runはboldかな?}
+\red{runはboldか? Besidesより適切な接続詞はないのか?}
 
 Taha and Sheard introduced run and CSP to a multistage calculus in \cite{MetaML}.
 Additionally, Taha and Nielsen invented the concept of environment classifiers in $\lambda^\alpha$\cite{taha2003environment} and 
@@ -918,6 +924,12 @@ In $\lambda^\TW$\cite{Tsukada}, Tsukada and Igarashi found modal logic which cor
 show that run can be represented as application of $\epsilon$ to transition abstractions.
 In \LTP\cite{Hanada2014}, Hanada and Igarashi extended $\lambda^\TW$ with CSP and discuss code residualization 
 which allows us to dump the quoted code into an external file.
+
+% 多段階計算の応用
+
+MetaOCaml is a programming language with quoting, unquoting, run, and CSP.
+Oleg gave many examples of application of MetaOCaml in \cite{8384206}, 
+which include filtering in signal processing, matrix-vector product, and DSL compiler.
 
 \begin{itemize}
 	\item On Cross-Stage Persistence in Multi-Stage\cite{Hanada2014}
