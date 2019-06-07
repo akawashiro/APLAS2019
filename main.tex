@@ -13,7 +13,6 @@
 \usepackage{mathtools}
 \usepackage{float}
 \usepackage{xparse}
-% \usepackage{ebproof}
 \usepackage{lscape}
 \usepackage{mdframed}
 \usepackage{xspace}
@@ -165,6 +164,24 @@
 \subsubsection{多段階計算とは何か?}
 
 Multistage programming enable us to generate and run fragments of code at runtime.
+MetaOCaml\cite{oleg2014} provide features for multistage programming, which are quote, unquote, and running code.
+Quote, written \verb|.< e >.| in MetaOCaml, makes a code value from \verb|e|.
+Run, written \verb| run e | in MetaOCaml, runs a code value of \verb|e| and restore \verb|e|.
+Unqote, written \verb| .~ e | in MetaOCaml, expands a code value of \verb|e|.
+Unlike run, unquote is supposed to use in quote, that is, unquote cannot be used as alternative of run.
+For example, the following MetaOCaml expression
+
+\begin{verbatim}
+        let a = .< fun x -> x + 1 >. in .< .~a 2 >.
+\end{verbatim}
+
+evaluates to \verb|.< (fun x -> x + 1) 2 >.|. We can get the result with run.
+
+\begin{verbatim}
+        run (let a = .< fun x -> x + 1 >. in .< .~a 2 >.)
+\end{verbatim}
+
+is reduced to 3.
 
 \subsubsection{多段階計算のメリットをべき乗の例を用いて説明する}
 
@@ -246,8 +263,8 @@ A type judgement of \LTP is of the form $\G \vdash M : \tau @ A$.
 Transition $A$ means in which transition $M$ exists.
 Therefore, transitions appear in typing rules, too.
 \begin{center}
-    \infrule{\G\vdash M:\tau@{A\alpha}}{\G\vdash \TB_{\alpha}M:\TW_{\alpha}\tau@A}{\TTB} \andalso
-    \infrule{\G\vdash M:\TW_{\alpha}\tau@A}{\G\vdash \TBL_{\alpha}M:\tau@{A\alpha}}{\TTBL}
+    \infrule{\G\vdash M:\tau @{A\alpha}}{\G\vdash \TB_{\alpha}M:\TW_{\alpha}\tau @A}{\TTB} \andalso
+    \infrule{\G\vdash M:\TW_{\alpha}\tau @A}{\G\vdash \TBL_{\alpha}M:\tau @{A\alpha}}{\TTBL}
 \end{center}
 \TTB, corresponding to quoting, means 
 if $M$ is typed $\tau$ at transition $A\alpha$ then $\TB_{\alpha}M$, quoted $M$, is typed $\TW_{\alpha}\tau$ at $A$.
@@ -305,7 +322,7 @@ Transition variables are classified into two kinds in \LTP in order to deal with
 
 % \LLF
 \LLF is a simple system of dependent types introduced in \cite{attapl}.
-\red{system / type system / calculus ?}
+\red{system / type system / calculus?}
 It is based on Edinburgh LF\cite{harper1993framework}.
 Therefore, all constants and base types are declared in the signature.
 The \LLF type theory generalizes simply typed lambda calculus
@@ -355,8 +372,8 @@ Therefore, we can get kinding rules and well-formed kinding rules of \LMD just b
 attaching stage anotations to ones of \LLF.
 For example, \KAbs-LF is a kinding rule for a dependent type in \LLF and \KAbs\ is a corresponding one.
 \begin{center}
-    \infrule{\G\vdash \tau :: * \andalso \G,x:\tau@A\vdash \sigma::J}{\G\vdash(\Pi x:\tau.\sigma) :: (\Pi x:\tau.J)}{\KAbs-LF} \\[2mm]
-    \infrule{\G\V \tau :: *@A \andalso \G,x:\tau@A\V \sigma::J@A}{\G\V(\Pi x:\tau.\sigma) :: (\Pi x:\tau.J)@A}{\KAbs} \\[2mm]
+    \infrule{\G\vdash \tau :: * \andalso \G,x:\tau @A\vdash \sigma::J}{\G\vdash(\Pi x:\tau.\sigma) :: (\Pi x:\tau.J)}{\KAbs-LF} \\[2mm]
+    \infrule{\G\V \tau :: *@A \andalso \G,x:\tau @A\V \sigma::J@A}{\G\V(\Pi x:\tau.\sigma) :: (\Pi x:\tau.J)@A}{\KAbs} \\[2mm]
 \end{center}
 
 % Equivalence Rules
@@ -372,12 +389,12 @@ we can design all rules except \QPercent\ easily.
 The biggest problem in extension is handling the CSP symbol $\%_\alpha$ in \LMD.
 The equivalence simple rule to handle CSP is \QCsp.
 \begin{center}
-    \infrule{\G\V M \E N : \tau @A}{\G\V\%_\alpha M \E \%_\alpha N : \tau@{A\alpha}}{\QCsp}
+    \infrule{\G\V M \E N : \tau @A}{\G\V\%_\alpha M \E \%_\alpha N : \tau @{A\alpha}}{\QCsp}
 \end{center}
 However, this rule isn't enough when the parameters of dependent types are cross-staed.
 We will discuss this problem in a later section and solve this problem with the new rule \QPercent.
 \begin{center}
-    \infrule{\G\V M:\tau@{A\alpha} \andalso \G\V M:\tau@A}{\G\V\%_\alpha M \E M : \tau@{A\alpha}}{\QPercent}
+    \infrule{\G\V M:\tau @{A\alpha} \andalso \G\V M:\tau @A}{\G\V\%_\alpha M \E M : \tau @{A\alpha}}{\QPercent}
 \end{center}
 \red{この段落でQ-Cspの持つ問題点を指摘すべきか? ただ、ここでmulmatの例を使うと3章と被る。}
 
@@ -401,7 +418,7 @@ In the next section, we will discuss on properties of \LMD.
 	\textrm{Terms}           &  & M,N,L,O,P                & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M 
 	\mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ \epsilon \mid \%_\alpha M                                                                  \\ 
 	\textrm{Signature}       &  & \Sigma                   & ::= \phi \mid X::K \mid c:\tau                                                    \\
-	\textrm{Contexts}        &  & \Gamma                   & ::= \phi \mid  \Gamma,x:\tau@A\ (x\not\in\textrm{FV}(\G))                         \\
+	\textrm{Contexts}        &  & \Gamma                   & ::= \phi \mid  \Gamma,x:\tau @A\ (x\not\in\textrm{FV}(\G))                         \\
 \end{align*}
 
 The metavariables $X, Y, \text{and} Z$ range over the type variables, $c$ ranges over constants, the metavariables $x, y, \text{and}, z$ range over the variables.
@@ -561,16 +578,16 @@ $\textrm{Mat}\ 5\ 3$ is equivalent to $\textrm{Mat}\ (4+1)\ (1+2)$ obviously.
 
 \begin{figure}
 	\begin{center}
-		\infrule{c:\tau \in \Sigma \andalso \G\V \tau::*@A}{\G \V c:\tau@A}{\TConst} \andalso
-		\infrule{x:\tau@A \in \G \andalso \G\V \tau::*@A}{\G \V x:\tau@A}{\TVar} \\[2mm]
-		\infrule{\G\V \sigma::*@A\andalso\G,x:\sigma@A\V M:\tau@A}{\G\V(\lambda (x:\sigma).M):(\Pi (x:\sigma).\tau)@A}{\textsc{T-Abs}} \\[2mm]
+		\infrule{c:\tau \in \Sigma \andalso \G\V \tau::*@A}{\G \V c:\tau @A}{\TConst} \andalso
+		\infrule{x:\tau @A \in \G \andalso \G\V \tau::*@A}{\G \V x:\tau @A}{\TVar} \\[2mm]
+		\infrule{\G\V \sigma::*@A\andalso\G,x:\sigma@A\V M:\tau @A}{\G\V(\lambda (x:\sigma).M):(\Pi (x:\sigma).\tau)@A}{\textsc{T-Abs}} \\[2mm]
 		\infrule{\G\V M:(\Pi (x:\sigma).\tau)@A \andalso \G\V N:\sigma@A}{\G\V M\ N : \tau[x\mapsto N]@A}{\textsc{T-App}} \andalso
-		\infrule{\G\V M:\tau@A \andalso \G\V \tau\equiv \sigma :: K@A}{\G\V M:\sigma@A}{\textsc{T-Conv}} \\[2mm]
-		\infrule{\G\V M:\tau@{A\alpha}}{\G\V\TB_{\alpha}M:\TW_{\alpha}\tau@A}{\TTB} \andalso
-		\infrule{\G\V M:\TW_{\alpha}\tau@A}{\G\V\TBL_{\alpha}M:\tau@{A\alpha}}{\TTBL} \\[2mm]
-		\infrule{\G\V M:\tau@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\V\Lambda\alpha.M:\forall\alpha.\tau@A}{\textsc{T-Gen}} \andalso
-		\infrule{\G\V M:\forall\alpha.\tau@A}{\G\V M\ \epsilon:\tau[\alpha \mapsto \epsilon]@A}{\textsc{T-Ins}} \andalso
-		\infrule{\G\V M:\tau@A}{\G\V \%_\alpha M:\tau@{A\alpha}}{\textsc{T-Csp}} \andalso
+		\infrule{\G\V M:\tau @A \andalso \G\V \tau\equiv \sigma :: K@A}{\G\V M:\sigma@A}{\textsc{T-Conv}} \\[2mm]
+		\infrule{\G\V M:\tau @{A\alpha}}{\G\V\TB_{\alpha}M:\TW_{\alpha}\tau @A}{\TTB} \andalso
+		\infrule{\G\V M:\TW_{\alpha}\tau @A}{\G\V\TBL_{\alpha}M:\tau @{A\alpha}}{\TTBL} \\[2mm]
+		\infrule{\G\V M:\tau @A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\V\Lambda\alpha.M:\forall\alpha.\tau @A}{\textsc{T-Gen}} \andalso
+		\infrule{\G\V M:\forall\alpha.\tau @A}{\G\V M\ \epsilon:\tau[\alpha \mapsto \epsilon]@A}{\textsc{T-Ins}} \andalso
+		\infrule{\G\V M:\tau @A}{\G\V \%_\alpha M:\tau @{A\alpha}}{\textsc{T-Csp}} \andalso
 		\caption{Typing Rules}
 		\label{fig:typing-rules}
 	\end{center}
@@ -597,7 +614,7 @@ A judgement of $\G \V M \E N : \rho @ A$ means that $M$ and $N$ are equivalent.
 
 \begin{figure}
 	\begin{center}
-		\infrule{\G\V \tau \E \sigma :: *@A \andalso \G,x:\tau@A \V \rho \E \pi :: *@A}{\G\V\Pi x:\tau.\rho \E \Pi x:\sigma.\pi :: *@A}{\QTAbs} \\[2mm]
+		\infrule{\G\V \tau \E \sigma :: *@A \andalso \G,x:\tau @A \V \rho \E \pi :: *@A}{\G\V\Pi x:\tau.\rho \E \Pi x:\sigma.\pi :: *@A}{\QTAbs} \\[2mm]
 		\infrule{\G\V \tau \E \sigma :: (\Pi x:\rho.K)@A \andalso \G\V M \E N : \rho @A}{\G\V \tau\ M \E \sigma\ N :: K[x \mapsto M]@A}{\QTApp} \\[2mm]
 		\infrule{\G\V \tau \E \sigma :: *@{A\alpha}}{\G\V \TW_{\alpha} \tau \E \TW_{\alpha} \sigma :: *@A}{\textsc{QT-$\TW$}}\andalso
 		\infrule{\G\V \tau \E \sigma :: K@A}{\G\V \tau \E \sigma :: K@{A\alpha}}{\textsc{QT-Csp}} \\[2mm]
@@ -618,21 +635,21 @@ The rule \QBeta\ means when a term $M \longrightarrow_\beta M'$, $M$ is equivale
 
 \begin{figure}
 	\begin{center}
-		\infrule{\G\V \tau \E \sigma :: *@A \andalso \G,x:\tau@A \V M \E N : \rho @A}{\G\V\lambda x:\tau.M \E \lambda x:\sigma.N : (\Pi x:\tau.\rho)@A}{\QAbs} \\[2mm]
+		\infrule{\G\V \tau \E \sigma :: *@A \andalso \G,x:\tau @A \V M \E N : \rho @A}{\G\V\lambda x:\tau.M \E \lambda x:\sigma.N : (\Pi x:\tau.\rho)@A}{\QAbs} \\[2mm]
 		\infrule{\G\V M \E L : (\Pi x:\sigma.\tau)@A \andalso \G\V N \E O : \sigma@A}{\G\V M\ N \E L\ O : \tau[x \mapsto N]@A}{\QApp} \\[2mm]
-		\infrule{\G\V M \E N : \tau@{A\alpha}}{\G\V \TB_\alpha M \E \TB_\alpha N : \TW_\alpha \tau@A}{\QTB} \andalso
-		\infrule{\G\V M \E N : \TW_\alpha \tau@A}{\G\V \TBL_\alpha M \E \TBL_\alpha N : \tau@{A\alpha}}{\QTBL} \\[2mm]
-		\infrule{\G\V M\E N : \tau@A \andalso \alpha \notin \FTV(\G)\cup\FTV(A)}{\G\V \Lambda\alpha.M \E \Lambda\alpha.N : \forall\alpha.\tau@A}{\QGen} \\[2mm]
-		\infrule{\G\V M \E N:\forall\alpha.\tau@A}{\G\V M\ \epsilon \E N\ \epsilon : \tau[\alpha \mapsto \epsilon]@A}{\QIns}\andalso
-		\infrule{\G\V M \E N : \tau @A}{\G\V\%_\alpha M \E \%_\alpha N : \tau@{A\alpha}}{\QCsp} \\[2mm]
-		\infrule{\G\V M:\tau@A}{\G\V M\E M : \tau@A}{\QRefl} \andalso
-		\infrule{\G\V M\E N : \tau@A}{\G\V N\E M : \tau@A}{\QSym} \\[2mm]
-		\infrule{\G\V M\E N : \tau@A \andalso \G\V N\E L : \tau@A}{\G\V M\E L : \tau@A}{\QTrans} \\[2mm]
-		\infrule{\G,x:\sigma@A\V M:\tau@A \andalso \G\V N:\sigma@A}{\G\V(\lambda x:\sigma.M)\ N\E M[x\mapsto N] : \tau[x \mapsto N]@A}{\QBeta} \\[2mm]
+		\infrule{\G\V M \E N : \tau @{A\alpha}}{\G\V \TB_\alpha M \E \TB_\alpha N : \TW_\alpha \tau @A}{\QTB} \andalso
+		\infrule{\G\V M \E N : \TW_\alpha \tau @A}{\G\V \TBL_\alpha M \E \TBL_\alpha N : \tau @{A\alpha}}{\QTBL} \\[2mm]
+		\infrule{\G\V M\E N : \tau @A \andalso \alpha \notin \FTV(\G)\cup\FTV(A)}{\G\V \Lambda\alpha.M \E \Lambda\alpha.N : \forall\alpha.\tau @A}{\QGen} \\[2mm]
+		\infrule{\G\V M \E N:\forall\alpha.\tau @A}{\G\V M\ \epsilon \E N\ \epsilon : \tau[\alpha \mapsto \epsilon]@A}{\QIns}\andalso
+		\infrule{\G\V M \E N : \tau @A}{\G\V\%_\alpha M \E \%_\alpha N : \tau @{A\alpha}}{\QCsp} \\[2mm]
+		\infrule{\G\V M:\tau @A}{\G\V M\E M : \tau @A}{\QRefl} \andalso
+		\infrule{\G\V M\E N : \tau @A}{\G\V N\E M : \tau @A}{\QSym} \\[2mm]
+		\infrule{\G\V M\E N : \tau @A \andalso \G\V N\E L : \tau @A}{\G\V M\E L : \tau @A}{\QTrans} \\[2mm]
+		\infrule{\G,x:\sigma@A\V M:\tau @A \andalso \G\V N:\sigma@A}{\G\V(\lambda x:\sigma.M)\ N\E M[x\mapsto N] : \tau[x \mapsto N]@A}{\QBeta} \\[2mm]
 		% \infrule{\G\V M:(\Pi x:\sigma.\tau)@A \andalso x\notin \text{FV}(M)}{\G\V(\lambda x:\sigma.M\ x)\E M: (\Pi x:\sigma.\tau)@A}{\QEta} \\[2mm]
-		\infrule{\G\V M \E N : \tau@A}{\G\V \TBL_\alpha(\TB_\alpha M) \E N : \tau @A}{\QTBLTB} \\[2mm]
-		\infrule{\G\V (\Lambda\alpha.M) : \forall\alpha.\tau@A}{\G\V (\Lambda\alpha.M)\ \epsilon \E M[\alpha \mapsto \epsilon] : \tau[\alpha \mapsto \epsilon]@A}{\QLambda} \\[2mm]
-		\infrule{\G\V M:\tau@{A\alpha} \andalso \G\V M:\tau@A}{\G\V\%_\alpha M \E M : \tau@{A\alpha}}{\QPercent}
+		\infrule{\G\V M \E N : \tau @A}{\G\V \TBL_\alpha(\TB_\alpha M) \E N : \tau @A}{\QTBLTB} \\[2mm]
+		\infrule{\G\V (\Lambda\alpha.M) : \forall\alpha.\tau @A}{\G\V (\Lambda\alpha.M)\ \epsilon \E M[\alpha \mapsto \epsilon] : \tau[\alpha \mapsto \epsilon]@A}{\QLambda} \\[2mm]
+		\infrule{\G\V M:\tau @{A\alpha} \andalso \G\V M:\tau @A}{\G\V\%_\alpha M \E M : \tau @{A\alpha}}{\QPercent}
 		\caption{Term Equivalence Rules}
 		\label{fig:term-equivalence-rules}
 	\end{center}
@@ -790,7 +807,7 @@ Following three inversion lemmas are needed in proving later theorems.
 	If $\G \V (\lambda x:\sigma.M) : (\Pi x:\sigma'.\tau)@A$ then
 	\begin{enumerate}
 		\item $\G \V \sigma \E \sigma'@A$
-		\item $\G ,x:\sigma@A\V M:\tau@A$
+		\item $\G ,x:\sigma@A\V M:\tau @A$
 	\end{enumerate}
 	\item If $\G \V \rho \E (\Pi x:\sigma.\tau) : K @A$ then $\exists \sigma', \tau', K, J$ such that
 	\begin{enumerate}
@@ -812,7 +829,7 @@ Following three inversion lemmas are needed in proving later theorems.
 
 \begin{theorem}[Inversion Lemma for $\TW$ type]
 	\begin{item}
-	      \item If $\G \V \TB_\alpha M : \TW_\alpha \tau@A$ then $\G \V M : \tau @A$.
+	      \item If $\G \V \TB_\alpha M : \TW_\alpha \tau @A$ then $\G \V M : \tau @A$.
 	      \item If $\G \V \rho \E  \TW_\alpha \tau : K @A$ then $\exists \tau', K, J$ such that
 	      \begin{enumerate}
 		      \item $\rho = \TW_\alpha \tau'$
@@ -832,7 +849,7 @@ Following three inversion lemmas are needed in proving later theorems.
 
 \begin{theorem}[Inversion Lemma for $\Lambda$ type]
 	\begin{item}
-	      \item If $\G \V \Lambda\alpha.M : \forall\alpha.\tau@A$ then $\G \V M : \tau @A$ and $\alpha \notin \FTV(\G) \cup \FV(A)$.
+	      \item If $\G \V \Lambda\alpha.M : \forall\alpha.\tau @A$ then $\G \V M : \tau @A$ and $\alpha \notin \FTV(\G) \cup \FV(A)$.
 	      \item If $\G \V \rho \E \forall\alpha.\tau : K @A$ then $\exists \tau', K$ such that
 	      \begin{enumerate}
 		      \item $\rho = \forall\alpha.\tau'$
@@ -911,7 +928,7 @@ when you write a interpreter using the evaluation context of \LMD,
 your interpreter works just as intended.
 
 \begin{theorem}[Unique Decomposition]
-	If $x:\tau@\epsilon \notin \G$ and $\G \V M : \tau @ A$ then 1 or 2 is true.
+	If $x:\tau @\epsilon \notin \G$ and $\G \V M : \tau @ A$ then 1 or 2 is true.
 	\begin{enumerate}
 		\item $ M \in V^A$
 		\item There exist an unique tuple of $B, E^A_B, R^B$ such that $M = E^A_B[R^B]$ ($B = \epsilon$ or $B = \beta$) .
