@@ -161,7 +161,7 @@
 
 \subsection{Multistage Programming}
 
-\subsubsection{多段階計算とは何か?}
+% \subsubsection{多段階計算とは何か?}
 
 Multistage programming enable us to generate and run fragments of code at runtime.
 MetaOCaml\cite{oleg2014} provide features for multistage programming, which are quote, unquote, and running code.
@@ -180,7 +180,8 @@ evaluates to \verb|.< (fun x -> x + 1) 2 >.|. We can get the result with run.
 \end{verbatim}
 is reduced to 3.
 
-\subsubsection{CSPに関する補足説明}
+% \subsubsection{CSPに関する補足説明}
+
 Cross-stage Persistence (CSP) is another primitive of multistage programming, which enable us to embed computed values into a code value.
 This is an example of CSP.
 \begin{verbatim}
@@ -193,9 +194,14 @@ Therefore, the variable \verb|a| is embeded after \verb|a| is calculated.
 CSP is very important when we write practival programs 
 because CSP enables us to use library functions in code fragments.
 
-\subsubsection{多段階計算のメリットをべき乗の例を用いて説明する}
+% \subsubsection{多段階計算のメリットをべき乗の例を用いて説明する}
 
 The main application of multistage calculi is program optimization.
+A famous example is \verb|power| function.
+\verb|power| takes two arguments, which are base and exponent.
+We can make specialized \verb|power| functions for given exponents with multistage calculi and 
+optimize them by unrolling a loop in functions for given exponents.
+\red{powerの実際のコードを持ってくるか?}
 
 \subsubsection{行列計算も高速化できる}
 
