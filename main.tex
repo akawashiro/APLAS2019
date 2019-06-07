@@ -206,15 +206,19 @@ optimize them by unrolling a loop in functions for given exponents.
 % \subsubsection{ベクトル計算も高速化できる}
 
 Multistage programming can also optimize vector calculation.
-For example, an add function of two vectors is impremented with loop in many cases
-though it is used very often in programs handling vectors.
-We can unrolling an add function and optimize it with multistage programming.
+For example, \verb|add| function, which takes two vectors and return the sum of them,
+is impremented with loop in many cases.
+We can unroll \verb|add| function for a given vector length and optimize it with multistage programming.
+\red{MetaOCamlで書いた長さ付きベクトルの例?}
 
-\subsubsection{生成した行列計算のコードは特定のサイズに特化しており、他のサイズでは使えない。
-このため、間違って組み合わせると容易にエラーを引き起こす。既存の型システムではこのエラーを防止できない}
+% \subsubsection{生成した行列計算のコードは特定のサイズに特化しており、他のサイズでは使えない。
+% このため、間違って組み合わせると容易にエラーを引き起こす。既存の型システムではこのエラーを防止できない}
 
-Generated code is specialized for a given size of matrix and we cannot use it for different sizes.
-We call this problem \red{Specialized Code Problem}.
+Although unrolled \verb|add| function is optimzied, we cannot use it for different vector length.
+For example, when you optimize for the length of 5, you shoudn't use it for vectors of 3 lengths.
+This problem is serious but existing type systems for multistage calculi cannot prevent it.
+
+% We call this problem \red{Specialized Code Problem}.
 
 \subsection{Dependent Types}
 
