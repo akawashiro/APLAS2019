@@ -172,16 +172,26 @@ Unlike run, unquote is supposed to use in quote, that is, unquote cannot be used
 For example, the following MetaOCaml expression
 
 \begin{verbatim}
-        let a = .< fun x -> x + 1 >. in .< .~a 2 >.
+        let plusone = .< fun x -> x + 1 >. in .< .~plusone 2 >.
 \end{verbatim}
-
 evaluates to \verb|.< (fun x -> x + 1) 2 >.|. We can get the result with run.
-
 \begin{verbatim}
-        run (let a = .< fun x -> x + 1 >. in .< .~a 2 >.)
+        run (let plusone = .< fun x -> x + 1 >. in .< .~plusone 2 >.)
 \end{verbatim}
-
 is reduced to 3.
+
+\subsubsection{CSPに関する補足説明}
+Cross-stage Persistence (CSP) is another primitive of multistage programming, which enable us to embed computed values into a code value.
+This is an example of CSP.
+\begin{verbatim}
+        let plusone = fun x -> x + 1 in
+        let a = plusone 2 in  .< a >.
+\end{verbatim}
+This program evaluates to \verb|.< 3 >.| not  \verb|.< plusone 2 >.|.
+This is because the variable \verb|a| is introduced into a code fragment using CSP.
+Therefore, the variable \verb|a| is embeded after \verb|a| is calculated.
+CSP is very important when we write practival programs 
+because CSP enables us to use library functions in code fragments.
 
 \subsubsection{多段階計算のメリットをべき乗の例を用いて説明する}
 
