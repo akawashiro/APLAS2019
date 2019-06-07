@@ -203,9 +203,12 @@ We can make specialized \verb|power| functions for given exponents with multista
 optimize them by unrolling a loop in functions for given exponents.
 \red{powerの実際のコードを持ってくるか?}
 
-\subsubsection{行列計算も高速化できる}
+% \subsubsection{ベクトル計算も高速化できる}
 
-Multistage calculi can also optimize matrices calculation.
+Multistage programming can also optimize vector calculation.
+For example, an add function of two vectors is impremented with loop in many cases
+though it is used very often in programs handling vectors.
+We can unrolling an add function and optimize it with multistage programming.
 
 \subsubsection{生成した行列計算のコードは特定のサイズに特化しており、他のサイズでは使えない。
 このため、間違って組み合わせると容易にエラーを引き起こす。既存の型システムではこのエラーを防止できない}
