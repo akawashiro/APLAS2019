@@ -157,18 +157,19 @@
 %
 %
 \red{Multistage Programming と Multistage Calculus をどう使い分けるか?}
+
 \section{Introduction}
 
 \subsection{Multistage Programming}
 
 % \subsubsection{多段階計算とは何か?}
 
-Multistage programming enable us to generate and run fragments of code at runtime.
+Multistage programming enables us to generate and run fragments of code at runtime.
 MetaOCaml\cite{oleg2014} provide features for multistage programming, which are quote, unquote, and running code.
 Quote, written \verb|.< e >.| in MetaOCaml, makes a code value from \verb|e|.
 Run, written \verb| run e | in MetaOCaml, runs a code value of \verb|e| and restore \verb|e|.
-Unqote, written \verb| .~ e | in MetaOCaml, expands a code value of \verb|e|.
-Unlike run, unquote is supposed to use in quote, that is, unquote cannot be used as alternative of run.
+Unquote, written \verb| .~ e | in MetaOCaml, expands a code value of \verb|e|.
+Unlike run, unquote is supposed to use in a quoted fragment of code, that is, unquote cannot be used as an alternative of run.
 For example, the following MetaOCaml expression
 
 \begin{verbatim}
@@ -190,8 +191,8 @@ This is an example of CSP.
 \end{verbatim}
 This program evaluates to \verb|.< 3 >.| not  \verb|.< plusone 2 >.|.
 This is because the variable \verb|a| is introduced into a code fragment using CSP.
-Therefore, the variable \verb|a| is embeded after \verb|a| is calculated.
-CSP is very important when we write practival programs 
+Therefore, the variable \verb|a| is embedded after \verb|a| is calculated.
+CSP is very important when we write practical programs 
 because CSP enables us to use library functions in code fragments.
 
 % \subsubsection{多段階計算のメリットをべき乗の例を用いて説明する}
@@ -199,24 +200,23 @@ because CSP enables us to use library functions in code fragments.
 The main application of multistage calculi is program optimization.
 A famous example is \verb|power| function.
 \verb|power| takes two arguments, which are base and exponent.
-We can make specialized \verb|power| functions for given exponents with multistage calculi and 
-optimize them by unrolling a loop in functions for given exponents.
+We can make specialized \verb|power| functions for given exponents with multistage calculi and optimize them by unrolling a loop in functions for given exponents.
 \red{powerの実際のコードを持ってくるか?}
 
 % \subsubsection{ベクトル計算も高速化できる}
 
 Multistage programming can also optimize vector calculation.
 For example, \verb|add| function, which takes two vectors and return the sum of them,
-is impremented with loop in many cases.
+is implemented with a loop in many cases.
 We can unroll \verb|add| function for a given vector length and optimize it with multistage programming.
 \red{MetaOCamlで書いた長さ付きベクトルの例?}
 
 % \subsubsection{生成した行列計算のコードは特定のサイズに特化しており、他のサイズでは使えない。
 % このため、間違って組み合わせると容易にエラーを引き起こす。既存の型システムではこのエラーを防止できない}
 
-Although unrolled \verb|add| function is optimzied, we cannot use it for different vector length.
-For example, when you optimize for the length of 5, you shoudn't use it for vectors of 3 lengths.
-Otherwise, we will get Segmentation Fault error.
+Although unrolled \verb|add| function is optimized, we cannot use it for different vector length.
+For example, when you optimize for the length of 5, you shouldn't use it for vectors of 3 lengths.
+Otherwise, we will get a Segmentation Fault error.
 This problem is serious but existing type systems for multistage calculi cannot prevent it.
 
 % We call this problem \red{Specialized Code Problem}.
@@ -245,17 +245,16 @@ We can confirm the arguments of \verb|add| function is the same with dependent t
 As above, functions generated with multistage programming can take more restricted values as arguments.
 When you optimize \verb|add| function for the length of 5, you should it only for 5 length vectors.
 We introduce dependent types into a multistage calculus
-so that the type sysytem can guarantee optimzied functions are used properly.
+so that the type system can guarantee optimized functions are used properly.
 
 \subsection{Organization of the Paper}
 
-The organization of this paper is following.
-Section 2 gives an informal overview \LMD.
+The organization of this paper is the following.
+Section 2 gives an informal overview of \LMD.
 Section 3 defines the syntax, type system, full reduction, evaluation contexts of \LMD.
-Section 4 shows properties of \LMD including Unique Decomposition.
+Section 4 shows the properties of \LMD including Unique Decomposition.
 Section 5 discusses future works.
 Finally, Section 6 discusses related works.
-
 \section{Informal Overview of \LMD}
 
 In this section, we check \LMD informally after checking \LTP and \LLF which are the basis of \LMD.
