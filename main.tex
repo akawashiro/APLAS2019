@@ -216,27 +216,36 @@ We can unroll \verb|add| function for a given vector length and optimize it with
 
 Although unrolled \verb|add| function is optimzied, we cannot use it for different vector length.
 For example, when you optimize for the length of 5, you shoudn't use it for vectors of 3 lengths.
+Otherwise, we will get Segmentation Fault error.
 This problem is serious but existing type systems for multistage calculi cannot prevent it.
 
 % We call this problem \red{Specialized Code Problem}.
 
 \subsection{Dependent Types}
 
-\subsubsection{依存型とは何か?}
+% \subsubsection{依存型とは何か?}
 
 Dependent types are types which is dependent on values.
+We can use dependent types for securer programming than ordinary types.
 For example, we can realize vectors with their sizes with them.
-
-\subsubsection{依存型のメリットをサイズ付きのvector, matrixの例を用いて説明する}
-
-The merit of dependent types is guarantee of properties of programs more precisely.
+\begin{verbatim}
+        Vector :: Int -> *
+\end{verbatim}
+\verb|Vector| is a type constor which takes the length of vectors.
+\verb|Vector 3| is a type for vectors whose lengths are 3.
+We can confirm the arguments of \verb|add| function is the same with dependent types.
+\red{secure programming? finer grained typing? とか}
 
 \subsection{Multistage Programming with Dependent Types}
+\red{このsectionは短いので上とくっつけてもいいかもしれない}
 
-\subsubsection{「生成した行列計算のコードは特定のサイズに特化しており、他のサイズでは使えない。
-このため、間違って組み合わせると容易にエラーを引き起こす。」問題を依存型で解決する。}
+% \subsubsection{「生成した行列計算のコードは特定のサイズに特化しており、他のサイズでは使えない。
+% このため、間違って組み合わせると容易にエラーを引き起こす。」問題を依存型で解決する。}
 
-We resolve Specialized Code Problem using dependent types.
+As above, functions generated with multistage programming can take more restricted values as arguments.
+When you optimize \verb|add| function for the length of 5, you should it only for 5 length vectors.
+We introduce dependent types into a multistage calculus
+so that the type sysytem can guarantee optimzied functions are used properly.
 
 \subsubsection{Organization of the Paper}
 
