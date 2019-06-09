@@ -210,16 +210,16 @@ by generating a code fragment optimized to a given argument.
 % \subsubsection{ベクトル計算も高速化できる}
 
 Multistage programming can also optimize vector calculation.
-For example, \verb|add| function, which takes two vectors and return the sum of them,
+For example, \verb|vadd| function, which takes two vectors and return the sum of them,
 is implemented with a loop in many cases.
-We can unroll \verb|add| function for a given vector length and optimize it with multistage programming.
+We can unroll \verb|vadd| function for a given vector length and optimize it with multistage programming.
 \red{MetaOCamlで書いた長さ付きベクトルの例?}
 
 % \subsubsection{生成した行列計算のコードは特定のサイズに特化しており、他のサイズでは使えない。
 % このため、間違って組み合わせると容易にエラーを引き起こす。既存の型システムではこのエラーを防止できない}
 
 However, there is a sever problem in functions which are optimized by multistage programming.
-Although unrolled \verb|add| function is optimized, we cannot use it for different vector length.
+Although unrolled \verb|vadd| function is optimized, we cannot use it for different vector length.
 For example, when you optimize for the length of 5, you shouldn't use it for vectors of 3 lengths.
 Otherwise, we will get a Segmentation Fault error.
 This problem is serious but existing type systems for multistage calculi cannot prevent it.
@@ -231,26 +231,33 @@ This problem is serious but existing type systems for multistage calculi cannot 
 % \subsubsection{依存型とは何か?}
 
 Dependent types are types which is dependent on values.
-We can use dependent types for securer programming than ordinary types.
+We can use dependent types for securer programming.
 For example, we can realize vectors with their sizes with them.
 \begin{verbatim}
         Vector :: Int -> *
 \end{verbatim}
-\verb|Vector| is a type constor which takes the length of vectors.
+\verb|Vector| is a type constor which takes the length of vectors, that is, 
 \verb|Vector 3| is a type for vectors whose lengths are 3.
-We can confirm the arguments of \verb|add| function is the same with dependent types.
+If \verb|vadd| function has the type of \verb|Vector n -> Vector n -> Vector n|,
+we can confirm the two arguments of \verb|vadd| function has the same length.
 \red{secure programming? finer grained typing? とか}
 
 \subsection{Multistage Programming with Dependent Types}
-\red{このsectionは短いので上とくっつけてもいいかもしれない}
+\red{このsubsectionは短いので上とくっつけてもいいかもしれない}
 
 % \subsubsection{「生成した行列計算のコードは特定のサイズに特化しており、他のサイズでは使えない。
 % このため、間違って組み合わせると容易にエラーを引き起こす。」問題を依存型で解決する。}
 
-As above, functions generated with multistage programming can take more restricted values as arguments.
-When you optimize \verb|add| function for the length of 5, you should it only for 5 length vectors.
+As we pointed out in the above section,
+functions optimized with multistage programming can take only restricted values as arguments.
+When you optimize \verb|vadd| function for the length of 5, you should it only for 5 length vectors.
 We introduce dependent types into a multistage calculus
 so that the type system can guarantee optimized functions are used properly.
+
+In this paper, we design new multistage calculus \LMD by 
+merging dependent types into existing multistage calculus \LTP\cite{Hanada2014}.
+\LMD is multistage calculus which contains dependent types.
+\LMD makes multistage programming more safer with the power of dependent types.
 
 \subsection{Organization of the Paper}
 
