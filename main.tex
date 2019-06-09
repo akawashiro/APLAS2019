@@ -267,25 +267,31 @@ Section 3 defines the syntax, type system, full reduction, evaluation contexts o
 Section 4 shows the properties of \LMD including Unique Decomposition.
 Section 5 discusses future works.
 Finally, Section 6 discusses related works.
+
 \section{Informal Overview of \LMD}
 
+We designed \LMD, a multistage calculus with dependent type.
+\LMD is based on \LTP\cite{Hanada2014} by Hanada and Igarashi, which is a multistage calculus with CSP and
+we introduced dependent types based on \LTP\cite{attapl}.
 In this section, we check \LMD informally after checking \LTP and \LLF which are the basis of \LMD.
 
+\red{\LTP\cite{Hanada2014}が頻発するが同一論文の複数回引用に何かルールはあるのか?}
 \subsection{\LTP}
 
 % quote and unquote
 
-In \LTP, quote and unquote are written $\TB_\alpha M$ and $\TBL_\alpha M$, respectively.
-The type of $\TB_\alpha M$ is $\TW_\alpha \tau$ when $M$ has $\tau$ type.
-The type of $\TBL_\alpha M$ is $\tau$ when $M$ has $\TW_\alpha \tau$.
-Please notice that $\TBL_\alpha M$ is well-typed, $M$ has a code type from the typing rule of \LTP.
-In addition to normal $\beta$-reduction, there is a reduction rule for unquoted quoted code.
+\LTP\cite{Hanada2014} is a multistage calculus with CSP by Hanada and Igarashi.
+In \LTP, brackets and escape are written $\TB_\alpha M$ and $\TBL_\alpha M$, respectively.
+The type of $\TB_\alpha M$ is $\TW_\alpha \tau$ if $M$ has type $\tau$.
+The type of $\TBL_\alpha M$ is $\tau$ if $M$ has $\TW_\alpha \tau$.
+% Please notice that if $\TBL_\alpha M$ is well-typed, $M$ has a code type from the typing rule of \LTP.
+In addition to normal $\beta$-reduction, there is a reduction rule for brackets and escape.
 \begin{align*}
     \TBL_\alpha (\TB_\alpha M) \longrightarrow M
 \end{align*}
-It means when a quoted code fragment is unquoted, it returns back to the original code fragment.
-This reduction is called $\longrightarrow_\Lambda$ in \LMD.
-\red{この文はここに来るべきなのか? LTPの説明ではないが}
+It means escape cancels brackets.
+% This reduction is called $\longrightarrow_\Lambda$ in \LMD.
+% \red{この文はここに来るべきなのか? LTPの説明ではないが}
 
 % transition variable
 
