@@ -165,11 +165,11 @@
 % \subsubsection{多段階計算とは何か?}
 
 Multistage programming enables us to generate and run fragments of code at runtime.
-MetaOCaml\cite{oleg2014} provide features for multistage programming, which are quote, unquote, and running code.
-Quote, written \verb|.< e >.| in MetaOCaml, makes a code value from \verb|e|.
+MetaOCaml\cite{oleg2014} provide features for multistage programming, which are brackets, escape, and run.
+Brackets, written \verb|.< e >.| in MetaOCaml, makes a code value from \verb|e|.
 Run, written \verb| run e | in MetaOCaml, runs a code value of \verb|e| and restore \verb|e|.
-Unquote, written \verb| .~ e | in MetaOCaml, expands a code value of \verb|e|.
-Unlike run, unquote is supposed to use in a quoted fragment of code, that is, unquote cannot be used as an alternative of run.
+Escape, written \verb| .~ e | in MetaOCaml, expands a code value of \verb|e|.
+Unlike run, escape is supposed to use in a fragment of code, that is, escape cannot be used as an alternative of run.
 For example, the following MetaOCaml expression
 
 \begin{verbatim}
@@ -187,21 +187,25 @@ Cross-stage Persistence (CSP) is another primitive of multistage programming, wh
 This is an example of CSP.
 \begin{verbatim}
         let plusone = fun x -> x + 1 in
-        let a = plusone 2 in  .< a >.
+        let y = plusone 2 in  .< y >.
 \end{verbatim}
 This program evaluates to \verb|.< 3 >.| not  \verb|.< plusone 2 >.|.
-This is because the variable \verb|a| is introduced into a code fragment using CSP.
-Therefore, the variable \verb|a| is embedded after \verb|a| is calculated.
+This is because the variable \verb|y| is introduced into a code fragment using CSP.
+Therefore, the variable \verb|y| is embedded after it was calculated.
 CSP is very important when we write practical programs 
-because CSP enables us to use library functions in code fragments.
+because CSP enables us to use library functions in code fragments as in \verb|.<List.combine [1;2] ['a';'b']>.|.
 
 % \subsubsection{多段階計算のメリットをべき乗の例を用いて説明する}
 
 The main application of multistage calculi is program optimization.
-A famous example is \verb|power| function.
-\verb|power| takes two arguments, which are base and exponent.
-We can make specialized \verb|power| functions for given exponents with multistage calculi and optimize them by unrolling a loop in functions for given exponents.
-\red{powerの実際のコードを持ってくるか?}
+A famous example is power functions.
+Usual power functions take two arguments, which are the base and the exponent.
+We can make a specialized power function for given exponents with multistage programming and 
+optimize them by unrolling a loop in functions for given exponents.
+The optimized power function for the exponent of \verb|3| looks like \verb|power3 = fun x -> x * x * x|.
+\verb|power3| is faster than ordinary \verb|power| function because it contains no loop.
+Multistage programming can optimize functions which take more than two arguments 
+by generating a code fragment optimized to a given argument.
 
 % \subsubsection{ベクトル計算も高速化できる}
 
@@ -214,6 +218,7 @@ We can unroll \verb|add| function for a given vector length and optimize it with
 % \subsubsection{生成した行列計算のコードは特定のサイズに特化しており、他のサイズでは使えない。
 % このため、間違って組み合わせると容易にエラーを引き起こす。既存の型システムではこのエラーを防止できない}
 
+However, there is a sever problem in functions which are optimized by multistage programming.
 Although unrolled \verb|add| function is optimized, we cannot use it for different vector length.
 For example, when you optimize for the length of 5, you shouldn't use it for vectors of 3 lengths.
 Otherwise, we will get a Segmentation Fault error.
