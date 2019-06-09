@@ -293,17 +293,40 @@ It means escape cancels brackets.
 % This reduction is called $\longrightarrow_\Lambda$ in \LMD.
 % \red{この文はここに来るべきなのか? LTPの説明ではないが}
 
-% transition variable
+% transition variable and transition
 
-The subscript $\alpha$ in $\TB_\alpha M$ is a \textit{transition variable}.
-It is used to show the thickness of brackets.
+The subscript $\alpha$ in $\TB_\alpha M$ is a \textit{transition variable} and
+a sequence of transition variables is called \textit{transition}.
+They are used to show the thickness of brackets.
 For example, $\TB_\alpha (\lambda x:\I.x+10)$ is the fragment of code which becomes $(\lambda x:\I.x+10)$ after it was run once and
-$\TB_\alpha \TB_\beta (\lambda x:\I.x+10)$ becomes $(\lambda x:\I.x+10)$ after it was run it twice.
+$\TB_\alpha \TB_\beta (\lambda x:\I.x+10)$, which is abbreviated as $\TB_{\alpha\beta} (\lambda x:\I.x+10)$,
+ becomes $(\lambda x:\I.x+10)$ after it was run it twice.
 \red{run twiceは表現が微妙}
 
-% transition
+% transition abstraction and application
 
-A sequence of transition variables is a \textit{transition}.
+There are abstractions for transition variables and applications for transition abstraction in \LTP.
+They look like $\Lambda\alpha.M$ and $M A$, respectively.
+A transition abstraction binds a transition variable in a term.
+For example, all $\alpha$ in $\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x))$ are bound.
+It is only natural there is a reduction rule for transition application in \LTP.
+The rule is the following.
+\begin{align*}
+    (\Lambda\alpha.M)\ A \longrightarrow M[\alpha\mapsto A]
+\end{align*}
+For example, $\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x))\ (\beta\gamma)$ reduces to $\TB_{\beta\gamma} (\lambda x:\I.x)$.
+
+% transition-related symbols disappear when the empty transition is substituted.
+% In short, about "run"
+
+Another important rule about a transition variable is 
+that symbols with transition variables disappear 
+when the empty transition $\epsilon$ is substituted to the transition variable.
+The purpose of this rule is express \verb|run| without any special symbol.
+In multistage calculus, \verb|run| is a very important operator which changes quoted code to the original code.
+For example, $(\TB_\epsilon (\lambda x:\I.x))$ is equivalent to $(\lambda x:\I.x)$.
+In \LTP, \verb|run| is realized with application of the empty transition $\epsilon$.
+
 In \LTP, all judgment has a transition.
 Especially, terms without quoting exist at the empty transition which is represented by $\epsilon$.
 For example, $(\lambda x:\I.x)\ (1+2)$ is at $\epsilon$ transition and 
@@ -324,38 +347,7 @@ Therefore, transitions appear in typing rules, too.
 if $M$ is typed $\tau$ at transition $A\alpha$ then $\TB_{\alpha}M$, quoted $M$, is typed $\TW_{\alpha}\tau$ at $A$.
 \TTBL is converse of \TTB.
 
-% transition abstraction and application
 
-There are abstractions for transition variables and applications for transition abstraction in \LTP.
-They look like $\Lambda\alpha.M$ and $M\ A$, respectively.
-A transition abstraction binds a transition variable in a term.
-For example, all $\alpha$ in $\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x))$ are bound.
-It is only natural there is a rule for transition application in \LTP.
-The rule is the following.
-
-\begin{align*}
-    (\Lambda\alpha.M)\ A \longrightarrow M[\alpha\mapsto A]
-\end{align*}
-
-For example, $\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x))\ (\beta\gamma)$ reduces to $\TB_{\beta\gamma} (\lambda x:\I.x)$.
-Although we can apply any transition to a transition abstraction in \LTP,
-we restrict the transitions only to $\epsilon$ transition in \LMD to simplify the system.
-\red{この文はここに来るべきなのか? LTPの説明ではないが}
-
-% transition-related symbols disappear when the empty transition is substituted.
-
-Another important rule about a transition variable is 
-that a transition variable related symbol disappears when the empty transition is substituted to the transition variable.
-For example, $(\TB_\epsilon (\lambda x:\I.x))$ is equivalent to $(\lambda x:\I.x)$.
-This rule is applied all transition variable related symbols: $\TB_\alpha, \TBL_\alpha$, and $\%_\alpha$.
-
-% Run
-The main purpose of transition abstractions and transition applications are to represent {\bf{run}} operator.
-In multistage calculus, {\bf{run}} is a very important operator.
-It changes quoted code to the original code.
-{\bf{run}} is realized with application of the empty transition $\epsilon$.
-For example, $\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x))\ \epsilon$ becomes $\lambda x:\I.x$
-because $\TB_\epsilon$ is disappeared.
 
 % CSP
 CSP, cross-stage persistence, is an important feature of multistage calculus.
@@ -409,6 +401,8 @@ There are three technical points in the extension from \LTP to \LMD.
 
 \red{, which is called a \textit{stage variable} in \LMD.}
 \red{ which is called a stage in \LMD.}
+\red{Although we can apply any transition to a transition abstraction in \LTP,
+we restrict the transitions only to $\epsilon$ transition in \LMD to simplify the system.}
 
 % Constants and Base Types
 
