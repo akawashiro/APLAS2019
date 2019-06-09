@@ -295,10 +295,10 @@ It means escape cancels brackets.
 
 % transition variable
 
-The subscription $\alpha$ is a transition variable which is called a stage variable in \LMD.
-It is used to show the thickness of quoting.
-For example, $\TB_\alpha (\lambda x:\I.x+10)$ is a fragment of code which becomes $(\lambda x:\I.x+10)$ after run it once and
-$\TB_\alpha \TB_\beta (\lambda x:\I.x+10)$ becomes $(\lambda x:\I.x+10)$ after run it twice.
+The subscript $\alpha$ in $\TB_\alpha M$ is a \textit{transition variable}.
+It is used to show the thickness of brackets.
+For example, $\TB_\alpha (\lambda x:\I.x+10)$ is the fragment of code which becomes $(\lambda x:\I.x+10)$ after it was run once and
+$\TB_\alpha \TB_\beta (\lambda x:\I.x+10)$ becomes $(\lambda x:\I.x+10)$ after it was run it twice.
 \red{run twiceは表現が微妙}
 
 % transition
@@ -406,6 +406,8 @@ From here, we use the word "stage" instead of "transition"
 because we develop a multi-stage calculus, not a multi-transition calculus.
 \red{stageのほうが言葉としてふさわしいと言いたい}
 There are three technical points in the extension from \LTP to \LMD.
+
+\red{, which is called a \textit{stage variable} in \LMD.}
 
 % Constants and Base Types
 
