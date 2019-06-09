@@ -297,6 +297,7 @@ It means escape cancels brackets.
 
 The subscript $\alpha$ in $\TB_\alpha M$ is a \textit{transition variable} and
 a sequence of transition variables is called \textit{transition}.
+The empty transition is represented by $\epsilon$.
 They are used to show the thickness of brackets.
 For example, $\TB_\alpha (\lambda x:\I.x+10)$ is the fragment of code which becomes $(\lambda x:\I.x+10)$ after it was run once and
 $\TB_\alpha \TB_\beta (\lambda x:\I.x+10)$, which is abbreviated as $\TB_{\alpha\beta} (\lambda x:\I.x+10)$,
@@ -325,29 +326,26 @@ when the empty transition $\epsilon$ is substituted to the transition variable.
 The purpose of this rule is express \verb|run| without any special symbol.
 In multistage calculus, \verb|run| is a very important operator which changes quoted code to the original code.
 For example, $(\TB_\epsilon (\lambda x:\I.x))$ is equivalent to $(\lambda x:\I.x)$.
+Therefore, $\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x))\ \epsilon$ becomes $\lambda x:\I.x$
 In \LTP, \verb|run| is realized with application of the empty transition $\epsilon$.
-
-In \LTP, all judgment has a transition.
-Especially, terms without quoting exist at the empty transition which is represented by $\epsilon$.
-For example, $(\lambda x:\I.x)\ (1+2)$ is at $\epsilon$ transition and 
-$\TB_\alpha (\lambda x:\I.x)$ is at $\alpha$ transition.
 
 % transition in typing rules
 
-\red{LTPに合わせて$\vdash^A$を使うべきか? それともLMDに合わせて$\vdash @ A$を使うべきか?}
-
 A type judgement of \LTP is of the form $\G \vdash M : \tau @ A$.
-Transition $A$ means in which transition $M$ exists.
-Therefore, transitions appear in typing rules, too.
+A transition in a judgement represents where the judgement is true.
+For example, $\G \vdash (\lambda x:\I.x) : \I \to \I @ \alpha$ means 
+term $\lambda x:\I.x$ has type $\I \to \I$ at transition $\alpha$.
+Especially, terms without quoting exist at the empty transition $\epsilon$.
+For example, $(\lambda x:\I.x)\ (1+2)$ is at $\epsilon$ transition and 
+$\TB_\alpha (\lambda x:\I.x)$ is at $\alpha$ transition.
+Terefore, transitions appear in typing rules, too.
 \begin{center}
     \infrule{\G\vdash M:\tau @{A\alpha}}{\G\vdash \TB_{\alpha}M:\TW_{\alpha}\tau @A}{\TTB} \andalso
     \infrule{\G\vdash M:\TW_{\alpha}\tau @A}{\G\vdash \TBL_{\alpha}M:\tau @{A\alpha}}{\TTBL}
 \end{center}
-\TTB, corresponding to quoting, means 
+\TTB, corresponding to brackets, means 
 if $M$ is typed $\tau$ at transition $A\alpha$ then $\TB_{\alpha}M$, quoted $M$, is typed $\TW_{\alpha}\tau$ at $A$.
-\TTBL is converse of \TTB.
-
-
+\TTBL\ is converse of \TTB.
 
 % CSP
 CSP, cross-stage persistence, is an important feature of multistage calculus.
