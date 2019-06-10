@@ -496,8 +496,8 @@ In the next section, we will discuss on properties of \LMD.
 	\textrm{Types}           &  & \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} \tau \mid \F\alpha.\tau \\
 	\textrm{Terms}           &  & M,N,L,O,P                & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M 
 	\mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ \epsilon \mid \%_\alpha M                                                                  \\ 
-	\textrm{Signature}       &  & \Sigma                   & ::= \phi \mid X::K \mid c:\tau                                                    \\
-	\textrm{Contexts}        &  & \Gamma                   & ::= \phi \mid  \Gamma,x:\tau @A\ (x\not\in\textrm{FV}(\tau))                         \\
+	\textrm{Signature}       &  & \Sigma                   & ::= \emptyset \mid X::K \mid c:\tau                                                    \\
+	\textrm{Contexts}        &  & \Gamma                   & ::= \emptyset \mid  \Gamma,x:\tau @A\ (x\not\in\textrm{Domain}(\G))                         \\
 \end{align*}
 
 The metavariables $X, Y, \text{and} Z$ range over the type variables, $c$ ranges over constants, the metavariables $x, y, \text{and}, z$ range over the variables.
@@ -1040,6 +1040,8 @@ interactive theorem provers such as Coq\cite{09thecoq} which based on \cite{coqu
 Applications of dependent types for real problems were also researched.
 In Xi and Pfenning\cite{Xi98}, they extended SML with restricted dependent types
 and succeeded in reducing the bounds checking of arrays.
+In Xi and Robert\cite{xi2001dependently}, they design a type system for an assembly language and
+it is useful for spped up.
 Xi also gave dead code elimination and loop unrolling as examples of dependent types application in \cite{xi1999dependent}.
 
 % 多段階計算の歴史
@@ -1057,36 +1059,42 @@ show that run can be represented as application of $\epsilon$ to transition abst
 In \LTP\cite{Hanada2014}, Hanada and Igarashi extended $\lambda^\TW$ with CSP and discuss code residualization 
 which allows us to dump the quoted code into an external file.
 
+% 他段階計算の機能拡張
+
+Combination of multistage programming and another programming feature has been studied.
+Oleg, Kameyama, and Sudo\cite{kiselyov2016refined} designed a type sysytem for multistage programming with mutable cells and
+Oishi and Kameyama\cite{oishi2017staging} extended a multistage calculus so that it can handle control operators such as shift and reset.
+
 % 多段階計算の応用
 
 MetaOCaml is a programming language with quoting, unquoting, run, and CSP.
 Oleg gave many examples of application of MetaOCaml in \cite{8384206}, 
 which include filtering in signal processing, matrix-vector product, and DSL compiler.
 
-\begin{itemize}
-	\item On Cross-Stage Persistence in Multi-Stage\cite{Hanada2014}
+\begin{enumerate}
+	\item Done: On Cross-Stage Persistence in Multi-Stage\cite{Hanada2014}
 	      
 	      CSPも入りました
-	\item Eliminating Array Bound Checking Through Dependent Types\cite{Xi98}
-	\item MetaML and Multi-stage Programming with Explicit Annotations\cite{MetaML}
-	\item Idris, a general-purpose dependently typed programming language: Design and implementation\cite{brady2013idris}
-	\item A Logical Foundation for Environment Classifiers\cite{Tsukada}
-	\item Environment classifiers\cite{taha2003environment}
-	\item A framework for defining logics\cite{harper1993framework}
+	\item Done: Eliminating Array Bound Checking Through Dependent Types\cite{Xi98}
+	\item Done: MetaML and Multi-stage Programming with Explicit Annotations\cite{MetaML}
+	\item Done: Idris, a general-purpose dependently typed programming language: Design and implementation\cite{brady2013idris}
+	\item Done: A Logical Foundation for Environment Classifiers\cite{Tsukada}
+	\item Done: Environment classifiers\cite{taha2003environment}
+	\item Done: A framework for defining logics\cite{harper1993framework}
 	      
 	      $\Sigma$ の使い方を確認した
-	\item The Design and Implementation of {BER} MetaOCaml - System Description\cite{oleg2014}
-	\item Refined Environment Classifiers\cite{kiselyov2016refined}
-	\item Staging with control: type-safe multi-stage programming with control operators\cite{oishi2017staging}
-	\item \red{Partial evaluation and automatic program generation}\cite{jones1993partial}
-	\item \red{Efficient multi-level generating extensions for program specialization}\cite{gluck1995efficient}
-	\item Dependent types in practical programming\cite{xi1999dependent}
+	\item Done: The Design and Implementation of {BER} MetaOCaml - System Description\cite{oleg2014}
+	\item Done: Dependent types in practical programming\cite{xi1999dependent}
 	      
 	      Section of Applicationを読んだ。Dead Code EliminationやLoop Unrollingにも使えるらしい。
 	      
-	\item A dependently typed assembly language\cite{xi2001dependently}
+	\item Done: A dependently typed assembly language\cite{xi2001dependently}
 	      
-	      DTALの定義と制約solverを用いた型検査の定義
+		  DTALの定義と制約solverを用いた型検査の定義
+	\item Done: Refined Environment Classifiers\cite{kiselyov2016refined}
+	\item Done: Staging with control: type-safe multi-stage programming with control operators\cite{oishi2017staging}
+	\item \red{Partial evaluation and automatic program generation}\cite{jones1993partial}
+	\item \red{Efficient multi-level generating extensions for program specialization}\cite{gluck1995efficient}
 	\item \red{Run-time code generation and Modal-ML}\cite{wickline1998run}
 	\item \red{C and tcc: a language and compiler for dynamic code generation}\cite{poletto1999c}
 	\item \red{Run-time bytecode specialization}\cite{masuhara2001run}
@@ -1094,7 +1102,7 @@ which include filtering in signal processing, matrix-vector product, and DSL com
 	\item \red{Optimizing ML with run-time code generation}\cite{lee1996optimizing}
 	\item \red{Efficient incremental run-time specialization for free}\cite{marlet1999efficient}
 	      
-\end{itemize}
+\end{enumerate}
 
 \section{Conclusions}
 
