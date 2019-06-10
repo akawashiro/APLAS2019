@@ -492,7 +492,7 @@ In the next section, we will discuss on properties of \LMD.
 	\textrm{Terms}           &  & M,N,L,O,P                & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M 
 	\mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ \epsilon \mid \%_\alpha M                                                                  \\ 
 	\textrm{Signature}       &  & \Sigma                   & ::= \phi \mid X::K \mid c:\tau                                                    \\
-	\textrm{Contexts}        &  & \Gamma                   & ::= \phi \mid  \Gamma,x:\tau @A\ (x\not\in\textrm{FV}(\G))                         \\
+	\textrm{Contexts}        &  & \Gamma                   & ::= \phi \mid  \Gamma,x:\tau @A\ (x\not\in\textrm{FV}(\tau))                         \\
 \end{align*}
 
 The metavariables $X, Y, \text{and} Z$ range over the type variables, $c$ ranges over constants, the metavariables $x, y, \text{and}, z$ range over the variables.
