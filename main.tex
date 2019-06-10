@@ -1107,6 +1107,16 @@ which include filtering in signal processing, matrix-vector product, and DSL com
 
 \section{Conclusions}
 
+We proposed new multi-stage calculus \LMD, which can use dependent types.
+\LMD enable finer-grained typing of multi-stage programming comparing to existing type systems.
+This extention prevent some bugs relating to generated functions with multi-stage programming,
+such as \verb|vadd| function for vectors of a fixed length.
+We proved properties of \LMD including preservation, confluence, 
+strong normalization for full reduction, and progress for staged reduction.
+The technical difficulty of extention is how to deal with the symbol of CSP $\%$ in the equation rules.
+We resolve this problem by ignoring $\%$ under some condition.
+
+
 % \section{First Section}
 % \subsection{A Subsection Sample}
 % Please note that the first paragraph of a section or subsection is
