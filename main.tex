@@ -503,15 +503,23 @@ In the next section, we will discuss on properties of \LMD.
 
 % Description on meta variables
 
-The metavariables $X, Y$, and $Z$ range over the type variables.
-$x, y$, and, $z$ range over the variables.
-The metavariables $\alpha, \beta, \text{and} \gamma$ range over the transition variables.
-A transition, denoted by $A$ and $B$, is a finite sequence of transition variables.
+The metavariables $X, Y$, and $Z$ range over a countably infinite set of type variables.
+$x, y$, and, $z$ range over a countably infinite set of variables.
+The metavariables $\alpha, \beta, \text{and} \gamma$ range over the stage variables.
+A transition, denoted by $A$ and $B$, is a finite sequence of stage variables.
 $\epsilon$ is a symbol for the empty transition.
 
-A kind is $*$ or $\Pi x:\tau.K$. Types of terms have $*$ kinds and dependent types have $\Pi$ kinds.
+% Kinds
 
-A type is a type variable which is declared in the signature, a dependent type, a dependent type applied a term, a code type, or an $\alpha$-closed type.
+A kind is either $*$ or $\Pi x:\tau.K$.
+Types of terms have kind $*$ and dependent types have $\Pi$-kinds.
+For example, $\lambda x:\I.x$ has type $\Pi x:\I.\I$, which has $*$ kind.
+\red{この段落は短いので型の段落と結合するか?}
+
+% Types
+
+A type is a type variable which is declared in the signature, a dependent function type,
+an application of a term to a dependent function type, a code type, or an $\alpha$-closed type.
 A dependent type $\Pi x:\tau.\tau$ is a type depending on values such as a vector with its length.
 A function type in ordinary type systems is omitted because it is a specialized case of a dependent type.
 A code type $\TW_\alpha \tau$ denotes a code fragment of a term of type $\tau$.
@@ -520,7 +528,7 @@ An $\alpha$-closed type corresponds to a runnable code fragment.
 \red{ 
 $c$ ranges over constants, 
 }
-In addition to normal terms in Simply Typed Lambda Calculus, there are five more forms.
+In addition to ordinary terms in Simply Typed Lambda Calculus, there are five more forms.
 $\TB_\alpha M$ represents a code fragment, and $\TB_\alpha M$ represents unquote.
 $\Lambda\alpha.M$ is a stage variable abstraction.
 $M\ \epsilon$ is an application of $\epsilon$ to a stage variable.
