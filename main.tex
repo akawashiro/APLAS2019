@@ -789,6 +789,8 @@ This kind of type equality is very useful when we combine $\text{mulmat}\ 3\ 5$ 
 We cannot remove $\%_\alpha$ in the type without \QPercent and it makes very difficult to combine
 because types of codes don't contain $\%_\alpha$ generally.
 
+\subsubsection{Staged Semantics}
+
 The reduction given above is a full reduction and any redexes can be reduced in arbitrary order.
 But we need to fix order of reduction when we implement an interpreter of \LMD and
 the order must be appropriate in terms of stages.
@@ -854,13 +856,19 @@ We write $E^A_B[M]$ for a term obtained by filling the hole in $E^A_B$ with $M$.
 
 \section{Properties of \LMD}
 
-In this section, we prove some properties of \LMD: subject reduction, strong normalization, confluence,
+In this section, we prove some properties of \LMD: preservation, strong normalization, confluence,
 unique decomposition of evaluation contexts, and progress.
+These theorem show that the type system of \LMD is strong enough to ensure a typed term of \LMD never go wrong.
 
-Substitution lemma for \LMD\ is little more complicated than an ordinary one 
+\subsection{Substitution Lemma}
+
+Substitution lemma in \LMD\ is little more complicated than an ordinary one 
 because there are six types of judgment and two types of substitution in \LMD.
+Substitution Lemma on Terms states that term substitution $[z \mapsto P]$ preserves
+typing, kinding, well-formed kinding, term equivalence, type equivalence, and king equivalence.
+Substitution Lemma on Terms states the same for stage substitution $[\beta\mapsto\epsilon]$.
 
-\begin{theorem}[Substituition Lemma]
+\begin{lemma}[Substitution Lemma on Terms]
 	\begin{flalign*}
 		\text{If\ } \G,z:\xi @B \V M:\tau @A \text{\ and\ } \G\V P:\xi @B
 		&\text{\ then\ } \G\V M[z \mapsto P]:\tau[z \mapsto P] @A.&\\
@@ -875,14 +883,13 @@ because there are six types of judgment and two types of substitution in \LMD.
 		\text{If\ } \G,z:\xi @B \V K\E J @A \text{\ and\ } \G\V P:\xi @B
 		&\text{\ then\ } \G\V K[z \mapsto P]\E J[z \mapsto P] @A.&
 	\end{flalign*}
-\end{theorem}
+\end{lemma}
 
 \begin{proof}
 	Straightforward induction on derivations.
 \end{proof}
 
-We need to prove another substitution lemma because there are stage variables.
-\begin{theorem}[Stage Substituition Lemma]
+\begin{theorem}[Substitution Lemma on Stages]
 	\begin{flalign*}
 		\text{If\ } \G \V M:\tau @A
 		&\text{\ then\ } \G[\beta \mapsto \epsilon]\V M[\beta \mapsto \epsilon]:\tau[\beta \mapsto \epsilon] @A[\beta \mapsto \epsilon].&\\
