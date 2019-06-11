@@ -910,7 +910,16 @@ Substitution Lemma on Terms states the same for stage substitution $[\beta\mapst
 	Straightforward induction on derivations.
 \end{proof}
 
-Following three inversion lemmas are needed in proving later theorems.
+\subsection{Inversion Lemma}
+
+Following three Inversion Lemmas are needed in proving later theorems.
+Inversion Lemmas enable us to infer types of subterms of a term from the type of the term.
+They are composed of three part.
+The first part state that we can infer types of subterms.
+The second and third parts state 
+that when we have a type equivalence, we can infer the shape of type from the left to the right, and vice versa.
+We need both of the second and the third because of the reflexivity of the type equivalence.
+
 \begin{lemma}[Inversion Lemma for $\Pi$ type]
 	If $\G \V (\lambda x:\sigma.M) : (\Pi x:\sigma'.\tau)@A$ then
 	\begin{enumerate}
