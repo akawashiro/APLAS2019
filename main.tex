@@ -520,10 +520,17 @@ For example, $\lambda x:\I.x$ has type $\Pi x:\I.\I$, which has $*$ kind.
 
 A type is a type variable which is declared in the signature, a dependent function type,
 an application of a term to a dependent function type, a code type, or an $\alpha$-closed type.
-A dependent type $\Pi x:\tau.\tau$ is a type depending on values such as a vector with its length.
-A function type in ordinary type systems is omitted because it is a specialized case of a dependent type.
+A function type in ordinary type systems is omitted 
+because it is a special case of a dependent type $\Pi x:\tau$, which has no free occurrence of $x$  in $\tau$.
+An application of a term to a dependent function type is, for example, $\text{Vector}\ 10$
+if type variable $\text{Vector}$ has the kind $\Pi x:\I.*$.
 A code type $\TW_\alpha \tau$ denotes a code fragment of a term of type $\tau$.
 An $\alpha$-closed type corresponds to a runnable code fragment.
+Type constructors tie strongly in the order of 
+an application of a term to a dependent function type $\tau\ M$, a dependent function type $\Pi x:\tau.\tau$, 
+a code type $\TW_{\alpha} \tau$, an $\alpha$-closed type $\F\alpha.\tau$
+Therefore, $\F\alpha.\TW_{\alpha}.\Pi x:\I.\text{Vector}\ 5$ is interpreted as
+$\F\alpha.(\TW_{\alpha}.(\Pi x:\I.(\text{Vector}\ 5)))$.
 
 \red{ 
 $c$ ranges over constants, 
