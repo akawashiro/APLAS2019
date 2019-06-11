@@ -1018,8 +1018,9 @@ We prove this thorem by translating \LMD to Simply Typed Lambda Calculus.
 	Then, we can prove Strong Normalization of \LMD\ from Strong Normalization of Simply Typed Lambda Calculus.
 \end{proof}
 
-Any reduction sequences from one typed term converge.
+Confluence is a property that any reduction sequences from one typed term converge.
 Because we have proved Strong Normalization, we can use Newman's Lemma to prove Confluence.
+
 \begin{theorem}[Confluence]
 	For any term $M$, if $M \longrightarrow^* M'$ and $M \longrightarrow^* M''$ then
 	there exists $M'''$ that satisfies $M' \longrightarrow^* M'''$ and $M'' \longrightarrow^* M'''$.
@@ -1034,22 +1035,11 @@ Because we have proved Strong Normalization, we can use Newman's Lemma to prove 
 	So, we can reduce one of them after we reduce another.
 \end{proof}
 
-Every typed term is a value or can be reduced to another typed term.
-\begin{theorem}[Progress]
-	If $x:\tau @\epsilon \notin \G$ and $\G \V M : \tau  @ A$ then
-	$ M \in V^A $ or $M'$ exists such that $M \longrightarrow M'$.
-\end{theorem}
-
-\begin{proof}
-	We can prove by straightforward induction on derivations.
-	Difficult cases are \TApp, \TTBL, and \TIns.
-	We need Inversion Lemmas for them.
-\end{proof}
-
-For every typed term, we can find just one redex to reduce by the evaluation context or it is a value.
-This theorem is important because it ensure 
+Unique Decomposition ensure that
+,for every typed term, we can find just one redex to reduce by the evaluation context or it is a value.
+This theorem is important because it guarantee
 that the evaluation context decides a redex to reduce deterministically.
-Specifically, this theorem guarantee that 
+Specifically speaking, this theorem guarantee that 
 when you write a interpreter using the evaluation context of \LMD,
 your interpreter works just as intended.
 
@@ -1059,6 +1049,20 @@ your interpreter works just as intended.
 		\item $ M \in V^A$
 		\item There exist an unique tuple of $B, E^A_B, R^B$ such that $M = E^A_B[R^B]$ ($B = \epsilon$ or $B = \beta$) .
 	\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+	We can prove by straightforward induction on derivations.
+	Difficult cases are \TApp, \TTBL, and \TIns.
+	We need Inversion Lemmas for them.
+\end{proof}
+
+Progress states $\longrightarrow_s$ defines appropriate reduction for typed terms of \LMD.
+Thanks to Unique Decomposition, we can prove this theorem easily.
+
+\begin{theorem}[Progress]
+	If $x:\tau @\epsilon \notin \G$ and $\G \V M : \tau  @ A$ then
+	$ M \in V^A $ or $M'$ exists such that $M \longrightarrow_s M'$.
 \end{theorem}
 
 \begin{proof}
