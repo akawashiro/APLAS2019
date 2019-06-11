@@ -498,7 +498,7 @@ In the next section, we will discuss on properties of \LMD.
 	\textrm{Terms}           &  & M,N,L,O,P                & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M                   \\
 	                         &  &                          & \ \ \ \ \mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ \epsilon \mid \%_\alpha M         \\  
 	\textrm{Signature}       &  & \Sigma                   & ::= \emptyset \mid X::K \mid c:\tau                                               \\
-	\textrm{Contexts}        &  & \Gamma                   & ::= \emptyset \mid  \Gamma,x:\tau @A\ (x\not\in\textrm{Domain}(\G))               \\
+	\textrm{Contexts}        &  & \Gamma                   & ::= \emptyset \mid  \Gamma,x:\tau @A\ (x\not\in\textrm{Domain}(\G)\ \text{and}\ x\not\in\textrm{FV}(\tau))               \\
 \end{align*}
 
 % Description on meta variables
@@ -527,40 +527,43 @@ if type variable $\text{Vector}$ has the kind $\Pi x:\I.*$.
 A code type $\TW_\alpha \tau$ denotes a code fragment of a term of type $\tau$.
 An $\alpha$-closed type corresponds to a runnable code fragment.
 Type constructors tie strongly in the order of 
-an application of a term to a dependent function type $\tau\ M$, a dependent function type $\Pi x:\tau.\tau$, 
-a code type $\TW_{\alpha} \tau$, an $\alpha$-closed type $\F\alpha.\tau$
+an application of a term to a dependent function type $\tau\ M$,
+a code type $\TW_{\alpha} \tau$,
+a dependent function type $\Pi x:\tau.\tau$, 
+an $\alpha$-closed type $\F\alpha.\tau$.
 Therefore, $\F\alpha.\TW_{\alpha}.\Pi x:\I.\text{Vector}\ 5$ is interpreted as
 $\F\alpha.(\TW_{\alpha}.(\Pi x:\I.(\text{Vector}\ 5)))$.
 
-\red{ 
-$c$ ranges over constants, 
-}
+% Terms
+
+Terms include a constant $c$ which is declared in signature $\Sigma$.
 In addition to ordinary terms in Simply Typed Lambda Calculus, there are five more forms.
-$\TB_\alpha M$ represents a code fragment, and $\TB_\alpha M$ represents unquote.
+$\TB_\alpha M$ represents a code fragment, and $\TB_\alpha M$ represents escape.
 $\Lambda\alpha.M$ is a stage variable abstraction.
 $M\ \epsilon$ is an application of $\epsilon$ to a stage variable.
 $\%_\alpha M$ is a primitive operator for cross-stage persistence.
-
-Signatures are sequences of pairs of a constant and its type or a type variable and its kind.
-Because we adopted a \LLF-like system, constants and type variables for base types are given in the signature $\Sigma$.
-For example, when we use integers in \LMD, $\Sigma = \I :: *, 1:\I, 2:\I, \cdots$.
-
-% Contexts
-Contexts are sequences of triplexes of a variable, its type, and its stage.
-In order to restrict contexts to only well-formed ones, there is a condition of $x\notin\FV(\G)$.
-Because of this condition, there is no type with free variables in contexts.
-
-% 演算子の結合順序
-Connection degree of $\TB_\alpha, \TBL_\alpha, \%_\alpha$ is stronger than the two forms of applications
+$\TB_\alpha, \TBL_\alpha, \%_\alpha$ tie stronger than the two forms of applications
 and applications are left-associative
 and two abstractions extends as far to the right as possible.
+For example, $\F\alpha.\lambda x:\I.\TB_\alpha x\ y$ means $\F\alpha.(\lambda x:\I.(\TB_\alpha x)\ y)$.
+
+% Signature
+
+Signatures are sequences of pairs of a type variable and its kind or a constant and its type.
+Because we adopted a \LLF-like system, constants and type variables for base types are given in the signature $\Sigma$.
+For example, when we use integers in \LMD, $\Sigma = \I :: *, 1:\I, 2:\I, \cdots$.
 
 % 自由変数
 As usual, the variable $x$ is bound in $\lambda x:\tau.M$
 and the transition variable $\alpha$ is bound in $\Lambda \alpha.M$.
 We identify $\alpha$-convertible terms and assume the names of bound variables are pairwise distinct.
+
+% Contexts
+Contexts are sequences of triples of a variable, its type, and its stage.
 We write $\FV(M)$ and $\FTV(M)$ for the set of free variables and the set of free stage variables in $M$, respectively.
-We omit their definitions.
+$\textrm{Domain}$ is a function from a content to a set of variables defined in the context.
+The side condition of $x\not\in\textrm{Domain}(\G)$ prevent multiple appearances of the same variable and
+$x\not\in\textrm{FV}(\tau)$ is needed in the proof of Substitution Lemmas.
 
 \subsection{Reduction}
 
@@ -1272,6 +1275,8 @@ because we can realize them by defining a new weak head normal form which contai
 % LNCS Homepage, \url{http://www.springer.com/lncs}. Last accessed 4
 % Oct 2017
 % \end{thebibliography}
+
+\section{Appendix}
 
 \blue{We solicit submissions in the form of regular research papers describing original scientific research results, including system development and case studies. Regular research papers should not exceed 18 pages in the Springer LNCS format, including bibliography and figures. This category encompasses both theoretical and implementation (also known as system descriptions) papers. In either case, submissions should clearly identify what has been accomplished and why it is significant. Submissions will be judged on the basis of significance, relevance, correctness, originality, and clarity. System descriptions papers should contain a link to a working system and will be judged on originality, usefulness, and design. In case of lack of space, proofs, experimental results, or any information supporting the technical results of the paper could be provided as an appendix or a link to a web page, but reviewers are not obliged to read them.}
 \blue{Review Process
