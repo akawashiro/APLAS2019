@@ -860,9 +860,9 @@ In this section, we prove some properties of \LMD: preservation, strong normaliz
 unique decomposition of evaluation contexts, and progress.
 These theorem show that the type system of \LMD is strong enough to ensure a typed term of \LMD never go wrong.
 
-\subsection{Substitution Lemma}
+% Substitution Lemma
 
-Substitution lemma in \LMD\ is little more complicated than an ordinary one 
+Substitution Lemma in \LMD\ is little more complicated than an ordinary one 
 because there are six types of judgment and two types of substitution in \LMD.
 Substitution Lemma on Terms states that term substitution $[z \mapsto P]$ preserves
 typing, kinding, well-formed kinding, term equivalence, type equivalence, and king equivalence.
@@ -910,7 +910,7 @@ Substitution Lemma on Terms states the same for stage substitution $[\beta\mapst
 	Straightforward induction on derivations.
 \end{proof}
 
-\subsection{Inversion Lemma}
+% Inversion Lemma
 
 Following three Inversion Lemmas are needed in proving later theorems.
 Inversion Lemmas enable us to infer types of subterms of a term from the type of the term.
@@ -984,7 +984,11 @@ We need both of the second and the third because of the reflexivity of the type 
 	Straightforward induction on derivations.
 \end{proof}
 
-Reductions preserve typing.
+% Preservation
+
+Thanks to Substitution Lemmas and Inversion Lemma, we can prove Preservation easily.
+Preservation ensure that any one step reduction preserves type.
+
 \begin{theorem}[Preservation]
 	If $\G\V M:\tau @A$ and $M \longrightarrow M'$, then $\G\V M':\tau @A$\\
 \end{theorem}
@@ -997,7 +1001,12 @@ Reductions preserve typing.
 	We need Inversion Lemmas for them.
 \end{proof}
 
-No typed term has an infinite reduction sequence.
+% Strong Normalization
+
+Strong Normalization is also important property which guarantee that
+no typed term has an infinite reduction sequence.
+We prove this thorem by translating \LMD to Simply Typed Lambda Calculus.
+
 \begin{theorem}[Strong Normalization]
 	If $\G\V^A M:\tau$ then there is no infinite sequence of terms $(M_i)_{i\ge1}$ and 
 	$M_i \longrightarrow M_{i+1}$ for $i\ge 1$
