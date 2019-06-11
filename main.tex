@@ -426,6 +426,7 @@ because we develop a multi-stage calculus, not a multi-transition calculus.
 \red{stageのほうが言葉としてふさわしいと言いたい}
 There are three technical points in the extension from \LTP to \LMD.
 
+\red{以下の3文をどこかに入れる必要がある}
 \red{, which is called a \textit{stage variable} in \LMD.}
 \red{ which is called a stage in \LMD.}
 \red{Although we can apply any transition to a transition abstraction in \LTP,
@@ -488,22 +489,25 @@ In the next section, we will discuss on properties of \LMD.
 
 \begin{align*}
 	\textrm{Type variables}  &  &                          & X,Y,Z                                                                             \\
-	\textrm{Constants}       &  &                          & c                                                                                 \\
 	\textrm{Variables}       &  &                          & x,y,z                                                                             \\
 	\textrm{Stage variables} &  &                          & \alpha,\beta,\gamma                                                               \\
 	\textrm{Stage}           &  &                          & A,B,C                                                                             \\
 	\textrm{Kinds}           &  & K,J,I,H,G                & ::= * \mid \Pi x:\tau.K                                                           \\
 	\textrm{Types}           &  & \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} \tau \mid \F\alpha.\tau \\
-	\textrm{Terms}           &  & M,N,L,O,P                & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M 
-	\mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ \epsilon \mid \%_\alpha M                                                                  \\ 
-	\textrm{Signature}       &  & \Sigma                   & ::= \emptyset \mid X::K \mid c:\tau                                                    \\
-	\textrm{Contexts}        &  & \Gamma                   & ::= \emptyset \mid  \Gamma,x:\tau @A\ (x\not\in\textrm{Domain}(\G))                         \\
+	\textrm{Constants}       &  &                          & c                                                                                 \\
+	\textrm{Terms}           &  & M,N,L,O,P                & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M                   \\
+	                         &  &                          & \ \ \ \ \mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ \epsilon \mid \%_\alpha M         \\  
+	\textrm{Signature}       &  & \Sigma                   & ::= \emptyset \mid X::K \mid c:\tau                                               \\
+	\textrm{Contexts}        &  & \Gamma                   & ::= \emptyset \mid  \Gamma,x:\tau @A\ (x\not\in\textrm{Domain}(\G))               \\
 \end{align*}
 
-The metavariables $X, Y, \text{and} Z$ range over the type variables, $c$ ranges over constants, the metavariables $x, y, \text{and}, z$ range over the variables.
+% Description on meta variables
+
+The metavariables $X, Y$, and $Z$ range over the type variables.
+$x, y$, and, $z$ range over the variables.
 The metavariables $\alpha, \beta, \text{and} \gamma$ range over the transition variables.
 A transition, denoted by $A$ and $B$, is a finite sequence of transition variables.
-$\epsilon$ is a symbol for an empty transition.
+$\epsilon$ is a symbol for the empty transition.
 
 A kind is $*$ or $\Pi x:\tau.K$. Types of terms have $*$ kinds and dependent types have $\Pi$ kinds.
 
@@ -513,6 +517,9 @@ A function type in ordinary type systems is omitted because it is a specialized 
 A code type $\TW_\alpha \tau$ denotes a code fragment of a term of type $\tau$.
 An $\alpha$-closed type corresponds to a runnable code fragment.
 
+\red{ 
+$c$ ranges over constants, 
+}
 In addition to normal terms in Simply Typed Lambda Calculus, there are five more forms.
 $\TB_\alpha M$ represents a code fragment, and $\TB_\alpha M$ represents unquote.
 $\Lambda\alpha.M$ is a stage variable abstraction.
@@ -1091,18 +1098,18 @@ which include filtering in signal processing, matrix-vector product, and DSL com
 	      
 	\item Done: A dependently typed assembly language\cite{xi2001dependently}
 	      
-		  DTALの定義と制約solverを用いた型検査の定義
+	      DTALの定義と制約solverを用いた型検査の定義
 	\item Done: Refined Environment Classifiers\cite{kiselyov2016refined}
 	\item Done: Staging with control: type-safe multi-stage programming with control operators\cite{oishi2017staging}
 	\item Done: Logical Modalities and Multi-Stage Programming\cite{benaissa1999logical}
-	% \item \red{Partial evaluation and automatic program generation}\cite{jones1993partial}
-	% \item \red{Efficient multi-level generating extensions for program specialization}\cite{gluck1995efficient}
-	% \item \red{Run-time code generation and Modal-ML}\cite{wickline1998run}
-	% \item \red{C and tcc: a language and compiler for dynamic code generation}\cite{poletto1999c}
-	% \item \red{Run-time bytecode specialization}\cite{masuhara2001run}
-	% \item \red{A tour of Tempo: A program specializer for the C language}\cite{consel2004tour}
-	% \item \red{Optimizing ML with run-time code generation}\cite{lee1996optimizing}
-	% \item \red{Efficient incremental run-time specialization for free}\cite{marlet1999efficient}
+	      % \item \red{Partial evaluation and automatic program generation}\cite{jones1993partial}
+	      % \item \red{Efficient multi-level generating extensions for program specialization}\cite{gluck1995efficient}
+	      % \item \red{Run-time code generation and Modal-ML}\cite{wickline1998run}
+	      % \item \red{C and tcc: a language and compiler for dynamic code generation}\cite{poletto1999c}
+	      % \item \red{Run-time bytecode specialization}\cite{masuhara2001run}
+	      % \item \red{A tour of Tempo: A program specializer for the C language}\cite{consel2004tour}
+	      % \item \red{Optimizing ML with run-time code generation}\cite{lee1996optimizing}
+	      % \item \red{Efficient incremental run-time specialization for free}\cite{marlet1999efficient}
 \end{enumerate}
 
 \section{Conclusions}
@@ -1224,9 +1231,9 @@ because we can realize them by defining a new weak head normal form which contai
 
 \blue{We solicit submissions in the form of regular research papers describing original scientific research results, including system development and case studies. Regular research papers should not exceed 18 pages in the Springer LNCS format, including bibliography and figures. This category encompasses both theoretical and implementation (also known as system descriptions) papers. In either case, submissions should clearly identify what has been accomplished and why it is significant. Submissions will be judged on the basis of significance, relevance, correctness, originality, and clarity. System descriptions papers should contain a link to a working system and will be judged on originality, usefulness, and design. In case of lack of space, proofs, experimental results, or any information supporting the technical results of the paper could be provided as an appendix or a link to a web page, but reviewers are not obliged to read them.}
 \blue{Review Process
-APLAS 2019 will use a lightweight double-blind reviewing process. Following this process means that reviewers will not see the authors’ names or affiliations as they initially review a paper. The authors’ names will then be revealed to the reviewers only once their reviews have been submitted.
-To facilitate this process, submitted papers must adhere to the following:
-Author names and institutions must be omitted and
-References to the authors’ own related work should be in the third person (e.g., not “We build on our previous work …” but rather “We build on the work of …”).
-The purpose of this process is to help the reviewers come to an initial judgement about the paper without bias, not to make it impossible for them to discover the authors if they were to try. Nothing should be done in the name of anonymity that weakens the submission, makes the job of reviewing the paper more difficult, or interferes with the process of disseminating new ideas. For example, important background references should not be omitted or anonymized, even if they are written by the same authors and share common ideas, techniques, or infrastructure. Authors should feel free to disseminate their ideas or draft versions of their paper as they normally would. For instance, authors may post drafts of their papers on the web or give talks on their research ideas.}
+	APLAS 2019 will use a lightweight double-blind reviewing process. Following this process means that reviewers will not see the authors’ names or affiliations as they initially review a paper. The authors’ names will then be revealed to the reviewers only once their reviews have been submitted.
+	To facilitate this process, submitted papers must adhere to the following:
+	Author names and institutions must be omitted and
+	References to the authors’ own related work should be in the third person (e.g., not “We build on our previous work …” but rather “We build on the work of …”).
+	The purpose of this process is to help the reviewers come to an initial judgement about the paper without bias, not to make it impossible for them to discover the authors if they were to try. Nothing should be done in the name of anonymity that weakens the submission, makes the job of reviewing the paper more difficult, or interferes with the process of disseminating new ideas. For example, important background references should not be omitted or anonymized, even if they are written by the same authors and share common ideas, techniques, or infrastructure. Authors should feel free to disseminate their ideas or draft versions of their paper as they normally would. For instance, authors may post drafts of their papers on the web or give talks on their research ideas.}
 \end{document}
