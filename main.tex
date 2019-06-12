@@ -548,7 +548,7 @@ $\F\alpha.(\TW_{\alpha}.(\Pi x:\I.(\text{Vector}\ 5)))$. \AI{I don't understand 
 
 % Terms
 
-Terms include ordinary explicitly typed \(\lambda\)-terms, constants,
+Terms include ordinary (explicitly typed) \(\lambda\)-terms, constants,
 whose type is declared in signature $\Sigma$, and the following five forms
 related to multi-stage programming:
 $\TB_\alpha M$ represents a code fragment; $\TB_\alpha M$ represents escape;
@@ -574,32 +574,38 @@ We identify $\alpha$-convertible terms and assume the names of bound variables a
 We write $\FV(M)$ and $\FTV(M)$ for the set of free variables and the set of free stage variables in $M$, respectively.
 
 % Contexts
-Contexts are sequences of triples of a variable, its type, and its stage.
+Contexts \AI{Why not call them ``type environments'' to avoid confusion with evaluation contexts?} are sequences of triples of a variable, its type, and its stage.
 $\textrm{Domain}$ is a function from a content to a set of variables defined in the context.
+\AI{I'd prefer \textit{dom}.}
 The side condition of $x\not\in\textrm{Domain}(\G)$ prevent multiple appearances of the same variable and
 $x\not\in\textrm{FV}(\tau)$ is needed in the proof of Substitution Lemmas.
 
 \AI{We should note that constants and type variables are not staged.}
+\paragraph{Remark:}  \AI{Comparison with Hanada--Igarashi.}
+
 \subsection{Reduction}
 
 Next, we define full reduction for \LMD.
-Before giving the definition of reduction, we define two substitutions.
-Substitution $M[x\mapsto N]$ is the normal capture-avoiding substitution, and we omit its definition here.
-Substitution $M[\alpha \mapsto \epsilon]$ is defined below.
+Before giving the definition of reduction, we define two kinds of substitutions.
+Substitution $M[x\mapsto N]$ is the ordinary capture-avoiding substitution of
+$N$ for $x$ in $M$, and we omit its definition here.
+Substitution $M[\alpha \mapsto \epsilon]$ of the empty stage
+for stage variable $\alpha$ in $M$ is defined below.
+\AI{What about $\tau[x \mapsto N], K[x \mapsto N], \tau [\alpha \mapsto \epsilon]$ and $K[\alpha \mapsto \epsilon]$?}
 
 \begin{align*}
 	% \newcommand{\SB}{}
-	(\lambda x:\tau.M)[\alpha \mapsto \epsilon] & = \lambda x:\tau[\alpha \mapsto \epsilon].M[\alpha \mapsto \epsilon]                                  \\
+	(\lambda x:\tau.M)[\alpha \mapsto \epsilon] & = \lambda x:(\tau[\alpha \mapsto \epsilon]).(M[\alpha \mapsto \epsilon])                                  \\
 	(M\ N)[\alpha \mapsto \epsilon]             & = (M[\alpha \mapsto \epsilon])\ (N[\alpha \mapsto \epsilon])                                          \\
-	(M\ \epsilon)[\alpha \mapsto \epsilon]      & = M[\alpha \mapsto \epsilon]\ \epsilon                                                                \\
-	(\TB_\beta M)[\alpha \mapsto \epsilon]      & = \TB_\beta M[\alpha \mapsto \epsilon]                               & (\text{if } \alpha \neq \beta) \\
-	(\TB_\beta M)[\alpha \mapsto \epsilon]      & = M[\alpha \mapsto \epsilon]                                         & (\text{if } \alpha = \beta)    \\
-	(\TBL_\beta M)[\alpha \mapsto \epsilon]     & = \TBL_\beta M[\alpha \mapsto \epsilon]                              & (\text{if } \alpha \neq \beta) \\
-	(\TBL_\beta M)[\alpha \mapsto \epsilon]     & =  M[\alpha \mapsto \epsilon]                                        & (\text{if } \alpha = \beta)    \\
-	(\Lambda\beta.M)[\alpha \mapsto \epsilon]   & = \Lambda\beta.M[\alpha \mapsto \epsilon]                            & (\text{if } \alpha \neq \beta) \\
-	(\Lambda\beta.M)[\alpha \mapsto \epsilon]   & = \Lambda\beta.M                                                     & (\text{if } \alpha = \beta)    \\
-	(\%_\beta M)[\alpha \mapsto \epsilon]       & = \%_{\beta[\alpha \mapsto \epsilon]}M[\alpha \mapsto \epsilon]      & (\text{if } \alpha \neq \beta) \\
-	(\%_\beta M)[\alpha \mapsto \epsilon]       & = M[\alpha \mapsto \epsilon]                                         & (\text{if } \alpha = \beta)    \\
+	(M\ \epsilon)[\alpha \mapsto \epsilon]      & = (M[\alpha \mapsto \epsilon])\ \epsilon                                                                \\
+	(\TB_\alpha M)[\alpha \mapsto \epsilon]      & = M[\alpha \mapsto \epsilon]                                                                          \\
+	(\TB_\beta M)[\alpha \mapsto \epsilon]      & = \TB_\beta (M[\alpha \mapsto \epsilon])                               & (\text{if } \alpha \neq \beta) \\
+	(\TBL_\alpha M)[\alpha \mapsto \epsilon]     & =  M[\alpha \mapsto \epsilon]                                        &                               \\
+	(\TBL_\beta M)[\alpha \mapsto \epsilon]     & = \TBL_\beta (M[\alpha \mapsto \epsilon])                              & (\text{if } \alpha \neq \beta) \\
+	(\Lambda\beta.M)[\alpha \mapsto \epsilon]   & = \Lambda\beta.(M[\alpha \mapsto \epsilon])                            & (\text{if } \alpha \neq \beta) \\
+	% (\Lambda\beta.M)[\alpha \mapsto \epsilon]   & = \Lambda\beta.M                                                     & (\text{if } \alpha = \beta)    \\
+	(\%_\alpha M)[\alpha \mapsto \epsilon]       & = M[\alpha \mapsto \epsilon]                                         &                                  \\
+	(\%_\beta M)[\alpha \mapsto \epsilon]       & = \%_{\beta[\alpha \mapsto \epsilon]}(M[\alpha \mapsto \epsilon])      & (\text{if } \alpha \neq \beta) \\
 \end{align*}
 
 \begin{definition}[Reduction]
