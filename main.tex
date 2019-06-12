@@ -494,8 +494,7 @@ over by \(x,y,z\), the denumerable set of constants, ranged over by
 \(c\), and the denumerable set of stage variables, ranged over by
 \(\alpha, \beta, \gamma\).  The metavariables \(A, B, C\) range over
 sequences of stage variables; we write \(\varepsilon\) for the empty
-sequence.  \AI{I think $\varepsilon$ is a more standard symbol for
-  the nonempty sequence.}  \LMD is defined by the following grammar:
+sequence.  \AI{I prefer $\varepsilon$ for the nonempty sequence.}  \LMD is defined by the following grammar:
 
 \AI{``Transition'' is still used.}
 
@@ -593,6 +592,8 @@ Substitution $M[\alpha \mapsto \epsilon]$ of the empty stage
 for stage variable $\alpha$ in $M$ is defined below.
 \AI{What about $\tau[x \mapsto N], K[x \mapsto N], \tau [\alpha \mapsto \epsilon]$ and $K[\alpha \mapsto \epsilon]$?}
 
+\AI{Since we always substitute $\varepsilon$ for stage variables, we may want to introduce a special notation, something like $\textit{erase}_\alpha(M)$.}
+
 \begin{align*}
 	% \newcommand{\SB}{}
 	(\lambda x:\tau.M)[\alpha \mapsto \epsilon] & = \lambda x:(\tau[\alpha \mapsto \epsilon]).(M[\alpha \mapsto \epsilon])                                  \\
@@ -609,6 +610,8 @@ for stage variable $\alpha$ in $M$ is defined below.
 \end{align*}
 
 \begin{definition}[Reduction]
+  \AI{It's not clear what are defined here.  You are talking only about rules.
+    Something like ``The relations $M \longrightarrow_\beta N$, ... are the least compatible relations closed under the rules below.''}
 	There are three reduction rules ($\longrightarrow_\beta, \longrightarrow_\blacklozenge, \longrightarrow_\Lambda$) in \LMD.
 	Congruence rules which are omitted from the definition.
 	\begin{align*}
@@ -620,24 +623,27 @@ for stage variable $\alpha$ in $M$ is defined below.
 	We write $ M \longrightarrow M'$ iff $ M \longrightarrow_\beta M'$, $ M \longrightarrow_\blacklozenge M'$, or $ M \longrightarrow_\Lambda M'$.
 \end{definition}
 
-$\longrightarrow_\beta$ is ordinary $\beta-$reduction in lambda calculus.
-$\longrightarrow_\blacklozenge$ means that when a code fragment is escaped, it becomes the original code.
-$\longrightarrow_\Lambda$ means that a stage abstraction applied to the empty stage $\epsilon$ reduces to the body of abstraction
-where $\epsilon$ is substituted to the stage variable.
-Application of a non-$\epsilon$ stage to a stage abstraction is prohibited in order to simplify \LMD.
+The relation $\longrightarrow_\beta$ represents ordinary $\beta-$reduction in the \(\lambda\)-calculus; the relation 
+$\longrightarrow_\blacklozenge$ represents that quotation $\TB_\alpha M$ is canceled by escape and $M$ is spliced into the code fragment surrounding the escape;
+the relation $\longrightarrow_\Lambda$ means that a stage abstraction applied to the empty stage $\epsilon$ reduces to the body of abstraction
+where $\epsilon$ is substituted for the stage variable.
+Application of a non-$\epsilon$ stage to a stage abstraction is prohibited in order to simplify \LMD. \AI{This should have been mentioned earlier in the comparison with Hanada--Igarashi.}
 There is no reduction rule for CSP as with Hanada and Igarashi \cite{Hanada2014}.
-$\%_\alpha$, the symbol for CSP, is disappeared when $\epsilon$ is substituted to $\alpha$.
-$\TB_\alpha$ and $\TBL_\alpha$ disappears in the same way as $\%_\alpha$.
+The CSP operator $\%_\alpha$ disappears when $\epsilon$ is substituted to $\alpha$.
+% $\TB_\alpha$ and $\TBL_\alpha$ disappears in the same way as $\%_\alpha$.
+
+\AI{A few examples are desirable.}
 
 \subsection{Type System}
 
 % 総論
 
 In this section, we define the type system of \LMD.
-\LMD is little complicated because it contains dependent types.
-It contains typing, kinding, well-formed kinding, term equality, type equality, and kind equality.
-In other words, there are six types of judgement in \LMD.
-We show them in Figure \ref{fig:LMD-six-judgements}.
+% \LMD is little complicated because it contains dependent types.
+It consists of six judgment forms for typing, kinding, well-formed kinding, term equivalence, type equivalence, and kind equivalence.
+We list the judgments forms in Figure~\ref{fig:LMD-six-judgements}.
+\AI{equality vs. equivalence?}
+\AI{A few judgment forms do not match rules.}
 
 \begin{figure}
 	\begin{center}
@@ -649,25 +655,33 @@ We show them in Figure \ref{fig:LMD-six-judgements}.
 			\G & \V \tau \E \sigma & \text{type equality} \\
 			\G & \V K \E J @ A     & \text{kind equality}
 		\end{align*}
-		\caption{Six types of judgement in \LMD}
+		\caption{Six judgment forms of the type system of \LMD.}
 		\label{fig:LMD-six-judgements}
 	\end{center}
 \end{figure}
 
+\AI{Insert a tilde (which is a space without a line break) between ``Figure'' and ref.}
 \begin{definition}[Typing]
-	The typing relation $ \G \V M : \tau @ A $ is the least relation closed under the rules in Figure \ref{fig:typing-rules}.
+  The typing relation $ \G \V M : \tau @ A $ is the least relation closed under the rules in Figure~\ref{fig:typing-rules}.
+  \AI{Precisely speaking, it cannot be defined independently of other judgments.
+  How is dependency between judgments?}
 \end{definition}
-We start from defining typing of \LMD.
-Typing rules of \LMD are shown in Figure \ref{fig:typing-rules}.
-The rule \TConst\ means any constants in the signature can appear at any stage.
-For example, if we have a signature $\Sigma$ which is $\textrm{bool} :: *, \textrm{true}: \textrm{bool}, \textrm{false}: \textrm{bool}$,
-the derivation tree in Figure \ref{fig:tconst-derivation-tree} is admissible.
-The rules \TVar , \TAbs, and \TApp\ are almost the same as those in the simply typed lambda calculus 
-if you ignore stage annotations and kind checking.
-The rule \TVar\ means that a variable can appear only at the stage in which it is declared.
-It checks the type of variable $x$, $\tau$, has the proper kind for terms, $*$.
-The rule \TAbs\ also checks the kind of the type.
-The rule \TApp\ requires $M$ and $N$ are typed at the same stage.
+
+\AI{``judgment'' vs. ``judgement''.}  We start from defining typing of
+\LMD.  Typing rules of \LMD are shown in Figure
+\ref{fig:typing-rules}.  The rule \TConst{} means any constants in the
+signature can appear at any stage.  \AI{This should be discussed
+  earlier.}  For example, if we have a signature $\Sigma$ which is
+$\textrm{bool} :: *, \textrm{true}: \textrm{bool}, \textrm{false}:
+\textrm{bool}$, the derivation tree in
+Figure~\ref{fig:tconst-derivation-tree} is admissible.  \AI{Don't we
+  need signature well formedness?  If $c:\tau \in \Sigma$, then $\tau$
+  should be a well-formed type under ... what?}  The rules \TVar,
+\TAbs, and \TApp{} are almost the same as those in the simply typed
+lambda calculus.  \AI{... or \(\lambda\)LF?  We are working in a dependently type system...}  Additional conditions are that subterms must be
+typed at the same stage (\TAbs{} and \TApp); the type
+annotation/declaration on a variable has to be a proper type of kind
+$*$ (\TAbs) at the stage where it is declared (\TVar{} and \TAbs).
 
 \begin{figure}
 	\begin{center}
@@ -683,49 +697,61 @@ The rule \TApp\ requires $M$ and $N$ are typed at the same stage.
 	\end{center}
 \end{figure}
 
-% Typing rules for a multi-stage calculus
-The rules \TTB, \TTBL, \TGen, \TIns, and \TCsp\ are rules for a multi-stage calculus.
-They are corresponding to brackets, escape, making a stage abstraction, 
-application of $\epsilon$ stage to a stage abstraction, and cross-stage persistence, respectively.
-Please check Hanada and Igarashi \cite{Hanada2014} and Tsukada and Igarashi \cite{Tsukada} for details of these rules.
 
 % \TConv
-The main technical point of this paper is \TConv\ and type equivalence rules needed by \TConv.
-This rule allows us to replace a type with another type that is equivalent.
+\AI{Looks like a paper is written for those who know multi-stage calculi fairly well but don't know dependent type systems.  The reality is opposite.}
+As in standard dependent type systems, \TConv{} allows us to replace
+the type of a term with an equivalent one.  
 In a type system which includes dependent types, this kind of rule is essential
 because two types which have different shapes may be equivalent.
 For example, when we use a vector type with its size ($\textrm{Vector}\ n$),
 $\textrm{Vector}\ 5$ is equivalent to $\textrm{Vector}\ (4+1)$ obviously although they are not equivalent in apparently.
 
+
+% Typing rules for a multi-stage calculus
+\AI{This paragraph is not very informaticve.  We shouldn't just refer redears to previous work.}
+The rules \TTB, \TTBL, \TGen, \TIns, and \TCsp{} are rules for a multi-stage calculus.
+They are corresponding to brackets, escape, making a stage abstraction, 
+application of $\epsilon$ stage to a stage abstraction, and cross-stage persistence, respectively.
+Please check Hanada and Igarashi \cite{Hanada2014} and Tsukada and Igarashi \cite{Tsukada} for details of these rules.
+
 \begin{figure}
 	\begin{center}
-		\infrule{c:\tau \in \Sigma \andalso \G\V \tau::*@A}{\G \V c:\tau @A}{\TConst} \andalso
-		\infrule{x:\tau @A \in \G \andalso \G\V \tau::*@A}{\G \V x:\tau @A}{\TVar} \\[2mm]
-		\infrule{\G\V \sigma::*@A\andalso\G,x:\sigma@A\V M:\tau @A}{\G\V(\lambda (x:\sigma).M):(\Pi (x:\sigma).\tau)@A}{\textsc{T-Abs}} \\[2mm]
-		\infrule{\G\V M:(\Pi (x:\sigma).\tau)@A \andalso \G\V N:\sigma@A}{\G\V M\ N : \tau[x\mapsto N]@A}{\textsc{T-App}} \andalso
-		\infrule{\G\V M:\tau @A \andalso \G\V \tau\equiv \sigma :: K@A}{\G\V M:\sigma@A}{\textsc{T-Conv}} \\[2mm]
-		\infrule{\G\V M:\tau @{A\alpha}}{\G\V\TB_{\alpha}M:\TW_{\alpha}\tau @A}{\TTB} \andalso
-		\infrule{\G\V M:\TW_{\alpha}\tau @A}{\G\V\TBL_{\alpha}M:\tau @{A\alpha}}{\TTBL} \\[2mm]
-		\infrule{\G\V M:\tau @A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\V\Lambda\alpha.M:\forall\alpha.\tau @A}{\textsc{T-Gen}} \andalso
-		\infrule{\G\V M:\forall\alpha.\tau @A}{\G\V M\ \epsilon:\tau[\alpha \mapsto \epsilon]@A}{\textsc{T-Ins}} \andalso
-		\infrule{\G\V M:\tau @A}{\G\V \%_\alpha M:\tau @{A\alpha}}{\textsc{T-Csp}} \andalso
-		\caption{Typing Rules}
+		\infrule[\TConst]{c:\tau \in \Sigma \andalso \G\V \tau::*@A}{\G \V c:\tau @A} \\[2mm]
+		\infrule[\TVar]{x:\tau @A \in \G \andalso \G\V \tau::*@A}{\G \V x:\tau @A} \\[2mm]
+		\infrule[\TAbs]{\G\V \sigma::*@A\andalso\G,x:\sigma@A\V M:\tau @A}{\G\V(\lambda (x:\sigma).M):(\Pi (x:\sigma).\tau)@A} \\[2mm]
+		\infrule[\TApp]{\G\V M:(\Pi (x:\sigma).\tau)@A \andalso \G\V N:\sigma@A}{\G\V M\ N : \tau[x\mapsto N]@A} \\[2mm]
+		\infrule[\TConv]{\G\V M:\tau @A \andalso \G\V \tau\equiv \sigma :: K@A}{\G\V M:\sigma@A} \\[2mm]
+		\infrule[\TTB]{\G\V M:\tau @{A\alpha}}{\G\V\TB_{\alpha}M:\TW_{\alpha}\tau @A} \andalso
+		\infrule[\TTBL]{\G\V M:\TW_{\alpha}\tau @A}{\G\V\TBL_{\alpha}M:\tau @{A\alpha}} \\[2mm]
+		\infrule[\TGen]{\G\V M:\tau @A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\V\Lambda\alpha.M:\forall\alpha.\tau @A} \\[2mm]
+		\infrule[\TIns]{\G\V M:\forall\alpha.\tau @A}{\G\V M\ \epsilon:\tau[\alpha \mapsto \epsilon]@A} \andalso
+		\infrule[\TCsp]{\G\V M:\tau @A}{\G\V \%_\alpha M:\tau @{A\alpha}}
+		\caption{Typing Rules.}
 		\label{fig:typing-rules}
 	\end{center}
 \end{figure}
 
-\subsubsection{Type Equivalence Rules}
+\subsubsection{Type and Term Equivalence}
 
-As mentioned above, type equivalence rules are needed in \LMD.
-We show the rules in Figure \ref{fig:type-equivalence-rules}.
+As usual in dependent type systems, type equivalence, used in \TConv,
+is important.  The type equivalence judgment of the form
+$\G \V \tau \E \sigma : K @ A$ means that types $\tau$ and $\sigma$
+are equivalent as types of kind $K$ at stage $A$ under $\G$.
+Figure~\ref{fig:type-equivalence-rules} shows the rules for type
+equivalence.  Type equivalence is basically the least congruence
+closed under term equivalence.  The ules for compatibility (closure
+under type formation) are derived from corresponding typing rules in a
+straightforward manner.  The rules are a little simpler than some
+dependent type systems \AI{such as?}  because there is no abstraction
+at the type level.
 
 % \QCsp以外の説明
-We show type equivalence rules in Figure \ref{fig:type-equivalence-rules}.
-All rules except \QTRefl, \QTSym, \QTTrans, and \QTApp\ are generated naturally from the typing rules.
-\QTRefl, \QTSym, \QTTrans\ exist in order to make the type equivalence relation an equivalence relationship.
-The rule \QTApp\ means that if there are two equivalent $\Pi$ type and two equivalent terms,
-the results of applications are also equivalent.
-A judgement of $\G \V M \E N : \rho @ A$ means that $M$ and $N$ are equivalent.
+% We show type equivalence rules in Figure \ref{fig:type-equivalence-rules}.
+% All rules except \QTRefl, \QTSym, \QTTrans, and \QTApp\ are generated naturally from the typing rules.
+% \QTRefl, \QTSym, \QTTrans\ exist in order to make the type equivalence relation an equivalence relationship.
+% The rule \QTApp\ means that if there are two equivalent $\Pi$ type and two equivalent terms,
+% the results of applications are also equivalent.
 
 \begin{figure}
 	\begin{center}
@@ -737,10 +763,16 @@ A judgement of $\G \V M \E N : \rho @ A$ means that $M$ and $N$ are equivalent.
 		\infrule{\G\V \tau::K@A}{\G\V \tau\E\tau :: K@A}{\textsc{QT-Refl}} \andalso
 		\infrule{\G\V \tau \E \sigma :: K@A}{\G\V \sigma \E \tau :: K@A}{\textsc{QT-Sym}} \\[2mm]
 		\infrule{\G\V \tau \E \sigma :: K@A \andalso \G\V \sigma \E \rho  :: K@A}{\G\V \tau \E \rho  :: K@A}{\textsc{QT-Trans}}
-		\caption{Type Equivalence Rules}
+		\caption{Type Equivalence Rules.}
 		\label{fig:type-equivalence-rules}
 	\end{center}
 \end{figure}
+
+The term equivalence judgment of the form $\G \V M \E N : \rho @ A$
+means that terms $M$ and $N$ are equivalent as terms of type $\rho$ at
+stage $A$ under $\G$.
+
+%%%%%%%%%%%%%%%%%%%%%%% RESUME FROM HERE %%%%%%%%%%%%%%%%%%%%%%%%%%
 
 The equivalence of terms is defined in Figure \ref{fig:term-equivalence-rules}.
 \QAbs, \QApp, \QTB, \QTBL, \QGen, \QIns, \QCsp\ are generated directly from the syntax of a term.
