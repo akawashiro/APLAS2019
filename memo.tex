@@ -141,16 +141,17 @@
 \figheader{Syntax}{}
 
 \begin{align*}
-	\textrm{Terms}           &  & M,N,L,O,P                & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M
-	\mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ \epsilon \mid \%_\alpha M                                                               \\
-	\textrm{Types}           &  & \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} M \mid \F\alpha.\tau \\
-	\textrm{Kinds}           &  & K,J,I,H,G                & ::= * \mid \Pi x:\tau.K                                                        \\
-	\textrm{Contexts}        &  & \Gamma                   & ::= \phi \mid \Gamma,x:\tau@A\ (x\not\in\textrm{FV}(\tau))                       \\
-	\textrm{Signature}       &  & \Sigma                   & ::= \phi \mid X::K \mid c:\tau                                                 \\
-	\textrm{Stage variables} &  &                          & \alpha,\beta,\gamma,...                                                        \\
-	\textrm{Stage}           &  &                          & A,B,C,...                                                                      \\
-	\textrm{Variables}       &  &                          & x,y,z,...                                                                      \\
-	\textrm{Type variables}  &  &                          & X,Y,Z,...                                                                      \\
+	\textrm{Terms}             &  & M,N,L,O,P                & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M                                                                                    \\
+	                           &  &                          & \ \ \ \ \mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ \alpha \mid M\ \varepsilon \mid \%_\alpha M                                                                       \\
+	\textrm{Types}             &  & \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} M \mid \F\alpha.\tau                                                                     \\
+	\textrm{Kinds}             &  & K,J,I,H,G                & ::= * \mid \Pi x:\tau.K                                                                                                                            \\
+	\textrm{Type environments} &  & \Gamma                   & ::= \emptyset \mid \Gamma,x:\tau@A                                             & (x\not\in\textrm{FV}(\tau)\ \text{and}\ x\not\in\textit{dom}(\G)) \\
+	\textrm{Signature}         &  & \Sigma                   & ::= \emptyset \mid \Sigma,X::K                                                 & (\V K \iskind @ \varepsilon)                                      \\
+	                           &  &                          & \ \ \ \ \mid \Sigma,c:\tau                                                             & (\V \tau :: K @ \varepsilon)                                      \\
+	\textrm{Stage variables}   &  &                          & \alpha,\beta,\gamma,...                                                                                                                            \\
+	\textrm{Stage}             &  &                          & A,B,C,...                                                                                                                                          \\
+	\textrm{Variables}         &  &                          & x,y,z,...                                                                                                                                          \\
+	\textrm{Type variables}    &  &                          & X,Y,Z,...                                                                                                                                          \\
 \end{align*}
 
 \figheader{Well-formed kinds}{\rulefbox{\Gamma \vdash K\iskind @A}}
@@ -180,21 +181,20 @@
 	\infrule{\G\V M:\tau@{A\alpha}}{\G\V\TB_{\alpha}M:\TW_{\alpha}\tau@A}{\textsc{T-$\TB$}} \andalso
 	\infrule{\G\V M:\TW_{\alpha}\tau@A}{\G\V\TBL_{\alpha}M:\tau@{A\alpha}}{\TTBL} \\[2mm]
 	\infrule{\G\V M:\tau@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\V\Lambda\alpha.M:\forall\alpha.\tau@A}{\textsc{T-Gen}} \andalso
-	\infrule{\G\V M:\forall\alpha.\tau@A}{\G\V M\ \epsilon:\tau[\alpha \mapsto \epsilon]@A}{\textsc{T-Ins}} \andalso
+	\infrule{\G\V M:\forall\alpha.\tau@A}{\G\V M\ \varepsilon:\tau[\alpha \mapsto \varepsilon]@A}{\textsc{T-Ins}} \andalso
 	\infrule{\G\V M:\tau@A}{\G\V \%_\alpha M:\tau@{A\alpha}}{\textsc{T-Csp}} \andalso
 \end{center}
 \figheader{Term reduction}{\rulefbox{M \to N}}
 \begin{center}
 	\begin{align*}
-		 & (\lambda x:\tau.M) N \longrightarrow_\beta M[x \mapsto N]                      \\
+		 & (\lambda x:\tau.M) N \longrightarrow_\beta M[x \mapsto N]                            \\
 		% & (\Pi x:\tau.\sigma) M \longrightarrow_\gamma \sigma[x \mapsto M] \\
-		 & \TBL_\alpha (\TB_\alpha M)\longrightarrow_\blacklozenge M                      \\
-		 & (\Lambda \alpha.M) \epsilon \longrightarrow_\Lambda M[\alpha \mapsto \epsilon]
+		 & \TBL_\alpha (\TB_\alpha M)\longrightarrow_\blacklozenge M                            \\
+		 & (\Lambda \alpha.M)\ \varepsilon \longrightarrow_\Lambda M[\alpha \mapsto \varepsilon]
 	\end{align*}
 \end{center}
 And take a minimum compatible relationship on terms.
 
-\newpage
 \figheader{Kind Equivalence}{\rulefbox{\G\V K\E J@A}}
 \begin{center}
 	Demands from syntax rules\\[2mm]
@@ -229,7 +229,7 @@ And take a minimum compatible relationship on terms.
 	\infrule{\G\V M \E N : \tau@{A\alpha}}{\G\V \TB_\alpha M \E \TB_\alpha N : \TW_\alpha \tau@A}{\QTB} \andalso
 	\infrule{\G\V M \E N : \TW_\alpha \tau@A}{\G\V \TBL_\alpha M \E \TBL_\alpha N : \tau@{A\alpha}}{\QTBL} \\[2mm]
 	\infrule{\G\V M\E N : \tau@A \andalso \alpha \notin \FTV(\G)\cup\FTV(A)}{\G\V \Lambda\alpha.M \E \Lambda\alpha.N : \forall\alpha.\tau@A}{\QGen} \andalso
-	\infrule{\G\V M \E N:\forall\alpha.\tau@A}{\G\V M\ \epsilon \E N\ \epsilon : \tau[\alpha \mapsto \epsilon]@A}{\QIns}\andalso
+	\infrule{\G\V M \E N:\forall\alpha.\tau@A}{\G\V M\ \varepsilon \E N\ \varepsilon : \tau[\alpha \mapsto \varepsilon]@A}{\QIns}\andalso
 	\infrule{\G\V M \E N : \tau @A}{\G\V\%_\alpha M \E \%_\alpha N : \tau@{A\alpha}}{\QCsp} \\[4mm]
 	Demands from equivalence relationship\\[2mm]
 	\infrule{\G\V M:\tau@A}{\G\V M\E M : \tau@A}{\QRefl} \andalso
@@ -239,7 +239,7 @@ And take a minimum compatible relationship on terms.
 	\infrule{\G,x:\sigma@A\V M:\tau@A \andalso \G\V N:\sigma@A}{\G\V(\lambda x:\sigma.M)\ N\E M[x\mapsto N] : \tau[x \mapsto N]@A}{\QBeta} \andalso
 	\infrule{\G\V M:(\Pi x:\sigma.\tau)@A \andalso x\notin \text{FV}(M)}{\G\V(\lambda x:\sigma.M\ x)\E M: (\Pi x:\sigma.\tau)@A}{\QEta} \\[2mm]
 	\infrule{\G\V M \E N : \tau@A}{\G\V \TBL_\alpha(\TB_\alpha M) \E N : \tau @A}{\QTBLTB} \andalso
-	\infrule{\G\V (\Lambda\alpha.M) : \forall\alpha.\tau@A}{\G\V (\Lambda\alpha.M)\ \epsilon \E M[\alpha \mapsto \epsilon] : \tau[\alpha \mapsto \epsilon]@A}{\QLambda} \\[2mm]
+	\infrule{\G\V (\Lambda\alpha.M) : \forall\alpha.\tau@A}{\G\V (\Lambda\alpha.M)\ \varepsilon \E M[\alpha \mapsto \varepsilon] : \tau[\alpha \mapsto \varepsilon]@A}{\QLambda} \\[2mm]
 	\infrule{\G\V M:\tau@{A\alpha} \andalso \G\V M:\tau@A}{\G\V\%_\alpha M \E M : \tau@{A\alpha}}{\QPercent} \andalso
 \end{center}
 
@@ -286,24 +286,24 @@ And take a minimum compatible relationship on terms.
 		% \newcommand{\GF}{\textrm{GF}}
 		An example of CSP using \%
 		\begin{align*}
-			\I::*@\epsilon,\bar{5}:\I@\alpha\V ((\lambda(f:\Pi x:\I.\I).\TB_\alpha (\%_\alpha f\ \bar{5}))\ (\lambda x:\I.x)) : \TW_\alpha \I@\epsilon
+			\I::*@\varepsilon,\bar{5}:\I@\alpha\V ((\lambda(f:\Pi x:\I.\I).\TB_\alpha (\%_\alpha f\ \bar{5}))\ (\lambda x:\I.x)) : \TW_\alpha \I@\varepsilon
 		\end{align*}
 
 		Type derivation is following.\\
-		Set $\G$ as $\I::*@\epsilon,\bar{5}:\I@\alpha$.
+		Set $\G$ as $\I::*@\varepsilon,\bar{5}:\I@\alpha$.
 		\begin{center}
 			$$
 				\infer[\textsc{T-App}]
-				{\G\V (\lambda(f:\Pi (x:\I).\I).\TB_\alpha (\%_\alpha f\ \bar{5}))\ (\lambda x:\I.x) : \TW_\alpha\I@\epsilon}
+				{\G\V (\lambda(f:\Pi (x:\I).\I).\TB_\alpha (\%_\alpha f\ \bar{5}))\ (\lambda x:\I.x) : \TW_\alpha\I@\varepsilon}
 				{\infer[\textsc{T-Abs}]
-					{\G\V (\lambda(f:\Pi (x:\I).\I).\TB_\alpha (\%_\alpha f\ \bar{5})):\Pi (f:\Pi (x:\I).\I).\TW_\alpha \I@\epsilon}
+					{\G\V (\lambda(f:\Pi (x:\I).\I).\TB_\alpha (\%_\alpha f\ \bar{5})):\Pi (f:\Pi (x:\I).\I).\TW_\alpha \I@\varepsilon}
 					{\infer[\textsc{T-$\TB$}]
-						{\G ,f:\Pi (x:\I).\I@\epsilon \V \TB_\alpha (\%_\alpha f\ \bar{5})):\TW_\alpha \I@\epsilon}
+						{\G ,f:\Pi (x:\I).\I@\varepsilon \V \TB_\alpha (\%_\alpha f\ \bar{5})):\TW_\alpha \I@\varepsilon}
 						{\infer[\textsc{T-App}]
-							{\G ,f:\Pi (x:\I).\I@\epsilon \V\%_\alpha f\ \bar{5}: \I@\alpha}
+							{\G ,f:\Pi (x:\I).\I@\varepsilon \V\%_\alpha f\ \bar{5}: \I@\alpha}
 							{\infer[\textsc{T-Csp}]
-									{\G ,f:\Pi (x:\I).\I@\epsilon \V \%_\alpha f\ : \Pi (x:\I).\I@\alpha}
-									{\infer[]{\G ,f:\Pi (x:\I).\I@\epsilon \V f: \Pi (x:\I).\I@\epsilon}{\vdots}}
+								{\G ,f:\Pi (x:\I).\I@\varepsilon \V \%_\alpha f\ : \Pi (x:\I).\I@\alpha}
+								{\infer[]{\G ,f:\Pi (x:\I).\I@\varepsilon \V f: \Pi (x:\I).\I@\varepsilon}{\vdots}}
 								\andalso
 								\infer[]
 								{\G\ldots \V \bar{5}: \I@\alpha}
@@ -312,9 +312,9 @@ And take a minimum compatible relationship on terms.
 						}
 					}\andalso
 					\infer[\textsc{T-Abs}]
-					{\G\V(\lambda x:\I.x):\Pi (x:\I).\I@\epsilon}
+					{\G\V(\lambda x:\I.x):\Pi (x:\I).\I@\varepsilon}
 					{
-						\infer[]{\G,x:\I@\epsilon\V x:\I@\epsilon}{\vdots} \andalso \infer[]{\I::*@\epsilon,\bar{5}:\I@\alpha\V\I::*@\epsilon}{\vdots}}}
+						\infer[]{\G,x:\I@\varepsilon\V x:\I@\varepsilon}{\vdots} \andalso \infer[]{\I::*@\varepsilon,\bar{5}:\I@\alpha\V\I::*@\varepsilon}{\vdots}}}
 			$$
 		\end{center}
 	\end{ex}
@@ -325,22 +325,22 @@ And take a minimum compatible relationship on terms.
 		\newcommand{\I}{\textrm{I}}
 		We can type this example, because $(\%_\alpha\ 13) \E 13$.\\
 		\begin{align*}
-			\I::*@\epsilon,\M::(\Pi (x:\I).*)@\epsilon,13:\I@\epsilon,13:\I@\alpha,\bar{5}:\M\ 13@\epsilon\V\TB_\alpha ((\lambda (y:\M (\%_\alpha 13)).y)\ \bar{5}):\TW_\alpha \M\ 13@\alpha
+			\I::*@\varepsilon,\M::(\Pi (x:\I).*)@\varepsilon,13:\I@\varepsilon,13:\I@\alpha,\bar{5}:\M\ 13@\varepsilon\V\TB_\alpha ((\lambda (y:\M (\%_\alpha 13)).y)\ \bar{5}):\TW_\alpha \M\ 13@\alpha
 		\end{align*}
 
 		Type derivation is following.\\
-		Set $\G$ as $\I::*@\epsilon,\M::(\Pi (x:\I).*)@\epsilon,13:\I@\epsilon,13:\I@\alpha,\bar{5}:\M\ 13@\alpha$.\\
+		Set $\G$ as $\I::*@\varepsilon,\M::(\Pi (x:\I).*)@\varepsilon,13:\I@\varepsilon,13:\I@\alpha,\bar{5}:\M\ 13@\alpha$.\\
 		Set $p_1$ as $\G,y:\M (\%_\alpha 13)@\alpha \V y:\M (\%_\alpha 13)@\alpha$.\\
 		Set $p_2$ as $\G,y:\M (\%_\alpha 13)@\alpha \V \M (\%_\alpha 13)\E\MM@\alpha$.
 		\begin{center}
 			$$
 				\infer[\textsc{T-$\TB$}]
-				{\G\V\TB_\alpha ((\lambda (y:\M (\%_\alpha 13)).y)\ \bar{5}):\TW_\alpha \MM@\epsilon}
+				{\G\V\TB_\alpha ((\lambda (y:\M (\%_\alpha 13)).y)\ \bar{5}):\TW_\alpha \MM@\varepsilon}
 				{
 					\infer[\textsc{T-App}]
-						{\G\V (\lambda (y:\M (\%_\alpha 13)).y)\ \bar{5}:\M\ 13@\alpha}
-						{
-							\infer[\textsc{T-Abs}]
+					{\G\V (\lambda (y:\M (\%_\alpha 13)).y)\ \bar{5}:\M\ 13@\alpha}
+					{
+						\infer[\textsc{T-Abs}]
 						{\G\V (\lambda (y:\M (\%_\alpha 13)).y):\Pi (y:\MM).\M\ 13@\alpha}
 						{
 							\infer[\textsc{T-Conv}]
@@ -351,20 +351,20 @@ And take a minimum compatible relationship on terms.
 							{\G\V \M (\%_\alpha 13):*@\alpha}
 							{
 								\infer[]
-									{\G\V \M (\%_\alpha 13):*@\epsilon}
-									{\vdots}
+								{\G\V \M (\%_\alpha 13):*@\varepsilon}
+								{\vdots}
 							}
 						}
-							\andalso
-							\infer[]
-							{\G\V \bar{5}:\MM@\alpha}
-							{\vdots}
-						}
+						\andalso
+						\infer[]
+						{\G\V \bar{5}:\MM@\alpha}
+						{\vdots}
+					}
 				}
 			$$
 		\end{center}
 		label-$p_1$:\\
-		Set $\G'$ as $\I::*@\epsilon,\M::(\Pi (x:\I).*)@\epsilon,13:\I@\epsilon,13:\I@\alpha,\bar{5}:\M\ 13@\alpha,y:\M (\%_\alpha 13)@\alpha$.\\
+		Set $\G'$ as $\I::*@\varepsilon,\M::(\Pi (x:\I).*)@\varepsilon,13:\I@\varepsilon,13:\I@\alpha,\bar{5}:\M\ 13@\alpha,y:\M (\%_\alpha 13)@\alpha$.\\
 		Type derivation of $p_1$.
 		\begin{center}
 			$$
@@ -378,7 +378,7 @@ And take a minimum compatible relationship on terms.
 						{\G'\V \M::\Pi (x:\I).*@\alpha}
 						{
 							\infer[]
-							{\G'\V \M::\Pi (x:\I).*@\epsilon}
+							{\G'\V \M::\Pi (x:\I).*@\varepsilon}
 							{\vdots}
 						}
 						\andalso
@@ -386,7 +386,7 @@ And take a minimum compatible relationship on terms.
 						{\G'\V (\%_\alpha 13):\I@\alpha}
 						{
 							\infer[]
-							{\G'\V 13:\I@\epsilon}
+							{\G'\V 13:\I@\varepsilon}
 							{\vdots}
 							\andalso
 						}
@@ -396,7 +396,7 @@ And take a minimum compatible relationship on terms.
 		\end{center}
 		label-$p_2$:\\
 		{\bf{Type derivation of $p_2$}.}\\
-		Set $\G'$ as $\I::*@\epsilon,\M::(\Pi (x:\I).*)@\epsilon,13:\I@\epsilon,13:\I@\alpha,\bar{5}:\M\ 13@\alpha,y:\M (\%_\alpha 13)@\alpha$.\\
+		Set $\G'$ as $\I::*@\varepsilon,\M::(\Pi (x:\I).*)@\varepsilon,13:\I@\varepsilon,13:\I@\alpha,\bar{5}:\M\ 13@\alpha,y:\M (\%_\alpha 13)@\alpha$.\\
 		abbr. means abbreviation defined in the top of page 1.
 		\begin{center}
 			$$
@@ -410,10 +410,10 @@ And take a minimum compatible relationship on terms.
 						{\G' \V \M\E\M@\alpha}
 						{
 							\infer[\textsc{QT-Refl}]
-							{\G\V \M\E\M@\epsilon}
+							{\G\V \M\E\M@\varepsilon}
 							{
 								\infer[]
-								{\G\V \M::(\Pi (x:\I).*)@\epsilon}
+								{\G\V \M::(\Pi (x:\I).*)@\varepsilon}
 								{
 									\vdots
 								}
@@ -424,7 +424,7 @@ And take a minimum compatible relationship on terms.
 						{\G' \V \M::(\Pi (x:\I).*)@\alpha}
 						{
 							\infer[]
-							{\G \V\M::(\Pi (x:\I).*)@\epsilon}
+							{\G \V\M::(\Pi (x:\I).*)@\varepsilon}
 							{\vdots}
 						}
 					}
@@ -433,24 +433,24 @@ And take a minimum compatible relationship on terms.
 					{\G' \V (\%_\alpha 13)\E 13:\I@\alpha}
 					{
 						\infer[\textsc{Q-\%}]
-							{\G' \V (\%_\alpha 13)\E 13@\alpha}
-							{
-								\infer[\textsc{Q-\%}]
+						{\G' \V (\%_\alpha 13)\E 13@\alpha}
+						{
+							\infer[\textsc{Q-\%}]
 							{\G' \V (\%_\alpha 13):\I@\alpha}
 							{
 								\infer[]
-								{\G' \V 13:\I@\epsilon}
+								{\G' \V 13:\I@\varepsilon}
 								{\vdots}
 							}
-								\andalso
-								\infer[]
-								{\G' \V 13:\I@\alpha}
-								{\vdots}
-							}
-						\andalso
-						\infer[]
+							\andalso
+							\infer[]
 							{\G' \V 13:\I@\alpha}
 							{\vdots}
+						}
+						\andalso
+						\infer[]
+						{\G' \V 13:\I@\alpha}
+						{\vdots}
 					}
 				}
 			$$
@@ -464,11 +464,11 @@ And take a minimum compatible relationship on terms.
 		We cannot type this example, because $(\%_\alpha\ x) \not\E 13$.\\
 		More precisely, our type equivalence rule cannot capture the information that "$x$ is bound to $13$".\\
 
-		Set $\G$ as $\I::*@\epsilon,\M::(\Pi (x:\I).*)@\epsilon,13:\I@\epsilon,\bar{5}:\M\ 13@\alpha$.
+		Set $\G$ as $\I::*@\varepsilon,\M::(\Pi (x:\I).*)@\varepsilon,13:\I@\varepsilon,\bar{5}:\M\ 13@\alpha$.
 		\begin{align*}
 			\G\V
 			(\lambda (x:\I).
-			(\TB_\alpha ((\lambda (y:\M (\%_\alpha x)).y)\ \bar{5})))\ 13):\TW_\alpha \M\ 13@\epsilon
+			(\TB_\alpha ((\lambda (y:\M (\%_\alpha x)).y)\ \bar{5})))\ 13):\TW_\alpha \M\ 13@\varepsilon
 		\end{align*}
 	\end{ex}
 
@@ -482,10 +482,10 @@ And take a minimum compatible relationship on terms.
 	\rI\ is a primitive function with a type of $\rI : \I \to (\RI\ \text{true})$.\\
 	\RI\ is a primitive type constructor with a kind of $\RI : \B \to *$.
 	\begin{align*}
-		\text{let}\  & power3\ n = \hdots                                                                            \\
-		             & power3 : \forall\alpha. \TW_\alpha(\I \to \I)                                                 \\
-		\text{let}\  & tested\_power3\ x = (\rI\ ((power3\ \epsilon)\ x))                                            \\
-		             & tested\_power3 : \I \to (\RI\ ((power3\ \epsilon)\ 2 == 8\ \&\&\ (power3\ \epsilon)\ 1 == 1)) \\
+		\text{let}\  & power3\ n = \hdots                                                                                  \\
+		             & power3 : \forall\alpha. \TW_\alpha(\I \to \I)                                                       \\
+		\text{let}\  & tested\_power3\ x = (\rI\ ((power3\ \varepsilon)\ x))                                               \\
+		             & tested\_power3 : \I \to (\RI\ ((power3\ \varepsilon)\ 2 == 8\ \&\&\ (power3\ \varepsilon)\ 1 == 1)) \\
 	\end{align*}
 	When you use $tested\_power3$, it is guranteed that $tested\_power3$ pass the test.
 \end{ex}
@@ -966,7 +966,7 @@ Prove by induction on derivation tree.
 	      Use \TIns,
 
 	      $\mathcal{D}_2$ = \infer[\TIns]
-	      {\GGV (M\ \epsilon)\SB:\tau\SB@A}
+	      {\GGV (M\ \varepsilon)\SB:\tau\SB@A}
 	      {\mathcal{D}_1}
 
 	\item \TCsp
@@ -1168,7 +1168,7 @@ Prove by induction on derivation tree.
 
 	      $\mathcal{D}_1$ = \infer[\QIns]
 	      {\GGV M\SB \E N\SB : \TW_\alpha.\tau @A}
-	      {\ID{\GGV M\SB\ \epsilon \E N\SB\ \epsilon @A }}
+	      {\ID{\GGV M\SB\ \varepsilon \E N\SB\ \varepsilon @A }}
 
 	\item \QCsp
 
@@ -1243,13 +1243,13 @@ Prove by induction on derivation tree.
 	      From the induction hypothesis and \QLambda, we get $\mathcal{D}_1$.
 
 	      $\mathcal{D}_1$ = \infer[\QLambda]
-	      {\GGV (\Lambda\alpha.M\SB)\ \epsilon \E M\SB[\alpha \mapsto \epsilon]}
+	      {\GGV (\Lambda\alpha.M\SB)\ \varepsilon \E M\SB[\alpha \mapsto \varepsilon]}
 	      {\ID{\GGV (\Lambda\alpha.M\SB) : \forall\alpha.\tau\SB @A}}
 
 	      Arrange substitutions,
 
 	      $\mathcal{D}'_1$ = \infer[\QLambda]
-	      {\GGV ((\Lambda\alpha.M)\ \epsilon)\SB \E M[\alpha \mapsto \epsilon]\SB}
+	      {\GGV ((\Lambda\alpha.M)\ \varepsilon)\SB \E M[\alpha \mapsto \varepsilon]\SB}
 	      {\ID{\GGV (\Lambda\alpha.M\SB) : \forall\alpha.\tau\SB @A}}
 
 
@@ -1268,23 +1268,23 @@ Prove by induction on derivation tree.
 \begin{thm}[Stage Substituition Lemma for Variables of Terms, Types or Kinds and Their Equivalence]
 	\begin{flalign*}
 		\text{If\ } \G \V M:\tau@A
-		&\text{\ then\ } \G[\beta \mapsto \epsilon]\V M[\beta \mapsto \epsilon]:\tau[\beta \mapsto \epsilon]@A[\beta \mapsto \epsilon].&\\
+		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V M[\beta \mapsto \varepsilon]:\tau[\beta \mapsto \varepsilon]@A[\beta \mapsto \varepsilon].&\\
 		\text{If\ } \G \V \tau::K@A
-		&\text{\ then\ } \G[\beta \mapsto \epsilon]\V \tau[\beta \mapsto \epsilon]::K[\beta \mapsto \epsilon]@A[\beta \mapsto \epsilon].&\\
+		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V \tau[\beta \mapsto \varepsilon]::K[\beta \mapsto \varepsilon]@A[\beta \mapsto \varepsilon].&\\
 		\text{If\ } \G \V K\iskind@A
-		&\text{\ then\ } \G[\beta \mapsto \epsilon]\V K[\beta \mapsto \epsilon] \iskind@A[\beta \mapsto \epsilon].&\\
+		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V K[\beta \mapsto \varepsilon] \iskind@A[\beta \mapsto \varepsilon].&\\
 		\text{If\ } \G \V M\E N : \tau@A
-		&\text{\ then\ } \G[\beta \mapsto \epsilon]\V M[\beta \mapsto \epsilon]\E N[\beta \mapsto \epsilon] : \tau[\beta \mapsto \epsilon] @A[\beta \mapsto \epsilon].&\\
+		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V M[\beta \mapsto \varepsilon]\E N[\beta \mapsto \varepsilon] : \tau[\beta \mapsto \varepsilon] @A[\beta \mapsto \varepsilon].&\\
 		\text{If\ } \G \V \tau\E \sigma : K@A
-		&\text{\ then\ } \G[\beta \mapsto \epsilon]\V \tau[\beta \mapsto \epsilon]\E \sigma[\beta \mapsto \epsilon] : K[\beta \mapsto \epsilon]@A[\beta \mapsto \epsilon].&\\
+		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V \tau[\beta \mapsto \varepsilon]\E \sigma[\beta \mapsto \varepsilon] : K[\beta \mapsto \varepsilon]@A[\beta \mapsto \varepsilon].&\\
 		\text{If\ } \G \V K\E J@A
-		&\text{\ then\ } \G[\beta \mapsto \epsilon]\V K[\beta \mapsto \epsilon]\E J[\beta \mapsto \epsilon]@A[\beta \mapsto \epsilon].&
+		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V K[\beta \mapsto \varepsilon]\E J[\beta \mapsto \varepsilon]@A[\beta \mapsto \varepsilon].&
 	\end{flalign*}
 \end{thm}
 
 \begin{itemize}
 
-	\newcommand{\SB}{[\beta \mapsto \epsilon]}
+	\newcommand{\SB}{[\beta \mapsto \varepsilon]}
 	\newcommand{\GG}{\G\SB}
 	\newcommand{\GGV}{\G\SB \V}
 
@@ -1628,7 +1628,7 @@ Prove by induction on derivation tree.
 	      From the induction hypothesis and \TIns, we get $\mathcal{D}_1$.
 
 	      $\mathcal{D}_1$ = \infer[\TIns]
-	      {\GGV (M\ \epsilon)\SB:\tau\SB@A\SB}
+	      {\GGV (M\ \varepsilon)\SB:\tau\SB@A\SB}
 	      {\ID{\GGV M\SB:(\forall\alpha.\tau)\SB@A\SB}}
 
 	\item \TCsp
@@ -1898,7 +1898,7 @@ Prove by induction on derivation tree.
 	      From the induction hypothesis and \QIns, we get $\mathcal{D}_1$.
 
 	      $\mathcal{D}_1$ = \infer[\QIns]
-	      {\GGV M\SB\ \epsilon \E N\SB \ \epsilon @A\SB }
+	      {\GGV M\SB\ \varepsilon \E N\SB \ \varepsilon @A\SB }
 	      {\ID{\GGV M\SB \E N\SB : (\forall\alpha.\tau\SB) @A\SB}}
 
 	\item \QCsp
@@ -1984,13 +1984,13 @@ Prove by induction on derivation tree.
 	      From the induction hypothesis and \QLambda, we get $\mathcal{D}_1$.
 
 	      $\mathcal{D}_1$ = \infer[\QLambda]
-	      {\GGV (\Lambda\alpha.M\SB)\ \epsilon \E M\SB[\alpha \mapsto \epsilon]}
+	      {\GGV (\Lambda\alpha.M\SB)\ \varepsilon \E M\SB[\alpha \mapsto \varepsilon]}
 	      {\ID{\GGV (\Lambda\alpha.M\SB) : \forall\alpha.\tau\SB @A\SB}}
 
 	      Arrange substitutions,
 
 	      $\mathcal{D}'_1$ = \infer[\QLambda]
-	      {\GGV ((\Lambda\alpha.M)\ \epsilon)\SB \E M[\alpha \mapsto \epsilon]\SB}
+	      {\GGV ((\Lambda\alpha.M)\ \varepsilon)\SB \E M[\alpha \mapsto \varepsilon]\SB}
 	      {\ID{\GGV (\Lambda\alpha.M\SB) : \forall\alpha.\tau\SB @A\SB}}
 
 
@@ -2207,7 +2207,7 @@ Use induction on type derivation tree.
 
 	      We can assume the reduction has following shape.
 
-	      $M\ \epsilon \LB M'\ \epsilon$
+	      $M\ \varepsilon \LB M'\ \varepsilon$
 
 	      From the induction hypothesis and \TIns, the type is preserved for the reduction.
 
@@ -2331,25 +2331,25 @@ Use induction on type derivation tree.
 
 	      There are two cases for the reduction.
 	      \begin{itemize}
-		      \item $\Lambda\alpha.M\ \epsilon \R M[\alpha \mapsto \epsilon]$
+		      \item $\Lambda\alpha.M\ \varepsilon \R M[\alpha \mapsto \varepsilon]$
 
 		            The type derivation tree looks like $\mathcal{D}_1$.
 
 		            $\mathcal{D}_1$ = \infer[\TIns]
-		            {\G \V \Lambda\alpha.M\ \epsilon : \tau[\alpha \mapsto \epsilon] @ A}
+		            {\G \V \Lambda\alpha.M\ \varepsilon : \tau[\alpha \mapsto \varepsilon] @ A}
 		            {\ID{\G \V \Lambda\alpha.M\ : \forall\alpha.\tau @ A}}
 
 		            Use "Inversion Lemma for $\Lambda$ type" to $\G \V \Lambda\alpha.M\ : \forall\alpha.\tau @ A$,
 		            get $\G \V M : \tau @ A$ and $\alpha \notin \FTV(\G) \cup \FV(A)$.
 
 		            Use "Stage Substituition Lemma" to $\G \V M : \tau @ A$,
-		            get $\G[\alpha \mapsto \epsilon] \V M[\alpha \mapsto \epsilon] : \tau[\alpha \mapsto \epsilon] @ A[\alpha \mapsto \epsilon]$.
+		            get $\G[\alpha \mapsto \varepsilon] \V M[\alpha \mapsto \varepsilon] : \tau[\alpha \mapsto \varepsilon] @ A[\alpha \mapsto \varepsilon]$.
 
-		            Because $\alpha \notin \FTV(\G) \cup \FV(A)$, $\G[\alpha \mapsto \epsilon] = \G$ and $A[\alpha \mapsto \epsilon] = A$.
+		            Because $\alpha \notin \FTV(\G) \cup \FV(A)$, $\G[\alpha \mapsto \varepsilon] = \G$ and $A[\alpha \mapsto \varepsilon] = A$.
 
-		            So, we can rewrite $\G[\alpha \mapsto \epsilon] \V M[\alpha \mapsto \epsilon] : \tau[\alpha \mapsto \epsilon] @ A[\alpha \mapsto \epsilon]$ to
-		            $\G \V M[\alpha \mapsto \epsilon] : \tau[\alpha \mapsto \epsilon] @ A$.
-		      \item $M\ \epsilon \R M'\ \epsilon$
+		            So, we can rewrite $\G[\alpha \mapsto \varepsilon] \V M[\alpha \mapsto \varepsilon] : \tau[\alpha \mapsto \varepsilon] @ A[\alpha \mapsto \varepsilon]$ to
+		            $\G \V M[\alpha \mapsto \varepsilon] : \tau[\alpha \mapsto \varepsilon] @ A$.
+		      \item $M\ \varepsilon \R M'\ \varepsilon$
 
 		            We can use induction hypothesis directly.
 	      \end{itemize}
@@ -2370,7 +2370,7 @@ Use induction on type derivation tree.
 			      \natural(\TB_\alpha M) &= \natural(M) & \\
 			      \natural(\TBL_\alpha M) &= \natural(M)& \\
 			      \natural(\Lambda\alpha.M) &= \natural(M)& \\
-			      \natural(M\ \epsilon) &= \natural(M) &
+			      \natural(M\ \varepsilon) &= \natural(M) &
 		      \end{flalign*}
 		\item Type
 		      \begin{flalign*}
@@ -2524,15 +2524,15 @@ In short, they are never overlapped each other.
 So, we can reduce one of them after we reduce another.\\
 
 \figheader{Values and Redexes}{}
-$A \neq \epsilon$\\
+$A \neq \varepsilon$\\
 \begin{align*}
-	\textrm{Values}                           &   & v^\epsilon \in V^\epsilon & ::= \lambda x:\tau.M \mid\ \TB_\alpha v^\alpha \mid \Lambda\alpha.v^\epsilon              & \\
-	                                          &   & v^A \in V^A               & ::= x \mid \lambda x:\tau.v^A \mid v^A\ v^A \mid\ \TB_\alpha v^{A\alpha}
-	\mid \Lambda\alpha.v^A \mid v^A\ \epsilon &                                                                                                                             \\
-	                                          &   &                           & \quad\   \mid\ \TBL_\alpha v^{A'} (\text{if } A'\alpha = A \text{ and } A' \neq \epsilon) & \\
-	                                          &   &                           & \quad\   \mid \%_\alpha v^{A'} (\text{if } A'\alpha = A)                                  & \\
-	\textrm{Redexes}                          &   & R^\epsilon                & ::= (\lambda x:\tau.M)\ v^\epsilon \mid (\Lambda\alpha.v^\epsilon)\ \epsilon              & \\
-	                                          &   & R^\alpha                  & ::=\ \TBL_\alpha \TB_\alpha v^\alpha                                                      & \\
+	\textrm{Values}                              &   & v^\varepsilon \in V^\varepsilon & ::= \lambda x:\tau.M \mid\ \TB_\alpha v^\alpha \mid \Lambda\alpha.v^\varepsilon              & \\
+	                                             &   & v^A \in V^A                     & ::= x \mid \lambda x:\tau.v^A \mid v^A\ v^A \mid\ \TB_\alpha v^{A\alpha}
+	\mid \Lambda\alpha.v^A \mid v^A\ \varepsilon &                                                                                                                                      \\
+	                                             &   &                                 & \quad\   \mid\ \TBL_\alpha v^{A'} (\text{if } A'\alpha = A \text{ and } A' \neq \varepsilon) & \\
+	                                             &   &                                 & \quad\   \mid \%_\alpha v^{A'} (\text{if } A'\alpha = A)                                     & \\
+	\textrm{Redexes}                             &   & R^\varepsilon                   & ::= (\lambda x:\tau.M)\ v^\varepsilon \mid (\Lambda\alpha.v^\varepsilon)\ \varepsilon        & \\
+	                                             &   & R^\alpha                        & ::=\ \TBL_\alpha \TB_\alpha v^\alpha                                                         & \\
 \end{align*}
 
 \begin{dfn}[Reduction]
@@ -2541,7 +2541,7 @@ $A \neq \epsilon$\\
 \end{dfn}
 
 \begin{thm}[Progress]
-	If $x:\tau@\epsilon \notin \G$ and $\G \V M : \tau @ A$ then $ M \in V^A $ or $\exists M'$ such that $M \longrightarrow M'$.
+	If $x:\tau@\varepsilon \notin \G$ and $\G \V M : \tau @ A$ then $ M \in V^A $ or $\exists M'$ such that $M \longrightarrow M'$.
 \end{thm}
 
 Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
@@ -2549,9 +2549,9 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 \begin{itemize}
 	\item \TVar
 	      \begin{itemize}
-		      \item $ A = \epsilon$
+		      \item $ A = \varepsilon$
 
-		            This case is impossible because $x:\tau@\epsilon \notin \G$.
+		            This case is impossible because $x:\tau@\varepsilon \notin \G$.
 		      \item Otherwise
 
 		            This case is obvious because $x \in V^A$.
@@ -2572,9 +2572,9 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 		      \item $ M \in V^A $
 
 		            \begin{itemize}
-			            \item $ A = \epsilon $
+			            \item $ A = \varepsilon $
 
-			                  Use "Inversion Lemma" for all cases of $v^\epsilon$, the case of $ M = \TB_\alpha v^\alpha $ is only reasonable.\\
+			                  Use "Inversion Lemma" for all cases of $v^\varepsilon$, the case of $ M = \TB_\alpha v^\alpha $ is only reasonable.\\
 			                  From the definition of $ \longrightarrow $, $\TBL_\alpha \TB_\alpha v^\alpha \longrightarrow v^\alpha$
 
 			            \item Otherwise
@@ -2600,9 +2600,9 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 		      \item $M \in V^A$ and $N \in V^A$
 
 		            \begin{itemize}
-			            \item $A=\epsilon$
+			            \item $A=\varepsilon$
 
-			                  $M = \lambda x:\sigma.L$ from the definition of $V^\epsilon$ and Inversion Lemma.\\
+			                  $M = \lambda x:\sigma.L$ from the definition of $V^\varepsilon$ and Inversion Lemma.\\
 			                  Then, $\lambda x:\sigma.L\ N \longrightarrow_\beta L[x\mapsto N]$.
 			            \item Otherwise
 
@@ -2618,26 +2618,26 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 	      The derivation looks like $\MD{1}$.
 
 	      $\MD{1}$ = \infer[\TIns]
-	      {\G \V M\ \epsilon : \tau[\alpha \mapsto \epsilon] @ A}
+	      {\G \V M\ \varepsilon : \tau[\alpha \mapsto \varepsilon] @ A}
 	      {\ID{\G \V M : \forall\alpha.\tau @ A}}
 
 	      \begin{itemize}
 		      \item $ M \in V^A $
 
 		            \begin{itemize}
-			            \item $A=\epsilon$
+			            \item $A=\varepsilon$
 
-			                  $M = \Lambda\alpha.v^\epsilon$ from the definition of $V^\epsilon$ and Inversion Lemma.\\
-			                  Then, $\Lambda\alpha.v^\epsilon\ \epsilon \longrightarrow_\Lambda v^\epsilon[x\mapsto \epsilon]$.
+			                  $M = \Lambda\alpha.v^\varepsilon$ from the definition of $V^\varepsilon$ and Inversion Lemma.\\
+			                  Then, $\Lambda\alpha.v^\varepsilon\ \varepsilon \longrightarrow_\Lambda v^\varepsilon[x\mapsto \varepsilon]$.
 
 			            \item Otherwise
 
-			                  $v^A \epsilon \in V^A$.
+			                  $v^A \varepsilon \in V^A$.
 		            \end{itemize}
 
 		      \item $\exists M'$ such that $M \longrightarrow M'$
 
-		            $M\ \epsilon \longrightarrow M'\ \epsilon$
+		            $M\ \varepsilon \longrightarrow M'\ \varepsilon$
 	      \end{itemize}
 
 	\item Others
@@ -2649,31 +2649,31 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 \section{ Staged Semantics }
 
 \figheader{Staged Reduction}{}
-$A \neq \epsilon$\\
+$A \neq \varepsilon$\\
 \begin{align*}
-	E^A_\epsilon [(\lambda x:\tau.M)\ v^\epsilon]       & \longrightarrow_s E^A_\epsilon[M[x\mapsto v^\epsilon]]             \\
-	E^A_\epsilon [(\Lambda\alpha.v^\epsilon)\ \epsilon] & \longrightarrow_s E^A_\epsilon[v^\epsilon[\alpha\mapsto \epsilon]] \\
-	E^A_\alpha [\TBL_\alpha \TB_\alpha v^\alpha]        & \longrightarrow_s E^A_\alpha[v^\alpha]                             \\
+	E^A_\varepsilon [(\lambda x:\tau.M)\ v^\varepsilon]          & \longrightarrow_s E^A_\varepsilon[M[x\mapsto v^\varepsilon]]                \\
+	E^A_\varepsilon [(\Lambda\alpha.v^\varepsilon)\ \varepsilon] & \longrightarrow_s E^A_\varepsilon[v^\varepsilon[\alpha\mapsto \varepsilon]] \\
+	E^A_\alpha [\TBL_\alpha \TB_\alpha v^\alpha]                 & \longrightarrow_s E^A_\alpha[v^\alpha]                                      \\
 \end{align*}
 
 \figheader{Evaluation Context}{}
-$A \neq \epsilon$\\
+$A \neq \varepsilon$\\
 \begin{align*}
-	E^\epsilon_B \in ECtx^\epsilon_B & ::= \square\ (\text{if\ } B = \epsilon) \mid E^\epsilon_B\ M \mid v^e\ E^\epsilon_B
-	\mid \TB_\alpha E^\alpha_B \mid \Lambda\alpha.E^\epsilon_B
-	\mid E^\epsilon_B\ \epsilon                                                                                                \\
-	E^A_B \in ECtx^A_B               & ::= \square\ (\text{if } A = B) \mid \lambda x:\tau.E^A_B \mid E^A_B\ M \mid v^A\ E^A_B
-	\mid E^\epsilon_B \mid \TB_\alpha E^{A\alpha}_B
-	\mid \TBL_\alpha E^{A'}_B \ (\text{where } A'\alpha = A)                                                                   \\
-	                                 & \quad \mid \Lambda\alpha.E^\epsilon_B
-	\mid E^A_B\ \epsilon \mid \%_\alpha\ E^{A'}_B \ (\text{where } A'\alpha = A)                                               \\
+	E^\varepsilon_B \in ECtx^\varepsilon_B & ::= \square\ (\text{if\ } B = \varepsilon) \mid E^\varepsilon_B\ M \mid v^e\ E^\varepsilon_B
+	\mid \TB_\alpha E^\alpha_B \mid \Lambda\alpha.E^\varepsilon_B
+	\mid E^\varepsilon_B\ \varepsilon                                                                                                     \\
+	E^A_B \in ECtx^A_B                     & ::= \square\ (\text{if } A = B) \mid \lambda x:\tau.E^A_B \mid E^A_B\ M \mid v^A\ E^A_B
+	\mid E^\varepsilon_B \mid \TB_\alpha E^{A\alpha}_B
+	\mid \TBL_\alpha E^{A'}_B \ (\text{where } A'\alpha = A)                                                                              \\
+	                                       & \quad \mid \Lambda\alpha.E^\varepsilon_B
+	\mid E^A_B\ \varepsilon \mid \%_\alpha\ E^{A'}_B \ (\text{where } A'\alpha = A)                                                       \\
 \end{align*}
 
 \begin{thm}[Unique Decomposition]
-	If $x:\tau@\epsilon \notin \G$ and $\G \V M : \tau @ A$ then 1 or 2 is true.
+	If $x:\tau@\varepsilon \notin \G$ and $\G \V M : \tau @ A$ then 1 or 2 is true.
 	\begin{enumerate}
 		\item $ M \in V^A$
-		\item $\exists ! B, E^A_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
+		\item $\exists ! B, E^A_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
 	\end{enumerate}
 \end{thm}
 
@@ -2682,9 +2682,9 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 \begin{itemize}
 	\item \TVar
 	      \begin{itemize}
-		      \item $ A = \epsilon$
+		      \item $ A = \varepsilon$
 
-		            This case is impossible because $x:\tau@\epsilon \notin \G$.
+		            This case is impossible because $x:\tau@\varepsilon \notin \G$.
 		      \item Otherwise
 
 		            This case is obvious because $x \in V^A$.
@@ -2692,9 +2692,9 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 
 	\item \TTBL
 	      \begin{itemize}
-		      \item $ A = \epsilon$
+		      \item $ A = \varepsilon$
 
-		            This case is impossible because the stage of the conclusion of \TTBL\ cannot be $\epsilon$.
+		            This case is impossible because the stage of the conclusion of \TTBL\ cannot be $\varepsilon$.
 
 		      \item Otherwise
 
@@ -2702,28 +2702,28 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 
 		            $\MD{1}$ = \infer[\TTBL]
 		            {\G \V \TBL_\alpha M :\tau @ \alpha}
-		            {\ID{\G \V M : \TW_\alpha \tau @ \epsilon}}
+		            {\ID{\G \V M : \TW_\alpha \tau @ \varepsilon}}
 
 		            From the induction hypothesis, 1 or 2 is true.
 		            \begin{enumerate}
-			            \item $ M \in V^\epsilon$
-			            \item $\exists ! B, E^\epsilon_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^\epsilon_B[R^B]$.
+			            \item $ M \in V^\varepsilon$
+			            \item $\exists ! B, E^\varepsilon_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^\varepsilon_B[R^B]$.
 		            \end{enumerate}
 
 		            \begin{itemize}
-			            \item $ M \in V^\epsilon$ is true
+			            \item $ M \in V^\varepsilon$ is true
 
-			                  Use "Inversion Lemma" for all cases of $v^\epsilon$, the case of $ M = \TB_\alpha v^\alpha $ is only reasonable.
+			                  Use "Inversion Lemma" for all cases of $v^\varepsilon$, the case of $ M = \TB_\alpha v^\alpha $ is only reasonable.
 
 			                  Then, $\TBL_\alpha \TB_\alpha v^\alpha = E^\alpha_\alpha [R^\alpha]$.
 
-			            \item $\exists ! B, E^\epsilon_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^\epsilon_B[R^B]$ is true.
+			            \item $\exists ! B, E^\varepsilon_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^\varepsilon_B[R^B]$ is true.
 
 			                  \begin{itemize}
 				                  \item $ M = \TB_\alpha E^\alpha_B[R^B] $
 
 				                        $ \TBL_\alpha \TB_\alpha E^\alpha_B[R^B] \longrightarrow_s E^\alpha_B[R^B]$ doesn't hold because $ E^\alpha_B[R^B] \notin v^\alpha$.
-				                        So, given $B, E^\epsilon_B, R^B$ are the unique tuples satisfies the condition.
+				                        So, given $B, E^\varepsilon_B, R^B$ are the unique tuples satisfies the condition.
 				                  \item Otherwise
 
 				                        It is obvious from the induction hypothesis and the definition of $E^A_B$.
@@ -2735,55 +2735,55 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 	\item \TIns
 
 	      \begin{itemize}
-		      \item $ A = \epsilon$
+		      \item $ A = \varepsilon$
 
 		            The derivation is $\MD{1}$.
 
 		            $\MD{1}$ = \infer[\TIns]
-		            {\G \V M\ \epsilon :\tau[\alpha \mapsto \epsilon] @ \epsilon}
-		            {\ID{\G \V M : \forall\alpha.\tau @ \epsilon}}
+		            {\G \V M\ \varepsilon :\tau[\alpha \mapsto \varepsilon] @ \varepsilon}
+		            {\ID{\G \V M : \forall\alpha.\tau @ \varepsilon}}
 
 		            From the induction hypothesis, 1 or 2 is true.
 
 		            \begin{enumerate}
-			            \item $ M \in V^\epsilon$
-			            \item $\exists ! B, E^\epsilon_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^\epsilon_B[R^B]$.
+			            \item $ M \in V^\varepsilon$
+			            \item $\exists ! B, E^\varepsilon_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^\varepsilon_B[R^B]$.
 		            \end{enumerate}
 
 		            \begin{itemize}
-			            \item $ M \in V^\epsilon$
+			            \item $ M \in V^\varepsilon$
 
-			                  Use Inversion Lemma for all shape in $v^\epsilon$, the case of $ M = \Lambda\alpha.v^\epsilon$ is only reasonable.
+			                  Use Inversion Lemma for all shape in $v^\varepsilon$, the case of $ M = \Lambda\alpha.v^\varepsilon$ is only reasonable.
 
-			                  Then, $ \Lambda\alpha.v^\epsilon\ \epsilon = E^\epsilon_\epsilon [R^\epsilon]$
-			            \item $\exists ! B, E^\epsilon_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^\epsilon_B[R^B]$
+			                  Then, $ \Lambda\alpha.v^\varepsilon\ \varepsilon = E^\varepsilon_\varepsilon [R^\varepsilon]$
+			            \item $\exists ! B, E^\varepsilon_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^\varepsilon_B[R^B]$
 
-			                  Because $ E^\epsilon_B[R^B] \neq \Lambda\alpha.v^\epsilon$, we can decompose $E^\epsilon_B[R^B]\ \epsilon$ uniquely.
+			                  Because $ E^\varepsilon_B[R^B] \neq \Lambda\alpha.v^\varepsilon$, we can decompose $E^\varepsilon_B[R^B]\ \varepsilon$ uniquely.
 		            \end{itemize}
 
-		      \item $ A \neq \epsilon $
+		      \item $ A \neq \varepsilon $
 
 		            The derivation is $\MD{1}$.
 
 		            $\MD{1}$ = \infer[\TIns]
-		            {\G \V M\ \epsilon :\tau[\alpha \mapsto \epsilon] @ A}
+		            {\G \V M\ \varepsilon :\tau[\alpha \mapsto \varepsilon] @ A}
 		            {\ID{\G \V M : \forall\alpha.\tau @ A}}
 
 		            From the induction hypothesis, 1 or 2 is true.
 
 		            \begin{enumerate}
 			            \item $ M \in V^A$
-			            \item $\exists ! B, E^A_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
+			            \item $\exists ! B, E^A_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
 		            \end{enumerate}
 
 		            \begin{itemize}
 			            \item $ M \in V^A$
 
-			                  It is clear that $v^A\ \epsilon \in V^A$.
+			                  It is clear that $v^A\ \varepsilon \in V^A$.
 
-			            \item $\exists ! B, E^A_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^A_B[R^B]$
+			            \item $\exists ! B, E^A_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$
 
-			                  Because we cannot $\Lambda$ reduction at stage $A$, we can decompose $E^A_B[R^B]\ \epsilon$ uniquely.
+			                  Because we cannot $\Lambda$ reduction at stage $A$, we can decompose $E^A_B[R^B]\ \varepsilon$ uniquely.
 		            \end{itemize}
 
 
@@ -2792,38 +2792,38 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 	\item \TApp
 
 	      \begin{itemize}
-		      \item $ A = \epsilon$
+		      \item $ A = \varepsilon$
 
 		            The derivation is $\MD{1}$.
 
 		            $\MD{1}$ = \infer[\TApp]
-		            {\G \V M\ N :\tau[\tau \mapsto N] @ \epsilon}
-		            {\ID{\G \V M : \Pi x:\sigma.\tau @ \epsilon} \andalso \ID{\G \V N : \sigma @ \epsilon}}
+		            {\G \V M\ N :\tau[\tau \mapsto N] @ \varepsilon}
+		            {\ID{\G \V M : \Pi x:\sigma.\tau @ \varepsilon} \andalso \ID{\G \V N : \sigma @ \varepsilon}}
 
 		            From the induction hypothesis, 1 or 2 is true.
 
 		            \begin{enumerate}
-			            \item $ M \in V^\epsilon$ and $ N \in V^\epsilon$
-			            \item $ M \in V^\epsilon$ and $\exists ! B, E^\epsilon_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $N = E^\epsilon_B[R^B]$
-			            \item $\exists ! B, E^\epsilon_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^\epsilon_B[R^B]$ and $ N \in V^\epsilon$
-			            \item $\exists ! B, E^\epsilon_B, R^B$ such that ($B = \epsilon$ or $B = \beta$) and $M = E^\epsilon_B[R^B]$ and $\exists ! B', E^\epsilon_{B'}, R^{B'}$ such that ($B' = \epsilon$ or $B' = \beta$) and $N = E^\epsilon_{B'}[R^{B'}]$
+			            \item $ M \in V^\varepsilon$ and $ N \in V^\varepsilon$
+			            \item $ M \in V^\varepsilon$ and $\exists ! B, E^\varepsilon_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $N = E^\varepsilon_B[R^B]$
+			            \item $\exists ! B, E^\varepsilon_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^\varepsilon_B[R^B]$ and $ N \in V^\varepsilon$
+			            \item $\exists ! B, E^\varepsilon_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^\varepsilon_B[R^B]$ and $\exists ! B', E^\varepsilon_{B'}, R^{B'}$ such that ($B' = \varepsilon$ or $B' = \beta$) and $N = E^\varepsilon_{B'}[R^{B'}]$
 		            \end{enumerate}
 
 		            \begin{itemize}
 			            \item Case of 1
 
-			                  Use Inversion Lemma for all shape in $v^\epsilon$, the case of $ M = \lambda x:\sigma.v^\epsilon$ is only reasonable.
+			                  Use Inversion Lemma for all shape in $v^\varepsilon$, the case of $ M = \lambda x:\sigma.v^\varepsilon$ is only reasonable.
 
-			                  Then $M N = R^\epsilon$.
+			                  Then $M N = R^\varepsilon$.
 
 			            \item Otherwise
 
 			                  It is clear.
 		            \end{itemize}
 
-		      \item $ A \neq \epsilon $
+		      \item $ A \neq \varepsilon $
 
-		            $M N \notin R^\epsilon$ because $ A \neq \epsilon$.
+		            $M N \notin R^\varepsilon$ because $ A \neq \varepsilon$.
 		            So, we can decompose uniquely.
 
 	      \end{itemize}
@@ -2877,7 +2877,7 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 %     \infrule{\G\VT M:\tau@{A\alpha}}{\G\VT\TB_{\alpha}M:\TW_{\alpha}\tau@A}{\textsc{T-$\TB$}} \andalso
 %     \infrule{\G\VT M:\TW_{\alpha}\tau@A}{\G\VT\TBL_{\alpha}M:\tau@{A\alpha}}{\TTBL} \\[2mm]
 %     \infrule{\G\VT M:\tau@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\VT\Lambda\alpha.M:\forall\alpha.\tau@A}{\textsc{T-Gen}} \andalso
-%     \infrule{\G\VT M:\forall\alpha.\tau@A}{\G\VT M\ \epsilon:\tau[\alpha \mapsto \epsilon]@A}{\textsc{T-Ins}} \andalso
+%     \infrule{\G\VT M:\forall\alpha.\tau@A}{\G\VT M\ \varepsilon:\tau[\alpha \mapsto \varepsilon]@A}{\textsc{T-Ins}} \andalso
 %     \infrule{\G\VT M:\tau@A}{\G\VT \%_\alpha M:\tau@{A\alpha}}{\textsc{T-Csp}} \andalso
 % \end{center}
 % 
@@ -2904,7 +2904,7 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 %     \infrule{\G\VT M \E N : \tau@{A\alpha}}{\G\VT \TB_\alpha M \E \TB_\alpha N : \TW_\alpha \tau@A}{\QTB} \andalso
 %     \infrule{\G\VT M \E N : \TW_\alpha \tau@A}{\G\VT \TBL_\alpha M \E \TBL_\alpha N : \tau@{A\alpha}}{\QTBL} \\[2mm]
 %     \infrule{\G\VT M\E N : \tau@A \andalso \alpha \notin \FTV(\G)\cup\FTV(A)}{\G\VT \Lambda\alpha.M \E \Lambda\alpha.N : \forall\alpha.\tau@A}{\QGen} \andalso
-%     \infrule{\G\VT M \E N:\forall\alpha.\tau@A}{\G\VT M\ \epsilon \E N\ \epsilon : \tau[\alpha \mapsto \epsilon]@A}{\QIns}\andalso
+%     \infrule{\G\VT M \E N:\forall\alpha.\tau@A}{\G\VT M\ \varepsilon \E N\ \varepsilon : \tau[\alpha \mapsto \varepsilon]@A}{\QIns}\andalso
 %     \infrule{\G\VT M \E N : \tau @A}{\G\VT\%_\alpha M \E \%_\alpha N : \tau@{A\alpha}}{\QCsp} \\[4mm]
 %     Demands from equivalence relationship\\[2mm]
 %     \infrule{\G\VT M:\tau@A}{\G\VT M\E M : \tau@A}{\QRefl} \andalso
@@ -2914,7 +2914,7 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 %     \infrule{\G,x:\sigma@A\VT M:\tau@A \andalso \G\VT N:\sigma@A}{\G\VT(\lambda x:\sigma.M)\ N\E M[x\mapsto N] : \tau[x \mapsto N]@A}{\QBeta} \andalso
 %     \infrule{\G\VT M:(\Pi x:\sigma.\tau)@A \andalso x\notin \text{FV}(M)}{\G\VT(\lambda x:\sigma.M\ x)\E M: (\Pi x:\sigma.\tau)@A}{\QEta} \\[2mm]
 %     \infrule{\G\VT M \E N : \tau@A}{\G\VT \TBL_\alpha(\TB_\alpha M) \E N : \tau @A}{\QTBLTB} \andalso
-%     \infrule{\G\VT (\Lambda\alpha.M) : \forall\alpha.\tau@A}{\G\VT (\Lambda\alpha.M)\ \epsilon \E M[\alpha \mapsto \epsilon] : \tau[\alpha \mapsto \epsilon]@A}{\QLambda} \\[2mm]
+%     \infrule{\G\VT (\Lambda\alpha.M) : \forall\alpha.\tau@A}{\G\VT (\Lambda\alpha.M)\ \varepsilon \E M[\alpha \mapsto \varepsilon] : \tau[\alpha \mapsto \varepsilon]@A}{\QLambda} \\[2mm]
 %     \infrule{\G\VT M:\tau@{A\alpha} \andalso \G\VT M:\tau@A}{\G\VT\%_\alpha M \E M : \tau@{A\alpha}}{\QPercent} \andalso
 % \end{center}
 
@@ -2945,7 +2945,7 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 %     \infrule{\G\VT M:\tau@{A\alpha}}{\G\VT\TB_{\alpha}M:\TW_{\alpha}\tau@A}{\textsc{T-$\TB$}} \andalso
 %     \infrule{\G\VT M:\TW_{\alpha}\tau@A}{\G\VT\TBL_{\alpha}M:\tau@{A\alpha}}{\TTBL} \\[2mm]
 %     \infrule{\G\VT M:\tau@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\VT\Lambda\alpha.M:\forall\alpha.\tau@A}{\textsc{T-Gen}} \andalso
-%     \infrule{\G\VT M:\forall\alpha.\tau@A}{\G\VT M\ \epsilon:\tau[\alpha \mapsto \epsilon]@A}{\textsc{T-Ins}} \andalso
+%     \infrule{\G\VT M:\forall\alpha.\tau@A}{\G\VT M\ \varepsilon:\tau[\alpha \mapsto \varepsilon]@A}{\textsc{T-Ins}} \andalso
 %     \infrule{\G\VT M:\tau@A}{\G\VT \%_\alpha M:\tau@{A\alpha}}{\textsc{T-Csp}} \andalso
 % \end{center}
 % 
@@ -2974,7 +2974,7 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 %     \infrule{\G\VT M \E N : \tau@{A\alpha}}{\G\VT \TB_\alpha M \E \TB_\alpha N : \TW_\alpha \tau@A}{\QTB} \andalso
 %     \infrule{\G\VT M \E N : \TW_\alpha \tau@A}{\G\VT \TBL_\alpha M \E \TBL_\alpha N : \tau@{A\alpha}}{\QTBL} \\[2mm]
 %     \infrule{\G\VT M\E N : \tau@A \andalso \alpha \notin \FTV(\G)\cup\FTV(A)}{\G\VT \Lambda\alpha.M \E \Lambda\alpha.N : \forall\alpha.\tau@A}{\QGen} \andalso
-%     \infrule{\G\VT M \E N:\forall\alpha.\tau@A}{\G\VT M\ \epsilon \E N\ \epsilon : \tau[\alpha \mapsto \epsilon]@A}{\QIns}\andalso
+%     \infrule{\G\VT M \E N:\forall\alpha.\tau@A}{\G\VT M\ \varepsilon \E N\ \varepsilon : \tau[\alpha \mapsto \varepsilon]@A}{\QIns}\andalso
 %     \infrule{\G\VT M \E N : \tau @A}{\G\VT\%_\alpha M \E \%_\alpha N : \tau@{A\alpha}}{\QCsp} \\[2mm]
 %     \infrule{\G\VT M:\tau@A}{\G\VT M\E M : \tau@A}{\QRefl} \\[2mm]
 %     \infrule{\G,x:\sigma@A\VT M:\tau@A \andalso \G\VT N:\sigma@A}{\G\VT(\lambda x:\sigma.M)\ N\E M[x\mapsto N] : \tau[x \mapsto N]@A}{\QBeta} \andalso
@@ -2983,8 +2983,8 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 %     \infrule{\G\VT M:(\Pi x:\sigma.\tau)@A \andalso x\notin \text{FV}(M)}{\G\VT M \E (\lambda x:\sigma.M\ x) @A}{\QEta T} \\[2mm]
 %     \infrule{\G\VT M \E N : \tau@A}{\G\VT \TBL_\alpha(\TB_\alpha M) \E N : \tau @A}{\QTBLTB} \andalso
 %     \infrule{\G\VT M \E N : \tau@A}{\G\VT N \E \TBL_\alpha(\TB_\alpha M) : \tau @A}{\QTBLTB T} \\[2mm]
-%     \infrule{\G\VT (\Lambda\alpha.M) : \forall\alpha.\tau@A}{\G\VT (\Lambda\alpha.M)\ \epsilon \E M[\alpha \mapsto \epsilon] : \tau[\alpha \mapsto \epsilon]@A}{\QLambda} \andalso
-%     \infrule{\G\VT (\Lambda\alpha.M) : \forall\alpha.\tau@A}{\G\VT M[\alpha \mapsto \epsilon] \E (\Lambda\alpha.M)\ \epsilon : \tau[\alpha \mapsto \epsilon]@A}{\QLambda} \\[2mm]
+%     \infrule{\G\VT (\Lambda\alpha.M) : \forall\alpha.\tau@A}{\G\VT (\Lambda\alpha.M)\ \varepsilon \E M[\alpha \mapsto \varepsilon] : \tau[\alpha \mapsto \varepsilon]@A}{\QLambda} \andalso
+%     \infrule{\G\VT (\Lambda\alpha.M) : \forall\alpha.\tau@A}{\G\VT M[\alpha \mapsto \varepsilon] \E (\Lambda\alpha.M)\ \varepsilon : \tau[\alpha \mapsto \varepsilon]@A}{\QLambda} \\[2mm]
 %     \infrule{\G\VT M:\tau@{A\alpha} \andalso \G\VT M:\tau@A}{\G\VT\%_\alpha M \E M : \tau@{A\alpha}}{\QPercent} \\[2mm]
 %     \infrule{\G\VT M:\tau@{A\alpha} \andalso \G\VT M:\tau@A}{\G\VT M \E \%_\alpha M : \tau@{A\alpha}}{\QPercent}
 % \end{center}
