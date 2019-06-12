@@ -582,7 +582,7 @@ $x\not\in\textrm{FV}(\tau)$ is needed in the proof of Substitution Lemmas.
 \AI{We should note that constants and type variables are not staged.}
 \subsection{Reduction}
 
-In this section, we define full reduction for \LMD.
+Next, we define full reduction for \LMD.
 Before giving the definition of reduction, we define two substitutions.
 Substitution $M[x\mapsto N]$ is the normal capture-avoiding substitution, and we omit its definition here.
 Substitution $M[\alpha \mapsto \epsilon]$ is defined below.
@@ -628,7 +628,7 @@ $\TB_\alpha$ and $\TBL_\alpha$ disappears in the same way as $\%_\alpha$.
 % 総論
 
 In this section, we define the type system of \LMD.
-\LMD\ is little complicated because it contains dependent types.
+\LMD is little complicated because it contains dependent types.
 It contains typing, kinding, well-formed kinding, term equality, type equality, and kind equality.
 In other words, there are six types of judgement in \LMD.
 We show them in Figure \ref{fig:LMD-six-judgements}.
@@ -636,39 +636,32 @@ We show them in Figure \ref{fig:LMD-six-judgements}.
 \begin{figure}
 	\begin{center}
 		\begin{align*}
-			\G & \V M : \tau @ A    \\
-			\G & \V \tau :: K @ A   \\
-			\G & \V K \iskind @ A   \\
-			\G & \V M \E N @ A      \\
-			\G & \V \tau \E \sigma  \\
-			\G & \V K \E J @ A     
+			\G & \V M : \tau @ A   & \text{typing} \\
+			\G & \V \tau :: K @ A  & \text{kinding} \\
+			\G & \V K \iskind @ A  & \text{well-formed kinding} \\
+			\G & \V M \E N @ A     & \text{term equality} \\
+			\G & \V \tau \E \sigma & \text{type equality} \\
+			\G & \V K \E J @ A     & \text{kind equality}
 		\end{align*}
 		\caption{Six types of judgement in \LMD}
 		\label{fig:LMD-six-judgements}
 	\end{center}
 \end{figure}
 
-Especially, we discuss on the type equality of \LMD in detail
-because it is the main contribution of this paper.
-\LMD is developed on the basis of \LTP but there are no type equivalence rules in \LTP.
-
 \begin{definition}[Typing]
 	The typing relation $ \G \V M : \tau @ A $ is the least relation closed under the rules in Figure \ref{fig:typing-rules}.
 \end{definition}
-
-% 各論
-
-% 通常のルール
-We show typing rules of \LMD in Figure \ref{fig:typing-rules}.
-The rules \TVar , \TAbs, and \TApp\ are almost the same as those in simply typed lambda calculus 
-if you ignore stage annotations and kind checking.
-The rule \TVar\ means that a variable can appear only at the stage in which it is declared.
-It checks the type of variable $x$, $\tau$, has the proper kind for terms, $*$.
-\TAbs\ also checks the kind of the type.
-
+We start from defining typing of \LMD.
+Typing rules of \LMD are shown in Figure \ref{fig:typing-rules}.
 The rule \TConst\ means any constants in the signature can appear at any stage.
 For example, if we have a signature $\Sigma$ which is $\textrm{bool} :: *, \textrm{true}: \textrm{bool}, \textrm{false}: \textrm{bool}$,
 the derivation tree in Figure \ref{fig:tconst-derivation-tree} is admissible.
+The rules \TVar , \TAbs, and \TApp\ are almost the same as those in the simply typed lambda calculus 
+if you ignore stage annotations and kind checking.
+The rule \TVar\ means that a variable can appear only at the stage in which it is declared.
+It checks the type of variable $x$, $\tau$, has the proper kind for terms, $*$.
+The rule \TAbs\ also checks the kind of the type.
+The rule \TApp\ requires $M$ and $N$ are typed at the same stage.
 
 \begin{figure}
 	\begin{center}
@@ -684,19 +677,19 @@ the derivation tree in Figure \ref{fig:tconst-derivation-tree} is admissible.
 	\end{center}
 \end{figure}
 
-% 多段階計算のルール
+% Typing rules for a multi-stage calculus
 The rules \TTB, \TTBL, \TGen, \TIns, and \TCsp\ are rules for a multi-stage calculus.
-They are corresponding to quoting a code, unquoting a code, making a stage abstraction, 
+They are corresponding to brackets, escape, making a stage abstraction, 
 application of $\epsilon$ stage to a stage abstraction, and cross-stage persistence, respectively.
 Please check Hanada and Igarashi \cite{Hanada2014} and Tsukada and Igarashi \cite{Tsukada} for details of these rules.
 
 % \TConv
 The main technical point of this paper is \TConv\ and type equivalence rules needed by \TConv.
-This rule allows ut to replace a type with another type that is equivalent.
+This rule allows us to replace a type with another type that is equivalent.
 In a type system which includes dependent types, this kind of rule is essential
 because two types which have different shapes may be equivalent.
-For example, when we use a matrix type which have their sizes ($\textrm{Mat}\ n\ m$),
-$\textrm{Mat}\ 5\ 3$ is equivalent to $\textrm{Mat}\ (4+1)\ (1+2)$ obviously.
+For example, when we use a vector type with its size ($\textrm{Vector}\ n$),
+$\textrm{Vector}\ 5$ is equivalent to $\textrm{Vector}\ (4+1)$ obviously although they are not equivalent in apparently.
 
 \begin{figure}
 	\begin{center}
@@ -719,12 +712,6 @@ $\textrm{Mat}\ 5\ 3$ is equivalent to $\textrm{Mat}\ (4+1)\ (1+2)$ obviously.
 
 As mentioned above, type equivalence rules are needed in \LMD.
 We show the rules in Figure \ref{fig:type-equivalence-rules}.
-
-% 2つの設計手法と今回採用した理由
-When we design type equivalence rules of \LMD, there are two design choices.
-One is defining type equivalence by $\beta$-equality after we define $\beta$-reduction of types.
-Another is defining type equivalence directly by a combination of type equivalence rules.
-We adopt the latter one because it is convenient to handle CSP in the type equivalence.
 
 % \QCsp以外の説明
 We show type equivalence rules in Figure \ref{fig:type-equivalence-rules}.
@@ -769,8 +756,8 @@ The rule \QBeta\ means when a term $M \longrightarrow_\beta M'$, $M$ is equivale
 		\infrule{\G\V M\E N : \tau @A \andalso \G\V N\E L : \tau @A}{\G\V M\E L : \tau @A}{\QTrans} \\[2mm]
 		\infrule{\G,x:\sigma@A\V M:\tau @A \andalso \G\V N:\sigma@A}{\G\V(\lambda x:\sigma.M)\ N\E M[x\mapsto N] : \tau[x \mapsto N]@A}{\QBeta} \\[2mm]
 		% \infrule{\G\V M:(\Pi x:\sigma.\tau)@A \andalso x\notin \text{FV}(M)}{\G\V(\lambda x:\sigma.M\ x)\E M: (\Pi x:\sigma.\tau)@A}{\QEta} \\[2mm]
-		\infrule{\G\V M \E N : \tau @A}{\G\V \TBL_\alpha(\TB_\alpha M) \E N : \tau @A}{\QTBLTB} \\[2mm]
 		\infrule{\G\V (\Lambda\alpha.M) : \forall\alpha.\tau @A}{\G\V (\Lambda\alpha.M)\ \epsilon \E M[\alpha \mapsto \epsilon] : \tau[\alpha \mapsto \epsilon]@A}{\QLambda} \\[2mm]
+		\infrule{\G\V M \E N : \tau @A}{\G\V \TBL_\alpha(\TB_\alpha M) \E N : \tau @A}{\QTBLTB} \andalso
 		\infrule{\G\V M:\tau @{A\alpha} \andalso \G\V M:\tau @A}{\G\V\%_\alpha M \E M : \tau @{A\alpha}}{\QPercent}
 		\caption{Term Equivalence Rules}
 		\label{fig:term-equivalence-rules}
@@ -783,7 +770,6 @@ But we add this rule to \LMD\ because it is essential when you use dependent typ
 For example, we can utilize a dependently typed multi-stage calculus to generate code for matrix multiplication.
 When we know sizes of matrices before the multiplication,
 we can generate efficient code for multiplication by unrolling loops.
-
 
 $\text{mulmat}$ function in the following code fragment generate code for matrix multiplication.
 $\text{mulmat}$ takes two integers which are the size of the multiplicand matrix and generate a code.
@@ -1026,7 +1012,7 @@ Preservation ensure that any one step reduction preserves type.
 
 Strong Normalization is also important property which guarantee that
 no typed term has an infinite reduction sequence.
-We prove this thorem by translating \LMD to Simply Typed Lambda Calculus.
+We prove this thorem by translating \LMD to the symply typed lambda calculus.
 
 \begin{theorem}[Strong Normalization]
 	If $\G\V^A M:\tau$ then there is no infinite sequence of terms $(M_i)_{i\ge1}$ and 
@@ -1034,9 +1020,9 @@ We prove this thorem by translating \LMD to Simply Typed Lambda Calculus.
 \end{theorem}
 
 \begin{proof}
-	In order prove this theorem, we define a translation $\natural$ from \LMD\ to Simply Typed Lambda Calculus.
+	In order prove this theorem, we define a translation $\natural$ from \LMD\ to the symply typed lambda calculus.
 	Second, we prove $\natural$ preserves typing and $\beta$-reductions.
-	Then, we can prove Strong Normalization of \LMD\ from Strong Normalization of Simply Typed Lambda Calculus.
+	Then, we can prove Strong Normalization of \LMD\ from Strong Normalization of the symply typed lambda calculus.
 \end{proof}
 
 Confluence is a property that any reduction sequences from one typed term converge.
@@ -1144,38 +1130,38 @@ MetaOCaml is a programming language with quoting, unquoting, run, and CSP.
 Oleg gave many examples of application of MetaOCaml in \cite{8384206}, 
 which include filtering in signal processing, matrix-vector product, and DSL compiler.
 
-\begin{enumerate}
-	\item Done: On Cross-Stage Persistence in Multi-Stage\cite{Hanada2014}
+% \begin{enumerate}
+% 	\item Done: On Cross-Stage Persistence in Multi-Stage\cite{Hanada2014}
 	      
-	      CSPも入りました
-	\item Done: Eliminating Array Bound Checking Through Dependent Types\cite{Xi98}
-	\item Done: MetaML and Multi-stage Programming with Explicit Annotations\cite{MetaML}
-	\item Done: Idris, a general-purpose dependently typed programming language: Design and implementation\cite{brady2013idris}
-	\item Done: A Logical Foundation for Environment Classifiers\cite{Tsukada}
-	\item Done: Environment classifiers\cite{taha2003environment}
-	\item Done: A framework for defining logics\cite{harper1993framework}
+% 	      CSPも入りました
+% 	\item Done: Eliminating Array Bound Checking Through Dependent Types\cite{Xi98}
+% 	\item Done: MetaML and Multi-stage Programming with Explicit Annotations\cite{MetaML}
+% 	\item Done: Idris, a general-purpose dependently typed programming language: Design and implementation\cite{brady2013idris}
+% 	\item Done: A Logical Foundation for Environment Classifiers\cite{Tsukada}
+% 	\item Done: Environment classifiers\cite{taha2003environment}
+% 	\item Done: A framework for defining logics\cite{harper1993framework}
 	      
-	      $\Sigma$ の使い方を確認した
-	\item Done: The Design and Implementation of {BER} MetaOCaml - System Description\cite{oleg2014}
-	\item Done: Dependent types in practical programming\cite{xi1999dependent}
+% 	      $\Sigma$ の使い方を確認した
+% 	\item Done: The Design and Implementation of {BER} MetaOCaml - System Description\cite{oleg2014}
+% 	\item Done: Dependent types in practical programming\cite{xi1999dependent}
 	      
-	      Section of Applicationを読んだ。Dead Code EliminationやLoop Unrollingにも使えるらしい。
+% 	      Section of Applicationを読んだ。Dead Code EliminationやLoop Unrollingにも使えるらしい。
 	      
-	\item Done: A dependently typed assembly language\cite{xi2001dependently}
+% 	\item Done: A dependently typed assembly language\cite{xi2001dependently}
 	      
-	      DTALの定義と制約solverを用いた型検査の定義
-	\item Done: Refined Environment Classifiers\cite{kiselyov2016refined}
-	\item Done: Staging with control: type-safe multi-stage programming with control operators\cite{oishi2017staging}
-	\item Done: Logical Modalities and Multi-Stage Programming\cite{benaissa1999logical}
-	      % \item \red{Partial evaluation and automatic program generation}\cite{jones1993partial}
-	      % \item \red{Efficient multi-level generating extensions for program specialization}\cite{gluck1995efficient}
-	      % \item \red{Run-time code generation and Modal-ML}\cite{wickline1998run}
-	      % \item \red{C and tcc: a language and compiler for dynamic code generation}\cite{poletto1999c}
-	      % \item \red{Run-time bytecode specialization}\cite{masuhara2001run}
-	      % \item \red{A tour of Tempo: A program specializer for the C language}\cite{consel2004tour}
-	      % \item \red{Optimizing ML with run-time code generation}\cite{lee1996optimizing}
-	      % \item \red{Efficient incremental run-time specialization for free}\cite{marlet1999efficient}
-\end{enumerate}
+% 	      DTALの定義と制約solverを用いた型検査の定義
+% 	\item Done: Refined Environment Classifiers\cite{kiselyov2016refined}
+% 	\item Done: Staging with control: type-safe multi-stage programming with control operators\cite{oishi2017staging}
+% 	\item Done: Logical Modalities and Multi-Stage Programming\cite{benaissa1999logical}
+% 	\item \red{Partial evaluation and automatic program generation}\cite{jones1993partial}
+% 	\item \red{Efficient multi-level generating extensions for program specialization}\cite{gluck1995efficient}
+% 	\item \red{Run-time code generation and Modal-ML}\cite{wickline1998run}
+% 	\item \red{C and tcc: a language and compiler for dynamic code generation}\cite{poletto1999c}
+% 	\item \red{Run-time bytecode specialization}\cite{masuhara2001run}
+% 	\item \red{A tour of Tempo: A program specializer for the C language}\cite{consel2004tour}
+% 	\item \red{Optimizing ML with run-time code generation}\cite{lee1996optimizing}
+% 	\item \red{Efficient incremental run-time specialization for free}\cite{marlet1999efficient}
+% \end{enumerate}
 
 \section{Conclusions}
 
@@ -1191,6 +1177,13 @@ We resolve this problem by ignoring $\%$ under some condition.
 Making algorithmic typing and equality rules for \LMD is a future work.
 They would be complicated but possible 
 because we can realize them by defining a new weak head normal form which contains $\%$ erasing rule.
+
+% 2つの設計手法と今回採用した理由
+% Conclusion送りか?
+% When we design type equivalence rules of \LMD, there are two design choices.
+% One is defining type equivalence by $\beta$-equality after we define $\beta$-reduction of types.
+% Another is defining type equivalence directly by a combination of type equivalence rules.
+% We adopt the latter one because it is convenient to handle CSP in the type equivalence.
 
 % \section{First Section}
 % \subsection{A Subsection Sample}
