@@ -488,6 +488,7 @@ which models execution as programs.
 
 \subsection{Syntax}
 
+\AI{Rename ``type variables'' to ``type-level constants''. }
 We assume the denumerable set of type variables, ranged over by
 metavariables \(X, Y, Z\), the denumerable set of variables, ranged
 over by \(x,y,z\), the denumerable set of constants, ranged over by
@@ -511,6 +512,8 @@ sequence.  \AI{I prefer $\varepsilon$ for the nonempty sequence.}  \LMD is defin
     \textrm{Signature}       &   & \Sigma                   & ::= \emptyset \mid \Sigma, X::K \mid \Sigma, c:\tau                                                                        \\
     \textrm{Contexts}        &   & \Gamma                   & ::= \emptyset \mid  \Gamma,x:\tau @A\ (x\not\in\textrm{Domain}(\G)\ \text{and}\ x\not\in\textrm{FV}(\tau)) \\
 \end{align*}
+
+\AI{Add $M\,\alpha$ to terms.}
 
 \AI{Is $O$ used as a metavariable?}
 \AI{Domain and FV are not defined (yet).  I think we should introduce the notion of well-formed type environments by prose below and assume every type environment is well formed.}
@@ -542,8 +545,8 @@ an application of a term to a dependent function type $\tau\ M$,
 a code type $\TW_{\alpha} \tau$,
 a dependent function type $\Pi x:\tau.\tau$, 
 an $\alpha$-closed type $\F\alpha.\tau$.
-Therefore, $\F\alpha.\TW_{\alpha}.\Pi x:\I.\text{Vector}\ 5$ is interpreted as
-$\F\alpha.(\TW_{\alpha}.(\Pi x:\I.(\text{Vector}\ 5)))$. \AI{I don't understand this rule...}
+Therefore, $\F\alpha.\TW_{\alpha} \Pi x:\I.\text{Vector}\ 5$ is interpreted as
+$\F\alpha.(\TW_{\alpha} (\Pi x:\I.(\text{Vector}\ 5)))$. \AI{I don't understand this rule...}
 
 % Terms
 
@@ -564,6 +567,7 @@ For example, $\F\alpha.\lambda x:\I.\TB_\alpha x\ y$ means $\F\alpha.(\lambda x:
 We adopt a \LLF-like system, where constants and type variables for base types \AI{``for base types''?} are given in the signature $\Sigma$, which 
 are a sequence of declarations of the form $c:\tau$ and $X:K$.
 For example, when we use integers in \LMD, $\Sigma = \I :: *, 1:\I, 2:\I, \cdots$.  \AI{It sounds like we need an infinite signature...}
+\AI{Change Int to Bool.}
 
 % Free variables
 As usual, the variable $x$ is bound in $\lambda x:\tau.M$
@@ -593,6 +597,7 @@ for stage variable $\alpha$ in $M$ is defined below.
 \AI{What about $\tau[x \mapsto N], K[x \mapsto N], \tau [\alpha \mapsto \epsilon]$ and $K[\alpha \mapsto \epsilon]$?}
 
 \AI{Since we always substitute $\varepsilon$ for stage variables, we may want to introduce a special notation, something like $\textit{erase}_\alpha(M)$.}
+\AI{We will use $[\alpha \mapsto \varepsilon]$ and $[\alpha \mapsto \beta]$.  The latter is renaming, so we can omit the definition.}
 
 \begin{align*}
 	% \newcommand{\SB}{}
