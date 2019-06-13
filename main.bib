@@ -103,11 +103,18 @@
   publisher={Peter Sestoft}
 }
 
-@article{Hanada2014,
-author = {Hanada, Yuichiro and Igarashi, Atsushi},
-pages = {103--118},
-title = {{On Cross-Stage Persistence in Multi-Stage}},
-year = {2014}
+@InProceedings{Hanada2014,
+author="Hanada, Yuichiro
+and Igarashi, Atsushi",
+editor="Codish, Michael
+and Sumii, Eijiro",
+title="On Cross-Stage Persistence in Multi-Stage Programming",
+booktitle="Functional and Logic Programming",
+year="2014",
+publisher="Springer International Publishing",
+address="Cham",
+pages="103--118",
+isbn="978-3-319-07151-0"
 }
 
 @inproceedings{Xi98,
@@ -129,7 +136,7 @@ year = {2014}
 
 @MISC{09thecoq,
     author = {{The Coq Development Team}},
-    title = {The Coq Proof Assistant Reference Manual},
+    title = {The {C}oq Proof Assistant Reference Manual},
     year = {2009}
 }
 
@@ -152,7 +159,7 @@ year = {2014}
 
 @article{MetaML,
  author = {Taha, Walid and Sheard, Tim},
- title = {MetaML and Multi-stage Programming with Explicit Annotations},
+ title = {Meta{ML} and Multi-stage Programming with Explicit Annotations},
  journal = {Theor. Comput. Sci.},
  issue_date = {October 2000},
  volume = {248},
@@ -162,19 +169,21 @@ year = {2014}
  issn = {0304-3975},
  pages = {211--242},
  numpages = {32},
- url = {http://dx.doi.org/10.1016/S0304-3975(00)00053-0},
- doi = {10.1016/S0304-3975(00)00053-0},
  acmid = {357500},
  publisher = {Elsevier Science Publishers Ltd.},
  address = {Essex, UK},
  keywords = {{\$\lambda\$}-calculus, functional programming, high-level program generation, multi-level languages, multi-stage languages, programming language semantics, type-safety, type-systems},
-} 
+}
+@comment{
+url = {http://dx.doi.org/10.1016/S0304-3975(00)00053-0},
+doi = {10.1016/S0304-3975(00)00053-0},
+}
 
 @article{brady2013idris,
-  title={Idris, a general-purpose dependently typed programming language: Design and implementation},
-  author={Brady, Edwin},
-  journal={Journal of Functional Programming},
-  volume={23},
+title={Idris, a general-purpose dependently typed programming language: Design and implementation},
+author={Brady, Edwin},
+journal={Journal of Functional Programming},
+volume={23},
   number={5},
   pages={552--593},
   year={2013},
@@ -196,13 +205,15 @@ year = {2014}
 @article{Tsukada,
   title  = {{A Logical Foundation for Environment Classifiers}},
   author = {Tsukada, Takeshi and Igarashi, Atsushi},
-  url = {https://lmcs.episciences.org/1065},
-  doi = {10.2168/LMCS-6(4:8)2010},
   journal = {{Logical Methods in Computer Science}},
   volume = {{Volume 6, Issue 4}},
   year = {2010},
   month = Dec,
   keywords = {Computer Science - Programming Languages ; D.3.3, F.3.3, F.4.1},
+}
+@comment{
+  url = {https://lmcs.episciences.org/1065},
+  doi = {10.2168/LMCS-6(4:8)2010},
 }
 
 @inproceedings{taha2003environment,
@@ -251,12 +262,14 @@ year = {2014}
                2014, Kanazawa, Japan, June 4-6, 2014. Proceedings},
   pages     = {86--102},
   year      = {2014},
-  crossref  = {DBLP:conf/flops/2014},
+  timestamp = {Sun, 21 May 2017 00:19:14 +0200},
+}
+@comment{
   url       = {https://doi.org/10.1007/978-3-319-07151-0\_6},
   doi       = {10.1007/978-3-319-07151-0\_6},
-  timestamp = {Sun, 21 May 2017 00:19:14 +0200},
   biburl    = {https://dblp.org/rec/bib/conf/flops/Kiselyov14},
   bibsource = {dblp computer science bibliography, https://dblp.org}
+  crossref  = {DBLP:conf/flops/2014},
 }
 
 @proceedings{DBLP:conf/flops/2014,
@@ -311,24 +324,31 @@ year = {2014}
  location = {St. Petersburg Beach, Florida},
  pages = {287--295},
  numpages = {9},
- url = {http://doi.acm.org/10.1145/512644.512671},
- doi = {10.1145/512644.512671},
  acmid = {512671},
  publisher = {ACM},
  address = {New York, NY, USA},
 }
 
-@techreport{coquand:inria-00076024,
-  TITLE = {{The calculus of constructions}},
-  AUTHOR = {Coquand, T. and Huet, G{\'e}rard},
-  URL = {https://hal.inria.fr/inria-00076024},
-  NUMBER = {RR-0530},
-  INSTITUTION = {{INRIA}},
-  YEAR = {1986},
-  MONTH = May,
-  PDF = {https://hal.inria.fr/inria-00076024/file/RR-0530.pdf},
-  HAL_ID = {inria-00076024},
-  HAL_VERSION = {v1},
+@article{coquand:inria-00076024,
+ author = {Coquand, Thierry and Huet, Gerard},
+ title = {The Calculus of Constructions},
+ journal = {Inf. Comput.},
+ issue_date = {February/March 1988},
+ volume = {76},
+ number = {2-3},
+ month = feb,
+ year = {1988},
+ issn = {0890-5401},
+ pages = {95--120},
+ numpages = {26},
+ acmid = {47725},
+ publisher = {Academic Press, Inc.},
+ address = {Duluth, MN, USA},
+} 
+@comment{
+ Coquand:1988:CC:47724.47725
+ url = {http://dx.doi.org/10.1016/0890-5401(88)90005-3},
+ doi = {10.1016/0890-5401(88)90005-3},
 }
 
 @article{LLVM,
@@ -351,14 +371,23 @@ year = {2014}
 }
 
 @inproceedings{oishi2017staging,
-  title={Staging with control: type-safe multi-stage programming with control operators},
-  author={Oishi, Junpei and Kameyama, Yukiyoshi},
-  booktitle={ACM SIGPLAN Notices},
-  volume={52},
-  number={12},
-  pages={29--40},
-  year={2017},
-  organization={ACM}
+ author = {Oishi, Junpei and Kameyama, Yukiyoshi},
+ title = {Staging with Control: Type-safe Multi-stage Programming with Control Operators},
+ booktitle = {Proceedings of the 16th ACM SIGPLAN International Conference on Generative Programming: Concepts and Experiences},
+ series = {GPCE 2017},
+ year = {2017},
+ isbn = {978-1-4503-5524-7},
+ location = {Vancouver, BC, Canada},
+ pages = {29--40},
+ numpages = {12},
+ acmid = {3136049},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {code generation, generative programming, language design, program transformation, staging, type system},
+} 
+@comment{
+ url = {http://doi.acm.org/10.1145/3136040.3136049},
+ doi = {10.1145/3136040.3136049},
 }
 
 @BOOK{8384206,
@@ -373,5 +402,7 @@ keywords={Partial Evaluation;Program Transformations and Optimizations;Compilati
 doi={},
 ISSN={},
 publisher={now},
-isbn={9781680834369},
+isbn={9781680834369},}
+@comment{
 url={https://ieeexplore.ieee.org/document/8384206},}
+}
