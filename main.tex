@@ -745,7 +745,7 @@ $\G \V \tau \E \sigma : K @ A$ means that types $\tau$ and $\sigma$
 are equivalent as types of kind $K$ at stage $A$ under $\G$.
 Figure~\ref{fig:type-equivalence-rules} shows the rules for type
 equivalence.  Type equivalence is basically the least congruence
-closed under term equivalence.  The ules for compatibility (closure
+closed under term equivalence.  The rules for compatibility (closure
 under type formation) are derived from corresponding typing rules in a
 straightforward manner.  The rules are a little simpler than some
 dependent type systems \AI{such as?}  because there is no abstraction
@@ -760,60 +760,67 @@ at the type level.
 
 \begin{figure}
 	\begin{center}
-		\infrule{\G\V \tau \E \sigma :: *@A \andalso \G,x:\tau @A \V \rho \E \pi :: *@A}{\G\V\Pi x:\tau.\rho \E \Pi x:\sigma.\pi :: *@A}{\QTAbs } \\[2mm]
-		\infrule{\G\V \tau \E \sigma :: (\Pi x:\rho.K)@A \andalso \G\V M \E N : \rho @A}{\G\V \tau\ M \E \sigma\ N :: K[x \mapsto M]@A}{\QTApp } \\[2mm]
-		\infrule{\G\V \tau \E \sigma :: *@{A\alpha}}{\G\V \TW_{\alpha} \tau \E \TW_{\alpha} \sigma :: *@A}{\textsc{QT-$\TW$}}\andalso
-		\infrule{\G\V \tau \E \sigma :: K@A}{\G\V \tau \E \sigma :: K@{A\alpha}}{\textsc{QT-Csp}} \\[2mm]
-		\infrule{\G\V \tau \E \sigma :: *@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\V \forall\alpha.\tau \E  \forall\alpha.\sigma :: *@A}{\textsc{QT-Gen}} \\[2mm]
-		\infrule{\G\V \tau::K@A}{\G\V \tau\E\tau :: K@A}{\textsc{QT-Refl}} \andalso
-		\infrule{\G\V \tau \E \sigma :: K@A}{\G\V \sigma \E \tau :: K@A}{\textsc{QT-Sym}} \\[2mm]
-		\infrule{\G\V \tau \E \sigma :: K@A \andalso \G\V \sigma \E \rho  :: K@A}{\G\V \tau \E \rho  :: K@A}{\textsc{QT-Trans}}
+		\infrule[{\QTAbs }]{\G\V \tau \E \sigma :: *@A \andalso \G,x:\tau @A \V \rho \E \pi :: *@A}{\G\V\Pi x:\tau.\rho \E \Pi x:\sigma.\pi :: *@A} \\[2mm]
+		\infrule[\QTApp]{\G\V \tau \E \sigma :: (\Pi x:\rho.K)@A \andalso \G\V M \E N : \rho @A}{\G\V \tau\ M \E \sigma\ N :: K[x \mapsto M]@A} \\[2mm]
+		\infrule[\textsc{QT-$\TW$}]{\G\V \tau \E \sigma :: *@{A\alpha}}{\G\V \TW_{\alpha} \tau \E \TW_{\alpha} \sigma :: *@A}\andalso
+		\infrule[\QTCsp]{\G\V \tau \E \sigma :: K@A}{\G\V \tau \E \sigma :: K@{A\alpha}} \\[2mm]
+		\infrule[\QTGen]{\G\V \tau \E \sigma :: *@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\V \forall\alpha.\tau \E  \forall\alpha.\sigma :: *@A} \\[2mm]
+		\infrule[\QTRefl]{\G\V \tau::K@A}{\G\V \tau\E\tau :: K@A} \andalso
+		\infrule[\QTSym]{\G\V \tau \E \sigma :: K@A}{\G\V \sigma \E \tau :: K@A} \\[2mm]
+		\infrule[\QTTrans]{\G\V \tau \E \sigma :: K@A \andalso \G\V \sigma \E \rho  :: K@A}{\G\V \tau \E \rho  :: K@A}
 		\caption{Type Equivalence Rules.}
 		\label{fig:type-equivalence-rules}
 	\end{center}
 \end{figure}
 
-The term equivalence judgment of the form $\G \V M \E N : \rho @ A$
-means that terms $M$ and $N$ are equivalent as terms of type $\rho$ at
-stage $A$ under $\G$.
-
-%%%%%%%%%%%%%%%%%%%%%%% RESUME FROM HERE %%%%%%%%%%%%%%%%%%%%%%%%%%
-
-The equivalence of terms is defined in Figure \ref{fig:term-equivalence-rules}.
-\QAbs, \QApp, \QTB, \QTBL, \QGen, \QIns, \QCsp\ are generated directly from the syntax of a term.
-\QRefl, \QSym, \QTrans\ exist in order to make the term equivalence relation an equivalence relationship as with the type equivalence.
-The rule \QBeta\ means when a term $M \longrightarrow_\beta M'$, $M$ is equivalent to $M'$.
-\QTBLTB and \QLambda\ are corresponding to $\longrightarrow_\blacklozenge$ and $\longrightarrow_\Lambda$, respectively.
+The term equivalence judgment of the form $\G \V M \E N : \rho @ A$,
+which means that terms $M$ and $N$ are equivalent as terms of type
+$\rho$ at stage $A$ under $\G$, is defined by the rules in
+Figure~\ref{fig:term-equivalence-rules}.  Most rules are
+straightforward.  The rules \QAbs, \QApp, \QTB, \QTBL, \QGen, \QIns,
+\QCsp, \QRefl, \QSym, and \QTrans{} make the relation congruence; the
+rules \QBeta, \QTBLTB, and \QLambda{} correspond to the reduction rules.
+\AI{Don't we give names to those reduction rules?}
 
 \begin{figure}
 	\begin{center}
-		\infrule{\G\V \tau \E \sigma :: *@A \andalso \G,x:\tau @A \V M \E N : \rho @A}{\G\V\lambda x:\tau.M \E \lambda x:\sigma.N : (\Pi x:\tau.\rho)@A}{\QAbs} \\[2mm]
-		\infrule{\G\V M \E L : (\Pi x:\sigma.\tau)@A \andalso \G\V N \E O : \sigma@A}{\G\V M\ N \E L\ O : \tau[x \mapsto N]@A}{\QApp} \\[2mm]
-		\infrule{\G\V M \E N : \tau @{A\alpha}}{\G\V \TB_\alpha M \E \TB_\alpha N : \TW_\alpha \tau @A}{\QTB} \andalso
-		\infrule{\G\V M \E N : \TW_\alpha \tau @A}{\G\V \TBL_\alpha M \E \TBL_\alpha N : \tau @{A\alpha}}{\QTBL} \\[2mm]
-		\infrule{\G\V M\E N : \tau @A \andalso \alpha \notin \FTV(\G)\cup\FTV(A)}{\G\V \Lambda\alpha.M \E \Lambda\alpha.N : \forall\alpha.\tau @A}{\QGen} \\[2mm]
-		\infrule{\G\V M \E N:\forall\alpha.\tau @A}{\G\V M\ \epsilon \E N\ \epsilon : \tau[\alpha \mapsto \epsilon]@A}{\QIns}\andalso
-		\infrule{\G\V M \E N : \tau @A}{\G\V\%_\alpha M \E \%_\alpha N : \tau @{A\alpha}}{\QCsp} \\[2mm]
-		\infrule{\G\V M:\tau @A}{\G\V M\E M : \tau @A}{\QRefl} \andalso
-		\infrule{\G\V M\E N : \tau @A}{\G\V N\E M : \tau @A}{\QSym} \\[2mm]
-		\infrule{\G\V M\E N : \tau @A \andalso \G\V N\E L : \tau @A}{\G\V M\E L : \tau @A}{\QTrans} \\[2mm]
-		\infrule{\G,x:\sigma@A\V M:\tau @A \andalso \G\V N:\sigma@A}{\G\V(\lambda x:\sigma.M)\ N\E M[x\mapsto N] : \tau[x \mapsto N]@A}{\QBeta} \\[2mm]
+		\infrule[\QAbs]{\G\V \tau \E \sigma :: *@A \andalso \G,x:\tau @A \V M \E N : \rho @A}{\G\V\lambda x:\tau.M \E \lambda x:\sigma.N : (\Pi x:\tau.\rho)@A} \\[2mm]
+		\infrule[\QAbs]{\G\V M \E L : (\Pi x:\sigma.\tau)@A \andalso \G\V N \E O : \sigma@A}{\G\V M\ N \E L\ O : \tau[x \mapsto N]@A} \\[2mm]
+		\infrule[\QTB]{\G\V M \E N : \tau @{A\alpha}}{\G\V \TB_\alpha M \E \TB_\alpha N : \TW_\alpha \tau @A} \andalso
+		\infrule[\QTBL]{\G\V M \E N : \TW_\alpha \tau @A}{\G\V \TBL_\alpha M \E \TBL_\alpha N : \tau @{A\alpha}} \\[2mm]
+		\infrule[\QGen]{\G\V M\E N : \tau @A \andalso \alpha \notin \FTV(\G)\cup\FTV(A)}{\G\V \Lambda\alpha.M \E \Lambda\alpha.N : \forall\alpha.\tau @A} \\[2mm]
+		\infrule[\QIns]{\G\V M \E N:\forall\alpha.\tau @A}{\G\V M\ \epsilon \E N\ \epsilon : \tau[\alpha \mapsto \epsilon]@A} \andalso
+		\infrule[\QCsp]{\G\V M \E N : \tau @A}{\G\V\%_\alpha M \E \%_\alpha N : \tau @{A\alpha}} \\[2mm]
+		\infrule[\QRefl]{\G\V M:\tau @A}{\G\V M\E M : \tau @A} \andalso
+		\infrule[\QSym]{\G\V M\E N : \tau @A}{\G\V N\E M : \tau @A} \\[2mm]
+		\infrule[\QTrans]{\G\V M\E N : \tau @A \andalso \G\V N\E L : \tau @A}{\G\V M\E L : \tau @A} \\[2mm]
+		\infrule[\QBeta]{\G,x:\sigma@A\V M:\tau @A \andalso \G\V N:\sigma@A}{\G\V(\lambda x:\sigma.M)\ N\E M[x\mapsto N] : \tau[x \mapsto N]@A} \\[2mm]
 		% \infrule{\G\V M:(\Pi x:\sigma.\tau)@A \andalso x\notin \text{FV}(M)}{\G\V(\lambda x:\sigma.M\ x)\E M: (\Pi x:\sigma.\tau)@A}{\QEta} \\[2mm]
-		\infrule{\G\V (\Lambda\alpha.M) : \forall\alpha.\tau @A}{\G\V (\Lambda\alpha.M)\ \epsilon \E M[\alpha \mapsto \epsilon] : \tau[\alpha \mapsto \epsilon]@A}{\QLambda} \\[2mm]
-		\infrule{\G\V M \E N : \tau @A}{\G\V \TBL_\alpha(\TB_\alpha M) \E N : \tau @A}{\QTBLTB} \andalso
-		\infrule{\G\V M:\tau @{A\alpha} \andalso \G\V M:\tau @A}{\G\V\%_\alpha M \E M : \tau @{A\alpha}}{\QPercent}
-		\caption{Term Equivalence Rules}
+		\infrule[\QLambda]{\G\V (\Lambda\alpha.M) : \forall\alpha.\tau @A}{\G\V (\Lambda\alpha.M)\ \epsilon \E M[\alpha \mapsto \epsilon] : \tau[\alpha \mapsto \epsilon]@A} \\[2mm]
+		\infrule[\QTBLTB]{\G\V M \E N : \tau @A}{\G\V \TBL_\alpha(\TB_\alpha M) \E N : \tau @A} \hfil
+		\infrule[\QPercent]{\G\V M:\tau @{A\alpha} \andalso \G\V M:\tau @A}{\G\V\%_\alpha M \E M : \tau @{A\alpha}}
+		\caption{Term Equivalence Rules.}
 		\label{fig:term-equivalence-rules}
 	\end{center}
 \end{figure}
 
 % \QPercentの説明
-The rule \QPercent is something special because it has no background of syntax or reductions.
-But we add this rule to \LMD\ because it is essential when you use dependent types in code type.
-For example, we can utilize a dependently typed multi-stage calculus to generate code for matrix multiplication.
-When we know sizes of matrices before the multiplication,
-we can generate efficient code for multiplication by unrolling loops.
+The only rule that deserves elaboration is the last rule \QPercent.
+Intuitively, it means that the CSP operator applied to term $M$ can be
+removed if $M$ is also well typed at the next stage \(A\alpha\).
+For example, constants do not depend on the stage (see \TConst) and
+so \(\G\V \%_\alpha c \E c : \tau @ A\alpha\) holds but variables
+do depend on stages and so this rule does not apply.
 
+Interestingly, Hanada and Igarashi~\cite{} rejected the idea of
+reduction to remove $\%_\alpha$ when they developed \LTP{}, as such
+reduction does not match the operational behavior of the CSP operator
+in implementation.  However, as an equational system for multi-stage
+programs, the rule \QPercent makes sense and as we argue \AI{where?}
+it is practically significant.
+
+
+%%%%%%%%%%%%%%%%%%% SKIP FROM HERE %%%%%%%%%%%%%%%%%%%%
 $\text{mulmat}$ function in the following code fragment generate code for matrix multiplication.
 $\text{mulmat}$ takes two integers which are the size of the multiplicand matrix and generate a code.
 The last integer to decide the size of the multiplier matrix is given at runtime.
@@ -838,6 +845,8 @@ In other words, we can remove a $\%_\alpha$ symbol of a value when it doesn't ch
 This kind of type equality is very useful when we combine $\text{mulmat}\ 3\ 5$ with another code.
 We cannot remove $\%_\alpha$ in the type without \QPercent and it makes very difficult to combine
 because types of codes don't contain $\%_\alpha$ generally.
+
+%%%%%%%%%%%%%%%%%%% TO HERE %%%%%%%%%%%%%%%%%%%%
 
 \subsubsection{Staged Semantics}
 
