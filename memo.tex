@@ -565,7 +565,7 @@ And take a minimum compatible relationship on terms.
 	\end{itemize}
 \fi
 
-\begin{thm}[Substituition Lemma for Variables of Terms, Types or Kinds and Their Equivalence]
+\begin{thm}[Substitution Lemma on Terms]
 	\begin{flalign*}
 		\text{If\ } \G,z:\xi@B \V M:\tau@A \text{\ and\ } \G\V P:\xi@B
 		&\text{\ then\ } \G\V M[z \mapsto P]:\tau[z \mapsto P]@A.&\\
@@ -1284,26 +1284,26 @@ $\GGV y\SB:\tau\SB$
 
 \end{itemize}
 
-\begin{thm}[Stage Substituition Lemma for Variables of Terms, Types or Kinds and Their Equivalence]
+\begin{thm}[Substitution Lemma on Stage]
 	\begin{flalign*}
 		\text{If\ } \G \V M:\tau@A
-		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V M[\beta \mapsto \varepsilon]:\tau[\beta \mapsto \varepsilon]@A[\beta \mapsto \varepsilon].&\\
+		&\text{\ then\ } \G[\beta \mapsto B]\V M[\beta \mapsto B]:\tau[\beta \mapsto B]@A[\beta \mapsto B].&\\
 		\text{If\ } \G \V \tau::K@A
-		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V \tau[\beta \mapsto \varepsilon]::K[\beta \mapsto \varepsilon]@A[\beta \mapsto \varepsilon].&\\
+		&\text{\ then\ } \G[\beta \mapsto B]\V \tau[\beta \mapsto B]::K[\beta \mapsto B]@A[\beta \mapsto B].&\\
 		\text{If\ } \G \V K\iskind@A
-		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V K[\beta \mapsto \varepsilon] \iskind@A[\beta \mapsto \varepsilon].&\\
+		&\text{\ then\ } \G[\beta \mapsto B]\V K[\beta \mapsto B] \iskind@A[\beta \mapsto B].&\\
 		\text{If\ } \G \V M\E N : \tau@A
-		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V M[\beta \mapsto \varepsilon]\E N[\beta \mapsto \varepsilon] : \tau[\beta \mapsto \varepsilon] @A[\beta \mapsto \varepsilon].&\\
+		&\text{\ then\ } \G[\beta \mapsto B]\V M[\beta \mapsto B]\E N[\beta \mapsto B] : \tau[\beta \mapsto B] @A[\beta \mapsto B].&\\
 		\text{If\ } \G \V \tau\E \sigma : K@A
-		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V \tau[\beta \mapsto \varepsilon]\E \sigma[\beta \mapsto \varepsilon] : K[\beta \mapsto \varepsilon]@A[\beta \mapsto \varepsilon].&\\
+		&\text{\ then\ } \G[\beta \mapsto B]\V \tau[\beta \mapsto B]\E \sigma[\beta \mapsto B] : K[\beta \mapsto B]@A[\beta \mapsto B].&\\
 		\text{If\ } \G \V K\E J@A
-		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V K[\beta \mapsto \varepsilon]\E J[\beta \mapsto \varepsilon]@A[\beta \mapsto \varepsilon].&
+		&\text{\ then\ } \G[\beta \mapsto B]\V K[\beta \mapsto B]\E J[\beta \mapsto B]@A[\beta \mapsto B].&
 	\end{flalign*}
 \end{thm}
 
 \begin{itemize}
 
-	\newcommand{\SB}{[\beta \mapsto \varepsilon]}
+	\newcommand{\SB}{[\beta \mapsto B]}
 	\newcommand{\GG}{\G\SB}
 	\newcommand{\GGV}{\G\SB \V}
 
@@ -2280,9 +2280,9 @@ Use induction on type derivation tree.
 Use induction on type derivation tree.
 
 \begin{itemize}
-	\newcommand{\R}{\longrightarrow_{\blacklozenge}}
+\newcommand{\R}{\longrightarrow_{\blacklozenge}}
 
-	\item \TTBL
+\item \TTBL
 
 	      There are 2 cases for $\R$.
 
@@ -2350,25 +2350,25 @@ Use induction on type derivation tree.
 
 	      There are two cases for the reduction.
 	      \begin{itemize}
-		      \item $\Lambda\alpha.M\ \varepsilon \R M[\alpha \mapsto \varepsilon]$
+		      \item $\Lambda\alpha.M\ B \R M[\alpha \mapsto B]$
 
 		            The type derivation tree looks like $\mathcal{D}_1$.
 
 		            $\mathcal{D}_1$ = \infer[\TIns]
-		            {\G \V \Lambda\alpha.M\ \varepsilon : \tau[\alpha \mapsto \varepsilon] @ A}
+		            {\G \V \Lambda\alpha.M\ B : \tau[\alpha \mapsto B] @ A}
 		            {\ID{\G \V \Lambda\alpha.M\ : \forall\alpha.\tau @ A}}
 
 		            Use "Inversion Lemma for $\Lambda$ type" to $\G \V \Lambda\alpha.M\ : \forall\alpha.\tau @ A$,
 		            get $\G \V M : \tau @ A$ and $\alpha \notin \FTV(\G) \cup \FV(A)$.
 
 		            Use "Stage Substituition Lemma" to $\G \V M : \tau @ A$,
-		            get $\G[\alpha \mapsto \varepsilon] \V M[\alpha \mapsto \varepsilon] : \tau[\alpha \mapsto \varepsilon] @ A[\alpha \mapsto \varepsilon]$.
+		            get $\G[\alpha \mapsto B] \V M[\alpha \mapsto B] : \tau[\alpha \mapsto B] @ A[\alpha \mapsto B]$.
 
-		            Because $\alpha \notin \FTV(\G) \cup \FV(A)$, $\G[\alpha \mapsto \varepsilon] = \G$ and $A[\alpha \mapsto \varepsilon] = A$.
+		            Because $\alpha \notin \FTV(\G) \cup \FV(A)$, $\G[\alpha \mapsto B] = \G$ and $A[\alpha \mapsto B] = A$.
 
-		            So, we can rewrite $\G[\alpha \mapsto \varepsilon] \V M[\alpha \mapsto \varepsilon] : \tau[\alpha \mapsto \varepsilon] @ A[\alpha \mapsto \varepsilon]$ to
-		            $\G \V M[\alpha \mapsto \varepsilon] : \tau[\alpha \mapsto \varepsilon] @ A$.
-		      \item $M\ \varepsilon \R M'\ \varepsilon$
+		            So, we can rewrite $\G[\alpha \mapsto B] \V M[\alpha \mapsto B] : \tau[\alpha \mapsto B] @ A[\alpha \mapsto B]$ to
+		            $\G \V M[\alpha \mapsto B] : \tau[\alpha \mapsto B] @ A$.
+		      \item $M\ B \R M'\ B$
 
 		            We can use induction hypothesis directly.
 	      \end{itemize}
@@ -2389,7 +2389,7 @@ Use induction on type derivation tree.
 			      \natural(\TB_\alpha M) &= \natural(M) & \\
 			      \natural(\TBL_\alpha M) &= \natural(M)& \\
 			      \natural(\Lambda\alpha.M) &= \natural(M)& \\
-			      \natural(M\ \varepsilon) &= \natural(M) &
+			      \natural(M\ B) &= \natural(M) &
 		      \end{flalign*}
 		\item Type
 		      \begin{flalign*}
@@ -2637,7 +2637,7 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 	      The derivation looks like $\MD{1}$.
 
 	      $\MD{1}$ = \infer[\TIns]
-	      {\G \V M\ \varepsilon : \tau[\alpha \mapsto \varepsilon] @ A}
+	      {\G \V M\ B : \tau[\alpha \mapsto B] @ A}
 	      {\ID{\G \V M : \forall\alpha.\tau @ A}}
 
 	      \begin{itemize}
@@ -2647,16 +2647,16 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 			            \item $A=\varepsilon$
 
 			                  $M = \Lambda\alpha.v^\varepsilon$ from the definition of $V^\varepsilon$ and Inversion Lemma.\\
-			                  Then, $\Lambda\alpha.v^\varepsilon\ \varepsilon \longrightarrow_\Lambda v^\varepsilon[x\mapsto \varepsilon]$.
+			                  Then, $\Lambda\alpha.v^\varepsilon\ B \longrightarrow_\Lambda v^\varepsilon[x\mapsto B]$.
 
 			            \item Otherwise
 
-			                  $v^A \varepsilon \in V^A$.
+			                  $v^A B \in V^A$.
 		            \end{itemize}
 
 		      \item $\exists M'$ such that $M \longrightarrow M'$
 
-		            $M\ \varepsilon \longrightarrow M'\ \varepsilon$
+		            $M\ \varepsilon \longrightarrow M'\ B$
 	      \end{itemize}
 
 	\item Others
@@ -2671,7 +2671,7 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 $A \neq \varepsilon$\\
 \begin{align*}
 	E^A_\varepsilon [(\lambda x:\tau.M)\ v^\varepsilon]          & \longrightarrow_s E^A_\varepsilon[M[x\mapsto v^\varepsilon]]                \\
-	E^A_\varepsilon [(\Lambda\alpha.v^\varepsilon)\ \varepsilon] & \longrightarrow_s E^A_\varepsilon[v^\varepsilon[\alpha\mapsto \varepsilon]] \\
+	E^A_\varepsilon [(\Lambda\alpha.v^\varepsilon)\ B] & \longrightarrow_s E^A_\varepsilon[v^\varepsilon[\alpha\mapsto B]] \\
 	E^A_\alpha [\TBL_\alpha \TB_\alpha v^\alpha]                 & \longrightarrow_s E^A_\alpha[v^\alpha]                                      \\
 \end{align*}
 
@@ -2680,12 +2680,12 @@ $A \neq \varepsilon$\\
 \begin{align*}
 	E^\varepsilon_B \in ECtx^\varepsilon_B & ::= \square\ (\text{if\ } B = \varepsilon) \mid E^\varepsilon_B\ M \mid v^e\ E^\varepsilon_B
 	\mid \TB_\alpha E^\alpha_B \mid \Lambda\alpha.E^\varepsilon_B
-	\mid E^\varepsilon_B\ \varepsilon                                                                                                     \\
+	\mid E^\varepsilon_B\ B                                                                                                     \\
 	E^A_B \in ECtx^A_B                     & ::= \square\ (\text{if } A = B) \mid \lambda x:\tau.E^A_B \mid E^A_B\ M \mid v^A\ E^A_B
 	\mid E^\varepsilon_B \mid \TB_\alpha E^{A\alpha}_B
 	\mid \TBL_\alpha E^{A'}_B \ (\text{where } A'\alpha = A)                                                                              \\
 	                                       & \quad \mid \Lambda\alpha.E^\varepsilon_B
-	\mid E^A_B\ \varepsilon \mid \%_\alpha\ E^{A'}_B \ (\text{where } A'\alpha = A)                                                       \\
+	\mid E^A_B\ B \mid \%_\alpha\ E^{A'}_B \ (\text{where } A'\alpha = A)                                                       \\
 \end{align*}
 
 \begin{thm}[Unique Decomposition]
@@ -2759,7 +2759,7 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 		            The derivation is $\MD{1}$.
 
 		            $\MD{1}$ = \infer[\TIns]
-		            {\G \V M\ \varepsilon :\tau[\alpha \mapsto \varepsilon] @ \varepsilon}
+		            {\G \V M\ C :\tau[\alpha \mapsto C] @ \varepsilon}
 		            {\ID{\G \V M : \forall\alpha.\tau @ \varepsilon}}
 
 		            From the induction hypothesis, 1 or 2 is true.
@@ -2774,10 +2774,10 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 
 			                  Use Inversion Lemma for all shape in $v^\varepsilon$, the case of $ M = \Lambda\alpha.v^\varepsilon$ is only reasonable.
 
-			                  Then, $ \Lambda\alpha.v^\varepsilon\ \varepsilon = E^\varepsilon_\varepsilon [R^\varepsilon]$
+			                  Then, $ \Lambda\alpha.v^\varepsilon\ C = E^\varepsilon_\varepsilon [R^\varepsilon]$
 			            \item $\exists ! B, E^\varepsilon_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^\varepsilon_B[R^B]$
 
-			                  Because $ E^\varepsilon_B[R^B] \neq \Lambda\alpha.v^\varepsilon$, we can decompose $E^\varepsilon_B[R^B]\ \varepsilon$ uniquely.
+			                  Because $ E^\varepsilon_B[R^B] \neq \Lambda\alpha.v^\varepsilon$, we can decompose $E^\varepsilon_B[R^B]\ B$ uniquely.
 		            \end{itemize}
 
 		      \item $ A \neq \varepsilon $
@@ -2785,7 +2785,7 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 		            The derivation is $\MD{1}$.
 
 		            $\MD{1}$ = \infer[\TIns]
-		            {\G \V M\ \varepsilon :\tau[\alpha \mapsto \varepsilon] @ A}
+		            {\G \V M\ C :\tau[\alpha \mapsto C] @ A}
 		            {\ID{\G \V M : \forall\alpha.\tau @ A}}
 
 		            From the induction hypothesis, 1 or 2 is true.
@@ -2798,11 +2798,11 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 		            \begin{itemize}
 			            \item $ M \in V^A$
 
-			                  It is clear that $v^A\ \varepsilon \in V^A$.
+			                  It is clear that $v^A\ C \in V^A$.
 
 			            \item $\exists ! B, E^A_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$
 
-			                  Because we cannot $\Lambda$ reduction at stage $A$, we can decompose $E^A_B[R^B]\ \varepsilon$ uniquely.
+			                  Because we cannot $\Lambda$ reduction at stage $A$, we can decompose $E^A_B[R^B]\ C$ uniquely.
 		            \end{itemize}
 
 
