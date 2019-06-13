@@ -850,38 +850,40 @@ because types of codes don't contain $\%_\alpha$ generally.
 
 \subsubsection{Staged Semantics}
 
-The reduction given above is a full reduction and any redexes can be reduced in arbitrary order.
-But we need to fix order of reduction when we implement an interpreter of \LMD and
-the order must be appropriate in terms of stages.
+The reduction given above is full reduction and any redexes---even
+under quotation---can be reduced in an arbitrary order.  Following
+previous work~\cite{}, we introduce (small-step, call-by-value) staged
+semantics, where only redexes at stage $\varepsilon$\AI{not quite true
+  because of unquote--quote reduction} are reduced, modeling an
+implementation.
 
-We will define deterministic call-by-value staged semantics which can be used as a basis of a \LMD\ interpreter.
-In this reduction, $\longrightarrow_\beta$ and $\longrightarrow_\Lambda$ are allowed only at stage $\epsilon$ and 
-$\longrightarrow_\blacklozenge$ is allowed only at stage $\alpha$.
+We start with the definition of values.  Since terms under quotations are
+not executed, the grammar is indexed by stages.
 
 \begin{definition}[Values]
-	The family $V^A$ of sets of values, ranged over by $v^A$ and 
-	the sets of $\epsilon$-redexes (ranged over by $R^\epsilon$) and $\alpha$-redexes (ranged over by $R^\alpha$)
-	are defined by following grammar. In the grammar $A \neq \epsilon$.
+	The family $V^A$ of sets of values, ranged over by $v^A$,
+	is defined by following grammar.  In the grammar, $A \neq \epsilon$ is assumed.
 	\begin{align*}
-		\textrm{Values}  &  & v^\epsilon \in V^\epsilon & ::= \lambda x:\tau.M \mid\ \TB_\alpha v^\alpha \mid \Lambda\alpha.v^\epsilon                                       & \\
-		                 &  & v^A \in V^A               & ::= x \mid \lambda x:\tau.v^A \mid v^A\ v^A \mid\ \TB_\alpha v^{A\alpha} \mid \Lambda\alpha.v^A \mid v^A\ \epsilon & \\
-		                 &  &                           & \quad\   \mid\ \TBL_\alpha v^{A'} (\text{if } A'\alpha = A \text{ and } A' \neq \epsilon)                          & \\
-		                 &  &                           & \quad\   \mid \%_\alpha v^{A'} (\text{if } A'\alpha = A)                                                           & \\
-		\textrm{Redexes} &  & R^\epsilon                & ::= (\lambda x:\tau.M)\ v^\epsilon \mid (\Lambda\alpha.v^\epsilon)\ \epsilon                                       & \\
-		                 &  & R^\alpha                  & ::=\ \TBL_\alpha \TB_\alpha M                                                                                      & \\
+		v^\epsilon \in V^\epsilon & ::= \lambda x:\tau.M \mid\ \TB_\alpha v^\alpha \mid \Lambda\alpha.v^\epsilon                                       & \\
+		v^A \in V^A               & ::= x \mid \lambda x:\tau.v^A \mid v^A\ v^A \mid\ \TB_\alpha v^{A\alpha} \mid \Lambda\alpha.v^A \mid v^A\ \epsilon & \\
+		                         & \quad\   \mid\ \TBL_\alpha v^{A'} (\text{if } A = A'\alpha \text{ for some } \alpha, A' \neq \epsilon)                          & \\
+                                          & \quad\   \mid\ \%_\alpha v^{A'} (\text{if } A = A'\alpha  \text{ for some } \alpha, A')
 	\end{align*}
 \end{definition}
 
-Values at $\epsilon$ stage are a $\lambda$ abstraction, a quoted code, or a $\Lambda$ abstraction.
-The body of a $\lambda$ abstraction can be any term but the body of $\Lambda$ abstraction only can be a value.
-This restriction means that the body of $Lambda$ abstraction must be evaluated before application of an $\epsilon$ stage.
-Values at non-$\epsilon$ stage includes all term except $\TBL_\alpha v^\epsilon$.
-This is because $\TBL_\alpha v^\epsilon$ is a redex.
+Values at $\epsilon$ stage are a $\lambda$-abstraction, a quoted code,
+or a $\Lambda$ abstraction.  The body of a $\lambda$-abstraction can
+be any term but the body of $\Lambda$-abstraction has to a value.  It
+means that the body of $\Lambda$-abstraction must be evaluated.  The
+side condition for $\TBL_\alpha v^{A'}$ means that escapes in a value
+can appear only under nested quotations (because an escape under a
+single quotation will splice the code value into the surrounding
+code).  See Hanada and Igarashi~\cite{} for details.
 
-\begin{definition}[Evaluation Context]
-	The family of sets $ECtx^A_B$ of evaluation contexts, ranged over by $E^A_B$, is defined by the following grammar,
-	$A$ is nonempty. (Although $B,A'$ can be empty.)
-	$A \neq \epsilon$\\
+\begin{definition}[Evaluation Context and Redex]
+  The family of sets $ECtx^A_B$ of evaluation contexts, ranged over by $E^A_B$,
+the sets of $\epsilon$-redexes (ranged over by $R^\epsilon$) and $\alpha$-redexes (ranged over by $R^\alpha$) are defined by the following grammar.
+	In the grammar, $A$ is assumed to be nonempty (but $B,A'$ can be empty).
 	\begin{align*}
 		E^\epsilon_B \in ECtx^\epsilon_B & ::= \square\ (\text{if\ } B = \epsilon) \mid E^\epsilon_B\ M \mid v^e\ E^\epsilon_B     
 		\mid \TB_\alpha E^\alpha_B \mid \Lambda\alpha.E^\epsilon_B
@@ -891,27 +893,32 @@ This is because $\TBL_\alpha v^\epsilon$ is a redex.
 		\mid \TBL_\alpha E^{A'}_B \ (\text{where } A'\alpha = A)                                                                    \\
 		                                 & \quad \mid \Lambda\alpha.E^\epsilon_B                                                   
 		\mid E^A_B\ \epsilon \mid \%_\alpha\ E^{A'}_B \ (\text{where } A'\alpha = A)                                                \\
-	\end{align*}
+\\
+		 R^\epsilon  & ::= (\lambda x:\tau.M)\ v^\epsilon \mid (\Lambda\alpha.v^\epsilon)\ \epsilon                                       & \\
+		 R^\alpha    & ::=\ \TBL_\alpha \TB_\alpha M                                                                                      & \\	\end{align*}
 \end{definition}
 
-We write $E^A_B[M]$ for a term obtained by filling the hole in $E^A_B$ with $M$.
+\AI{some more explanation of the syntax of evaluation contexts.}
+
+We write $E^A_B[M]$ for the term obtained by filling the hole in $E^A_B$ by $M$
+and define the staged reduction relation.
 
 \begin{definition}[Staged Reduction]
 	The staged reduction relation, written $M \longrightarrow_s M'$, is defined by 
-	the least relation closed under the rules in Figure \ref{fig:staged-reduction}.
-\end{definition}
-
-\begin{figure}
-	\begin{center}
+	the least relation closed under the rules below.
+% \begin{figure}
+% 	\begin{center}
 		\begin{align*}
 			E^A_\epsilon [(\lambda x:\tau.M)\ v^\epsilon]       & \longrightarrow_s E^A_\epsilon[M[x\mapsto v^\epsilon]]             \\
 			E^A_\epsilon [(\Lambda\alpha.v^\epsilon)\ \epsilon] & \longrightarrow_s E^A_\epsilon[v^\epsilon[\alpha\mapsto \epsilon]] \\
 			E^A_\alpha [\TBL_\alpha \TB_\alpha v^\alpha]        & \longrightarrow_s E^A_\alpha[v^\alpha]                             \\
 		\end{align*}
-		\caption{Staged Reduction}
-		\label{fig:staged-reduction}
-	\end{center}
-\end{figure}
+     %    	\caption{Staged Reduction}
+     %    	\label{fig:staged-reduction}
+     %    \end{center}
+     % \end{figure}
+\end{definition}
+
 
 \section{Properties of \LMD}
 
