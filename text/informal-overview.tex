@@ -1,3 +1,5 @@
+% !TEX root = ../main.tex
+
 \section{Informal Overview of \LMD}
 
 We designed \LMD, a multi-stage calculus with dependent type.
@@ -129,16 +131,10 @@ because we develop a multi-stage calculus, not a multi-transition calculus.
 \red{stageのほうが言葉としてふさわしいと言いたい}
 There are three technical points in the extension from \LTP to \LMD.
 
-\red{以下の3文をどこかに入れる必要がある}
-\red{, which is called a \textit{stage variable} in \LMD.}
-\red{ which is called a stage in \LMD.}
-\red{Although we can apply any transition to a transition abstraction in \LTP,
-	we restrict the transitions only to $\epsilon$ transition in \LMD to simplify the system.}
-
 % Constants and Base Types
 
-First, the way of handling of constants and base types is the difference between \LMD and \LTP.
-We adopt a signature $\Sigma$ to handle constants and base types.
+First, the way of handling of constants and type-level constants is the difference between \LMD and \LTP.
+We adopt a signature $\Sigma$ to handle constants and type-level constants.
 This is because a signature simplifies kinding rules relating to type variables.
 A signature $\Sigma$ is composed of pairs of a base type and its kind or a constant and its type.
 For example, if you want to use boolean, $\Sigma = \B::*, \text{true}:\B, \text{false}:\B$
@@ -160,7 +156,25 @@ For example, \KAbs-LF is a kinding rule for a dependent type in \LLF and \KAbs\ 
 
 % Equivalence Rules
 
-Third, we also need type equivalence rules in \LMD as a dependent type system.
+Third, we also need type equivalence rules in \LMD because its type system contains dependent types.
+For example, vadd function, which takes a length of vector and returns addition function for vectors with the length, is following.
+\newcommand{\M}{\textrm{M}}
+\newcommand{\I}{\textrm{Int}}
+\newcommand{\Vn}{\text{Vector}\ (\%_\alpha n)}
+\begin{align*}
+	  & \textbf{let}\ \text{vadd}_1 : \Pi n:\I.\TW_\alpha\Vn\to\TW_\alpha\Vn\to\TW_\alpha\Vn                 \\
+	  & \hspace{7mm} = \textbf{fix}\ f.\lambda n:\I.\ \lambda v_1:\TW_\alpha\Vn.\ \lambda v_2:\TW_\alpha\Vn. \\
+	  & \hspace{14mm} \textbf{if}\ n = 0                                                                     \\
+	  & \hspace{14mm} \textbf{then} \TB_\alpha \text{nil}                                                    \\
+	  & \hspace{14mm} \textbf{else}\ \TB_\alpha (                                                            \\
+	  & \hspace{21mm} \textbf{let}\ t_1 = \text{tail}\ (\TBL_\alpha v_1)\ \textbf{in}                        \\
+	  & \hspace{21mm} \textbf{let}\ t_2 = \text{tail}\ (\TBL_\alpha v_2)\ \textbf{in}                        \\
+	  & \hspace{21mm} \text{cons}\ (\text{head}\ t_1 + \text{head}\ t_2) (\TBL_\alpha f\ (n-1)\ t_1\ t_2))   \\
+\end{align*}
+\begin{align*}
+	  & \textbf{let}\ \text{vadd}_\alpha : \Pi n:\I.\TW_\alpha(\Vn\to\Vn\to\Vn)                                                                      \\
+	  & \hspace{7mm} = \lambda n:\I.\TB_\alpha (\lambda v_1:\Vn.\ \lambda v_2:\Vn. \TBL_\alpha \text{vadd}_1\ n\ (\TB_\alpha v_1)\ (\TB_\alpha v_2)) \\
+\end{align*}
 Although there are new primitives relating to stages which aren't in \LLF,
 we can design all rules except \QPercent\ easily.
 \red{design?}

@@ -1,5 +1,35 @@
 {
+    "window.zoomLevel": 3,
+    "git.autofetch": true,
+    "editor.minimap.enabled": false,
+    "latex-workshop.view.pdf.viewer": "tab",
+    "latex-workshop.latex.tools": [
+        {
+            "command": "latexmk",
+            "args": [],
+            "name": "latexmk build"
+        }
+    ],
+    "latex-workshop.latex.recipes": [
+        {
+            "command": "latexmk",
+            "tools": [
+                "latexmk build"
+            ],
+            "name": "latexmk toolchain"
+        }
+    ],
+    "git.confirmSync": false,
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "java.errors.incompleteClasspath.severity": "error",
+    "java.configuration.checkProjectSettingsExclusions": false,
+    "cSpell.userWords": [
+        "metavariables"
+    ],
+    "editor.formatOnSave": true,
     "cSpell.words": [
         "redex"
-    ]
+    ],
+    "latex-workshop.latex.autoBuild.run": "never"
 }
