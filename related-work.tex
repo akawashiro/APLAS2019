@@ -1,0 +1,52 @@
+\section{Related Work}
+
+% 依存型の歴史
+
+There are many papers on dependent types and most of them are affected with the pioneering work of Per Martin-L\"{o}f.
+$\lambda^\Pi$\cite{Meyer1986}, Calculus of Constructions\cite{coquand:inria-00076024}, 
+and Harper, Honsell and Plotkin\cite{harper1993framework} are famous papers on dependent types.
+In Advanced Topics in Types and Programming Languages\cite{attapl},
+a dependent type system \LLF is designed with the basis of \cite{harper1993framework}.
+We adopted \cite{attapl}-like dependent types for \LMD.
+
+One can use dependent types in programming languages such as Idris\cite{brady2013idris} or
+interactive theorem provers such as Coq\cite{09thecoq} which based on \cite{coquand:inria-00076024}.
+\red{この段落要らない or 後ろとくっつけたほうが良いかも知れない?}
+
+% 依存型の応用
+
+Applications of dependent types for real problems were also researched.
+In Xi and Pfenning\cite{Xi98}, they extended SML with restricted dependent types
+and succeeded in reducing the bounds checking of arrays.
+In Xi and Robert\cite{xi2001dependently}, they design a type system for an assembly language and
+it is useful for spped up.
+Xi also gave dead code elimination and loop unrolling as examples of dependent types application in \cite{xi1999dependent}.
+
+% 多段階計算の歴史
+
+\red{Besides,} multi-stage calculi also have a long history of research.
+Davis revealed there is Curry-Howard correspondence between a multi-stage calculus and modal logic in $\lambda^\circ$\cite{davies1996temporal}.
+However, $\lambda^\circ$ don't have operators for run and CSP.
+\red{runはboldか? Besidesより適切な接続詞はないのか?}
+Benaissa, et al. \cite{benaissa1999logical} study the relationship between multi-stage calculus and category theory or modal logic.
+Taha and Sheard introduced run and CSP to a multi-stage calculus in \cite{MetaML}.
+Additionally, Taha and Nielsen invented the concept of environment classifiers in $\lambda^\alpha$\cite{taha2003environment} and 
+construct the type system for $\lambda^\alpha$, which can handle quoting, unquoting, run, and CSP.
+
+In $\lambda^\TW$\cite{Tsukada}, Tsukada and Igarashi found modal logic which corresponds to a multi-stage calculus with environment classifiers and
+show that run can be represented as application of $\epsilon$ to transition abstractions.
+In \LTP\cite{Hanada2014}, Hanada and Igarashi extended $\lambda^\TW$ with CSP and discuss code residualization 
+which allows us to dump the quoted code into an external file.
+
+% 他段階計算の機能拡張
+
+Combination of multi-stage programming and another programming feature has been studied.
+Oleg, Kameyama, and Sudo\cite{kiselyov2016refined} designed a type sysytem for multi-stage programming with mutable cells and
+Oishi and Kameyama\cite{oishi2017staging} extended a multi-stage calculus so that it can handle control operators such as shift and reset.
+
+% 多段階計算の応用
+
+MetaOCaml is a programming language with quoting, unquoting, run, and CSP.
+Oleg gave many examples of application of MetaOCaml in \cite{8384206}, 
+which include filtering in signal processing, matrix-vector product, and DSL compiler.
+

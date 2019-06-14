@@ -1,0 +1,112 @@
+\section{Introduction}
+
+\subsection{Multi-stage Programming}
+
+% \subsubsection{多段階計算とは何か?}
+
+Multi-stage programming enables us to generate and run fragments of code at runtime.
+MetaOCaml\cite{oleg2014} provide features for multi-stage programming, which are brackets, escape, and run.
+Brackets, written \verb|.< e >.| in MetaOCaml, makes a code value from \verb|e|.
+Run, written \verb| run e | in MetaOCaml, runs a code value of \verb|e| and restore \verb|e|.
+Escape, written \verb| .~ e | in MetaOCaml, expands a code value of \verb|e|.
+Unlike run, escape is supposed to use in a fragment of code, that is, escape cannot be used as an alternative of run.
+For example, the following MetaOCaml expression
+
+\begin{verbatim}
+        let plusone = .< fun x -> x + 1 >. in .< .~plusone 2 >.
+\end{verbatim}
+evaluates to \verb|.< (fun x -> x + 1) 2 >.|. We can get the result with run.
+\begin{verbatim}
+        run (let plusone = .< fun x -> x + 1 >. in .< .~plusone 2 >.)
+\end{verbatim}
+is reduced to 3.
+
+% \subsubsection{CSPに関する補足説明}
+
+Cross-stage Persistence (CSP) is another primitive of multi-stage programming, which enable us to embed computed values into a code value.
+This is an example of CSP.
+\begin{verbatim}
+        let plusone = fun x -> x + 1 in
+        let y = plusone 2 in  .< y >.
+\end{verbatim}
+This program evaluates to \verb|.< 3 >.| not  \verb|.< plusone 2 >.|.
+This is because the variable \verb|y| is introduced into a code fragment using CSP.
+Therefore, the variable \verb|y| is embedded after it was calculated.
+CSP is very important when we write practical programs 
+because CSP enables us to use library functions in code fragments as in \verb|.<List.combine [1;2] ['a';'b']>.|.
+
+% \subsubsection{多段階計算のメリットをべき乗の例を用いて説明する}
+
+The main application of multi-stage calculi is program optimization.
+A famous example is power functions.
+Usual power functions take two arguments, which are the base and the exponent.
+We can make a specialized power function for given exponents with multi-stage programming and 
+optimize them by unrolling a loop in functions for given exponents.
+The optimized power function for the exponent of \verb|3| looks like \verb|power3 = fun x -> x * x * x|.
+\verb|power3| is faster than ordinary \verb|power| function because it contains no loop.
+Multi-stage programming can optimize functions which take more than two arguments 
+by generating a code fragment optimized to a given argument.
+
+% \subsubsection{ベクトル計算も高速化できる}
+
+Multi-stage programming can also optimize vector calculation.
+For example, \verb|vadd| function, which takes two vectors and return the sum of them,
+is implemented with a loop in many cases.
+We can unroll \verb|vadd| function for a given vector length and optimize it with multi-stage programming.
+\red{MetaOCamlで書いた長さ付きベクトルの例?}
+
+% \subsubsection{生成した行列計算のコードは特定のサイズに特化しており、他のサイズでは使えない。
+% このため、間違って組み合わせると容易にエラーを引き起こす。既存の型システムではこのエラーを防止できない}
+
+However, there is a sever problem in functions which are optimized by multi-stage programming.
+Although unrolled \verb|vadd| function is optimized, we cannot use it for different vector length.
+For example, when you optimize for the length of 5, you shouldn't use it for vectors of 3 lengths.
+Otherwise, we will get a Segmentation Fault error.
+This problem is serious but existing type systems for multi-stage calculi cannot prevent it.
+
+% We call this problem \red{Specialized Code Problem}.
+
+\subsection{Dependent Types}
+
+% \subsubsection{依存型とは何か?}
+
+Dependent types are types which is dependent on values.
+We can use dependent types for securer programming.
+For example, we can realize vectors with their sizes with them.
+\begin{verbatim}
+        Vector :: Int -> *
+\end{verbatim}
+\verb|Vector| is a type constor which takes the length of vectors, that is, 
+\verb|Vector 3| is a type for vectors whose lengths are 3.
+If \verb|vadd| function has the type of \verb|Vector n -> Vector n -> Vector n|,
+we can confirm the two arguments of \verb|vadd| function has the same length.
+\red{secure programming? finer grained typing? とか}
+
+\subsection{Multi-stage Programming with Dependent Types}
+\red{このsubsectionは短いので上とくっつけてもいいかもしれない}
+
+% \subsubsection{「生成した行列計算のコードは特定のサイズに特化しており、他のサイズでは使えない。
+% このため、間違って組み合わせると容易にエラーを引き起こす。」問題を依存型で解決する。}
+
+As we pointed out in the above section,
+functions optimized with multi-stage programming can take only restricted values as arguments.
+When you optimize \verb|vadd| function for the length of 5, you should it only for 5 length vectors.
+We introduce dependent types into a multi-stage calculus
+so that the type system can guarantee optimized functions are used properly.
+
+In this paper, we design new multi-stage calculus \LMD by 
+merging dependent types into existing multi-stage calculus \LTP\cite{Hanada2014}.
+\LMD is multi-stage calculus which contains dependent types.
+\LMD makes multi-stage programming more safer with the power of dependent types.
+
+\subsection{Organization of the Paper}
+
+The organization of this paper is the following.
+Section 2 gives an informal overview of \LMD.
+Section 3 defines the syntax, type system, full reduction, evaluation contexts of \LMD.
+Section 4 shows the properties of \LMD including Unique Decomposition.
+Section 5 discusses future works.
+Finally, Section 6 discusses related works.
+\AI{Use $\backslash$label and $\backslash$ref!}
+\AI{``Related work'' and ``future work'' (they are uncountable).}
+
