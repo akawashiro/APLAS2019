@@ -3,6 +3,7 @@
 % Version 2.20 of 2017/10/04
 %
 \newif\ifnotanonymous \notanonymousfalse
+\newif\iffullversion \fullversiontrue
 \documentclass[runningheads]{llncs}
 %
 \usepackage{graphicx}
@@ -340,6 +341,23 @@
 % Oct 2017
 % \end{thebibliography}
 
+\iffullversion
+\appendix
+
+\newmdtheoremenv{thm}{Theorem}
+\newmdtheoremenv{dfn}{Defnition}
+\newtheorem{ex}{Example}
+\newtheorem{cm}{Comment}
+\newcommand{\figheader}[2]{
+  \begin{flushleft}
+    #2 {\bf \normalsize #1}
+\end{flushleft}}
+
+\newpage
+\section{Proofs}
+\input{text/proofs}
+
+\fi
 \section{Appendix}
 
 \blue{We solicit submissions in the form of regular research papers describing original scientific research results, including system development and case studies. Regular research papers should not exceed 18 pages in the Springer LNCS format, including bibliography and figures. This category encompasses both theoretical and implementation (also known as system descriptions) papers. In either case, submissions should clearly identify what has been accomplished and why it is significant. Submissions will be judged on the basis of significance, relevance, correctness, originality, and clarity. System descriptions papers should contain a link to a working system and will be judged on originality, usefulness, and design. In case of lack of space, proofs, experimental results, or any information supporting the technical results of the paper could be provided as an appendix or a link to a web page, but reviewers are not obliged to read them.}
