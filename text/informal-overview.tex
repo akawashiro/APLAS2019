@@ -157,37 +157,48 @@ For example, \KAbs-LF is a kinding rule for a dependent type in \LLF and \KAbs\ 
 % Equivalence Rules
 
 Third, we also need type equivalence rules in \LMD because its type system contains dependent types.
-For example, vadd function, which takes a length of vector and returns addition function for vectors with the length, is following.
-\begin{align*}
-	  & \textbf{let}\ \text{vadd}_1 : \Pi n:\I.\TW_\alpha\Vpn\to\TW_\alpha\Vpn\to\TW_\alpha\Vpn                 \\
-	  & \hspace{7mm} = \textbf{fix}\ f.\lambda n:\I.\ \lambda v_1:\TW_\alpha\Vpn.\ \lambda v_2:\TW_\alpha\Vpn. \\
-	  & \hspace{14mm} \textbf{if}\ n = 0                                                                     \\
-	  & \hspace{14mm} \textbf{then} \TB_\alpha \text{nil}                                                    \\
-	  & \hspace{14mm} \textbf{else}\ \TB_\alpha (                                                            \\
-	  & \hspace{21mm} \textbf{let}\ t_1 = \text{tail}\ (\TBL_\alpha v_1)\ \textbf{in}                        \\
-	  & \hspace{21mm} \textbf{let}\ t_2 = \text{tail}\ (\TBL_\alpha v_2)\ \textbf{in}                        \\
-	  & \hspace{21mm} \text{cons}\ (\text{head}\ t_1 + \text{head}\ t_2) (\TBL_\alpha f\ (n-1)\ t_1\ t_2))   \\
-\end{align*}
-\begin{align*}
-	  & \textbf{let}\ \text{vadd}_\alpha : \Pi n:\I.\TW_\alpha(\Vpn\to\Vpn\to\Vpn)                                                                      \\
-	  & \hspace{7mm} = \lambda n:\I.\TB_\alpha (\lambda v_1:\Vpn.\ \lambda v_2:\Vpn. \TBL_\alpha \text{vadd}_1\ n\ (\TB_\alpha v_1)\ (\TB_\alpha v_2)) \\
-\end{align*}
 Although there are new primitives relating to stages which aren't in \LLF,
-we can design all rules except \QPercent\ easily.
-\red{design?}
-\red{この段落が短い。後ろとくっつけてもいいが、段落の趣旨がボケる。}
+we can design all rules except \QPercent\ easily from the syntax or the reductions of \LMD.
 
-% Q-% rule
+\QPercent\ is different from other rules because it was designed from practical reason, not from the syntax or the reductions.
+For example, we discuss $\text{vadd}_\beta$ function,
+which takes a length of vector and returns addition function for vectors with the length.
+$\text{vadd}_1$ is a helper function to make $\text{vadd}$, 
+which takes a stage, a length of vectors, and two quoted vectors and returns a quoted vector.
+We assumed that type checker can know $n=0$ when process the $\textbf{then}$ clause.
+\newcommand{\Vpn}{\text{Vector}\ (\%_\alpha n)}
+\begin{align*}
+	  & \textbf{let}\ \text{vadd}_1 : \F\alpha.\Pi n:\I.\TW_\alpha\Vpn\to\TW_\alpha\Vpn\to\TW_\alpha\Vpn                                \\
+	  & \hspace{7mm} = \textbf{fix}\ f.\Lambda\alpha.\lambda n:\I.\ \lambda v_1:\TW_\alpha\Vpn.\ \lambda v_2:\TW_\alpha\Vpn.            \\
+	  & \hspace{14mm} \textbf{if}\ n = 0                                                                                                \\
+	  & \hspace{14mm} \textbf{then} \TB_\alpha \text{nil}                                                                               \\
+	  & \hspace{14mm} \textbf{else}\ \TB_\alpha (                                                                                       \\
+	  & \hspace{21mm} \textbf{let}\ t_1 = \text{tail}\ (\TBL_\alpha v_1)\ \textbf{in}                                                   \\
+	  & \hspace{21mm} \textbf{let}\ t_2 = \text{tail}\ (\TBL_\alpha v_2)\ \textbf{in}                                                   \\
+	  & \hspace{21mm} \text{cons}\ (\text{head}\ (\TBL_\alpha v_1) + \text{head}\ (\TBL_\alpha v_2))\ (\TBL_\alpha f\ (n-1)\ t_1\ t_2)) \\
+\end{align*}
+Using $\text{vadd}_1$, we can make $\text{vadd}$ function easily.
+This function takes the length of vectors and returns a quoted add function for vector of the given size.
+\renewcommand{\Vpn}{\text{Vector}\ (\%_\beta n)}
+\begin{align*}
+	  & \textbf{let}\ \text{vadd}: \Pi n:\I.\F\beta.\TW_\beta(\Vpn\to\Vpn\to\Vpn)                \\ 
+	  & \hspace{7mm} = \lambda n:\I.\Lambda\beta.\TB_\beta (\lambda v_1:\Vpn.\ \lambda v_2:\Vpn. \\
+	  & \hspace{63mm} \TBL_\beta \text{vadd}_1\ \beta\ n\ (\TB_\beta\ v_1)\ (\TB_\beta\ v_2))    \\
+\end{align*}
+\renewcommand{\Vpn}{\text{Vector}\ (\%_\beta 10)}
+When we use this function, we need to instantiate $\text{vadd}$ with a length.
+If we instantiate it with a integer 10, we get function $\text{vadd10}$ whose type is \\
+$\text{vadd10}: \F\beta.\TW_\beta(\Vpn\to\Vpn\to\Vpn)$.
+This function is difficult to use because its type contains $\Vpn$.
+In most cases, we have vectors of type $\text{Vector}\ 10$, not $\Vpn$.
+Therefore, we want to identify $\text{Vector}\ 10$ and $\Vpn$.
 
-The biggest problem in extension is handling the CSP symbol $\%_\alpha$ in \LMD.
-The equivalence simple rule to handle CSP is \QCsp.
-\begin{center}
-	\infrule{\G\V M \E N : \tau @A}{\G\V\%_\alpha M \E \%_\alpha N : \tau @{A\alpha}}{\QCsp}
-\end{center}
-However, this rule isn't enough when the parameters of dependent types are cross-staed.
-We will discuss this problem in a later section and solve this problem with the new rule \QPercent.
+In order to resolve this problem, we introduced \QPercent\ into \LMD.
+\QPercent\ enables us to identify $\text{Vector}\ 10$ and $\Vpn$.
+This rule says that if term $M$ has the same type at stage $A\alpha$ and $A$,
+we can assume $\%_\alpha M \E M$ which roughly means $\%_\alpha M$ and $M$ are equivalent.
+With this rule, we can identify $10$ and $\%_\beta 10$ and use $\text{vadd}$ to many vectors.
 \begin{center}
 	\infrule{\G\V M:\tau @{A\alpha} \andalso \G\V M:\tau @A}{\G\V\%_\alpha M \E M : \tau @{A\alpha}}{\QPercent}
 \end{center}
-\red{この段落でQ-Cspの持つ問題点を指摘すべきか? ただ、ここでmulmatの例を使うと3章と被る。}
 
