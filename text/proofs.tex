@@ -1,33 +1,41 @@
 \iffullversion
-	I remove this lemma because it is not needed anywhere.
-	\begin{thm}[Weakening lemma for variables]
-		\begin{flalign*}
-			\text{If\ } \G \V M:\tau@A \text{\ then\ }& \G, z:\xi@B \V M:\tau@A &\\
-			\text{If\ } \G \V M:\tau@A \text{\ then\ }& \G, Z:G@B \V M:\tau@A &\\
-			\text{If\ } \G \V \tau::K@A \text{\ then\ }& \G, z:\xi@B \V \tau::K@A &\\
-			\text{If\ } \G \V \tau::K@A \text{\ then\ }& \G, Z:G@B \V \tau::K@A &\\
-			\text{If\ } \G \V K\iskind@A \text{\ then\ }& \G, z:\xi@B \V K\iskind@A &\\
-			\text{If\ } \G \V K\iskind@A \text{\ then\ }& \G, Z:G@B \V K\iskind@A &\\
-			\text{If\ } \G \V M\E N : \tau@A \text{\ then\ }& \G, z:\xi@B \V M\E N : \tau@A &\\
-			\text{If\ } \G \V M\E N : \tau@A \text{\ then\ }& \G, Z:G@B \V M\E N : \tau@A &\\
-			\text{If\ } \G \V \tau\E \sigma : K@A \text{\ then\ }& \G, z:\xi@B \V \tau\E \sigma : K@A &\\
-			\text{If\ } \G \V \tau\E \sigma : K@A \text{\ then\ }& \G, Z:G@B \V \tau\E \sigma : K@A &\\
-			\text{If\ } \G \V K\E J@A \text{\ then\ }& \G, z:\xi@B \V K\E J@A &\\
-			\text{If\ } \G \V K\E J@A \text{\ then\ }& \G, Z:G@B \V K\E J@A &\\
-		\end{flalign*}
-	\end{thm}
+\AI{Put a comma before ``then''.}
+\AI{A period is needed for each statement (because it's a sentence).}
+\AI{TAPL gives plenty of examples of how to write proofs.}
+\begin{lemma}[Weakening]
+  \begin{enumerate}\ 
+  \item	If \(\G \V M:\tau@A\), then \(\G, z:\xi@B \V M:\tau@A\). 
+\AI{Apply similar changes and remove \%.}
+\item If \(\G \V M:\tau@A\), then \(\G, Z:G@B \V M:\tau@A\).  \AI{Type variables do not appear in type environments any longer.  This one is obsolete.}
+			% \text{If\ } \G \V \tau::K@A \text{\ then\ }& \G, z:\xi@B \V \tau::K@A &\\
+			% \text{If\ } \G \V \tau::K@A \text{\ then\ }& \G, Z:G@B \V \tau::K@A &\\
+			% \text{If\ } \G \V K\iskind@A \text{\ then\ }& \G, z:\xi@B \V K\iskind@A &\\
+			% \text{If\ } \G \V K\iskind@A \text{\ then\ }& \G, Z:G@B \V K\iskind@A &\\
+			% \text{If\ } \G \V M\E N : \tau@A \text{\ then\ }& \G, z:\xi@B \V M\E N : \tau@A &\\
+			% \text{If\ } \G \V M\E N : \tau@A \text{\ then\ }& \G, Z:G@B \V M\E N : \tau@A &\\
+			% \text{If\ } \G \V \tau\E \sigma : K@A \text{\ then\ }& \G, z:\xi@B \V \tau\E \sigma : K@A &\\
+			% \text{If\ } \G \V \tau\E \sigma : K@A \text{\ then\ }& \G, Z:G@B \V \tau\E \sigma : K@A &\\
+			% \text{If\ } \G \V K\E J@A \text{\ then\ }& \G, z:\xi@B \V K\E J@A &\\
+			% \text{If\ } \G \V K\E J@A \text{\ then\ }& \G, Z:G@B \V K\E J@A &\\
+		\end{enumerate}
+	\end{lemma}
 
-	Prove by induction on derivation tree.
+        \begin{proof}
+          \AI{Use the proof environment.}
+	By straightforward induction.
 
-	\begin{itemize}
-		\item \WStar
+	% \begin{itemize}
+	% 	\item \WStar
 
-		      From the definition of \WStar.
+	% 	      From the definition of \WStar.
 
-	\end{itemize}
+	% \end{itemize}
+          
+        \end{proof}
 \fi
 
-\begin{thm}[Substitution Lemma on Terms]
+\begin{theorem}[Term Substitution]
+  \AI{The statements should be fixed.}
 	\begin{flalign*}
 		\text{If\ } \G,z:\xi@B \V M:\tau@A \text{\ and\ } \G\V P:\xi@B
 		&\text{\ then\ } \G\V M[z \mapsto P]:\tau[z \mapsto P]@A.&\\
@@ -42,9 +50,12 @@
 		\text{If\ } \G,z:\xi@B \V K\E J@A \text{\ and\ } \G\V P:\xi@B
 		&\text{\ then\ } \G\V K[z \mapsto P]\E J[z \mapsto P]@A.&
 	\end{flalign*}
-\end{thm}
+\end{theorem}
+
 
 Prove by induction on derivation tree.
+\AI{The six items are proved simultaneously by induction on derivations with
+case analysis on the last rule used.}
 
 \begin{itemize}
 
@@ -98,7 +109,27 @@ Prove by induction on derivation tree.
 		\infer[]{\GGV T\SB::*@A}{\vdots} \andalso
 		\infer[]{\GG, x:\tau\SB \V K\SB \iskind@}{\vdots}
 	}\\
+        \AI{$\mathcal{D}'_3$ is the same as $\mathcal{D}_3$ because substitution is a meta-level operation.}
+        
+        \AI{Your proofs are good but people prefer to treat judgments
+          as if they are English sentences and treat derivations
+          implicitly (even when the proof is by induction on derivations.  So, I would write these cases as follows.}
+      \item[] Case \WStar{} where $K = *$.  The conclusion is immediate since $K[z \mapsto P] = *$.
 
+      \item[] Case \WAbs{} where $K = \Pi x:\tau.K_0$ and 
+        \begin{align*}
+          & \G, z:\xi@B, \D \V T::*@A && \G, z:\xi@B, \D, x:\tau \V K \iskind@A.
+        \end{align*}
+
+%	We can assume $x \neq z$ because we can select fresh $x$ when we construct $\Pi$ type.
+
+        By the induction hypothesis, we have
+        \begin{align*}
+	& \GGV T\SB::*@A && \GG, x:\tau\SB \V K\SB \iskind@
+        \end{align*}
+        from which $\GGV (\Pi x:\tau\SB.K\SB) \iskind @A$ follows by \WAbs.
+        We have $\Pi x:\tau\SB.K\SB = (\Pi x:\tau.K)\SB$ by definition.
+        
 	\item \WCsp
 
 	From the induction hypothesis, we can get $\mathcal{D}_1$.
@@ -320,15 +351,16 @@ $\mathcal{D}_3$ = \infer[]
 
 	      In this case,
 	      \begin{itemize}
-		      \item $y = z$
-		      \item $\tau = \xi$
-		      \item $A = B$
-	      \end{itemize}
+		      \item $y = z$ \AI{Needs a comma.}
+		      \item $\tau = \xi$ \AI{Needs ``, and''.}
+		      \item $A = B$ \AI{Needs a period.  In general, you have to be able read as if it's a usual sentence.  Usual grammar rules apply.}
+                      \end{itemize}
+                      
 
 	      Because there is no $z$ in $\xi$, $\tau\SB = \xi\SB = \xi$.
 	      And it is obvious that $y\SB = z\SB = P$.
 
-	      From $\mathcal{D}_2$, $\G \V y\SB : \tau\SB@A$. Use Weakening lemma, $\GGV y\SB : \tau\SB$.
+	      From $\mathcal{D}_2$, $\G \V y\SB : \tau\SB@A$. Use Weakening lemma, \AI{By Weakening,} $\GGV y\SB : \tau\SB$.
 \end{itemize}
 
 From and \TVar\\
@@ -746,7 +778,7 @@ $\GGV y\SB:\tau\SB$
 
 \end{itemize}
 
-\begin{thm}[Substitution Lemma on Stage]
+\begin{lemma}[Stage Substitution]
 	\begin{flalign*}
 		\text{If\ } \G \V M:\tau@A
 		&\text{\ then\ } \G[\beta \mapsto B]\V M[\beta \mapsto B]:\tau[\beta \mapsto B]@A[\beta \mapsto B].&\\
@@ -761,7 +793,7 @@ $\GGV y\SB:\tau\SB$
 		\text{If\ } \G \V K\E J@A
 		&\text{\ then\ } \G[\beta \mapsto B]\V K[\beta \mapsto B]\E J[\beta \mapsto B]@A[\beta \mapsto B].&
 	\end{flalign*}
-\end{thm}
+\end{lemma}
 
 \begin{itemize}
 
@@ -1487,7 +1519,7 @@ $\GGV y\SB:\tau\SB$
 
 \end{itemize}
 
-\begin{thm}[Agreement]
+\begin{lemma}[Agreement]
 	\begin{flalign*}
 		\text{If\ } \G\V \tau::K@A &\text{\ then\ } \G\V K\iskind@A. &\\
 		\text{If\ } \G\V M:\tau@A &\text{\ then\ } \G\V \tau::*@A.&\\
@@ -1495,7 +1527,7 @@ $\GGV y\SB:\tau\SB$
 		\text{If\ } \G\V \tau\E \sigma :: K@A &\text{\ then\ } \G\V \tau::K@A \text{\ and\ } \G\V \sigma::K@A.&\\
 		\text{If\ } \G\V M\E N : \tau@A &\text{\ then\ } \G\V M:\tau@A \text{\ and\ } \G\V N:\tau@A.&\\
 	\end{flalign*}
-\end{thm}
+\end{lemma}
 
 We can prove using induction on the derivation tree.
 
@@ -1534,7 +1566,7 @@ Others are proved by using induction hypothesis and a rule. We show some cases a
 
 \end{itemize}
 
-\begin{thm}[Inversion Lemma for $\Pi$ type]
+\begin{lemma}[Inversion Lemma for $\Pi$ type]
 	If $\G \V (\lambda x:\sigma.M) : (\Pi x:\sigma'.\tau)@A$ then
 	\begin{enumerate}
 		\item $\G \V \sigma \E \sigma'@A$
@@ -1552,7 +1584,7 @@ Others are proved by using induction hypothesis and a rule. We show some cases a
 		\item $\G \V \sigma \E \sigma' : K @A$
 		\item $\G, x:\sigma@A\V \tau \E \tau' : J @A$
 	\end{enumerate}
-\end{thm}
+\end{lemma}
 
 Proved by induction on the derivation tree.
 
@@ -1599,9 +1631,11 @@ Proved by induction on the derivation tree.
 
 \end{itemize}
 
-\begin{thm}[Preservation for term on $\beta$ reduction]
-	If $\G\V M:\tau@A$ and $M \longrightarrow_{\beta} M'$, then $\G\V M':\tau@A$\\
-\end{thm}
+\begin{theorem}[Preservation on $\beta$ reduction]
+  \AI{I'm not sure ``on'' is the correct preposition.  Maybe ``for''?'}
+  If $\G\V M:\tau@A$ and $M \longrightarrow_{\beta} M'$, then $\G\V M':\tau@A$\\
+  \AI{Put a period.  You don't have to use a linebreak.}
+\end{theorem}
 
 Use induction on type derivation tree.
 
@@ -1704,7 +1738,7 @@ Use induction on type derivation tree.
 
 \end{itemize}
 
-\begin{thm}[Inversion Lemma for $\TW$ type]
+\begin{lemma}[Inversion Lemma for $\TW$ type]
 	\begin{item}
 	      \item If $\G \V \TB_\alpha M : \TW_\alpha \tau@A$ then $\G \V M : \tau @A$.
 	      \item If $\G \V \rho \E  \TW_\alpha \tau : K @A$ then $\exists \tau', K, J$ such that
@@ -1718,7 +1752,7 @@ Use induction on type derivation tree.
 		      \item $\G @A\V \tau \E \tau' : K @A$
 	      \end{enumerate}
 	\end{item}
-\end{thm}
+\end{lemma}
 
 \begin{itemize}
 	\item \TTB
@@ -1735,9 +1769,9 @@ Use induction on type derivation tree.
 
 \end{itemize}
 
-\begin{thm}[Preservation for term on $\TBL\TB$ reduction]
+\begin{theorem}[Preservation for term on $\TBL\TB$ reduction]
 	If $\G\V M:\tau@A$ and $M\longrightarrow_\blacklozenge N$, then $\G\V N:\tau@A$\\
-\end{thm}
+\end{theorem}
 
 Use induction on type derivation tree.
 
@@ -1769,7 +1803,7 @@ Use induction on type derivation tree.
 	      We can use the induction hypothesis directly.
 \end{itemize}
 
-\begin{thm}[Inversion Lemma for $\Lambda$ type]
+\begin{lemma}[Inversion for $\Lambda$ type]
 	\begin{item}
 	      \item If $\G \V \Lambda\alpha.M : \forall\alpha.\tau@A$ then $\G \V M : \tau @A$ and $\alpha \notin \FTV(\G) \cup \FV(A)$.
 	      \item If $\G \V \rho \E \forall\alpha.\tau : K @A$ then $\exists \tau', K$ such that
@@ -1783,7 +1817,7 @@ Use induction on type derivation tree.
 		      \item $\G \V \tau \E \tau' : K @A$
 	      \end{enumerate}
 	\end{item}
-\end{thm}
+\end{lemma}
 
 \begin{itemize}
 	\newcommand{\MC}[1]{\mathcal{#1}}
@@ -1800,9 +1834,9 @@ Use induction on type derivation tree.
 	      It is obvious.
 \end{itemize}
 
-\begin{thm}[Preservation for term on $\Lambda$ reduction]
+\begin{theorem}[Preservation for term on $\Lambda$ reduction]
 	If $\G\V M:\tau@A$ and $M \longrightarrow_{\Lambda} N$, then $\G\V N:\tau@A$.
-\end{thm}
+\end{theorem}
 
 Use induction on type derivation tree.
 
@@ -1874,15 +1908,15 @@ Use induction on type derivation tree.
 	\end{itemize}
 \end{dfn}
 
-\begin{thm}[Preservation of equality in $\natural$]
+\begin{lemma}[Preservation of equality in $\natural$]
 	If $\G \V \tau \E \sigma @ A$ then $\natural(\tau) = \natural(\sigma)$.
-\end{thm}
+\end{lemma}
 
 Prove by induction on the derivation tree.
 
-\begin{thm}[Preservation of typing in $\natural$]
+\begin{lemma}[Preservation of typing in $\natural$]
 	If $\G \V M:\tau@A$ in $\lambda^{\text{MD}}$ then $\natural(\G) \V \natural(M): \natural(\tau)$ in $\lambda^\to$.
-\end{thm}
+\end{lemma}
 
 Prove by induction on the type derivation tree.
 
@@ -1912,7 +1946,7 @@ Prove by induction on the type derivation tree.
 
 \end{itemize}
 
-\begin{thm}[Inversion Lemma for Application]
+\begin{lemma}[Inversion Lemma for Application]
 	\begin{item}
 	      \item If $\G \V (\lambda x:\sigma.M)\ N: \tau@A$ then $\exists x, \rho$ such that
 	      \begin{enumerate}
@@ -1920,7 +1954,7 @@ Prove by induction on the type derivation tree.
 		      \item $\G \V N:\sigma @ A$
 	      \end{enumerate}
 	\end{item}
-\end{thm}
+\end{lemma}
 
 Prove by induction on the derivation tree.
 
@@ -1943,17 +1977,17 @@ Prove by induction on the derivation tree.
 
 \end{itemize}
 
-\begin{thm}[Preservation of substitution in $\natural$]
+\begin{lemma}[Preservation of substitution in $\natural$]
 	If $\G, x:\sigma \V M:\tau@A$ and $\G \V N:\sigma@A$ in $\lambda^{\text{MD}}$
 	then $\natural(M[x \mapsto N])$ = $\natural(M)[x\mapsto\natural(N)]$
-\end{thm}
+\end{lemma}
 
 Prove by induction on the type derivation tree of $\G, x:\sigma \V M:\tau@A$.
 
-\begin{thm}[Preservation of $\beta$ reduction in $\natural$]
+\begin{lemma}[Preservation of $\beta$ reduction in $\natural$]
 	If $\G \V M:\tau@A$ and $M \longrightarrow_\beta N$ in $\lambda^{\text{MD}}$
 	then $\natural(M) \longrightarrow_\beta^+ \natural(N)$.
-\end{thm}
+\end{lemma}
 
 Prove by induction on the derivation of $\beta$ reduction.
 
@@ -1974,9 +2008,9 @@ Prove by induction on the derivation of $\beta$ reduction.
 	      Use the induction hypothesis.
 \end{itemize}
 
-\begin{thm}[Strong Normalization]
+\begin{theorem}[Strong Normalization]
 	If $\G\V^A t:T$ then there is no infinite sequence of terms $(t_i)_{i\ge1}$ and $t_i \longrightarrow_{\beta, \TBL \TB,\Lambda} t_{i+1}$ for $i\ge 1$
-\end{thm}
+\end{theorem}
 
 Prove if there are infinite reductions in $\lambda^{\text{MD}}$ then there are infinite beta reductions in $\lambda^{\text{MD}}$.\\
 This is because other reductions reduce the size of term.\\
@@ -1989,11 +2023,11 @@ And $\natural(M)$ has infinite reductions from "Preservation of $\beta$ reductio
 
 But, indeed, $\lambda^\to$ has a property of Strong Normalization, so there is no infinite reductions.
 
-\begin{thm}[Confluence(Church-Rosser Property)]
+\begin{theorem}[Confluence(Church-Rosser Property)]
 	Define $M \longrightarrow N$ as $M \longrightarrow_{\beta} N$ or $M\longrightarrow_\blacklozenge N$ or  $M \longrightarrow_{\Lambda} N$.\\
 	For any term $M$, if $M \longrightarrow^* N$ and $M \longrightarrow^* L$,
 	there exists $O$ that satisfies $N \longrightarrow^* O$ and $L \longrightarrow^* O$.
-\end{thm}
+\end{theorem}
 
 \textsc{Proof.}
 
@@ -2021,9 +2055,9 @@ $A \neq \varepsilon$\\
 	$ M \longrightarrow_\Lambda M' $, $ M \longrightarrow_\blacklozenge M' $ or $ M \longrightarrow_\beta M' $.
 \end{dfn}
 
-\begin{thm}[Progress]
+\begin{theorem}[Progress]
 	If $x:\tau@\varepsilon \notin \G$ and $\G \V M : \tau @ A$ then $ M \in V^A $ or $\exists M'$ such that $M \longrightarrow M'$.
-\end{thm}
+\end{theorem}
 
 Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 
@@ -2129,6 +2163,8 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 
 \section{ Staged Semantics }
 
+\AI{You don't have to repeat definitions.}
+
 \figheader{Staged Reduction}{}
 $A \neq \varepsilon$\\
 \begin{align*}
@@ -2150,13 +2186,13 @@ $A \neq \varepsilon$\\
 	\mid E^A_B\ B \mid \%_\alpha\ E^{A'}_B \ (\text{where } A'\alpha = A)                                                       \\
 \end{align*}
 
-\begin{thm}[Unique Decomposition]
+\begin{lemma}[Unique Decomposition]
 	If $x:\tau@\varepsilon \notin \G$ and $\G \V M : \tau @ A$ then 1 or 2 is true.
 	\begin{enumerate}
 		\item $ M \in V^A$
 		\item $\exists ! B, E^A_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
 	\end{enumerate}
-\end{thm}
+\end{lemma}
 
 Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 
@@ -2316,6 +2352,8 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 
 \end{itemize}
 
+\AI{Removed the work-in-progress part.}
+\endinput
 \blue{\huge{It is work in progress from here.}}
 
 \begin{dfn}[\% Powerset of a Term]
@@ -2323,11 +2361,11 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 	$M' \in M^\%$ iff you can get $M'$ from $M$ by removing arbitary number $\%$.
 \end{dfn}
 
-\begin{thm}[Equality and Reduction]
+\begin{lemma}[Equality and Reduction]
 	$\G \V M \E N : \tau @A$ if and only if\\
 	$\exists M' \in M^\%, M' \in M^\%, \exists N' \in N^\%, \exists L$
 	such that $\G \V M' : \tau$, $\G \V N' : \tau$, $M' \longrightarrow^* L$ and $N' \longrightarrow^* L$.
-\end{thm}
+\end{lemma}
 
 \red{TODO}
 

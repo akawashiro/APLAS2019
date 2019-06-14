@@ -16,7 +16,6 @@
 \usepackage{float}
 \usepackage{xparse}
 \usepackage{lscape}
-\usepackage{mdframed}
 \usepackage{xspace}
 
 % Used for displaying a sample figure. If possible, figure files should
@@ -344,8 +343,8 @@
 \iffullversion
 \appendix
 
-\newmdtheoremenv{thm}{Theorem}
-\newmdtheoremenv{dfn}{Defnition}
+%\newtheorem{thm}{Theorem}
+\newtheorem{dfn}{Defnition}
 \newtheorem{ex}{Example}
 \newtheorem{cm}{Comment}
 \newcommand{\figheader}[2]{
