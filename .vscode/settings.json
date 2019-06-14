@@ -31,5 +31,7 @@
     "cSpell.words": [
         "redex"
     ],
-    "latex-workshop.latex.autoBuild.run": "never"
+    "editor.rulers": [
+        80
+    ]
 }
