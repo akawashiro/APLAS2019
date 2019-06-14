@@ -10,7 +10,7 @@ which models execution as programs.
 \subsection{Syntax}
 
 \AI{Rename ``type variables'' to ``type-level constants''. }
-We assume the denumerable set of type variables, ranged over by
+We assume the denumerable set of type-level constants, ranged over by
 metavariables \(X, Y, Z\), the denumerable set of variables, ranged
 over by \(x,y,z\), the denumerable set of constants, ranged over by
 \(c\), and the denumerable set of stage variables, ranged over by
@@ -53,12 +53,12 @@ of kind $K$.
 % example, $\lambda x:\I.x$ has type $\Pi x:\I.\I$, which has $*$ kind.
 % \red{この段落は短いので型の段落と結合するか?}
 % Types
-A type is a type variable $X$, which is declared in the signature with its kind, a dependent function type $\Pi x:\tau_1.\tau_2$,
+A type is a type-level constant $X$, which is declared in the signature with its kind, a dependent function type $\Pi x:\tau_1.\tau_2$,
 an application of a type (operator) of $\Pi$-kind to a term, a code type $\TW_\alpha$, or an $\alpha$-closed type $\F\alpha.\tau$.
 We sometimes abbreviate $\Pi x:\tau_1.\tau_2$ to $\tau_1 \rightarrow \tau_2$ if
 $x$ is not a free variable in $\tau_2$. \AI{This should be mentioned after free variables are introduced.}
 An application of a term to a dependent function type \AI{this sounds like $M\, (\Pi x:\tau_1.\tau_2)$} is, for example, $\text{Vector}\ 10$
-if type variable $\text{Vector}$ has the kind $\Pi x:\I.*$.
+if type-level constant $\text{Vector}$ has the kind $\Pi x:\I.*$.
 A code type $\TW_\alpha \tau$ denotes a code fragment of a term of type $\tau$.
 An $\alpha$-closed type corresponds to a runnable code fragment.
 Type constructors tie strongly \AI{Is ``tie strongly'' standard?} in the order of 
@@ -85,7 +85,7 @@ For example, $\F\alpha.\lambda x:\I.\TB_\alpha x\ y$ means $\F\alpha.(\lambda x:
 
 % Signature
 
-We adopt a \LLF-like system, where constants and type variables for base types \AI{``for base types''?} are given in the signature $\Sigma$, which 
+We adopt a \LLF-like system, where constants and type-level constants for base types \AI{``for base types''?} are given in the signature $\Sigma$, which 
 are a sequence of declarations of the form $c:\tau$ and $X:K$.
 For example, when we use integers in \LMD, $\Sigma = \I :: *, 1:\I, 2:\I, \cdots$.  \AI{It sounds like we need an infinite signature...}
 \AI{Change Int to Bool.}
@@ -104,7 +104,7 @@ $\textrm{Domain}$ is a function from a content to a set of variables defined in 
 The side condition of $x\not\in\textrm{Domain}(\G)$ prevent multiple appearances of the same variable and
 $x\not\in\textrm{FV}(\tau)$ is needed in the proof of Substitution Lemmas.
 
-\AI{We should note that constants and type variables are not staged.}
+\AI{We should note that constants and type-level constants are not staged.}
 \paragraph{Remark:}  \AI{Comparison with Hanada--Igarashi.}
 
 \subsection{Reduction}

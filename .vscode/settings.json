@@ -1,5 +1,4 @@
 {
-    "window.zoomLevel": 3,
     "git.autofetch": true,
     "editor.minimap.enabled": false,
     "latex-workshop.view.pdf.viewer": "tab",

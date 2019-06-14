@@ -135,7 +135,7 @@ There are three technical points in the extension from \LTP to \LMD.
 
 First, the way of handling of constants and type-level constants is the difference between \LMD and \LTP.
 We adopt a signature $\Sigma$ to handle constants and type-level constants.
-This is because a signature simplifies kinding rules relating to type variables.
+This is because a signature simplifies kinding rules relating to type-level constants.
 A signature $\Sigma$ is composed of pairs of a base type and its kind or a constant and its type.
 For example, if you want to use boolean, $\Sigma = \B::*, \text{true}:\B, \text{false}:\B$
 \red{具体的な導出例を出したほうがよいか? また、なぜsimpleになるのを書くべきか?}
