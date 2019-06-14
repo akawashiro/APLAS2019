@@ -165,24 +165,25 @@ For example, we discuss $\text{vadd}_\beta$ function,
 which takes a length of vector and returns addition function for vectors with the length.
 $\text{vadd}_1$ is a helper function to make $\text{vadd}$, 
 which takes a stage, a length of vectors, and two quoted vectors and returns a quoted vector.
+We assumed that type checker can know $n=0$ when process the $\textbf{then}$ clause.
 \newcommand{\Vpn}{\text{Vector}\ (\%_\alpha n)}
 \begin{align*}
-	  & \textbf{let}\ \text{vadd}_1 : \F\alpha.\Pi n:\I.\TW_\alpha\Vpn\to\TW_\alpha\Vpn\to\TW_\alpha\Vpn                 \\
-	  & \hspace{7mm} = \textbf{fix}\ f.\Lambda\alpha.\lambda n:\I.\ \lambda v_1:\TW_\alpha\Vpn.\ \lambda v_2:\TW_\alpha\Vpn. \\
-	  & \hspace{14mm} \textbf{if}\ n = 0                                                                     \\
-	  & \hspace{14mm} \textbf{then} \TB_\alpha \text{nil}                                                    \\
-	  & \hspace{14mm} \textbf{else}\ \TB_\alpha (                                                            \\
-	  & \hspace{21mm} \textbf{let}\ t_1 = \text{tail}\ (\TBL_\alpha v_1)\ \textbf{in}                        \\
-	  & \hspace{21mm} \textbf{let}\ t_2 = \text{tail}\ (\TBL_\alpha v_2)\ \textbf{in}                        \\
-	  & \hspace{21mm} \text{cons}\ (\text{head}\ t_1 + \text{head}\ t_2) (\TBL_\alpha f\ (n-1)\ t_1\ t_2))   \\
+	  & \textbf{let}\ \text{vadd}_1 : \F\alpha.\Pi n:\I.\TW_\alpha\Vpn\to\TW_\alpha\Vpn\to\TW_\alpha\Vpn                                \\
+	  & \hspace{7mm} = \textbf{fix}\ f.\Lambda\alpha.\lambda n:\I.\ \lambda v_1:\TW_\alpha\Vpn.\ \lambda v_2:\TW_\alpha\Vpn.            \\
+	  & \hspace{14mm} \textbf{if}\ n = 0                                                                                                \\
+	  & \hspace{14mm} \textbf{then} \TB_\alpha \text{nil}                                                                               \\
+	  & \hspace{14mm} \textbf{else}\ \TB_\alpha (                                                                                       \\
+	  & \hspace{21mm} \textbf{let}\ t_1 = \text{tail}\ (\TBL_\alpha v_1)\ \textbf{in}                                                   \\
+	  & \hspace{21mm} \textbf{let}\ t_2 = \text{tail}\ (\TBL_\alpha v_2)\ \textbf{in}                                                   \\
+	  & \hspace{21mm} \text{cons}\ (\text{head}\ (\TBL_\alpha v_1) + \text{head}\ (\TBL_\alpha v_2))\ (\TBL_\alpha f\ (n-1)\ t_1\ t_2)) \\
 \end{align*}
 Using $\text{vadd}_1$, we can make $\text{vadd}$ function easily.
 This function takes the length of vectors and returns a quoted add function for vector of the given size.
 \renewcommand{\Vpn}{\text{Vector}\ (\%_\beta n)}
 \begin{align*}
-	  & \textbf{let}\ \text{vadd}: \Pi n:\I.\F\beta.\TW_\beta(\Vpn\to\Vpn\to\Vpn)          \\ 
+	  & \textbf{let}\ \text{vadd}: \Pi n:\I.\F\beta.\TW_\beta(\Vpn\to\Vpn\to\Vpn)                \\ 
 	  & \hspace{7mm} = \lambda n:\I.\Lambda\beta.\TB_\beta (\lambda v_1:\Vpn.\ \lambda v_2:\Vpn. \\
-	  & \hspace{63mm} \TBL_\beta \text{vadd}_1\ \beta\ n\ (\TB_\beta\ v_1)\ (\TB_\beta\ v_2))      \\
+	  & \hspace{63mm} \TBL_\beta \text{vadd}_1\ \beta\ n\ (\TB_\beta\ v_1)\ (\TB_\beta\ v_2))    \\
 \end{align*}
 \renewcommand{\Vpn}{\text{Vector}\ (\%_\beta 10)}
 When we use this function, we need to instantiate $\text{vadd}$ with a length.
@@ -192,7 +193,7 @@ This function is difficult to use because its type contains $\Vpn$.
 In most cases, we have vectors of type $\text{Vector}\ 10$, not $\Vpn$.
 Therefore, we want to identify $\text{Vector}\ 10$ and $\Vpn$.
 
-In order to resolve this problem, we introduced \QPercent into \LMD.
+In order to resolve this problem, we introduced \QPercent\ into \LMD.
 \QPercent\ enables us to identify $\text{Vector}\ 10$ and $\Vpn$.
 This rule says that if term $M$ has the same type at stage $A\alpha$ and $A$,
 we can assume $\%_\alpha M \E M$ which roughly means $\%_\alpha M$ and $M$ are equivalent.
