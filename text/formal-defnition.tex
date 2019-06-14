@@ -29,7 +29,7 @@ sequence.  \AI{I prefer $\varepsilon$ for the nonempty sequence.}  \LMD is defin
     \textrm{Types}           &   & \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} \tau \mid \F\alpha.\tau                          \\
 %     \textrm{Constants}       &   &                          & c                                                                                                          \\
     \textrm{Terms}           &   & M,N,L,O,P                & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M                                            \\
-                             &   &                          & \ \ \ \ \mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ \epsilon \mid \%_\alpha M                          \\  
+                             &   &                          & \ \ \ \ \mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ \varepsilon \mid \%_\alpha M                          \\  
     \textrm{Signature}       &   & \Sigma                   & ::= \emptyset \mid \Sigma, X::K \mid \Sigma, c:\tau                                                                        \\
     \textrm{Contexts}        &   & \Gamma                   & ::= \emptyset \mid  \Gamma,x:\tau @A\ (x\not\in\textrm{Domain}(\G)\ \text{and}\ x\not\in\textrm{FV}(\tau)) \\
 \end{align*}
@@ -76,7 +76,7 @@ whose type is declared in signature $\Sigma$, and the following five forms
 related to multi-stage programming:
 $\TB_\alpha M$ represents a code fragment; $\TB_\alpha M$ represents escape;
 $\Lambda\alpha.M$ is a stage variable abstraction;
-$M\ \epsilon$ is an application of $\epsilon$ to a stage variable \AI{I think the usage of ``application'' is wrong again}; and 
+$M\ \varepsilon$ is an application of $\varepsilon$ to a stage variable \AI{I think the usage of ``application'' is wrong again}; and 
 $\%_\alpha M$ is an operator for cross-stage persistence.
 The prefix operators $\TB_\alpha, \TBL_\alpha$, and $\%_\alpha$ tie stronger than the two forms of applications
 and applications are left-associative
@@ -113,26 +113,26 @@ Next, we define full reduction for \LMD.
 Before giving the definition of reduction, we define two kinds of substitutions.
 Substitution $M[x\mapsto N]$ is the ordinary capture-avoiding substitution of
 $N$ for $x$ in $M$, and we omit its definition here.
-Substitution $M[\alpha \mapsto \epsilon]$ of the empty stage
+Substitution $M[\alpha \mapsto \varepsilon]$ of the empty stage
 for stage variable $\alpha$ in $M$ is defined below.
-\AI{What about $\tau[x \mapsto N], K[x \mapsto N], \tau [\alpha \mapsto \epsilon]$ and $K[\alpha \mapsto \epsilon]$?}
+\AI{What about $\tau[x \mapsto N], K[x \mapsto N], \tau [\alpha \mapsto \varepsilon]$ and $K[\alpha \mapsto \varepsilon]$?}
 
 \AI{Since we always substitute $\varepsilon$ for stage variables, we may want to introduce a special notation, something like $\textit{erase}_\alpha(M)$.}
 \AI{We will use $[\alpha \mapsto \varepsilon]$ and $[\alpha \mapsto \beta]$.  The latter is renaming, so we can omit the definition.}
 
 \begin{align*}
 	% \newcommand{\SB}{}
-	(\lambda x:\tau.M)[\alpha \mapsto \epsilon] & = \lambda x:(\tau[\alpha \mapsto \epsilon]).(M[\alpha \mapsto \epsilon])                                  \\
-	(M\ N)[\alpha \mapsto \epsilon]             & = (M[\alpha \mapsto \epsilon])\ (N[\alpha \mapsto \epsilon])                                          \\
-	(M\ \epsilon)[\alpha \mapsto \epsilon]      & = (M[\alpha \mapsto \epsilon])\ \epsilon                                                                \\
-	(\TB_\alpha M)[\alpha \mapsto \epsilon]      & = M[\alpha \mapsto \epsilon]                                                                          \\
-	(\TB_\beta M)[\alpha \mapsto \epsilon]      & = \TB_\beta (M[\alpha \mapsto \epsilon])                               & (\text{if } \alpha \neq \beta) \\
-	(\TBL_\alpha M)[\alpha \mapsto \epsilon]     & =  M[\alpha \mapsto \epsilon]                                        &                               \\
-	(\TBL_\beta M)[\alpha \mapsto \epsilon]     & = \TBL_\beta (M[\alpha \mapsto \epsilon])                              & (\text{if } \alpha \neq \beta) \\
-	(\Lambda\beta.M)[\alpha \mapsto \epsilon]   & = \Lambda\beta.(M[\alpha \mapsto \epsilon])                            & (\text{if } \alpha \neq \beta) \\
-	% (\Lambda\beta.M)[\alpha \mapsto \epsilon]   & = \Lambda\beta.M                                                     & (\text{if } \alpha = \beta)    \\
-	(\%_\alpha M)[\alpha \mapsto \epsilon]       & = M[\alpha \mapsto \epsilon]                                         &                                  \\
-	(\%_\beta M)[\alpha \mapsto \epsilon]       & = \%_{\beta[\alpha \mapsto \epsilon]}(M[\alpha \mapsto \epsilon])      & (\text{if } \alpha \neq \beta) \\
+	(\lambda x:\tau.M)[\alpha \mapsto \varepsilon] & = \lambda x:(\tau[\alpha \mapsto \varepsilon]).(M[\alpha \mapsto \varepsilon])                                  \\
+	(M\ N)[\alpha \mapsto \varepsilon]             & = (M[\alpha \mapsto \varepsilon])\ (N[\alpha \mapsto \varepsilon])                                          \\
+	(M\ \varepsilon)[\alpha \mapsto \varepsilon]      & = (M[\alpha \mapsto \varepsilon])\ \varepsilon                                                                \\
+	(\TB_\alpha M)[\alpha \mapsto \varepsilon]      & = M[\alpha \mapsto \varepsilon]                                                                          \\
+	(\TB_\beta M)[\alpha \mapsto \varepsilon]      & = \TB_\beta (M[\alpha \mapsto \varepsilon])                               & (\text{if } \alpha \neq \beta) \\
+	(\TBL_\alpha M)[\alpha \mapsto \varepsilon]     & =  M[\alpha \mapsto \varepsilon]                                        &                               \\
+	(\TBL_\beta M)[\alpha \mapsto \varepsilon]     & = \TBL_\beta (M[\alpha \mapsto \varepsilon])                              & (\text{if } \alpha \neq \beta) \\
+	(\Lambda\beta.M)[\alpha \mapsto \varepsilon]   & = \Lambda\beta.(M[\alpha \mapsto \varepsilon])                            & (\text{if } \alpha \neq \beta) \\
+	% (\Lambda\beta.M)[\alpha \mapsto \varepsilon]   & = \Lambda\beta.M                                                     & (\text{if } \alpha = \beta)    \\
+	(\%_\alpha M)[\alpha \mapsto \varepsilon]       & = M[\alpha \mapsto \varepsilon]                                         &                                  \\
+	(\%_\beta M)[\alpha \mapsto \varepsilon]       & = \%_{\beta[\alpha \mapsto \varepsilon]}(M[\alpha \mapsto \varepsilon])      & (\text{if } \alpha \neq \beta) \\
 \end{align*}
 
 \begin{definition}[Reduction]
@@ -144,18 +144,18 @@ for stage variable $\alpha$ in $M$ is defined below.
 		 & (\lambda x:\tau.M) N \longrightarrow_\beta M[x \mapsto N]                       \\
 		% & (\Pi x:\tau.\sigma) M \longrightarrow_\gamma \sigma[x \mapsto M] \\
 		 & \TBL_\alpha \TB_\alpha M \longrightarrow_\blacklozenge M                        \\
-		 & (\Lambda \alpha.M)\ \epsilon \longrightarrow_\Lambda M[\alpha \mapsto \epsilon]
+		 & (\Lambda \alpha.M)\ \varepsilon \longrightarrow_\Lambda M[\alpha \mapsto \varepsilon]
 	\end{align*}
 	We write $ M \longrightarrow M'$ iff $ M \longrightarrow_\beta M'$, $ M \longrightarrow_\blacklozenge M'$, or $ M \longrightarrow_\Lambda M'$.
 \end{definition}
 
 The relation $\longrightarrow_\beta$ represents ordinary $\beta-$reduction in the \(\lambda\)-calculus; the relation 
 $\longrightarrow_\blacklozenge$ represents that quotation $\TB_\alpha M$ is canceled by escape and $M$ is spliced into the code fragment surrounding the escape;
-the relation $\longrightarrow_\Lambda$ means that a stage abstraction applied to the empty stage $\epsilon$ reduces to the body of abstraction
-where $\epsilon$ is substituted for the stage variable.
-Application of a non-$\epsilon$ stage to a stage abstraction is prohibited in order to simplify \LMD. \AI{This should have been mentioned earlier in the comparison with Hanada--Igarashi.}
+the relation $\longrightarrow_\Lambda$ means that a stage abstraction applied to the empty stage $\varepsilon$ reduces to the body of abstraction
+where $\varepsilon$ is substituted for the stage variable.
+Application of a non-$\varepsilon$ stage to a stage abstraction is prohibited in order to simplify \LMD. \AI{This should have been mentioned earlier in the comparison with Hanada--Igarashi.}
 There is no reduction rule for CSP as with Hanada and Igarashi \cite{Hanada2014}.
-The CSP operator $\%_\alpha$ disappears when $\epsilon$ is substituted to $\alpha$.
+The CSP operator $\%_\alpha$ disappears when $\varepsilon$ is substituted to $\alpha$.
 % $\TB_\alpha$ and $\TBL_\alpha$ disappears in the same way as $\%_\alpha$.
 
 \AI{A few examples are desirable.}
@@ -238,7 +238,7 @@ $\textrm{Vector}\ 5$ is equivalent to $\textrm{Vector}\ (4+1)$ obviously althoug
 \AI{This paragraph is not very informaticve.  We shouldn't just refer redears to previous work.}
 The rules \TTB, \TTBL, \TGen, \TIns, and \TCsp{} are rules for a multi-stage calculus.
 They are corresponding to brackets, escape, making a stage abstraction, 
-application of $\epsilon$ stage to a stage abstraction, and cross-stage persistence, respectively.
+application of $\varepsilon$ stage to a stage abstraction, and cross-stage persistence, respectively.
 Please check Hanada and Igarashi \cite{Hanada2014} and Tsukada and Igarashi \cite{Tsukada} for details of these rules.
 
 \begin{figure}
@@ -251,7 +251,7 @@ Please check Hanada and Igarashi \cite{Hanada2014} and Tsukada and Igarashi \cit
 		\infrule[\TTB]{\G\V M:\tau @{A\alpha}}{\G\V\TB_{\alpha}M:\TW_{\alpha}\tau @A} \andalso
 		\infrule[\TTBL]{\G\V M:\TW_{\alpha}\tau @A}{\G\V\TBL_{\alpha}M:\tau @{A\alpha}} \\[2mm]
 		\infrule[\TGen]{\G\V M:\tau @A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\V\Lambda\alpha.M:\forall\alpha.\tau @A} \\[2mm]
-		\infrule[\TIns]{\G\V M:\forall\alpha.\tau @A}{\G\V M\ \epsilon:\tau[\alpha \mapsto \epsilon]@A} \andalso
+		\infrule[\TIns]{\G\V M:\forall\alpha.\tau @A}{\G\V M\ \varepsilon:\tau[\alpha \mapsto \varepsilon]@A} \andalso
 		\infrule[\TCsp]{\G\V M:\tau @A}{\G\V \%_\alpha M:\tau @{A\alpha}}
 		\caption{Typing Rules.}
 		\label{fig:typing-rules}
@@ -310,14 +310,14 @@ rules \QBeta, \QTBLTB, and \QLambda{} correspond to the reduction rules.
 		\infrule[\QTB]{\G\V M \E N : \tau @{A\alpha}}{\G\V \TB_\alpha M \E \TB_\alpha N : \TW_\alpha \tau @A} \andalso
 		\infrule[\QTBL]{\G\V M \E N : \TW_\alpha \tau @A}{\G\V \TBL_\alpha M \E \TBL_\alpha N : \tau @{A\alpha}} \\[2mm]
 		\infrule[\QGen]{\G\V M\E N : \tau @A \andalso \alpha \notin \FTV(\G)\cup\FTV(A)}{\G\V \Lambda\alpha.M \E \Lambda\alpha.N : \forall\alpha.\tau @A} \\[2mm]
-		\infrule[\QIns]{\G\V M \E N:\forall\alpha.\tau @A}{\G\V M\ \epsilon \E N\ \epsilon : \tau[\alpha \mapsto \epsilon]@A} \andalso
+		\infrule[\QIns]{\G\V M \E N:\forall\alpha.\tau @A}{\G\V M\ \varepsilon \E N\ \varepsilon : \tau[\alpha \mapsto \varepsilon]@A} \andalso
 		\infrule[\QCsp]{\G\V M \E N : \tau @A}{\G\V\%_\alpha M \E \%_\alpha N : \tau @{A\alpha}} \\[2mm]
 		\infrule[\QRefl]{\G\V M:\tau @A}{\G\V M\E M : \tau @A} \andalso
 		\infrule[\QSym]{\G\V M\E N : \tau @A}{\G\V N\E M : \tau @A} \\[2mm]
 		\infrule[\QTrans]{\G\V M\E N : \tau @A \andalso \G\V N\E L : \tau @A}{\G\V M\E L : \tau @A} \\[2mm]
 		\infrule[\QBeta]{\G,x:\sigma@A\V M:\tau @A \andalso \G\V N:\sigma@A}{\G\V(\lambda x:\sigma.M)\ N\E M[x\mapsto N] : \tau[x \mapsto N]@A} \\[2mm]
 		% \infrule{\G\V M:(\Pi x:\sigma.\tau)@A \andalso x\notin \text{FV}(M)}{\G\V(\lambda x:\sigma.M\ x)\E M: (\Pi x:\sigma.\tau)@A}{\QEta} \\[2mm]
-		\infrule[\QLambda]{\G\V (\Lambda\alpha.M) : \forall\alpha.\tau @A}{\G\V (\Lambda\alpha.M)\ \epsilon \E M[\alpha \mapsto \epsilon] : \tau[\alpha \mapsto \epsilon]@A} \\[2mm]
+		\infrule[\QLambda]{\G\V (\Lambda\alpha.M) : \forall\alpha.\tau @A}{\G\V (\Lambda\alpha.M)\ \varepsilon \E M[\alpha \mapsto \varepsilon] : \tau[\alpha \mapsto \varepsilon]@A} \\[2mm]
 		\infrule[\QTBLTB]{\G\V M \E N : \tau @A}{\G\V \TBL_\alpha(\TB_\alpha M) \E N : \tau @A} \hfil
 		\infrule[\QPercent]{\G\V M:\tau @{A\alpha} \andalso \G\V M:\tau @A}{\G\V\%_\alpha M \E M : \tau @{A\alpha}}
 		\caption{Term Equivalence Rules.}
@@ -383,16 +383,16 @@ not executed, the grammar is indexed by stages.
 
 \begin{definition}[Values]
 	The family $V^A$ of sets of values, ranged over by $v^A$,
-	is defined by following grammar.  In the grammar, $A \neq \epsilon$ is assumed.
+	is defined by following grammar.  In the grammar, $A \neq \varepsilon$ is assumed.
 	\begin{align*}
-		v^\epsilon \in V^\epsilon & ::= \lambda x:\tau.M \mid\ \TB_\alpha v^\alpha \mid \Lambda\alpha.v^\epsilon                                       & \\
-		v^A \in V^A               & ::= x \mid \lambda x:\tau.v^A \mid v^A\ v^A \mid\ \TB_\alpha v^{A\alpha} \mid \Lambda\alpha.v^A \mid v^A\ \epsilon & \\
-		                         & \quad\   \mid\ \TBL_\alpha v^{A'} (\text{if } A = A'\alpha \text{ for some } \alpha, A' \neq \epsilon)                          & \\
+		v^\varepsilon \in V^\varepsilon & ::= \lambda x:\tau.M \mid\ \TB_\alpha v^\alpha \mid \Lambda\alpha.v^\varepsilon                                       & \\
+		v^A \in V^A               & ::= x \mid \lambda x:\tau.v^A \mid v^A\ v^A \mid\ \TB_\alpha v^{A\alpha} \mid \Lambda\alpha.v^A \mid v^A\ \varepsilon & \\
+		                         & \quad\   \mid\ \TBL_\alpha v^{A'} (\text{if } A = A'\alpha \text{ for some } \alpha, A' \neq \varepsilon)                          & \\
                                           & \quad\   \mid\ \%_\alpha v^{A'} (\text{if } A = A'\alpha  \text{ for some } \alpha, A')
 	\end{align*}
 \end{definition}
 
-Values at $\epsilon$ stage are a $\lambda$-abstraction, a quoted code,
+Values at $\varepsilon$ stage are a $\lambda$-abstraction, a quoted code,
 or a $\Lambda$ abstraction.  The body of a $\lambda$-abstraction can
 be any term but the body of $\Lambda$-abstraction has to a value.  It
 means that the body of $\Lambda$-abstraction must be evaluated.  The
@@ -403,19 +403,19 @@ code).  See Hanada and Igarashi~\cite{} for details.
 
 \begin{definition}[Evaluation Context and Redex]
   The family of sets $ECtx^A_B$ of evaluation contexts, ranged over by $E^A_B$,
-the sets of $\epsilon$-redexes (ranged over by $R^\epsilon$) and $\alpha$-redexes (ranged over by $R^\alpha$) are defined by the following grammar.
+the sets of $\varepsilon$-redexes (ranged over by $R^\varepsilon$) and $\alpha$-redexes (ranged over by $R^\alpha$) are defined by the following grammar.
 	In the grammar, $A$ is assumed to be nonempty (but $B,A'$ can be empty).
 	\begin{align*}
-		E^\epsilon_B \in ECtx^\epsilon_B & ::= \square\ (\text{if\ } B = \epsilon) \mid E^\epsilon_B\ M \mid v^e\ E^\epsilon_B     
-		\mid \TB_\alpha E^\alpha_B \mid \Lambda\alpha.E^\epsilon_B
-		\mid E^\epsilon_B\ \epsilon                                                                                                 \\
+		E^\varepsilon_B \in ECtx^\varepsilon_B & ::= \square\ (\text{if\ } B = \varepsilon) \mid E^\varepsilon_B\ M \mid v^e\ E^\varepsilon_B     
+		\mid \TB_\alpha E^\alpha_B \mid \Lambda\alpha.E^\varepsilon_B
+		\mid E^\varepsilon_B\ \varepsilon                                                                                                 \\
 		E^A_B \in ECtx^A_B               & ::= \square\ (\text{if } A = B) \mid \lambda x:\tau.E^A_B \mid E^A_B\ M \mid v^A\ E^A_B 
-		\mid E^\epsilon_B \mid \TB_\alpha E^{A\alpha}_B
+		\mid E^\varepsilon_B \mid \TB_\alpha E^{A\alpha}_B
 		\mid \TBL_\alpha E^{A'}_B \ (\text{where } A'\alpha = A)                                                                    \\
-		                                 & \quad \mid \Lambda\alpha.E^\epsilon_B                                                   
-		\mid E^A_B\ \epsilon \mid \%_\alpha\ E^{A'}_B \ (\text{where } A'\alpha = A)                                                \\
+		                                 & \quad \mid \Lambda\alpha.E^\varepsilon_B                                                   
+		\mid E^A_B\ \varepsilon \mid \%_\alpha\ E^{A'}_B \ (\text{where } A'\alpha = A)                                                \\
 \\
-		 R^\epsilon  & ::= (\lambda x:\tau.M)\ v^\epsilon \mid (\Lambda\alpha.v^\epsilon)\ \epsilon                                       & \\
+		 R^\varepsilon  & ::= (\lambda x:\tau.M)\ v^\varepsilon \mid (\Lambda\alpha.v^\varepsilon)\ \varepsilon                                       & \\
 		 R^\alpha    & ::=\ \TBL_\alpha \TB_\alpha M                                                                                      & \\	\end{align*}
 \end{definition}
 
@@ -430,8 +430,8 @@ and define the staged reduction relation.
 % \begin{figure}
 % 	\begin{center}
 		\begin{align*}
-			E^A_\epsilon [(\lambda x:\tau.M)\ v^\epsilon]       & \longrightarrow_s E^A_\epsilon[M[x\mapsto v^\epsilon]]             \\
-			E^A_\epsilon [(\Lambda\alpha.v^\epsilon)\ \epsilon] & \longrightarrow_s E^A_\epsilon[v^\epsilon[\alpha\mapsto \epsilon]] \\
+			E^A_\varepsilon [(\lambda x:\tau.M)\ v^\varepsilon]       & \longrightarrow_s E^A_\varepsilon[M[x\mapsto v^\varepsilon]]             \\
+			E^A_\varepsilon [(\Lambda\alpha.v^\varepsilon)\ \varepsilon] & \longrightarrow_s E^A_\varepsilon[v^\varepsilon[\alpha\mapsto \varepsilon]] \\
 			E^A_\alpha [\TBL_\alpha \TB_\alpha v^\alpha]        & \longrightarrow_s E^A_\alpha[v^\alpha]                             \\
 		\end{align*}
      %    	\caption{Staged Reduction}

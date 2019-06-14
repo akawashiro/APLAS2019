@@ -16,7 +16,7 @@ Substitution Lemma in \LMD\ is little more complicated than an ordinary one
 because there are six types of judgment and two types of substitution in \LMD.
 Substitution Lemma on Terms states that term substitution $[z \mapsto P]$ preserves
 typing, kinding, well-formed kinding, term equivalence, type equivalence, and king equivalence.
-Substitution Lemma on Terms states the same for stage substitution $[\beta\mapsto\epsilon]$.
+Substitution Lemma on Terms states the same for stage substitution $[\beta\mapsto\varepsilon]$.
 
 \begin{lemma}[Substitution Lemma on Terms]
 	\begin{flalign*}
@@ -45,17 +45,17 @@ Substitution Lemma on Terms states the same for stage substitution $[\beta\mapst
 \begin{theorem}[Substitution Lemma on Stages]
 	\begin{flalign*}
 		\text{If\ } \G \V M:\tau @A
-		&\text{\ then\ } \G[\beta \mapsto \epsilon]\V M[\beta \mapsto \epsilon]:\tau[\beta \mapsto \epsilon] @A[\beta \mapsto \epsilon].&\\
+		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V M[\beta \mapsto \varepsilon]:\tau[\beta \mapsto \varepsilon] @A[\beta \mapsto \varepsilon].&\\
 		\text{If\ } \G \V \tau::K @A
-		&\text{\ then\ } \G[\beta \mapsto \epsilon]\V \tau[\beta \mapsto \epsilon]::K[\beta \mapsto \epsilon] @A[\beta \mapsto \epsilon].&\\
+		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V \tau[\beta \mapsto \varepsilon]::K[\beta \mapsto \varepsilon] @A[\beta \mapsto \varepsilon].&\\
 		\text{If\ } \G \V K\iskind @A
-		&\text{\ then\ } \G[\beta \mapsto \epsilon]\V K[\beta \mapsto \epsilon] \iskind @A[\beta \mapsto \epsilon].&\\
+		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V K[\beta \mapsto \varepsilon] \iskind @A[\beta \mapsto \varepsilon].&\\
 		\text{If\ } \G \V M\E N : \tau @A
-		&\text{\ then\ } \G[\beta \mapsto \epsilon]\V M[\beta \mapsto \epsilon]\E N[\beta \mapsto \epsilon] : \tau[\beta \mapsto \epsilon]  @A[\beta \mapsto \epsilon].&\\
+		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V M[\beta \mapsto \varepsilon]\E N[\beta \mapsto \varepsilon] : \tau[\beta \mapsto \varepsilon]  @A[\beta \mapsto \varepsilon].&\\
 		\text{If\ } \G \V \tau\E \sigma : K @A
-		&\text{\ then\ } \G[\beta \mapsto \epsilon]\V \tau[\beta \mapsto \epsilon]\E \sigma[\beta \mapsto \epsilon] : K[\beta \mapsto \epsilon] @A[\beta \mapsto \epsilon].&\\
+		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V \tau[\beta \mapsto \varepsilon]\E \sigma[\beta \mapsto \varepsilon] : K[\beta \mapsto \varepsilon] @A[\beta \mapsto \varepsilon].&\\
 		\text{If\ } \G \V K\E J @A
-		&\text{\ then\ } \G[\beta \mapsto \epsilon]\V K[\beta \mapsto \epsilon]\E J[\beta \mapsto \epsilon] @A[\beta \mapsto \epsilon].&
+		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V K[\beta \mapsto \varepsilon]\E J[\beta \mapsto \varepsilon] @A[\beta \mapsto \varepsilon].&
 	\end{flalign*}
 \end{theorem}
 
@@ -197,10 +197,10 @@ when you write a interpreter using the evaluation context of \LMD,
 your interpreter works just as intended.
 
 \begin{theorem}[Unique Decomposition]
-	If $x:\tau @\epsilon \notin \G$ and $\G \V M : \tau @ A$ then either
+	If $x:\tau @\varepsilon \notin \G$ and $\G \V M : \tau @ A$ then either
 	\begin{enumerate}
 		\item $ M \in V^A$, or
-		\item there exist $B, E^A_B$, and $R^B$ such that $M = E^A_B[R^B]$ with $B = \epsilon$ or $B = \beta$ for some $\beta$.
+		\item there exist $B, E^A_B$, and $R^B$ such that $M = E^A_B[R^B]$ with $B = \varepsilon$ or $B = \beta$ for some $\beta$.
 	\end{enumerate}
 \end{theorem}
 
@@ -214,7 +214,7 @@ Progress states $\longrightarrow_s$ defines appropriate reduction for typed term
 Thanks to Unique Decomposition, we can prove this theorem easily.
 
 \begin{theorem}[Progress]
-	If $x:\tau @\epsilon \notin \G$ and $\G \V M : \tau  @ A$ then
+	If $x:\tau @\varepsilon \notin \G$ and $\G \V M : \tau  @ A$ then
 	$ M \in V^A $ or $M'$ exists such that $M \longrightarrow_s M'$.
 \end{theorem}
 

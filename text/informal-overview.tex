@@ -29,7 +29,7 @@ It means escape cancels brackets.
 
 The subscript $\alpha$ in $\TB_\alpha M$ is a \textit{transition variable} and
 a sequence of transition variables is called \textit{transition}.
-The empty transition is represented by $\epsilon$.
+The empty transition is represented by $\varepsilon$.
 They are used to show the thickness of brackets.
 For example, $\TB_\alpha (\lambda x:\I.x+10)$ is the fragment of code which becomes $(\lambda x:\I.x+10)$ after it was run once and
 $\TB_\alpha \TB_\beta (\lambda x:\I.x+10)$, which is abbreviated as $\TB_{\alpha\beta} (\lambda x:\I.x+10)$,
@@ -54,12 +54,12 @@ For example, $\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x))\ (\beta\gamma)$ reduce
 
 Another important rule about a transition variable is 
 that symbols with transition variables disappear 
-when the empty transition $\epsilon$ is substituted to the transition variable.
+when the empty transition $\varepsilon$ is substituted to the transition variable.
 The purpose of this rule is express \verb|run| without any special symbol.
 In multi-stage calculus, \verb|run| is a very important operator which changes quoted code to the original code.
-For example, $(\TB_\epsilon (\lambda x:\I.x))$ is equivalent to $(\lambda x:\I.x)$.
-Therefore, $\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x))\ \epsilon$ becomes $\lambda x:\I.x$
-In \LTP, \verb|run| is realized with application to the empty transition $\epsilon$.
+For example, $(\TB_\varepsilon (\lambda x:\I.x))$ is equivalent to $(\lambda x:\I.x)$.
+Therefore, $\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x))\ \varepsilon$ becomes $\lambda x:\I.x$
+In \LTP, \verb|run| is realized with application to the empty transition $\varepsilon$.
 
 % transition in typing rules
 
@@ -67,8 +67,8 @@ A type judgement of \LTP is of the form $\G \vdash M : \tau @ A$.
 A transition in a judgement represents where the judgement is true.
 For example, $\G \vdash (\lambda x:\I.x) : \I \to \I @ \alpha$ means 
 term $\lambda x:\I.x$ has type $\I \to \I$ at transition $\alpha$.
-Especially, terms without quoting exist at the empty transition $\epsilon$.
-For example, $(\lambda x:\I.x)\ (1+2)$ is at $\epsilon$ transition and 
+Especially, terms without quoting exist at the empty transition $\varepsilon$.
+For example, $(\lambda x:\I.x)\ (1+2)$ is at $\varepsilon$ transition and 
 $\TB_\alpha (\lambda x:\I.x)$ is at $\alpha$ transition.
 Terefore, transitions appear in typing rules, too.
 \begin{center}
