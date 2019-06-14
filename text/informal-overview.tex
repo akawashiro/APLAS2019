@@ -158,12 +158,9 @@ For example, \KAbs-LF is a kinding rule for a dependent type in \LLF and \KAbs\ 
 
 Third, we also need type equivalence rules in \LMD because its type system contains dependent types.
 For example, vadd function, which takes a length of vector and returns addition function for vectors with the length, is following.
-\newcommand{\M}{\textrm{M}}
-\newcommand{\I}{\textrm{Int}}
-\newcommand{\Vn}{\text{Vector}\ (\%_\alpha n)}
 \begin{align*}
-	  & \textbf{let}\ \text{vadd}_1 : \Pi n:\I.\TW_\alpha\Vn\to\TW_\alpha\Vn\to\TW_\alpha\Vn                 \\
-	  & \hspace{7mm} = \textbf{fix}\ f.\lambda n:\I.\ \lambda v_1:\TW_\alpha\Vn.\ \lambda v_2:\TW_\alpha\Vn. \\
+	  & \textbf{let}\ \text{vadd}_1 : \Pi n:\I.\TW_\alpha\Vpn\to\TW_\alpha\Vpn\to\TW_\alpha\Vpn                 \\
+	  & \hspace{7mm} = \textbf{fix}\ f.\lambda n:\I.\ \lambda v_1:\TW_\alpha\Vpn.\ \lambda v_2:\TW_\alpha\Vpn. \\
 	  & \hspace{14mm} \textbf{if}\ n = 0                                                                     \\
 	  & \hspace{14mm} \textbf{then} \TB_\alpha \text{nil}                                                    \\
 	  & \hspace{14mm} \textbf{else}\ \TB_\alpha (                                                            \\
@@ -172,8 +169,8 @@ For example, vadd function, which takes a length of vector and returns addition 
 	  & \hspace{21mm} \text{cons}\ (\text{head}\ t_1 + \text{head}\ t_2) (\TBL_\alpha f\ (n-1)\ t_1\ t_2))   \\
 \end{align*}
 \begin{align*}
-	  & \textbf{let}\ \text{vadd}_\alpha : \Pi n:\I.\TW_\alpha(\Vn\to\Vn\to\Vn)                                                                      \\
-	  & \hspace{7mm} = \lambda n:\I.\TB_\alpha (\lambda v_1:\Vn.\ \lambda v_2:\Vn. \TBL_\alpha \text{vadd}_1\ n\ (\TB_\alpha v_1)\ (\TB_\alpha v_2)) \\
+	  & \textbf{let}\ \text{vadd}_\alpha : \Pi n:\I.\TW_\alpha(\Vpn\to\Vpn\to\Vpn)                                                                      \\
+	  & \hspace{7mm} = \lambda n:\I.\TB_\alpha (\lambda v_1:\Vpn.\ \lambda v_2:\Vpn. \TBL_\alpha \text{vadd}_1\ n\ (\TB_\alpha v_1)\ (\TB_\alpha v_2)) \\
 \end{align*}
 Although there are new primitives relating to stages which aren't in \LLF,
 we can design all rules except \QPercent\ easily.
