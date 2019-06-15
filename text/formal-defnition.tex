@@ -38,7 +38,7 @@ sequence. \LMD is defined by the following grammar:
 % \AI{Add $M\,\alpha$ to terms.}
 
 \AI{Is $O$ used as a metavariable?}
-\AI{Domain and FV are not defined (yet).  I think we should introduce the notion of well-formed type environments by prose below and assume every type environment is well formed.}
+% \AI{Domain and FV are not defined (yet).  I think we should introduce the notion of well-formed type environments by prose below and assume every type environment is well formed.}
 
 % Description on meta variables
 
@@ -89,13 +89,12 @@ For example, $\F\alpha.\lambda x:\I.\TB_\alpha x\ y$ means $\F\alpha.(\lambda x:
 
 We adopt a \LLF-like system, where constants and type-level constants are given in the signature $\Sigma$, which
 are a sequence of declarations of the form $c:\tau$ and $X:K$.
-For example, when we use integers in \LMD, $\Sigma = \B :: *, true:\B, false:\B$.
+For example, when we use integers in \LMD, $\Sigma = \B :: *, \textrm{true}:\B, \textrm{false}:\B$.
 Please note that constants or type-level constants has no stage.
 This means that we can use them at any stage.
 % Type environments
 Type environments are sequences of triples of a variable, its type, and its stage.
-We define well-formed signature and well-formed type environments later
-in order to prove theorems.
+We define well-formed signature and well-formed type environments later.
 
 % Free variables
 As usual, the variable $x$ is bound in $\lambda x:\tau.M$ or $\Pi x:\tau.\tau$ and
@@ -113,43 +112,41 @@ We write $\FV(M)$ and $\FTV(M)$ for the set of free variables and the set of fre
 \subsection{Reduction}
 
 Next, we define full reduction for \LMD.
-Before giving the definition of reduction, we define two kinds of substitutions.
-Substitution $M[x\mapsto N]$ is the ordinary capture-avoiding substitution of
-$N$ for $x$ in $M$, and we omit its definition here.
-Substitution $M[\alpha \mapsto \varepsilon]$ of the empty stage
-for stage variable $\alpha$ in $M$ is defined below.
-\AI{What about $\tau[x \mapsto N], K[x \mapsto N], \tau [\alpha \mapsto \varepsilon]$ and $K[\alpha \mapsto \varepsilon]$?}
+Before giving the definition of reduction, we define six kinds of substitutions.
+Substitution $M[x\mapsto N], \tau[x \mapsto N]$ and $K[x \mapsto N]$ are 
+the ordinary capture-avoiding substitutions of
+term $N$ for $x$ in term $M$, type $\tau$, and kind $K$, respectively
+and we omit their definition here.
+Substitution $M[\alpha \mapsto A], \tau [\alpha \mapsto A], K[\alpha \mapsto A]$ and $B[\alpha\mapsto A]$ are 
+substitutions of stage $A$ for stage variable $\alpha$ in 
+term $N$ for $x$ in term $M$, type $\tau$, kind $K$, and stage $B$ respectively.
+We show replesentive cases below.
+% \AI{What about $\tau[x \mapsto N], K[x \mapsto N], \tau [\alpha \mapsto \varepsilon]$ and $K[\alpha \mapsto \varepsilon]$?}
 
-\AI{Since we always substitute $\varepsilon$ for stage variables, we may want to introduce a special notation, something like $\textit{erase}_\alpha(M)$.}
-\AI{We will use $[\alpha \mapsto \varepsilon]$ and $[\alpha \mapsto \beta]$.  The latter is renaming, so we can omit the definition.}
+% \AI{Since we always substitute $\varepsilon$ for stage variables, we may want to introduce a special notation, something like $\textit{erase}_\alpha(M)$.}
+% \AI{We will use $[\alpha \mapsto \varepsilon]$ and $[\alpha \mapsto \beta]$.  The latter is renaming, so we can omit the definition.}
 
 \begin{align*}
-	% \newcommand{\SB}{}
-	(\lambda x:\tau.M)[\alpha \mapsto \varepsilon] & = \lambda x:(\tau[\alpha \mapsto \varepsilon]).(M[\alpha \mapsto \varepsilon])                                  \\
-	(M\ N)[\alpha \mapsto \varepsilon]             & = (M[\alpha \mapsto \varepsilon])\ (N[\alpha \mapsto \varepsilon])                                              \\
-	(M\ \varepsilon)[\alpha \mapsto \varepsilon]   & = (M[\alpha \mapsto \varepsilon])\ \varepsilon                                                                  \\
-	(\TB_\alpha M)[\alpha \mapsto \varepsilon]     & = M[\alpha \mapsto \varepsilon]                                                                                 \\
-	(\TB_\beta M)[\alpha \mapsto \varepsilon]      & = \TB_\beta (M[\alpha \mapsto \varepsilon])                                    & (\text{if } \alpha \neq \beta) \\
-	(\TBL_\alpha M)[\alpha \mapsto \varepsilon]    & =  M[\alpha \mapsto \varepsilon]                                               &                                \\
-	(\TBL_\beta M)[\alpha \mapsto \varepsilon]     & = \TBL_\beta (M[\alpha \mapsto \varepsilon])                                   & (\text{if } \alpha \neq \beta) \\
-	(\Lambda\beta.M)[\alpha \mapsto \varepsilon]   & = \Lambda\beta.(M[\alpha \mapsto \varepsilon])                                 & (\text{if } \alpha \neq \beta) \\
-	% (\Lambda\beta.M)[\alpha \mapsto \varepsilon]   & = \Lambda\beta.M                                                     & (\text{if } \alpha = \beta)    \\
-	(\%_\alpha M)[\alpha \mapsto \varepsilon]      & = M[\alpha \mapsto \varepsilon]                                                &                                \\
-	(\%_\beta M)[\alpha \mapsto \varepsilon]       & = \%_{\beta[\alpha \mapsto \varepsilon]}(M[\alpha \mapsto \varepsilon])        & (\text{if } \alpha \neq \beta) \\
+	(\lambda x:\tau.M)[\alpha \mapsto A] & = \lambda x:(\tau[\alpha \mapsto A]).(M[\alpha \mapsto A])                                  \\
+	(M\ B)[\alpha \mapsto A]             & = (M[\alpha \mapsto A])\ B[\alpha\mapsto A]                                                 \\
+	(\TB_\beta M)[\alpha \mapsto A]      & = \TB_{\beta[\alpha \mapsto A]}M[\alpha \mapsto A]                                          \\
+	(\TBL_\beta M)[\alpha \mapsto A]     & = \TBL_{\beta[\alpha \mapsto A]}M[\alpha \mapsto A]                                         \\
+	(\%_\beta M)[\alpha \mapsto A]       & = \%_{\beta[\alpha \mapsto A]}M[\alpha \mapsto A]                                           \\
+	(\beta B)[\alpha \mapsto A]          & = \beta (B[\alpha\mapsto A])                               & (\text{if } \alpha \neq \beta) \\
+	(\beta B)[\alpha \mapsto A]          & = A (B[\alpha\mapsto A])                                   & (\text{if } \alpha = \beta)
 \end{align*}
 
 \begin{definition}[Reduction]
-	\AI{It's not clear what are defined here.  You are talking only about rules.
-		Something like ``The relations $M \longrightarrow_\beta N$, ... are the least compatible relations closed under the rules below.''}
-	There are three reduction rules ($\longrightarrow_\beta, \longrightarrow_\blacklozenge, \longrightarrow_\Lambda$) in \LMD.
+	The relations $M \longrightarrow_\beta N$, $M \longrightarrow_\blacklozenge N$, and $M \longrightarrow_\Lambda N$
+	are the least compatible relations closed under the rules below.
 	Congruence rules which are omitted from the definition.
 	\begin{align*}
 		 & (\lambda x:\tau.M) N \longrightarrow_\beta M[x \mapsto N]                             \\
-		% & (\Pi x:\tau.\sigma) M \longrightarrow_\gamma \sigma[x \mapsto M] \\
 		 & \TBL_\alpha \TB_\alpha M \longrightarrow_\blacklozenge M                              \\
-		 & (\Lambda \alpha.M)\ \varepsilon \longrightarrow_\Lambda M[\alpha \mapsto \varepsilon]
+		 & (\Lambda \alpha.M)\ A \longrightarrow_\Lambda M[\alpha \mapsto A]
 	\end{align*}
-	We write $ M \longrightarrow M'$ iff $ M \longrightarrow_\beta M'$, $ M \longrightarrow_\blacklozenge M'$, or $ M \longrightarrow_\Lambda M'$.
+	We write $ M \longrightarrow M'$ iff $ M \longrightarrow_\beta M'$, $ M \longrightarrow_\blacklozenge M'$, or $ M \longrightarrow_\Lambda M'$ and
+	we call $\longrightarrow_\beta$, $\longrightarrow_\blacklozenge$, and $\longrightarrow_\Lambda$ $\beta$-reduction, $\blacklozenge$-reduction, and $\Lambda$-reduction, respectively.
 \end{definition}
 
 The relation $\longrightarrow_\beta$ represents ordinary $\beta-$reduction in the \(\lambda\)-calculus; the relation
@@ -170,8 +167,8 @@ In this section, we define the type system of \LMD.
 % \LMD is little complicated because it contains dependent types.
 It consists of six judgment forms for typing, kinding, well-formed kinding, term equivalence, type equivalence, and kind equivalence.
 We list the judgments forms in Figure~\ref{fig:LMD-six-judgments}.
-\AI{equality vs. equivalence?}
-\AI{A few judgment forms do not match rules.}
+% \AI{equality vs. equivalence?} \red{Select equivalence}
+% \AI{A few judgment forms do not match rules.}
 
 \begin{figure}
 	\begin{center}
@@ -188,7 +185,7 @@ We list the judgments forms in Figure~\ref{fig:LMD-six-judgments}.
 	\end{center}
 \end{figure}
 
-\AI{Insert a tilde (which is a space without a line break) between ``Figure'' and ref.}
+% \AI{Insert a tilde (which is a space without a line break) between ``Figure'' and ref.}
 \begin{definition}[Typing, Kinding, Well-formed Kinding, Term Equivalence, Type Equivalence, Kind Equivalence]
 	The typing relation $ \G \V M : \tau @ A $,
 	the kinding relation $\G \V \tau :: K @ A$,
@@ -216,26 +213,27 @@ $\textit{dom}$ is a function from a content to a set of variables defined in the
 	\begin{itemize}
 		\item $\emptyset$ are well-formed type environments.
 		\item if $\G$ are well-formed type environments and $x\not\in\textit{dom}(\G)$ and $x\not\in\textrm{FV}(\tau)$ \\
-			  then $\G,x:\tau@A$ are well-formed type environments.
+		      then $\G,x:\tau@A$ are well-formed type environments.
 	\end{itemize}
 \end{definition}
 From here, we assume that all signature and type environments are well-formed.
 
- We start from defining typing of
-\LMD.  Typing rules of \LMD are shown in Figure
-\ref{fig:typing-rules}.  The rule \TConst{} means any constants in the
-signature can appear at any stage.  \AI{This should be discussed
-	earlier.}  For example, if we have a signature $\Sigma$ which is
+We start from defining typing of
+\LMD.  Typing rules of \LMD are shown in Figure~\ref{fig:typing-rules}.
+The rule \TConst{} means any constants in the
+signature can appear at any stage.  \
+AI{This should be discussed earlier.}  
+For example, if we have a signature $\Sigma$ which is
 $\textrm{bool} :: *, \textrm{true}: \textrm{bool}, \textrm{false}:
 	\textrm{bool}$, the derivation tree in
-Figure~\ref{fig:tconst-derivation-tree} is admissible.  \AI{Don't we
-	need signature well formedness?  If $c:\tau \in \Sigma$, then $\tau$
-	should be a well-formed type under ... what?}  The rules \TVar,
-\TAbs, and \TApp{} are almost the same as those in the simply typed
-lambda calculus.  \AI{... or \(\lambda\)LF?  We are working in a dependently type system...}  Additional conditions are that subterms must be
+Figure~\ref{fig:tconst-derivation-tree} is admissible.  
+The rules \TVar,\TAbs, and \TApp{} are almost the same as those in the simply typed
+lambda calculus or \LLF.  Additional conditions are that subterms must be
 typed at the same stage (\TAbs{} and \TApp); the type
 annotation/declaration on a variable has to be a proper type of kind
 $*$ (\TAbs) at the stage where it is declared (\TVar{} and \TAbs).
+% \AI{Don't we need signature well formedness?  If $c:\tau \in \Sigma$, then $\tau$ should be a well-formed type under ... what?}
+% \AI{... or \(\lambda\)LF?  We are working in a dependently type system...}  
 
 \begin{figure}
 	\begin{center}
@@ -328,8 +326,8 @@ $\rho$ at stage $A$ under $\G$, is defined by the rules in
 Figure~\ref{fig:term-equivalence-rules}.  Most rules are
 straightforward.  The rules \QAbs, \QApp, \QTB, \QTBL, \QGen, \QIns,
 \QCsp, \QRefl, \QSym, and \QTrans{} make the relation congruence; the
-rules \QBeta, \QTBLTB, and \QLambda{} correspond to the reduction rules.
-\AI{Don't we give names to those reduction rules?}
+rules \QBeta, \QTBLTB, and \QLambda{} correspond to 
+$\beta$-reduction, $\blacklozenge$-reduction, and $\Lambda$-reduction, respectively.
 
 \begin{figure}
 	\begin{center}
@@ -391,7 +389,7 @@ In other words, we can remove a $\%_\alpha$ symbol of a value when it doesn't ch
 		\end{align*}
 	}
 
-This kind of type equality is very useful when we combine $\text{mulmat}\ 3\ 5$ with another code.
+This kind of type equivalence is very useful when we combine $\text{mulmat}\ 3\ 5$ with another code.
 We cannot remove $\%_\alpha$ in the type without \QPercent and it makes very difficult to combine
 because types of codes don't contain $\%_\alpha$ generally.
 
