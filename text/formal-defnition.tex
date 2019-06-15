@@ -451,22 +451,25 @@ can appear only under nested quotations (because an escape under a
 single quotation will splice the code value into the surrounding
 code).  See Hanada and Igarashi~\cite{Hanada2014} for details.
 
-\begin{definition}[Evaluation Context and Redex]
-	The family of sets $ECtx^A_B$ of evaluation contexts, ranged over by $E^A_B$,
-	the sets of $\varepsilon$-redexes (ranged over by $R^\varepsilon$) and $\alpha$-redexes (ranged over by $R^\alpha$) are defined by the following grammar.
+\begin{definition}[Evaluation Context]
+	The family of sets $ECtx^A_B$ of evaluation contexts, ranged over by $E^A_B$.
 	In the grammar, $A$ is assumed to be nonempty (but $B,A'$ can be empty).
 	\begin{align*}
-		E^\varepsilon_B \in ECtx^\varepsilon_B & ::= \square\ (\text{if\ } B = \varepsilon) \mid E^\varepsilon_B\ M \mid v^e\ E^\varepsilon_B
-		\mid \TB_\alpha E^\alpha_B \mid \Lambda\alpha.E^\varepsilon_B
-		\mid E^\varepsilon_B\ \varepsilon                                                                                                       \\
-		E^A_B \in ECtx^A_B                     & ::= \square\ (\text{if } A = B) \mid \lambda x:\tau.E^A_B \mid E^A_B\ M \mid v^A\ E^A_B
-		\mid E^\varepsilon_B \mid \TB_\alpha E^{A\alpha}_B
-		\mid \TBL_\alpha E^{A'}_B \ (\text{where } A'\alpha = A)                                                                                \\
-		                                       & \quad \mid \Lambda\alpha.E^\varepsilon_B
-		\mid E^A_B\ \varepsilon \mid \%_\alpha\ E^{A'}_B \ (\text{where } A'\alpha = A)                                                         \\
-		\\
-		R^\varepsilon                          & ::= (\lambda x:\tau.M)\ v^\varepsilon \mid (\Lambda\alpha.v^\varepsilon)\ \varepsilon        & \\
-		R^\alpha                               & ::=\ \TBL_\alpha \TB_\alpha M                                                                & \\\end{align*}
+		 & E^\varepsilon_B \in ECtx^\varepsilon_B ::= \square\ (\text{if\ } B = \varepsilon)
+		\mid E^\varepsilon_B\ M \mid v^e\ E^\varepsilon_B \mid \TB_\alpha E^\alpha_B
+		\mid \Lambda\alpha.E^\varepsilon_B \mid E^\varepsilon_B\ A'                                                                       \\
+		 & E^A_B \in ECtx^A_B                     ::= \square\ (\text{if } A = B) \mid \lambda x:\tau.E^A_B \mid E^A_B\ M \mid v^A\ E^A_B \\
+		 & \hspace{25mm} \mid E^\varepsilon_B \mid \TB_\alpha E^{A\alpha}_B \mid \TBL_\alpha E^{A'}_B \ (\text{where } A'\alpha = A)      \\
+		 & \hspace{25mm} \mid \Lambda\alpha.E^\varepsilon_B \mid E^A_B\ B' \mid \%_\alpha\ E^{A'}_B \ (\text{where } A'\alpha = A)        \\
+	\end{align*}
+\end{definition}
+
+\begin{definition}[Redex]
+	the sets of $\varepsilon$-redexes (ranged over by $R^\varepsilon$) and $\alpha$-redexes (ranged over by $R^\alpha$) are defined by the following grammar.
+	\begin{align*}
+		 & R^\varepsilon ::= (\lambda x:\tau.M)\ v^\varepsilon \mid (\Lambda\alpha.v^\varepsilon)\ \varepsilon \\
+		 & R^\alpha      ::=\ \TBL_\alpha \TB_\alpha M                                                         \\
+	\end{align*}
 \end{definition}
 
 \AI{some more explanation of the syntax of evaluation contexts.}
