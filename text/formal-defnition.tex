@@ -390,34 +390,35 @@ in implementation.  However, as an equational system for multi-stage
 programs, the rule \QPercent makes sense and as we argue next
 it is practically significant.
 
+\renewcommand{\Vpn}{\text{Vector}\ (\%_\alpha n)}
+As we discussed in Section 2, $\text{vadd}$ function, 
+which takes the length of vectors and returns a quoted add function for vector of the given size,
+has the type of $\Pi n:\I.\F\beta.\TW_\beta(\Vpn\to\Vpn\to\Vpn)$.
+When we use this function, we instansiate $\text{vadd}$ with some integer such as 5
+and get code of a optimzed $\text{vadd}$ function such as $\text{vadd5}$.
+\renewcommand{\Vpn}{\text{Vector}\ (\%_\beta 5)}
+Although $\text{vadd5}$ is of type $\F\beta.\TW_\beta(\Vpn\to\Vpn\to\Vpn)$,
+a code value of this type is difficult to combine with another code fragment.
+For example, if we want to composite $\text{vadd5}$ with reverse fucntion, 
+which is of type $\text{rev5}:\F\alpha.\TW_\alpha(\text{Vector}\ 5\to\text{Vector}\ 5)$,
+we write a program like following.
+\begin{align*}
+\Lambda\gamma.\TB_\gamma.\lambda v_1:(\text{Vector}\ 5).\lambda v_2:(\text{Vector}\ 5).\TBL_\gamma 
+(\text{rev5}\ \gamma)\ (\TBL_\gamma (\text{vadd5}\ \gamma)\ \TBL_\gamma v_1\ \TBL_\gamma v_2)
+\end{align*}
+However, this program cannot be typed without \QPercent{}
+because the type of $v_1$: $\text{Vector}\ 5$ isn't equivalent with the type of arguments of $\text{vadd5}$: $\text{Vector}\ \%_\gamma 5$.
 
-%%%%%%%%%%%%%%%%%%% SKIP FROM HERE %%%%%%%%%%%%%%%%%%%%
-$\text{mulmat}$ function in the following code fragment generate code for matrix multiplication.
-$\text{mulmat}$ takes two integers which are the size of the multiplicand matrix and generate a code.
-The last integer to decide the size of the multiplier matrix is given at runtime.
-You can generate code by applying two integers to $\text{mulmat}$.
-We applied 3 and 5 in the second line and got $\TW_\alpha \Pi z:\I.(\M\ z\ \%_\alpha 5) \to (\M\ \%_\alpha 5\ \%_\alpha 3) \to (\M\ z\ \%_\alpha 3)$.
-But this type is difficult to combine with other code because there are two $\%_\alpha$ for CSP.
-\QPercent\ states that we can erase this $\%_\alpha$ under a condition which is explained in the next paragraph.
-
+In order to resolve this problem, we introduce \QPercent{} into \LMD.
+\begin{center}
+\infrule[\QPercent]{\G\V M:\tau @{A\alpha} \andalso \G\V M:\tau @A}{\G\V\%_\alpha M \E M : \tau @{A\alpha}}
+\end{center}
+\QPercent\ states that we can erase this $\%_\alpha$ under a condition.
 The condition is that a CSPed value equals to the original value when it has the same type in the original stage.
 For example, $\V \%_\alpha 5 \E 5 @ \alpha$ because $ \V 5 : \I @ \alpha $ from \TConst\ and  $ \V \%_\alpha 5 : \I @ \alpha$.
 In other words, we can remove a $\%_\alpha$ symbol of a value when it doesn't change the type.
-
-    % Example of QCsp (mulmat)
-    {
-        \begin{align*}
-            \text{mulmat}       & : \Pi x:\I.\Pi y:\I.(\TW_\alpha \Pi z:\I.(\M\ z\ \%_\alpha y) \to (\M\ \%_\alpha y\ \%_\alpha x) \to (\M\ z\ \%_\alpha x)) \\
-            \text{mulmat}\ 3\ 5 & : \TW_\alpha \Pi z:\I.(\M\ z\ \%_\alpha 5) \to (\M\ \%_\alpha 5\ \%_\alpha 3) \to (\M\ z\ \%_\alpha 3)                     \\
-                                & (\E \TW_\alpha \Pi z:\I.(\M\ z\ 5) \to (\M\ 5\ 3) \to (\M\ z\ 3) )                                                         \\
-        \end{align*}
-    }
-
-This kind of type equivalence is very useful when we combine $\text{mulmat}\ 3\ 5$ with another code.
-We cannot remove $\%_\alpha$ in the type without \QPercent and it makes very difficult to combine
-because types of codes don't contain $\%_\alpha$ generally.
-
-%%%%%%%%%%%%%%%%%%% TO HERE %%%%%%%%%%%%%%%%%%%%
+Thanks to \QPercent, we can identify $\text{Vector}\ 5$ and $\text{Vector}\ \%_\gamma 5$
+and compose code values of functions as we expected.
 
 \subsubsection{Staged Semantics}
 
