@@ -3,11 +3,12 @@
 \section{Informal Overview of \LMD}
 
 We designed \LMD, a multi-stage calculus with dependent type.
-\LMD is based on \LTP\cite{Hanada2014} by Hanada and Igarashi, which is a multi-stage calculus with CSP and
+\LMD is based on \LTP\cite{Hanada2014} by Hanada and Igarashi, which is a multi-stage calculus with CSP, and
 we introduced dependent types based on \LTP\cite{attapl}.
 In this section, we check \LMD informally after checking \LTP and \LLF which are the basis of \LMD.
 
 \red{\LTP\cite{Hanada2014}が頻発するが同一論文の複数回引用に何かルールはあるのか?}
+\AI{ないです．たしかにあんまりつけるとうるさいですね．2.1 の冒頭とかは文ごと不要なのでは？}
 \subsection{\LTP}
 
 % quote and unquote
@@ -30,7 +31,7 @@ It means escape cancels brackets.
 The subscript $\alpha$ in $\TB_\alpha M$ is a \textit{transition variable} and
 a sequence of transition variables is called \textit{transition}.
 The empty transition is represented by $\varepsilon$.
-They are used to show the thickness of brackets.
+They are used to show the thickness of brackets. \AI{Perhaps ``thickness'' doesn't make sense.}
 For example, $\TB_\alpha (\lambda x:\I.x+10)$ is the fragment of code which becomes $(\lambda x:\I.x+10)$ after it was run once and
 $\TB_\alpha \TB_\beta (\lambda x:\I.x+10)$, which is abbreviated as $\TB_{\alpha\beta} (\lambda x:\I.x+10)$,
 becomes $(\lambda x:\I.x+10)$ after it was run it twice.
@@ -42,7 +43,7 @@ There are abstractions for transition variables and applications for transition 
 They look like $\Lambda\alpha.M$ and $M A$, respectively.
 A transition abstraction binds a transition variable in a term.
 For example, all $\alpha$ in $\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x))$ are bound.
-It is only natural there is a reduction rule for transition application in \LTP.
+It is only natural \AI{?} there is a reduction rule for transition application in \LTP.
 The rule is the following.
 \begin{align*}
 	(\Lambda\alpha.M)\ A \longrightarrow M[\alpha\mapsto A]
@@ -84,8 +85,12 @@ if $M$ is typed $\tau$ at transition $A\alpha$ then $\TB_{\alpha}M$, quoted $M$,
 CSP, cross-stage persistence, is an important feature of \LTP.
 It enables us to embed value at an outer transition into an inner transition.
 $\%$ is dedicated to CSP in \LTP.
+\AI{What should me mentioned here is that in MetaOCaml CSP is implicit but
+in \LTP it's explicit.}
 For example, $\lambda a:\I.\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x+\%_\alpha a))$
 \red{inner / outer は適切か?}
+\AI{What is \(a\)?}
+\AI{Is this explanation enough to understand the rest of the section?}
 
 % Omitting Residualization
 % この段落は3章のM eのあとに、この制限の結果として...という形で入れる
@@ -102,15 +107,16 @@ For example, $\lambda a:\I.\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x+\%_\alpha a
 \LLF is a simple system of dependent types introduced in \cite{attapl}.
 \red{system / type system / calculus?}
 It is based on Edinburgh LF\cite{harper1993framework}.
-Therefore, all constants and base types are declared in the signature.
+\AI{Can you remind me of differences between Edinburgh LF and \LLF?}
+Therefore, \AI{``Therefore'' is used to show a logical consequence.} all constants and base types are declared in the signature.
 The \LLF type theory generalizes simply typed lambda calculus
-by replacing the function type $\tau\to\sigma$ with the dependent product type $\Pi x:\tau.\sigma$.
+by replacing the function type $\tau\to\sigma$ with the dependent product type $\Pi x:\tau.\sigma$.  \AI{``dependent product'' vs. ``dependent function''.}
 
 % Kind, Well-formed kind
 In addition to ordinary typing rules like simply typed lambda calculus,
 there are kinding rules, well-formed kinding rules, term equivalence rules, type equivalence rules, and kind equivalence rules in \LLF.
 Kinding rules and well-formed kinding rules are 
-introduced in order to prohibit making illegal types such as $\textrm{Vect}\ \textrm{Bool}$.
+introduced in order to prohibit making illegal types such as $\textrm{Vect}\ \textrm{Bool}$.  \AI{Vect\ true may be a better example?}
 For a well-formed type $\tau$, $\G \vdash \tau :: K$ means that $\tau$ has a kind $K$ under the environment $\G$ and 
 for a well-formed kind $K$, $\G \vdash K$ means that $K$ is a well-formed kind under an environment $\G$.
 
@@ -158,7 +164,9 @@ For example, \KAbs-LF is a kinding rule for a dependent type in \LLF and \KAbs\ 
 
 Third, we also need type equivalence rules in \LMD because its type system contains dependent types.
 Although there are new primitives relating to stages which aren't in \LLF,
-we can design all rules except \QPercent\ easily from the syntax or the reductions of \LMD.
+we can design all rules except \QPercent\ easily from the syntax or the reductions of \LMD.  \AI{Don't refer to a concrete rule name without showing it because we haven't introduced rules.}
+
+\AI{If there's space, we should have introduced the \LTP-version of vadd.}
 
 \QPercent\ is different from other rules because it was designed from practical reason, not from the syntax or the reductions.
 For example, we discuss $\text{vadd}_\beta$ function,
@@ -177,6 +185,7 @@ We assumed that type checker can know $n=0$ when process the $\textbf{then}$ cla
 	  & \hspace{21mm} \textbf{let}\ t_2 = \text{tail}\ (\TBL_\alpha v_2)\ \textbf{in}                                                   \\
 	  & \hspace{21mm} \text{cons}\ (\text{head}\ (\TBL_\alpha v_1) + \text{head}\ (\TBL_\alpha v_2))\ (\TBL_\alpha f\ (n-1)\ t_1\ t_2)) \\
 \end{align*}
+\AI{I think we should state the types of cons, tail, and head.}
 Using $\text{vadd}_1$, we can make $\text{vadd}$ function easily.
 This function takes the length of vectors and returns a quoted add function for vector of the given size.
 \renewcommand{\Vpn}{\text{Vector}\ (\%_\beta n)}
