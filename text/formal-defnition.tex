@@ -278,13 +278,18 @@ because two types which have different shapes may be equivalent.
 For example, when we use a vector type with its size ($\textrm{Vector}\ n$),
 $\textrm{Vector}\ 5$ is equivalent to $\textrm{Vector}\ (4+1)$ obviously although they are not equivalent in apparently.
 
-
 % Typing rules for a multi-stage calculus
-\AI{This paragraph is not very informaticve.  We shouldn't just refer redears to previous work.}
+% \AI{This paragraph is not very informaticve.  We shouldn't just refer redears to previous work.}
 The rules \TTB, \TTBL, \TGen, \TIns, and \TCsp{} are rules for a multi-stage calculus.
-They are corresponding to brackets, escape, making a stage abstraction,
-application of stage $A$ to a stage abstraction, and cross-stage persistence, respectively.
-Please check Hanada and Igarashi \cite{Hanada2014} and Tsukada and Igarashi \cite{Tsukada} for details of these rules.
+The rule \TTB{}, which corresponds to brackets, means that if term $M$ is of type $\tau$ at stage $A\alpha$,
+$\TB_\alpha M$ is of type $\TW_\alpha \tau$ at stage $A$.
+The rule \TTBL{}, which corresponds to escape, is the converse of \TTB.
+The rule \TGen{} is a rule for stage abstraction.
+The condition of $\alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)$ ensure that
+substitutions to $\alpha$ don't affect type environments or stages.
+The rule \TIns{} is for applications of stages to stage abstractions.
+The rule \TCsp is the rule for CSP, which means that 
+if term $M$ is of type $\tau$ at stage $A$, $\%_\alpha M$ is of type $\tau$ at stage $A\alpha$.
 
 \begin{figure}
 	\begin{center}
@@ -296,7 +301,7 @@ Please check Hanada and Igarashi \cite{Hanada2014} and Tsukada and Igarashi \cit
 		\infrule[\TTB]{\G\V M:\tau @{A\alpha}}{\G\V\TB_{\alpha}M:\TW_{\alpha}\tau @A} \andalso
 		\infrule[\TTBL]{\G\V M:\TW_{\alpha}\tau @A}{\G\V\TBL_{\alpha}M:\tau @{A\alpha}} \\[2mm]
 		\infrule[\TGen]{\G\V M:\tau @A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\V\Lambda\alpha.M:\forall\alpha.\tau @A} \\[2mm]
-		\infrule[\TIns]{\G\V M:\forall\alpha.\tau @A}{\G\V M\ \varepsilon:\tau[\alpha \mapsto \varepsilon]@A} \andalso
+		\infrule[\TIns]{\G\V M:\forall\alpha.\tau @A}{\G\V M\ B:\tau[\alpha \mapsto B]@A} \andalso
 		\infrule[\TCsp]{\G\V M:\tau @A}{\G\V \%_\alpha M:\tau @{A\alpha}}
 		\caption{Typing Rules.}
 		\label{fig:typing-rules}
