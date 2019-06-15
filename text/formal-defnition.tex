@@ -107,7 +107,17 @@ We write $\FV(M)$ and $\FTV(M)$ for the set of free variables and the set of fre
 % \AI{What about other binders such as $\Pi$?}
 
 % \AI{We should note that constants and type-level constants are not staged.}
-\paragraph{Remark:}  \AI{Comparison with Hanada--Igarashi.}
+% \paragraph{Remark:}  \AI{
+	
+% Comparison with Hanada--Igarashi
+
+As the end of this subsection, we compare \LMD and \LTP.
+Terms of \LMD is the same with \LTP except constants.
+The difference between \LMD and \LTP is their types and kinds.
+First, \LMD contains $\Pi$ type instead of function type in \LTP.
+Second, there two kinds of $\F$ in \LTP in order to disscuss on program residualization
+although \LMD contains only one $\F$ type.
+Third, \LMD contains kinding and type equivalence rules to handle dependent types.
 
 \subsection{Reduction}
 
