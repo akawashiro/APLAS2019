@@ -479,9 +479,11 @@ We write $E^A_B[M]$ for the term obtained by filling the hole $\square$ in $E^A_
 and define the staged reduction relation.
 Intuitively, $\square$ is the placefolder for redex.
 Examples of evaluation context is below.
-\red{Example of evaluation context}
-% \begin{align*}
-% \end{align*}
+\begin{align*}
+	& \square\ (\lambda x:\I.x) \in  ECtx^\varepsilon_\varepsilon \\
+	& \Lambda\alpha.\square\ \epsilon \in ECtx^\varepsilon_\varepsilon \\
+	& \TBL_\alpha \TB_\alpha \TBL_\alpha \square \in ECtx^\alpha_\varepsilon 
+\end{align*}
 
 \begin{definition}[Staged Reduction]
 	The staged reduction relation, written $M \longrightarrow_s M'$, is defined by
@@ -497,4 +499,11 @@ This reduction relation reduces a typed term in a unique way
 which is appropriate as call-by-value code generater.
 It means that terms in brackets is not evaluated until the terms are run
 and arguments of a function are evaluated before the application.
-\red{Example of staged reduction}
+We show an example of staged reduction.
+Underlines show the redexes.
+\begin{align*}
+	& \hspace{9mm} \Lambda\alpha.(\TB_\alpha \underline{\TBL_\alpha \TB_\alpha} (\lambda x:\I.x)\ 10)\ \varepsilon \\
+	& \longrightarrow_s \underline{\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x)\ 10)\ \varepsilon} \\
+	& \longrightarrow_s \underline{(\lambda x:\I.x)\ 10} \\
+	& \longrightarrow_s 10
+\end{align*}
