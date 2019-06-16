@@ -9,12 +9,10 @@ which models execution as programs.
 
 \subsection{Syntax}
 
-% \AI{Rename ``type variables'' to ``type-level constants''. }
-% \AI{I prefer $\varepsilon$ for the non-empty sequence.}  
-We assume the denumerable set of type-level constants, ranged over by
-metavariables \(X, Y, Z\), the denumerable set of variables, ranged
-over by \(x,y,z\), the denumerable set of constants, ranged over by
-\(c\), and the denumerable set of stage variables, ranged over by
+We assume the denumerable set of \emph{type-level constants}, ranged over by
+metavariables \(X, Y, Z\), the denumerable set of \emph{variables}, ranged
+over by \(x,y,z\), the denumerable set of \emph{constants}, ranged over by
+\(c\), and the denumerable set of \emph{stage variables}, ranged over by
 \(\alpha, \beta, \gamma\).  The metavariables \(A, B, C\) range over
 sequences of stage variables; we write \(\varepsilon\) for the empty
 sequence. \LMD is defined by the following grammar:
@@ -26,13 +24,13 @@ sequence. \LMD is defined by the following grammar:
     % \textrm{Variables}       &   &                          & x,y,z                                                                                                      \\
     % \textrm{Stage variables} &   &                          & \alpha,\beta,\gamma                                                                                        \\
     % \textrm{Stage}           &   &                          & A,B,C                                                                                                      \\
-    \textrm{Kinds}             &  & K,J,I,H,G                & ::= * \mid \Pi x:\tau.K                                                           \\
-    \textrm{Types}             &  & \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} \tau \mid \F\alpha.\tau \\
+    \textrm{kinds}             &  & K,J,I,H,G                & ::= * \mid \Pi x:\tau.K                                                           \\
+    \textrm{types}             &  & \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} \tau \mid \F\alpha.\tau \\
     %     \textrm{Constants}       &   &                          & c                                                                                                          \\
-    \textrm{Terms}             &  & M,N,L,O,P                & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M                   \\
+    \textrm{terms}             &  & M,N,L,O,P                & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M                   \\
                                &  &                          & \ \ \ \ \mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ A \mid \%_\alpha M        \\
-    \textrm{Signature}         &  & \Sigma                   & ::= \emptyset \mid \Sigma, X::K \mid \Sigma, c:\tau                               \\
-    \textrm{Type environments} &  & \Gamma                   & ::= \emptyset \mid  \Gamma,x:\tau @A                                              \\
+    \textrm{signatures}         &  & \Sigma                   & ::= \emptyset \mid \Sigma, X::K \mid \Sigma, c:\tau                               \\
+    \textrm{type environments} &  & \Gamma                   & ::= \emptyset \mid  \Gamma,x:\tau @A                                              \\
 \end{align*}
 
 % \AI{Add $M\,\alpha$ to terms.}
@@ -55,19 +53,18 @@ of kind $K$.
 % \red{この段落は短いので型の段落と結合するか?}
 % Types
 A type is a type-level constant $X$, which is declared in the signature with its kind, a dependent function type $\Pi x:\tau_1.\tau_2$,
-an application of a term to a type (operator) of $\Pi$-kind, a code type $\TW_\alpha$, or an $\alpha$-closed type $\F\alpha.\tau$.
-An application of a term to a type (operator) of $\Pi$-kind is, for example, $\text{Vector}\ 10$
+an application $\tau\ M$ of a type (operator) (of $\Pi$-kind) to a term, a code type $\TW_\alpha$, or an $\alpha$-closed type $\F\alpha.\tau$.
+An application of a type (operator) of $\Pi$-kind to a term is, for example, $\text{Vector}\ 10$
 if type-level constant $\text{Vector}$ has the kind $\Pi x:\I.*$.
-A code type $\TW_\alpha \tau$ denotes a code fragment of a term of type $\tau$.
+A code type $\TW_\alpha \tau$ is for a code fragment of a term of type $\tau$.
 An $\alpha$-closed type corresponds to a runnable code fragment.
 
-% Type constructors tie strongly \AI{Is ``tie strongly'' standard?} in the order of 
-An application of a term to a type (operator) of $\Pi$-kind: $\tau\ M$ connect tighter than
-the type constructor $\TW_{\alpha}$ and $\TW_{\alpha}$ connect tighter than
-$\Pi$ in dependent types such as $\Pi x:\tau.\tau$ and $\Pi$ connect tighter than
-$\F$ in types for stage abstraction such as $\F\alpha.\tau$.
-Therefore, $\F\alpha.\TW_{\alpha} \Pi x:\I.\text{Vector}\ 5$ is interpreted as
-$\F\alpha.(\TW_{\alpha} (\Pi x:\I.(\text{Vector}\ 5)))$.
+% An application $\tau\ M$ of a type (operator) to a term connects tighter than
+% $\TW_{\alpha}$ connects tighter than
+% $\Pi$ in dependent types such as $\Pi x:\tau.\tau$ and $\Pi$ connect tighter than
+% $\F$ in types for stage abstraction such as $\F\alpha.\tau$.
+% Therefore, $\F\alpha.\TW_{\alpha} \Pi x:\I.\text{Vector}\ 5$ is interpreted as
+% $\F\alpha.(\TW_{\alpha} (\Pi x:\I.(\text{Vector}\ 5)))$.
 % \AI{I don't understand this rule...}
 
 % Terms
@@ -79,63 +76,63 @@ $\TB_\alpha M$ represents a code fragment; $\TB_\alpha M$ represents escape;
 $\Lambda\alpha.M$ is a stage variable abstraction;
 $M\ A$ is an application of stage $A$ to a stage abstraction; and
 $\%_\alpha M$ is an operator for cross-stage persistence.
-The prefix operators $\TB_\alpha, \TBL_\alpha$, and $\%_\alpha$ connect tighter than the two forms of applications
-and applications are left-associative
-and two abstractions extends as far to the right as possible.
-For example, $\F\alpha.\lambda x:\I.\TB_\alpha x\ y$ means $\F\alpha.(\lambda x:\I.(\TB_\alpha x)\ y)$.
-% \AI{I think the usage of ``application'' is wrong again} 
 
 % Signature
 
-We adopt a \LLF-like system, where constants and type-level constants are given in the signature $\Sigma$, which
-are a sequence of declarations of the form $c:\tau$ and $X:K$.
-For example, when we use integers in \LMD, $\Sigma = \B :: *, \textrm{true}:\B, \textrm{false}:\B$.
-Please note that constants or type-level constants have no stage.
-This means that we can use them at any stage.
+We adopt the tradition of \LLF-like systems, where types of constants and kinds of type-level constants are globally declared in a signature $\Sigma$, which
+is a sequence of declarations of the form $c:\tau$ and $X:K$.
+For example, when we use Boolean in \LMD, $\Sigma$ includes $\B :: *, \textrm{true}:\B, \textrm{false}:\B$.
+Note that constants and type-level constants are not associated with stages;
+so, we can use them at any stage.
 % Type environments
 Type environments are sequences of triples of a variable, its type, and its stage.
 We define well-formed signature and well-formed type environments later.
 
-% Free variables
-As usual, the variable $x$ is bound in $\lambda x:\tau.M$ or $\Pi x:\tau.\tau$ and
-and the stage variable $\alpha$ is bound in $\Lambda \alpha.M$ or $\F\alpha.\tau$.
+The variable $x$ is bound in $M$ of $\lambda x:\tau.M$ and in $\tau_2$
+of $\Pi x:\tau_1.\tau_2$, as usual; the stage variable $\alpha$ is
+bound in $M$ of $\Lambda \alpha.M$ and $\tau$ of $\F\alpha.\tau$.
+We write $\FV(M)$ and $\FTV(M)$ for the set of free variables and the set of free stage variables in $M$, respectively.  Similarly, $\FV(\tau)$, $\FTV(\tau)$,
+$\FV(K)$, and $\FTV(K)$ are defined.
 We sometimes abbreviate $\Pi x:\tau_1.\tau_2$ to $\tau_1 \rightarrow \tau_2$ if
 $x$ is not a free variable in $\tau_2$.
+% Free variables
 We identify $\alpha$-convertible terms and assume the names of bound variables are pairwise distinct.
-We write $\FV(M)$ and $\FTV(M)$ for the set of free variables and the set of free stage variables in $M$, respectively.
 % \AI{This should be mentioned after free variables are introduced.}
 % \AI{What about other binders such as $\Pi$?}
 
-% \AI{We should note that constants and type-level constants are not staged.}
-% \paragraph{Remark:}  \AI{
+The prefix operators $\TW_\alpha, \TB_\alpha, \TBL_\alpha$, and
+$\%_\alpha$ connect tighter than the three forms $\tau\ M$, $M\ N$,
+$M\ A$ of applications, which are left-associative; The binders $\Pi$,
+$\forall$, and $\lambda$ extend as far to the right as possible.
+Thus, $\F\alpha.\TW_{\alpha} (\Pi x:\I.\text{Vector}\ 5)$ is
+interpreted as
+$\F\alpha.(\TW_{\alpha} (\Pi x:\I.(\text{Vector}\ 5)))$; and
+$\Lambda\alpha.\lambda x:\I.\TB_\alpha x\ y$ means
+$\Lambda\alpha.(\lambda x:\I.(\TB_\alpha x)\ y)$.
 
-% Comparison with Hanada--Igarashi
+\paragraph{Remark:} Basically, we define \LMD to be an extension of
+\LTP with dependent types.  One notable difference is that \LMD has
+only one kind of \(\alpha\)-closed types, whereas \LTP has two kinds
+of \(\alpha\)-closed types \(\forall\alpha.\tau\) and
+\(\forall^\varepsilon\alpha.\tau\).  We have omitted the first kind,
+for simplicity, and dropped the superscript $\varepsilon$.  It would
+not be difficult to recover the distinction to show properties related
+to program residualization~\cite{Hanada2014}.
 
-As the end of this subsection, we compare \LMD and \LTP.
-Terms of \LMD are the same with \LTP except for constants.
-The difference between \LMD and \LTP is their types and kinds.
-First, \LMD contains $\Pi$ type instead of function type in \LTP.
-Second, there two kinds of $\F$ in \LTP in order to discuss on program residualization
-although \LMD contains only one $\F$ type.
-Third, \LMD contains kinding and type equivalence rules to handle dependent types.
 
 \subsection{Reduction}
 
-Next, we define the full reduction for \LMD.
+Next, we define full reduction for \LMD.
 Before giving the definition of reduction, we define six kinds of substitutions.
 Substitution $M[x\mapsto N], \tau[x \mapsto N]$ and $K[x \mapsto N]$ are
-the ordinary capture-avoiding substitutions of
-term $N$ for $x$ in term $M$, type $\tau$, and kind $K$, respectively
-and we omit their definition here.
+ordinary capture-avoiding substitution of
+term $N$ for $x$ in term $M$, type $\tau$, and kind $K$, respectively,
+and we omit their definitions here.
 Substitution $M[\alpha \mapsto A], \tau [\alpha \mapsto A], K[\alpha \mapsto A]$ and $B[\alpha\mapsto A]$ are
 substitutions of stage $A$ for stage variable $\alpha$ in
-term $N$ for $x$ in term $M$, type $\tau$, kind $K$, and stage $B$ respectively.
-We show replesentive cases below.
-% \AI{What about $\tau[x \mapsto N], K[x \mapsto N], \tau [\alpha \mapsto \varepsilon]$ and $K[\alpha \mapsto \varepsilon]$?}
-
-% \AI{Since we always substitute $\varepsilon$ for stage variables, we may want to introduce a special notation, something like $\textit{erase}_\alpha(M)$.}
-% \AI{We will use $[\alpha \mapsto \varepsilon]$ and $[\alpha \mapsto \beta]$.  The latter is renaming, so we can omit the definition.}
-
+term $N$ for $x$ in term $M$, type $\tau$, kind $K$, and stage $B$, respectively.
+We show representative cases below.
+%
 \begin{align*}
     (\lambda x:\tau.M)[\alpha \mapsto A] & = \lambda x:(\tau[\alpha \mapsto A]).(M[\alpha \mapsto A])                                  \\
     (M\ B)[\alpha \mapsto A]             & = (M[\alpha \mapsto A])\ B[\alpha\mapsto A]                                                 \\
@@ -145,26 +142,37 @@ We show replesentive cases below.
     (\beta B)[\alpha \mapsto A]          & = \beta (B[\alpha\mapsto A])                               & (\text{if } \alpha \neq \beta) \\
     (\beta B)[\alpha \mapsto A]          & = A (B[\alpha\mapsto A])                                   & (\text{if } \alpha = \beta)
 \end{align*}
+Here, $\TB_{\alpha_1\cdots\alpha_n} M$,
+$\TBL_{\alpha_1\cdots\alpha_n} M$, and $\%_{\alpha_1\cdots\alpha_n} M$
+$(n \geq 0)$ stand for $\TB_{\alpha_1} \cdots \TB_{\alpha_n} M$,
+$\TBL_{\alpha_1}\cdots \TBL_{\alpha_n} M$, and
+$\%_{\alpha_1}\cdots \%_{\alpha_n} M$, respectively.  In particular,
+$\TB_{\varepsilon} M = \TBL_{\varepsilon} M = \%_{\varepsilon} M = M$.
 
 \begin{definition}[Reduction]
     The relations $M \longrightarrow_\beta N$, $M \longrightarrow_\blacklozenge N$, and $M \longrightarrow_\Lambda N$
     are the least compatible relations closed under the rules below.
-    Congruence rules which are omitted from the definition.
+%    Congruence rules are omitted from the definition.
     \begin{align*}
-         & (\lambda x:\tau.M) N \longrightarrow_\beta M[x \mapsto N]         \\
-         & \TBL_\alpha \TB_\alpha M \longrightarrow_\blacklozenge M          \\
-         & (\Lambda \alpha.M)\ A \longrightarrow_\Lambda M[\alpha \mapsto A]
+         (\lambda x:\tau.M) N & \longrightarrow_\beta M[x \mapsto N]         \\
+         \TBL_\alpha \TB_\alpha M & \longrightarrow_\blacklozenge M          \\
+         (\Lambda \alpha.M)\ A & \longrightarrow_\Lambda M[\alpha \mapsto A]
     \end{align*}
-    We write $ M \longrightarrow M'$ iff $ M \longrightarrow_\beta M'$, $ M \longrightarrow_\blacklozenge M'$, or $ M \longrightarrow_\Lambda M'$ and
-    we call $\longrightarrow_\beta$, $\longrightarrow_\blacklozenge$, and $\longrightarrow_\Lambda$ $\beta$-reduction, $\blacklozenge$-reduction, and $\Lambda$-reduction, respectively.
 \end{definition}
+We write $ M \longrightarrow M'$ iff $ M \longrightarrow_\beta M'$,
+$ M \longrightarrow_\blacklozenge M'$, or
+$ M \longrightarrow_\Lambda M'$ and we call $\longrightarrow_\beta$,
+$\longrightarrow_\blacklozenge$, and $\longrightarrow_\Lambda$
+$\beta$-reduction, $\blacklozenge$-reduction, and $\Lambda$-reduction,
+respectively.
+\AI{Don't we need to define $\longrightarrow^*$?}
 
-The relation $\longrightarrow_\beta$ represents ordinary $\beta-$reduction in the \(\lambda\)-calculus; the relation
+The relation $\longrightarrow_\beta$ represents ordinary $\beta$-reduction in the \(\lambda\)-calculus; the relation
 $\longrightarrow_\blacklozenge$ represents that quotation $\TB_\alpha M$ is canceled by escape and $M$ is spliced into the code fragment surrounding the escape;
-the relation $\longrightarrow_\Lambda$ means that a stage abstraction applied to the empty stage $\varepsilon$ reduces to the body of the abstraction
-where $\varepsilon$ is substituted for the stage variable.
+the relation $\longrightarrow_\Lambda$ means that a stage abstraction applied to  stage $A$ reduces to the body of the abstraction
+where $A$ is substituted for the stage variable.
 There is no reduction rule for CSP as with Hanada and Igarashi \cite{Hanada2014}.
-The CSP operator $\%_\alpha$ disappears when $\varepsilon$ is substituted to $\alpha$.
+The CSP operator $\%_\alpha$ disappears when $\varepsilon$ is substituted for $\alpha$.
 We show an example of a reduction sequence below.
 Underlines show the redexes.
 \begin{align*}
@@ -180,14 +188,9 @@ Underlines show the redexes.
 
 \subsection{Type System}
 
-% 総論
-
 In this section, we define the type system of \LMD.
-% \LMD is little complicated because it contains dependent types.
 It consists of six judgment forms for typing, kinding, well-formed kinding, term equivalence, type equivalence, and kind equivalence.
 We list the judgments forms in Figure~\ref{fig:LMD-six-judgments}.
-% \AI{equality vs. equivalence?} \red{Select equivalence}
-% \AI{A few judgment forms do not match rules.}
 
 \begin{figure}
     \begin{center}
@@ -204,7 +207,6 @@ We list the judgments forms in Figure~\ref{fig:LMD-six-judgments}.
     \end{center}
 \end{figure}
 
-% \AI{Insert a tilde (which is a space without a line break) between ``Figure'' and ref.}
 \begin{definition}[Typing, Kinding, Well-formed Kinding, Term Equivalence, Type Equivalence, Kind Equivalence]
     The typing relation $ \G \V M : \tau @ A $,
     the kinding relation $\G \V \tau :: K @ A$,
@@ -212,10 +214,11 @@ We list the judgments forms in Figure~\ref{fig:LMD-six-judgments}.
     the term equivalence relation $\G \V M \E N @ A$,
     the type equivalence relation $\G \V \tau \E \sigma @ A$,
     the kind equivalence relation $\G \V K \E J @ A$,
-    are the least relation closed under the rules in Figure~\ref{fig:typing-rules}.
+    are the least relation closed under the rules in Figure~\ref{fig:typing-rules}.  \AI{There are more rules!  Some of them are not even in the paper.}
 \end{definition}
 This definition is little complicated to define six relations at the same time.
 We can't define them one by one because they are dependent on each other.
+\AI{I think well-formed signatures and type environments cannot be defined independently.}
 
 We introduce a well-formed signature and well-formed type environments.
 $\textit{dom}$ is a function from a content to a set of variables defined in the context.
