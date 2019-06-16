@@ -206,17 +206,17 @@
     \G\V K \E J@A
   }{
     \G\V K \E J@{A\alpha}
-  } \\[2mm]
+  } \hfil
   \infrule[\QKRefl]{
     \G\V K \iskind @A
   }{
     \G\V K\E K@A
-  } \hfil
+  } \\[2mm]
   \infrule[\QKSym]{
     \G\V K \E J@A
   }{
     \G\V J \E K@A
-  } \\[2mm]
+  } \hfil
   \infrule[\QKTrans]{
     \G\V K \E J@A \andalso
     \G\V J \E I@A
@@ -228,40 +228,138 @@
 \figheader{Type Equivalence}{\rulefbox{\G\V S\E T :: K @A}}
 {\small
 \begin{center}
-	Demands from syntax rules\\[2mm]
-	\infrule{\G\V \tau \E \sigma :: *@A \andalso \G,x:\tau@A \V \rho \E \pi :: *@A}{\G\V\Pi x:\tau.\rho \E \Pi x:\sigma.\pi :: *@A}{\QTAbs} \andalso
-	\infrule{\G\V \tau \E \sigma :: (\Pi x:\rho.K)@A \andalso \G\V M \E N : \rho @A}{\G\V \tau\ M \E \sigma\ N :: K[x \mapsto M]@A}{\QTApp} \\[2mm]
-	\infrule{\G\V \tau \E \sigma :: *@{A\alpha}}{\G\V \TW_{\alpha} \tau \E \TW_{\alpha} \sigma :: *@A}{\textsc{QT-$\TW$}}\andalso
-	\infrule{\G\V \tau \E \sigma :: *@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\V \forall\alpha.\tau \E  \forall\alpha.\sigma :: *@A}{\textsc{QT-Gen}} \andalso
-	\infrule{\G\V \tau \E \sigma :: K@A}{\G\V \tau \E \sigma :: K@{A\alpha}}{\textsc{QT-Csp}} \\[4mm]
-	Demands from equivalence relationship\\[2mm]
-	\infrule{\G\V \tau::K@A}{\G\V \tau\E\tau :: K@A}{\textsc{QT-Refl}} \andalso
-	\infrule{\G\V \tau \E \sigma :: K@A}{\G\V \sigma \E \tau :: K@A}{\textsc{QT-Sym}} \andalso
-	\infrule{\G\V \tau \E \sigma :: K@A \andalso \G\V \sigma \E \rho  :: K@A}{\G\V \tau \E \rho  :: K@A}{\textsc{QT-Trans}} \\[4mm]
+  \infrule[{\QTAbs}]{
+    \G\V \tau \E \sigma :: *@A \andalso
+    \G,x:\tau@A \V \rho \E \pi :: *@A
+  }{
+    \G\V\Pi x:\tau.\rho \E \Pi x:\sigma.\pi :: *@A
+  } \\[2mm]
+  \infrule[{\QTApp}]{
+    \G\V \tau \E \sigma :: (\Pi x:\rho.K)@A \andalso
+    \G\V M \E N : \rho @A
+  }{
+    \G\V \tau\ M \E \sigma\ N :: K[x \mapsto M]@A
+  } \\[2mm]
+  \infrule[\QTTW]{
+    \G\V \tau \E \sigma :: *@{A\alpha}
+  }{
+    \G\V \TW_{\alpha} \tau \E \TW_{\alpha} \sigma :: *@A
+  } \\[2mm]
+  \infrule[\QTGen]{
+    \G\V \tau \E \sigma :: *@A \andalso
+    \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)
+  }{
+    \G\V \forall\alpha.\tau \E  \forall\alpha.\sigma :: *@A
+  } \\[2mm]
+  \infrule[\QTCsp]{
+    \G\V \tau \E \sigma :: K@A
+  }{
+    \G\V \tau \E \sigma :: K@{A\alpha}
+  }
+  \infrule[\QTRefl]{
+    \G\V \tau::K@A
+  }{
+    \G\V \tau\E\tau :: K@A
+  } \hfil
+  \infrule[\QTSym]{
+    \G\V \tau \E \sigma :: K@A
+  }{
+    \G\V \sigma \E \tau :: K@A
+  } \\[2mm]
+  \infrule[\QTTrans]{
+    \G\V \tau \E \sigma :: K@A \andalso
+    \G\V \sigma \E \rho  :: K@A
+  }{
+    \G\V \tau \E \rho  :: K@A
+  }
 \end{center}
 }
 
 \figheader{Term Equivalence}{\rulefbox{\G\V M\E N : \tau @A}}
 {\small
 \begin{center}
-	Demands from syntax rules\\[2mm]
-	\infrule{\G\V \tau \E \sigma :: *@A \andalso \G,x:\tau@A \V M \E N : \rho @A}{\G\V\lambda x:\tau.M \E \lambda x:\sigma.N : (\Pi x:\tau.\rho)@A}{\QAbs} \andalso
-	\infrule{\G\V M \E L : (\Pi x:\sigma.\tau)@A \andalso \G\V N \E O : \sigma@A}{\G\V M\ N \E L\ O : \tau[x \mapsto N]@A}{\QApp} \\[2mm]
-	\infrule{\G\V M \E N : \tau@{A\alpha}}{\G\V \TB_\alpha M \E \TB_\alpha N : \TW_\alpha \tau@A}{\QTB} \andalso
-	\infrule{\G\V M \E N : \TW_\alpha \tau@A}{\G\V \TBL_\alpha M \E \TBL_\alpha N : \tau@{A\alpha}}{\QTBL} \\[2mm]
-	\infrule{\G\V M\E N : \tau@A \andalso \alpha \notin \FTV(\G)\cup\FTV(A)}{\G\V \Lambda\alpha.M \E \Lambda\alpha.N : \forall\alpha.\tau@A}{\QGen} \andalso
-	\infrule{\G\V M \E N:\forall\alpha.\tau@A}{\G\V M\ A \E N\ A : \tau[\alpha \mapsto A]@A}{\QIns}\andalso
-	\infrule{\G\V M \E N : \tau @A}{\G\V\%_\alpha M \E \%_\alpha N : \tau@{A\alpha}}{\QCsp} \\[4mm]
-	Demands from equivalence relationship\\[2mm]
-	\infrule{\G\V M:\tau@A}{\G\V M\E M : \tau@A}{\QRefl} \andalso
-	\infrule{\G\V M\E N : \tau@A}{\G\V N\E M : \tau@A}{\QSym} \andalso
-	\infrule{\G\V M\E N : \tau@A \andalso \G\V N\E L : \tau@A}{\G\V M\E L : \tau@A}{\QTrans} \\[4mm]
-	Demands from reduction rule\\[2mm]
-	\infrule{\G,x:\sigma@A\V M:\tau@A \andalso \G\V N:\sigma@A}{\G\V(\lambda x:\sigma.M)\ N\E M[x\mapsto N] : \tau[x \mapsto N]@A}{\QBeta} \andalso
-	\infrule{\G\V M:(\Pi x:\sigma.\tau)@A \andalso x\notin \text{FV}(M)}{\G\V(\lambda x:\sigma.M\ x)\E M: (\Pi x:\sigma.\tau)@A}{\QEta} \\[2mm]
-	\infrule{\G\V M \E N : \tau@A}{\G\V \TBL_\alpha(\TB_\alpha M) \E N : \tau @A}{\QTBLTB} \andalso
-	\infrule{\G\V (\Lambda\alpha.M) : \forall\alpha.\tau@A}{\G\V (\Lambda\alpha.M)\ B \E M[\alpha \mapsto B] : \tau[\alpha \mapsto B]@A}{\QLambda} \\[2mm]
-	\infrule{\G\V M:\tau@{A\alpha} \andalso \G\V M:\tau@A}{\G\V\%_\alpha M \E M : \tau@{A\alpha}}{\QPercent} \andalso
+  \infrule[\QAbs]{
+    \G\V \tau \E \sigma :: *@A \andalso
+    \G,x:\tau@A \V M \E N : \rho @A
+  }{
+    \G\V\lambda x:\tau.M \E \lambda x:\sigma.N : (\Pi x:\tau.\rho)@A
+  } \\[2mm]
+  \infrule[\QApp]{
+    \G\V M \E L : (\Pi x:\sigma.\tau)@A \andalso
+    \G\V N \E O : \sigma@A
+  }{
+    \G\V M\ N \E L\ O : \tau[x \mapsto N]@A
+  } \\[2mm]
+  \infrule[\QTB]{
+    \G\V M \E N : \tau@{A\alpha}
+  }{
+    \G\V \TB_\alpha M \E \TB_\alpha N : \TW_\alpha \tau@A
+  } \hfil
+  \infrule[{\QTBL}]{
+    \G\V M \E N : \TW_\alpha \tau@A
+  }{
+    \G\V \TBL_\alpha M \E \TBL_\alpha N : \tau@{A\alpha}
+  } \\[2mm]
+  \infrule[{\QGen}]{
+    \G\V M\E N : \tau@A \andalso
+    \alpha \notin \FTV(\G)\cup\FTV(A)
+  }{
+    \G\V \Lambda\alpha.M \E \Lambda\alpha.N : \forall\alpha.\tau@A
+  } \\[2mm]
+  \infrule[{\QIns}]{
+    \G\V M \E N:\forall\alpha.\tau@A
+  }{
+    \G\V M\ A \E N\ A : \tau[\alpha \mapsto A]@A
+  }\hfil
+  \infrule[\QCsp]{
+    \G\V M \E N : \tau @A
+  }{
+    \G\V\%_\alpha M \E \%_\alpha N : \tau@{A\alpha}
+  } \\[2mm]
+  \infrule[\QRefl]{
+    \G\V M:\tau@A
+  }{
+    \G\V M\E M : \tau@A
+  } \hfil
+  \infrule[\QSym]{
+    \G\V M\E N : \tau@A
+  }{
+    \G\V N\E M : \tau@A
+  } \\[2mm]
+  \infrule[\QTrans]{
+    \G\V M\E N : \tau@A \andalso
+    \G\V N\E L : \tau@A
+  }{
+    \G\V M\E L : \tau@A
+  } \\[2mm]
+  \infrule[{\QBeta}]{
+    \G,x:\sigma@A\V M:\tau@A \andalso
+    \G\V N:\sigma@A
+  }{
+    \G\V(\lambda x:\sigma.M)\ N\E M[x\mapsto N] : \tau[x \mapsto N]@A
+  } \\[2mm]
+  % \infrule[{\QEta}]{
+  %   \G\V M:(\Pi x:\sigma.\tau)@A \andalso
+  %   x\notin \text{FV}(M)
+  % }{
+  %   \G\V(\lambda x:\sigma.M\ x)\E M: (\Pi x:\sigma.\tau)@A
+  % } \\[2mm]
+  \infrule[{\QTBLTB}]{
+    \G\V M \E N : \tau@A
+  }{
+    \G\V \TBL_\alpha(\TB_\alpha M) \E N : \tau @A
+  } \\[2mm]
+  \infrule[{\QLambda}]{
+    \G\V (\Lambda\alpha.M) : \forall\alpha.\tau@A
+  }{
+    \G\V (\Lambda\alpha.M)\ B \E M[\alpha \mapsto B] : \tau[\alpha \mapsto B]@A
+  } \\[2mm]
+  \infrule[{\QPercent}]{
+    \G\V M:\tau@{A\alpha} \andalso
+    \G\V M:\tau@A
+  }{
+    \G\V\%_\alpha M \E M : \tau@{A\alpha}
+  }
 \end{center}
 }
 % \begin{cm}
