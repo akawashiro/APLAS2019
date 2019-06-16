@@ -82,10 +82,13 @@ $\%_\alpha M$ is an operator for cross-stage persistence.
 We adopt the tradition of \LLF-like systems, where types of constants and kinds of type-level constants are globally declared in a signature $\Sigma$, which
 is a sequence of declarations of the form $c:\tau$ and $X:K$.
 For example, when we use Boolean in \LMD, $\Sigma$ includes $\B :: *, \textrm{true}:\B, \textrm{false}:\B$.
-Note that constants and type-level constants are not associated with stages;
-so, we can use them at any stage.
-% Type environments
 Type environments are sequences of triples of a variable, its type, and its stage.
+We write \(\textit{dom}(\Sigma)\) and \(\textit{dom}(\Gamma)\)
+for the set of (type-level) constants declared in \(\Sigma\) and \(\Gamma\), respectively.   As in other multi-stage calculi~\cite{Taha03,Tsukada,Hanada2014},
+a variable declaration is associated with a stage
+so that a variable can be referenced only at the declared stage.
+Constants and type-level constants are not associated with stages;
+so, we can use them at any stage.
 We define well-formed signature and well-formed type environments later.
 
 The variable $x$ is bound in $M$ of $\lambda x:\tau.M$ and in $\tau_2$
@@ -189,114 +192,90 @@ Underlines show the redexes.
 \subsection{Type System}
 
 In this section, we define the type system of \LMD.
-It consists of six judgment forms for typing, kinding, well-formed kinding, term equivalence, type equivalence, and kind equivalence.
+It consists of eight judgment forms for signature well-formedness, type environment well-formedness, kind well-formedness, kinding, typing, term equivalence, type equivalence, and kind equivalence.
 We list the judgments forms in Figure~\ref{fig:LMD-six-judgments}.
+They are all defined in a mutual recursive manner.  We will discuss
+each judgment below.
 
 \begin{figure}
     \begin{center}
-        \begin{align*}
-            \G & \V M : \tau @ A       & \text{typing}              \\
+      \begin{align*}
+            \vdash & \Sigma            & \text{signature well-formedness} \\
+            \V & \G                & \text{type environment well-formedness} \\
+            \G & \V K \iskind @ A      & \text{kind well-formedness} \\
             \G & \V \tau :: K @ A      & \text{kinding}             \\
-            \G & \V K \iskind @ A      & \text{well-formed kinding} \\
-            \G & \V M \E N @ A         & \text{term equivalence}    \\
+            \G & \V M : \tau @ A       & \text{typing}              \\
+            \G & \V K \E J @ A         & \text{kind equivalence}    \\
             \G & \V \tau \E \sigma @ A & \text{type equivalence}    \\
-            \G & \V K \E J @ A         & \text{kind equivalence}
+            \G & \V M \E N @ A         & \text{term equivalence}
         \end{align*}
-        \caption{Six judgment forms of the type system of \LMD.}
+        \caption{Eight judgment forms of the type system of \LMD.}
         \label{fig:LMD-six-judgments}
     \end{center}
 \end{figure}
 
-\begin{definition}[Typing, Kinding, Well-formed Kinding, Term Equivalence, Type Equivalence, Kind Equivalence]
-    The typing relation $ \G \V M : \tau @ A $,
-    the kinding relation $\G \V \tau :: K @ A$,
-    the well-formed kinding relation $\G \V K \iskind @ A$,
-    the term equivalence relation $\G \V M \E N @ A$,
-    the type equivalence relation $\G \V \tau \E \sigma @ A$,
-    the kind equivalence relation $\G \V K \E J @ A$,
-    are the least relation closed under the rules in Figure~\ref{fig:typing-rules}.  \AI{There are more rules!  Some of them are not even in the paper.}
-\end{definition}
-This definition is little complicated to define six relations at the same time.
-We can't define them one by one because they are dependent on each other.
-\AI{I think well-formed signatures and type environments cannot be defined independently.}
 
-We introduce a well-formed signature and well-formed type environments.
-$\textit{dom}$ is a function from a content to a set of variables defined in the context.
-\begin{definition}[Well-formed Signature]
-    \begin{itemize}
-        \item $\emptyset$ is a well-formed signature.
-        \item if $\Sigma$ is a well-formed signature and $\V K :: * @ \varepsilon$ and $X\notin\textit{dom}(\Sigma)$ \\
-              then $\Sigma,X::K$ is a well-formed signature.
-        \item if $\Sigma$ is a well-formed signature and $\V \tau :: K @ \varepsilon$ and $c\notin\textit{dom}(\Sigma)$ \\
-              then $\Sigma,c:\tau$ is a well-formed signature.
-    \end{itemize}
-\end{definition}
-\begin{definition}[Well-formed Type Environments]
-    \begin{itemize}
-        \item $\emptyset$ are well-formed type environments.
-        \item if $\G$ are well-formed type environments and $x\not\in\textit{dom}(\G)$ and $x\not\in\textrm{FV}(\tau)$ \\
-              then $\G,x:\tau@A$ are well-formed type environments.
-    \end{itemize}
-\end{definition}
-From here, we assume that all signature and type environments are well-formed.
+\subsubsection{Signature and Type Environment Well-formedness.}
+The rules for Well-formed signatures and type environments are
+shown below:
+%
+{\small
+\begin{center}
+  \infrule{
+  }{
+    \vdash \emptyset
+  }
+  \hfil
+  \infrule{
+    \vdash \Sigma \andalso
+    \V K \iskind @ \varepsilon \\
+    X\notin\textit{dom}(\Sigma)
+  }{
+    \vdash \Sigma, X::K
+  }
+  \hfil
+  \infrule{
+    \vdash \Sigma \andalso
+    \V \tau :: * @ \varepsilon \\
+    c\notin\textit{dom}(\Sigma)
+  }{
+   \vdash \Sigma, c:\tau
+ }
+ \\[2mm]
+  \infrule{
+  }{
+    \V \emptyset
+  }
+  \hfil
+  \infrule{
+    \V \Gamma \andalso
+    \Gamma \V \tau :: * @ A \andalso
+    x\notin\textit{dom}(\Sigma)
+  }{
+   \V \Gamma, x:\tau@A
+ }
+\end{center}
+}
 
-We start from defining typing of
-\LMD.  Typing rules of \LMD are shown in Figure~\ref{fig:typing-rules}.
-The rule \TConst{} means any constants in the
-signature can appear at any stage.  \
-AI{This should be discussed earlier.}
-For example, if we have a signature $\Sigma$ which is
-$\textrm{bool} :: *, \textrm{true}: \textrm{bool}, \textrm{false}:
-    \textrm{bool}$, the derivation tree in
-Figure~\ref{fig:tconst-derivation-tree} is admissible.
-The rules \TVar,\TAbs, and \TApp{} are almost the same as those in the simply typed
-lambda calculus or \LLF.  Additional conditions are that subterms must be
-typed at the same stage (\TAbs{} and \TApp); the type
-annotation/declaration on a variable has to be a proper type of kind
-$*$ (\TAbs) at the stage where it is declared (\TVar{} and \TAbs).
-% \AI{Don't we need signature well formedness?  If $c:\tau \in \Sigma$, then $\tau$ should be a well-formed type under ... what?}
-% \AI{... or \(\lambda\)LF?  We are working in a dependently type system...}  
+To add declarations to a signature, the kind/type of a (type-level)
+constant has to be well-formed at stage \(\varepsilon\) so that it is
+used at any stage. \AI{We should discuss implicit CSP at the type
+  level somewhere.}
 
+In what follows, well-formedness is not explicitly mentioned but
+we assume that all signatures and type environments are well-formed.
+
+\subsubsection{Kind Wellformedness and Kinding.}
+
+The rules for kind wellformedness and kiding is straightforward
+adaptation from \LLF.  So, we omit them.
+
+\subsubsection{Typing.}
+
+\AI{The second premises of \TConst and \TVar are not needed?}
 \begin{figure}
     \begin{center}
-        \begin{minipage}{0.50\hsize}
-            \infer[\TConst]
-            {\G \V \textrm{true}:\textrm{bool}@\alpha\beta}
-            {\textrm{true}:\textrm{bool} \in \Sigma \andalso
-                \ID{\G\V\textrm{bool}::*@\alpha\beta} \andalso
-            }
-            \caption{A derivation tree using \TConst}
-            \label{fig:tconst-derivation-tree}
-        \end{minipage}
-    \end{center}
-\end{figure}
-
-
-% \TConv
-\AI{Looks like a paper is written for those who know multi-stage calculi fairly well but don't know dependent type systems.  The reality is the opposite.}
-As in standard dependent type systems, \TConv{} allows us to replace
-the type of a term with an equivalent one.
-In a type system which includes dependent types, this kind of rule is essential
-because two types which have different shapes may be equivalent.
-For example, when we use a vector type with its size ($\textrm{Vector}\ n$),
-$\textrm{Vector}\ 5$ is equivalent to $\textrm{Vector}\ (4+1)$ obviously although they are not equivalent in apparently.
-
-% Typing rules for a multi-stage calculus
-% \AI{This paragraph is not very informative.  We shouldn't just refer readers to previous work.}
-The rules \TTB, \TTBL, \TGen, \TIns, and \TCsp{} are rules for a multi-stage calculus.
-The rule \TTB{}, which corresponds to brackets, means that if term $M$ is of type $\tau$ at stage $A\alpha$,
-$\TB_\alpha M$ is of type $\TW_\alpha \tau$ at stage $A$.
-The rule \TTBL{}, which corresponds to escape, is the converse of \TTB.
-The rule \TGen{} is a rule for stage abstraction.
-The condition of $\alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)$ ensure that
-substitutions to $\alpha$ don't affect type environments or stages.
-The rule \TIns{} is for applications of stages to stage abstractions.
-The rule \TCsp is the rule for CSP, which means that
-if term $M$ is of type $\tau$ at stage $A$, $\%_\alpha M$ is of type $\tau$ at stage $A\alpha$.
-
-\begin{figure}
-    \begin{center}
-        \infrule[\TConst]{c:\tau \in \Sigma \andalso \G\V \tau::*@A}{\G \V c:\tau @A} \\[2mm]
+        \infrule[\TConst]{c:\tau \in \Sigma \andalso \G\V \tau::*@A}{\G \V c:\tau @A} \hfil
         \infrule[\TVar]{x:\tau @A \in \G \andalso \G\V \tau::*@A}{\G \V x:\tau @A} \\[2mm]
         \infrule[\TAbs]{\G\V \sigma::*@A\andalso\G,x:\sigma@A\V M:\tau @A}{\G\V(\lambda (x:\sigma).M):(\Pi (x:\sigma).\tau)@A} \\[2mm]
         \infrule[\TApp]{\G\V M:(\Pi (x:\sigma).\tau)@A \andalso \G\V N:\sigma@A}{\G\V M\ N : \tau[x\mapsto N]@A} \\[2mm]
@@ -311,19 +290,101 @@ if term $M$ is of type $\tau$ at stage $A$, $\%_\alpha M$ is of type $\tau$ at s
     \end{center}
 \end{figure}
 
-\subsubsection{Type and Term Equivalence}
+Typing rules of \LMD are shown in Figure~\ref{fig:typing-rules}.
+The rule \TConst{} means that a constant can appear at any stage.
+% For example, if we have a signature $\Sigma$ which is
+% $\textrm{bool} :: *, \textrm{true}: \textrm{bool}, \textrm{false}:
+%     \textrm{bool}$, the derivation tree in
+% Figure~\ref{fig:tconst-derivation-tree} is admissible.
+The rules \TVar,\TAbs, and \TApp{} are almost the same as those in the simply typed
+lambda calculus or \LLF.  Additional conditions are that subterms must be
+typed at the same stage (\TAbs{} and \TApp); the type
+annotation/declaration on a variable has to be a proper type of kind
+$*$ (\TAbs) at the stage where it is declared (\TVar{} and \TAbs).
+% \AI{Don't we need signature well formedness?  If $c:\tau \in \Sigma$, then $\tau$ should be a well-formed type under ... what?}
+% \AI{... or \(\lambda\)LF?  We are working in a dependently type system...}  
 
-As usual in dependent type systems, type equivalence, used in \TConv,
-is important.  The type equivalence judgment of the form
-$\G \V \tau \E \sigma : K @ A$ means that types $\tau$ and $\sigma$
-are equivalent as types of kind $K$ at stage $A$ under $\G$.
-Figure~\ref{fig:type-equivalence-rules} shows the rules for type
-equivalence.  Type equivalence is basically the least congruence
-closed under term equivalence.  The rules for compatibility (closure
-under type formation) are derived from corresponding typing rules in a
-straightforward manner.  The rules are a little simpler than some
-dependent type systems \AI{such as?}  because there is no abstraction
-at the type level.
+% \begin{figure}
+%     \begin{center}
+%         \begin{minipage}{0.50\hsize}
+%             \infer[\TConst]
+%             {\G \V \textrm{true}:\textrm{bool}@\alpha\beta}
+%             {\textrm{true}:\textrm{bool} \in \Sigma \andalso
+%                 \ID{\G\V\textrm{bool}::*@\alpha\beta} \andalso
+%             }
+%             \caption{A derivation tree using \TConst}
+%             \label{fig:tconst-derivation-tree}
+%         \end{minipage}
+%     \end{center}
+% \end{figure}
+
+
+% \TConv
+\AI{Looks like a paper is written for those who know multi-stage calculi fairly well but don't know dependent type systems.  The reality is the opposite.}
+As in standard dependent type systems, \TConv{} allows us to replace
+the type of a term with an equivalent one.
+In a type system with dependent types, this kind of rule is essential
+because \AI{?} two types which have different shapes may be equivalent.
+For example, when we use a vector type with its size ($\textrm{Vector}\ n$),
+$\textrm{Vector}\ 5$ is equivalent to $\textrm{Vector}\ (4+1)$ obviously although they are not syntactically equivalent.
+
+% Typing rules for a multi-stage calculus
+% \AI{This paragraph is not very informative.  We shouldn't just refer readers to previous work.}
+The rules \TTB, \TTBL, \TGen, \TIns, and \TCsp{} are rules for a multi-stage calculus.
+The rule \TTB{}, which corresponds to brackets \AI{Sounds like the rule corresponds to brackets.  What corresponds to brackets is $\TB$}, means that if term $M$ is of type $\tau$ at stage $A\alpha$,
+$\TB_\alpha M$ is of type $\TW_\alpha \tau$ at stage $A$.
+The rule \TTBL{}, which corresponds to escape, is the converse of \TTB.
+The rule \TGen{} for stage abstraction is straightforward.
+The condition $\alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)$ ensures that
+the scope of $\alpha$ is in $M$.
+The rule \TIns{} is for applications of stages to stage abstractions.
+\AI{Any comments?}
+The rule \TCsp is the rule for CSP, which means that
+if term $M$ is of type $\tau$ at stage $A$, $\%_\alpha M$ is of type $\tau$ at stage $A\alpha$.  \AI{This does not explain what this rule means.
+  It just gives how the rule is read.}
+
+\subsubsection{Kind, Type and Term Equivalence.}
+
+Since the syntax of kinds, types, and terms is mutually recursive,
+corresponding notions of equivalence are also mutually recursive.
+They are congruences closed under a few axioms for term equivalence.
+So, the rules for kind and type equivalences are not very interesting
+except implict CSP is allowed.
+We show a few representative rules below.
+
+{\small
+\begin{center}
+\infrule[\textsc{QK-Csp}]{%
+  \G\V K \E J @ A
+}{
+  \G\V K \E J @ A\alpha
+}
+\hfil
+\infrule[\QTCsp]{
+  \G\V \tau \E \sigma :: K@A
+}{
+  \G\V \tau \E \sigma :: K@{A\alpha}
+}
+\\[2mm]
+\infrule[\QTApp]{%
+  \G\V \tau \E \sigma :: (\Pi x:\rho.K)@A \andalso
+  \G\V M \E N : \rho @A
+}{
+  \G\V \tau\ M \E \sigma\ N :: K[x \mapsto M]@A
+}
+\end{center}
+}
+
+% The type equivalence judgment of the form
+% $\G \V \tau \E \sigma : K @ A$ means that types $\tau$ and $\sigma$
+% are equivalent as types of kind $K$ at stage $A$ under $\G$.
+% Figure~\ref{fig:type-equivalence-rules} shows the rules for type
+% equivalence.  Type equivalence is basically the least congruence
+% closed under term equivalence.  The rules for compatibility (closure
+% under type formation) are derived from corresponding typing rules in a
+% straightforward manner.  The rules are a little simpler than some
+% dependent type systems \AI{such as?}  because there is no abstraction
+% at the type level.
 
 % \QCsp以外の説明
 % We show type equivalence rules in Figure \ref{fig:type-equivalence-rules}.
@@ -332,42 +393,46 @@ at the type level.
 % The rule \QTApp\ means that if there are two equivalent $\Pi$ type and two equivalent terms,
 % the results of applications are also equivalent.
 
-\begin{figure}
-    \begin{center}
-        \infrule[{\QTAbs }]{\G\V \tau \E \sigma :: *@A \andalso \G,x:\tau @A \V \rho \E \pi :: *@A}{\G\V\Pi x:\tau.\rho \E \Pi x:\sigma.\pi :: *@A} \\[2mm]
-        \infrule[\QTApp]{\G\V \tau \E \sigma :: (\Pi x:\rho.K)@A \andalso \G\V M \E N : \rho @A}{\G\V \tau\ M \E \sigma\ N :: K[x \mapsto M]@A} \\[2mm]
-        \infrule[\textsc{QT-$\TW$}]{\G\V \tau \E \sigma :: *@{A\alpha}}{\G\V \TW_{\alpha} \tau \E \TW_{\alpha} \sigma :: *@A}\andalso
-        \infrule[\QTCsp]{\G\V \tau \E \sigma :: K@A}{\G\V \tau \E \sigma :: K@{A\alpha}} \\[2mm]
-        \infrule[\QTGen]{\G\V \tau \E \sigma :: *@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\V \forall\alpha.\tau \E  \forall\alpha.\sigma :: *@A} \\[2mm]
-        \infrule[\QTRefl]{\G\V \tau::K@A}{\G\V \tau\E\tau :: K@A} \andalso
-        \infrule[\QTSym]{\G\V \tau \E \sigma :: K@A}{\G\V \sigma \E \tau :: K@A} \\[2mm]
-        \infrule[\QTTrans]{\G\V \tau \E \sigma :: K@A \andalso \G\V \sigma \E \rho  :: K@A}{\G\V \tau \E \rho  :: K@A}
-        \caption{Type Equivalence Rules.}
-        \label{fig:type-equivalence-rules}
-    \end{center}
-\end{figure}
+% \begin{figure}
+%     \begin{center}
+%         \infrule[{\QTAbs }]{\G\V \tau \E \sigma :: *@A \andalso \G,x:\tau @A \V \rho \E \pi :: *@A}{\G\V\Pi x:\tau.\rho \E \Pi x:\sigma.\pi :: *@A} \\[2mm]
+%         \infrule[\QTApp]{\G\V \tau \E \sigma :: (\Pi x:\rho.K)@A \andalso \G\V M \E N : \rho @A}{\G\V \tau\ M \E \sigma\ N :: K[x \mapsto M]@A} \\[2mm]
+%         \infrule[\textsc{QT-$\TW$}]{\G\V \tau \E \sigma :: *@{A\alpha}}{\G\V \TW_{\alpha} \tau \E \TW_{\alpha} \sigma :: *@A}\andalso
+%         \infrule[\QTCsp]{\G\V \tau \E \sigma :: K@A}{\G\V \tau \E \sigma :: K@{A\alpha}} \\[2mm]
+%         \infrule[\QTGen]{\G\V \tau \E \sigma :: *@A \andalso \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)}{\G\V \forall\alpha.\tau \E  \forall\alpha.\sigma :: *@A} \\[2mm]
+%         \infrule[\QTRefl]{\G\V \tau::K@A}{\G\V \tau\E\tau :: K@A} \andalso
+%         \infrule[\QTSym]{\G\V \tau \E \sigma :: K@A}{\G\V \sigma \E \tau :: K@A} \\[2mm]
+%         \infrule[\QTTrans]{\G\V \tau \E \sigma :: K@A \andalso \G\V \sigma \E \rho  :: K@A}{\G\V \tau \E \rho  :: K@A}
+%         \caption{Type Equivalence Rules.}
+%         \label{fig:type-equivalence-rules}
+%     \end{center}
+% \end{figure}
 
-The term equivalence judgment of the form $\G \V M \E N : \rho @ A$,
-which means that terms $M$ and $N$ are equivalent as terms of type
-$\rho$ at stage $A$ under $\G$, is defined by the rules in
-Figure~\ref{fig:term-equivalence-rules}.  Most rules are
-straightforward.  The rules \QAbs, \QApp, \QTB, \QTBL, \QGen, \QIns,
-\QCsp, \QRefl, \QSym, and \QTrans{} make the relation congruence; the
-rules \QBeta, \QTBLTB, and \QLambda{} correspond to
+% The term equivalence judgment of the form $\G \V M \E N : \rho @ A$,
+% which means that terms $M$ and $N$ are equivalent as terms of type
+% $\rho$ at stage $A$ under $\G$, is defined by the rules in
+We show the rules for term equivalence are shown in 
+Figure~\ref{fig:term-equivalence-rules}, omitting
+straightforward rules for reflexivity, symmetry, transitivity,
+and compatibility.
+% Most rules are
+% straightforward.  The rules \QAbs, \QApp, \QTB, \QTBL, \QGen, \QIns,
+% \QCsp, \QRefl, \QSym, and \QTrans{} make the relation congruence;
+The rules \QBeta, \QTBLTB, and \QLambda{} correspond to
 $\beta$-reduction, $\blacklozenge$-reduction, and $\Lambda$-reduction, respectively.
 
 \begin{figure}
     \begin{center}
-        \infrule[\QAbs]{\G\V \tau \E \sigma :: *@A \andalso \G,x:\tau @A \V M \E N : \rho @A}{\G\V\lambda x:\tau.M \E \lambda x:\sigma.N : (\Pi x:\tau.\rho)@A} \\[2mm]
-        \infrule[\QAbs]{\G\V M \E L : (\Pi x:\sigma.\tau)@A \andalso \G\V N \E O : \sigma@A}{\G\V M\ N \E L\ O : \tau[x \mapsto N]@A} \\[2mm]
-        \infrule[\QTB]{\G\V M \E N : \tau @{A\alpha}}{\G\V \TB_\alpha M \E \TB_\alpha N : \TW_\alpha \tau @A} \andalso
-        \infrule[\QTBL]{\G\V M \E N : \TW_\alpha \tau @A}{\G\V \TBL_\alpha M \E \TBL_\alpha N : \tau @{A\alpha}} \\[2mm]
-        \infrule[\QGen]{\G\V M\E N : \tau @A \andalso \alpha \notin \FTV(\G)\cup\FTV(A)}{\G\V \Lambda\alpha.M \E \Lambda\alpha.N : \forall\alpha.\tau @A} \\[2mm]
-        \infrule[\QIns]{\G\V M \E N:\forall\alpha.\tau @A}{\G\V M\ \varepsilon \E N\ \varepsilon : \tau[\alpha \mapsto \varepsilon]@A} \andalso
-        \infrule[\QCsp]{\G\V M \E N : \tau @A}{\G\V\%_\alpha M \E \%_\alpha N : \tau @{A\alpha}} \\[2mm]
-        \infrule[\QRefl]{\G\V M:\tau @A}{\G\V M\E M : \tau @A} \andalso
-        \infrule[\QSym]{\G\V M\E N : \tau @A}{\G\V N\E M : \tau @A} \\[2mm]
-        \infrule[\QTrans]{\G\V M\E N : \tau @A \andalso \G\V N\E L : \tau @A}{\G\V M\E L : \tau @A} \\[2mm]
+        % \infrule[\QAbs]{\G\V \tau \E \sigma :: *@A \andalso \G,x:\tau @A \V M \E N : \rho @A}{\G\V\lambda x:\tau.M \E \lambda x:\sigma.N : (\Pi x:\tau.\rho)@A} \\[2mm]
+        % \infrule[\QApp]{\G\V M \E L : (\Pi x:\sigma.\tau)@A \andalso \G\V N \E O : \sigma@A}{\G\V M\ N \E L\ O : \tau[x \mapsto N]@A} \\[2mm]
+        % \infrule[\QTB]{\G\V M \E N : \tau @{A\alpha}}{\G\V \TB_\alpha M \E \TB_\alpha N : \TW_\alpha \tau @A} \andalso
+        % \infrule[\QTBL]{\G\V M \E N : \TW_\alpha \tau @A}{\G\V \TBL_\alpha M \E \TBL_\alpha N : \tau @{A\alpha}} \\[2mm]
+        % \infrule[\QGen]{\G\V M\E N : \tau @A \andalso \alpha \notin \FTV(\G)\cup\FTV(A)}{\G\V \Lambda\alpha.M \E \Lambda\alpha.N : \forall\alpha.\tau @A} \\[2mm]
+        % \infrule[\QIns]{\G\V M \E N:\forall\alpha.\tau @A}{\G\V M\ \varepsilon \E N\ \varepsilon : \tau[\alpha \mapsto \varepsilon]@A} \andalso
+        % \infrule[\QCsp]{\G\V M \E N : \tau @A}{\G\V\%_\alpha M \E \%_\alpha N : \tau @{A\alpha}} \\[2mm]
+        % \infrule[\QRefl]{\G\V M:\tau @A}{\G\V M\E M : \tau @A} \andalso
+        % \infrule[\QSym]{\G\V M\E N : \tau @A}{\G\V N\E M : \tau @A} \\[2mm]
+        % \infrule[\QTrans]{\G\V M\E N : \tau @A \andalso \G\V N\E L : \tau @A}{\G\V M\E L : \tau @A} \\[2mm]
         \infrule[\QBeta]{\G,x:\sigma@A\V M:\tau @A \andalso \G\V N:\sigma@A}{\G\V(\lambda x:\sigma.M)\ N\E M[x\mapsto N] : \tau[x \mapsto N]@A} \\[2mm]
         % \infrule{\G\V M:(\Pi x:\sigma.\tau)@A \andalso x\notin \text{FV}(M)}{\G\V(\lambda x:\sigma.M\ x)\E M: (\Pi x:\sigma.\tau)@A}{\QEta} \\[2mm]
         \infrule[\QLambda]{\G\V (\Lambda\alpha.M) : \forall\alpha.\tau @A}{\G\V (\Lambda\alpha.M)\ \varepsilon \E M[\alpha \mapsto \varepsilon] : \tau[\alpha \mapsto \varepsilon]@A} \\[2mm]
@@ -387,12 +452,13 @@ so \(\G\V \%_\alpha c \E c : \tau @ A\alpha\) holds but variables
 do depend on stages and so this rule does not apply.
 
 Interestingly, Hanada and Igarashi~\cite{Hanada2014} rejected the idea of
-reduction to remove $\%_\alpha$ when they developed \LTP{}, as such
-the reduction does not match the operational behavior of the CSP operator
+reduction that removes $\%_\alpha$ when they developed \LTP{}, as such
+reduction does not match the operational behavior of the CSP operator
 in implementation.  However, as an equational system for multi-stage
-programs, the rule \QPercent makes sense and as we argue next
+programs, the rule \QPercent makes sense and, as we argue next,
 it is practically significant.
 
+\AI{This paragraph should be polished later.}
 \renewcommand{\Vpn}{\text{Vector}\ (\%_\alpha n)}
 As we discussed in Section 2, $\text{vadd}$ function, 
 which takes the length of vectors and returns a quoted add function for vector of the given size,
@@ -423,7 +489,7 @@ In other words, we can remove a $\%_\alpha$ symbol of a value when it doesn't ch
 Thanks to \QPercent, we can identify $\text{Vector}\ 5$ and $\text{Vector}\ \%_\gamma 5$
 and compose code values of functions as we expected.
 
-\subsubsection{Staged Semantics}
+\subsubsection{Staged Semantics.}
 
 The reduction given above is full reduction and any redexes---even
 under quotation---can be reduced in an arbitrary order.
@@ -455,10 +521,10 @@ can appear only under nested quotations (because an escape under a
 single quotation will splice the code value into the surrounding
 code).  See Hanada and Igarashi~\cite{Hanada2014} for details.
 
-In order to define Staged Reduction, we define redex and evaluation context.
+In order to define staged reduction, we define redex and evaluation contexts.
 
 \begin{definition}[Redex]
-    the sets of $\varepsilon$-redexes (ranged over by $R^\varepsilon$) and $\alpha$-redexes (ranged over by $R^\alpha$) are defined by the following grammar.
+    The sets of $\varepsilon$-redexes (ranged over by $R^\varepsilon$) and $\alpha$-redexes (ranged over by $R^\alpha$) are defined by the following grammar.
     \begin{align*}
          & R^\varepsilon ::= (\lambda x:\tau.M)\ v^\varepsilon \mid (\Lambda\alpha.v^\varepsilon)\ \varepsilon \\
          & R^\alpha      ::=\ \TBL_\alpha \TB_\alpha M                                                         \\
@@ -466,28 +532,31 @@ In order to define Staged Reduction, we define redex and evaluation context.
 \end{definition}
 
 \begin{definition}[Evaluation Context]
-    The family of sets $ECtx^A_B$ of evaluation contexts, ranged over by $E^A_B$.
-    In the grammar, $A$ is assumed to be nonempty (but $B,A'$ can be empty).
+  Let $B$ be either \(\varepsilon\) or a transition variable \(\beta\).
+  The family of sets $ECtx^A_B$ of evaluation contexts, ranged over by $E^A_B$, is defined by the following grammar (in which $A'$ stands for a non-empty stage).
+%  $A$ is assumed to be nonempty (but $B,A'$ can be empty).
     \begin{align*}
-         & E^\varepsilon_B \in ECtx^\varepsilon_B ::= \square\ (\text{if\ } B = \varepsilon)
-        \mid E^\varepsilon_B\ M \mid v^e\ E^\varepsilon_B \mid \TB_\alpha E^\alpha_B
-        \mid \Lambda\alpha.E^\varepsilon_B \mid E^\varepsilon_B\ A'                                                                       \\
-         & E^A_B \in ECtx^A_B                     ::= \square\ (\text{if } A = B) \mid \lambda x:\tau.E^A_B \mid E^A_B\ M \mid v^A\ E^A_B \\
-         & \hspace{25mm} \mid E^\varepsilon_B \mid \TB_\alpha E^{A\alpha}_B \mid \TBL_\alpha E^{A'}_B \ (\text{where } A'\alpha = A)      \\
-         & \hspace{25mm} \mid \Lambda\alpha.E^\varepsilon_B \mid E^A_B\ B' \mid \%_\alpha\ E^{A'}_B \ (\text{where } A'\alpha = A)        \\
+         E^\varepsilon_B \in ECtx^\varepsilon_B & ::= \square\ (\text{if\ } B = \varepsilon)
+        \mid E^\varepsilon_B\ M \mid v^\varepsilon\ E^\varepsilon_B \mid \TB_\alpha E^\alpha_B
+        \mid \Lambda\alpha.E^\varepsilon_B \mid E^\varepsilon_B\ A \\
+         E^{A'}_B \in ECtx^{A'}_B  & ::= \square\ (\text{if } A' = B) \mid \lambda x:\tau.E^{A'}_B \mid E^{A'}_B\ M \mid v^{A'}\ E^{A'}_B \\
+         & \mid \TB_\alpha E^{A'\alpha}_B \mid \TBL_\alpha E^{A}_B \ (\text{where } A\alpha = A')      \\
+         & \mid \Lambda\alpha.E^{A'}_B \mid E^{A'}_B\ A \mid \%_\alpha\ E^{A'}_B \ (\text{where } A\alpha = A')
     \end{align*}
 \end{definition}
 \AI{some more explanation of the syntax of evaluation contexts.}
 
-We write $E^A_B[M]$ for the term obtained by filling the hole $\square$ in $E^A_B$ by $M$
-and define the staged reduction relation.
-Intuitively, $\square$ is the placefolder for redex.
-Examples of evaluation context is below.
+The subscripts $A$ and $B$ in $E^A_B$ stand for the stage of the evaluation context and of the hole, respectively.  The grammer represents that staged reduction is left-to-right and call-by-value and terms under \(\Lambda\) is reduced.
+A few examples of evaluation context are shown below:
 \begin{align*}
-     & \square\ (\lambda x:\I.x) \in  ECtx^\varepsilon_\varepsilon            \\
-     & \Lambda\alpha.\square\ \epsilon \in ECtx^\varepsilon_\varepsilon       \\
-     & \TBL_\alpha \TB_\alpha \TBL_\alpha \square \in ECtx^\alpha_\varepsilon
+     \square\ (\lambda x:\I.x) & \in  ECtx^\varepsilon_\varepsilon            \\
+     \Lambda\alpha.\square\ \epsilon & \in ECtx^\varepsilon_\varepsilon       \\
+     \TBL_\alpha \TB_\alpha \TBL_\alpha \square & \in ECtx^\alpha_\varepsilon
 \end{align*}
+%
+We write $E^A_B[M]$ for the term obtained by filling the hole $\square$ in $E^A_B$ by $M$.
+
+Now we define staged reduction using the redex and evaluation contexts.
 
 \begin{definition}[Staged Reduction]
     The staged reduction relation, written $M \longrightarrow_s M'$, is defined by
@@ -499,15 +568,19 @@ Examples of evaluation context is below.
     \end{align*}
 \end{definition}
 
-This reduction relation reduces a typed term in a unique way
-which is appropriate as call-by-value code generator.
-It means that terms in brackets are not evaluated until the terms are run
+This reduction relation represents a term reduces in a deterministic,
+left-to-right, call-by-value manner.  An application of an abstraction
+is executed only at stage \(\varepsilon\) and only a quotation at
+stage \(\varepsilon\) is spiliced into the surrounding code---notice
+that, if \(\TB_\alpha v^\alpha\) is at stage \(\varepsilon\), then the
+redex \(\TBL_\alpha \TB_\alpha v^\alpha\) is at stage \(\alpha\).
+In other words, terms in brackets are not evaluated until the terms are run
 and arguments of a function are evaluated before the application.
 We show an example of staged reduction.
 Underlines show the redexes.
 \begin{align*}
-     & \hspace{9mm} \Lambda\alpha.(\TB_\alpha \underline{\TBL_\alpha \TB_\alpha} (\lambda x:\I.x)\ 10)\ \varepsilon \\
-     & \longrightarrow_s \underline{\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x)\ 10)\ \varepsilon}                   \\
-     & \longrightarrow_s \underline{(\lambda x:\I.x)\ 10}                                                           \\
-     & \longrightarrow_s 10
+     & (\Lambda\alpha.(\TB_\alpha \underline{\TBL_\alpha \TB_\alpha ((\lambda x:\I.x)\ 10))})\ \varepsilon \\
+      \longrightarrow_s & \underline{(\Lambda\alpha.(\TB_\alpha ((\lambda x:\I.x)\ 10)))\ \varepsilon}                   \\
+      \longrightarrow_s & \underline{(\lambda x:\I.x)\ 10}                                                           \\
+      \longrightarrow_s & 10
 \end{align*}
