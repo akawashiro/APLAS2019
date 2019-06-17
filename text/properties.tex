@@ -2,13 +2,7 @@
 
 \section{Properties of \LMD}
 
-In this section, we prove \AI{use ``show'' because we omit proofs from the paper} basic properties of \LMD: preservation, strong normalization, confluence, and progress.
-These theorem shows that the type system of \LMD is strong enough to ensure a typed term of \LMD never go wrong.
-\AI{In this setting, a simple type system is already sufficient to guarantee
-  ``a well-typed term never goes wrong.''  If the language has
-  case analysis that uses dependent types, then
-  we could say more.
-}
+In this section, we show basic properties of \LMD: preservation, strong normalization, confluence, and progress.
 
 % Substitution Lemma
 
@@ -16,48 +10,27 @@ Substitution Lemma in \LMD\ is little more complicated than an ordinary one
 because there are six types of judgment and two types of substitution in \LMD.
 Substitution Lemma on Terms states that term substitution $[z \mapsto P]$ preserves
 typing, kinding, well-formed kinding, term equivalence, type equivalence, and king equivalence.
-Substitution Lemma on Terms states the same for stage substitution $[\beta\mapsto\varepsilon]$.
+Substitution Lemma on Terms states the same for stage substitution $[\beta\mapsto A]$.
+\red{2つの代入補題を指してSubstitution Lemmasということが出来るのか?}
+
+In order to write Substitution Lemma briefly, we write $\G\V J@A$ for an arbitary judgment
+amongst $\G\V M:\tau@A$, $\G\V \tau::K@A$, $\G\V K \iskind @A$, $\G\V M \E N : \tau @ A$, 
+$\G\V \tau \E \sigma @ A$, and $\G \V K \E J @ A$.
 
 \begin{lemma}[Substitution Lemma on Terms]
-	\begin{flalign*}
-		\text{If\ } \G,z:\xi @B \V M:\tau @A \text{\ and\ } \G\V P:\xi @B
-		&\text{\ then\ } \G\V M[z \mapsto P]:\tau[z \mapsto P] @A.&\\
-		\text{If\ } \G,z:\xi @B \V \tau::K @A \text{\ and\ } \G\V P:\xi @B
-		&\text{\ then\ } \G\V \tau[z \mapsto P]::K[z \mapsto P] @A.&\\
-		\text{If\ } \G,z:\xi @B \V K\iskind @A \text{\ and\ } \G\V P:\xi @B
-		&\text{\ then\ } \G\V K[z \mapsto P] \iskind  @A.&\\
-		\text{If\ } \G,z:\xi @B \V M\E N : \tau @A \text{\ and\ } \G\V P:\xi @B
-		&\text{\ then\ } \G\V M[z \mapsto P]\E N[z \mapsto P] : \tau[z \mapsto P] @A.&\\
-		\text{If\ } \G,z:\xi @B \V \tau\E \sigma : K @A \text{\ and\ } \G\V P:\xi @B
-		&\text{\ then\ } \G\V \tau[z \mapsto P]\E \sigma[z \mapsto P] : K[z \mapsto P] @A.&\\
-		\text{If\ } \G,z:\xi @B \V K\E J @A \text{\ and\ } \G\V P:\xi @B
-		&\text{\ then\ } \G\V K[z \mapsto P]\E J[z \mapsto P] @A.&
-	\end{flalign*}
+	If $\G, z:\xi@B, \D \V J @ A$ and $\G\V P:\xi @B$ then $\G, \D[z \mapsto P] \V J[z \mapsto P] @ A$.
 \end{lemma}
 
-\AI{Since the order of variable declarations is significant,
-  we cannot assume $z$ is always declared at the end.}
+\red{TODO: Fix the proof.}
+\red{$\G\V J@A$における代入を定義する必要があるか?}
 
 \begin{proof}
 	Straightforward induction on derivations.
 \end{proof}
 
-\begin{theorem}[Substitution Lemma on Stages]
-	\begin{flalign*}
-		\text{If\ } \G \V M:\tau @A
-		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V M[\beta \mapsto \varepsilon]:\tau[\beta \mapsto \varepsilon] @A[\beta \mapsto \varepsilon].&\\
-		\text{If\ } \G \V \tau::K @A
-		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V \tau[\beta \mapsto \varepsilon]::K[\beta \mapsto \varepsilon] @A[\beta \mapsto \varepsilon].&\\
-		\text{If\ } \G \V K\iskind @A
-		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V K[\beta \mapsto \varepsilon] \iskind @A[\beta \mapsto \varepsilon].&\\
-		\text{If\ } \G \V M\E N : \tau @A
-		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V M[\beta \mapsto \varepsilon]\E N[\beta \mapsto \varepsilon] : \tau[\beta \mapsto \varepsilon]  @A[\beta \mapsto \varepsilon].&\\
-		\text{If\ } \G \V \tau\E \sigma : K @A
-		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V \tau[\beta \mapsto \varepsilon]\E \sigma[\beta \mapsto \varepsilon] : K[\beta \mapsto \varepsilon] @A[\beta \mapsto \varepsilon].&\\
-		\text{If\ } \G \V K\E J @A
-		&\text{\ then\ } \G[\beta \mapsto \varepsilon]\V K[\beta \mapsto \varepsilon]\E J[\beta \mapsto \varepsilon] @A[\beta \mapsto \varepsilon].&
-	\end{flalign*}
-\end{theorem}
+\begin{lemma}[Substitution Lemma on Stages]
+	If $\G \V J @ A$ then $\G[\beta\mapsto B] \V J[\beta\mapsto B] @ A[\beta\mapsto B]$.
+\end{lemma}
 
 \begin{proof}
 	Straightforward induction on derivations.
@@ -67,74 +40,31 @@ Substitution Lemma on Terms states the same for stage substitution $[\beta\mapst
 
 The following three Inversion Lemmas are needed to prove main theorems.
 As usual~\cite{TAPL}, Inversion Lemmas enable us to infer the types of subterms of a term from the type of the term.
-They are composed of three parts.
-The first part states that we can infer types of subterms.
-The second and third parts state 
-that when we have a type equivalence, we can infer the shape of type from the left to the right, and vice versa.
-We need both of the second and the third because of the reflexivity of the type equivalence. \AI{Symmetry?  We can omit the third one.}
 
 \begin{lemma}[Inversion Lemma for $\Pi$-types]
-	If $\G \V (\lambda x:\sigma.M) : (\Pi x:\sigma'.\tau)@A$ then
-	\begin{enumerate}
-		\item $\G \V \sigma \E \sigma'@A$ and
-		\item $\G ,x:\sigma@A\V M:\tau @A$.
-	\end{enumerate}
-	\item If $\G \V \rho \E (\Pi x:\sigma.\tau) : K @A$ then $\exists \sigma', \tau', K, J$ such that
-	\begin{enumerate}
-		\item $\rho = \Pi x:\sigma'.\tau'$,
-		\item $\G \V \sigma \E \sigma' : K @A$, and
-		\item $\G, x:\sigma@A\V \tau \E \tau' : J @A$.
-	\end{enumerate}
-	\item If $\G \V (\Pi x:\sigma.\tau) \E \rho : K @A$ then $\exists \sigma', \tau', K, J$ such that
-	\begin{enumerate}
-		\item $\rho = \Pi x:\sigma'.\tau'$,
-		\item $\G \V \sigma \E \sigma' : K @A$, and
-		\item $\G, x:\sigma@A\V \tau \E \tau' : J @A$.
-	\end{enumerate}
+	If $\G \V (\lambda x:\sigma.M) : (\Pi x:\sigma'.\tau)@A$
+	then $\G \V \sigma \E \sigma'@A$ and $\G ,x:\sigma@A\V M:\tau @A$.
 \end{lemma}
 
 \begin{proof}
-	Straightforward induction on derivations.
+	First, we generalize this theorem by adding statements about $\Pi$-types in equivalence relation in order to use induction.
+	After that, we can prove with straightforward induction on derivations.
 \end{proof}
 
-\begin{theorem}[Inversion Lemma for $\TW$-types]
-	\begin{item}
-	      \item If $\G \V \TB_\alpha M : \TW_\alpha \tau @A$ then $\G \V M : \tau @A$.
-	      \item If $\G \V \rho \E  \TW_\alpha \tau : K @A$ then $\exists \tau', K, J$ such that
-	      \begin{enumerate}
-		      \item $\rho = \TW_\alpha \tau'$ and
-		      \item $\G @A\V \tau \E \tau' : K @A$.
-	      \end{enumerate}
-	      \item If $\G \V \TW_\alpha \tau \E \rho : K @A$ then $\exists \tau', K, J$ such that
-	      \begin{enumerate}
-		      \item $\rho = \TW_\alpha \tau'$ and
-		      \item $\G @A\V \tau \E \tau' : K @A$.
-	      \end{enumerate}
-	\end{item}
-\end{theorem}
+\begin{lemma}[Inversion Lemma for $\TW$-types]
+	If $\G \V \TB_\alpha M : \TW_\alpha \tau @A$ then $\G \V M : \tau @A$.
+\end{lemma}
 
 \begin{proof}
-	Straightforward induction on derivations.
+	Prove as with Inversion Lemma for $\Pi$-types.
 \end{proof}
 
-\begin{theorem}[Inversion Lemma for $\forall$-types]
-	\begin{item}
-	      \item If $\G \V \Lambda\alpha.M : \forall\alpha.\tau @A$ then $\G \V M : \tau @A$ and $\alpha \notin \FTV(\G) \cup \FV(A)$.
-	      \item If $\G \V \rho \E \forall\alpha.\tau : K @A$ then $\exists \tau', K$ such that
-	      \begin{enumerate}
-		      \item $\rho = \forall\alpha.\tau'$ and
-		      \item $\G \V \tau \E \tau' : K @A$.
-	      \end{enumerate}
-	      \item If $\G \V \forall\alpha.\tau \E \rho : K @A$ then $\exists \tau', K$ such that
-	      \begin{enumerate}
-		      \item $\rho = \forall\alpha.\tau'$ and
-		      \item $\G \V \tau \E \tau' : K @A$.
-	      \end{enumerate}
-	\end{item}
-\end{theorem}
+\begin{lemma}[Inversion Lemma for $\forall$-types]
+	If $\G \V \Lambda\alpha.M : \forall\alpha.\tau @A$ then $\G \V M : \tau @A$ and $\alpha \notin \FTV(\G) \cup \FV(A)$.
+\end{lemma}
 
 \begin{proof}
-	Straightforward induction on derivations.
+	Prove as with Inversion Lemma for $\Pi$-types.
 \end{proof}
 
 % Preservation
@@ -188,16 +118,19 @@ Because we have proved Strong Normalization, we can use Newman's Lemma to prove 
 	So, we can reduce one of them after we reduce another.
 \end{proof}
 
-Unique Decomposition ensure that
-,for every typed term, we can find just one redex to reduce by the evaluation context or it is a value.
+Unique Decomposition ensure that,
+for every typed term, we can find just one redex to reduce by the evaluation context or it is a value.
 This theorem is important because it guarantee
 that the evaluation context decides a redex to reduce deterministically.
 Specifically speaking, this theorem guarantee that 
 when you write a interpreter using the evaluation context of \LMD,
 your interpreter works just as intended.
+Although, in ordinary calculi, there is a condition that $\G$ is $\emptyset$,
+the condition is relaxed because variables at non-$\varepsilon$ stages are values in \LMD.
 
 \begin{theorem}[Unique Decomposition]
-	If $x:\tau @\varepsilon \notin \G$ and $\G \V M : \tau @ A$ then either
+	If $\G$ does not have any variable declared at stage $\varepsilon$ 
+	and $\G \V M : \tau @ A$ then either
 	\begin{enumerate}
 		\item $ M \in V^A$, or
 		\item there exist $B, E^A_B$, and $R^B$ such that $M = E^A_B[R^B]$ with $B = \varepsilon$ or $B = \beta$ for some $\beta$.
@@ -214,7 +147,7 @@ Progress states $\longrightarrow_s$ defines appropriate reduction for typed term
 Thanks to Unique Decomposition, we can prove this theorem easily.
 
 \begin{theorem}[Progress]
-	If $x:\tau @\varepsilon \notin \G$ and $\G \V M : \tau  @ A$ then
+	If $\G$ does not have any variable declared at stage $\varepsilon$ and $\G \V M : \tau  @ A$ then
 	$ M \in V^A $ or $M'$ exists such that $M \longrightarrow_s M'$.
 \end{theorem}
 
@@ -223,6 +156,3 @@ Thanks to Unique Decomposition, we can prove this theorem easily.
 	Difficult cases are \TApp, \TTBL, and \TIns.
 	We need Inversion Lemmas for them.
 \end{proof}
-
-\AI{Explain the condition on $\G$.}
-
