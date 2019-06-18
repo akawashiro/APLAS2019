@@ -7,13 +7,12 @@ We designed \LMD, a multi-stage calculus with dependent type.
 we introduced dependent types based on \LTP\cite{attapl}.
 In this section, we check \LMD informally after checking \LTP and \LLF which are the basis of \LMD.
 
-\red{\LTP\cite{Hanada2014}が頻発するが同一論文の複数回引用に何かルールはあるのか?}
-\AI{ないです．たしかにあんまりつけるとうるさいですね．2.1 の冒頭とかは文ごと不要なのでは？}
+% \red{\LTP\cite{Hanada2014}が頻発するが同一論文の複数回引用に何かルールはあるのか?}
+% \AI{ないです．たしかにあんまりつけるとうるさいですね．2.1 の冒頭とかは文ごと不要なのでは？}
 \subsection{\LTP}
 
 % quote and unquote
 
-\LTP\cite{Hanada2014} is a multi-stage calculus with CSP by Hanada and Igarashi.
 In \LTP, brackets and escape are written $\TB_\alpha M$ and $\TBL_\alpha M$, respectively.
 The type of $\TB_\alpha M$ is $\TW_\alpha \tau$ if $M$ has type $\tau$.
 The type of $\TBL_\alpha M$ is $\tau$ if $M$ has $\TW_\alpha \tau$.
@@ -26,64 +25,66 @@ It means escape cancels brackets.
 % This reduction is called $\longrightarrow_\Lambda$ in \LMD.
 % \red{この文はここに来るべきなのか? LTPの説明ではないが}
 
-% transition variable and transition
+% stage variable and stage
 
-The subscript $\alpha$ in $\TB_\alpha M$ is a \textit{transition variable} and
-a sequence of transition variables is called \textit{transition}.
-The empty transition is represented by $\varepsilon$.
+The subscript $\alpha$ in $\TB_\alpha M$ is a \textit{stage variable}
+\footnote{In the original \LTP paper, this is called a \textit{transition variable}. 
+However, we call it a \textit{stage variable} in this paper.} and
+a sequence of stage variables is called \textit{stage}.
+The empty stage is represented by $\varepsilon$.
 They are used to show the thickness of brackets. \AI{Perhaps ``thickness'' doesn't make sense.}
 For example, $\TB_\alpha (\lambda x:\I.x+10)$ is the fragment of code which becomes $(\lambda x:\I.x+10)$ after it was run once and
 $\TB_\alpha \TB_\beta (\lambda x:\I.x+10)$, which is abbreviated as $\TB_{\alpha\beta} (\lambda x:\I.x+10)$,
 becomes $(\lambda x:\I.x+10)$ after it was run it twice.
 \red{run twiceは表現が微妙}
 
-% transition abstraction and application
+% stage abstraction and application
 
-There are abstractions for transition variables and applications for transition abstraction in \LTP.
+There are abstractions for stage variables and applications for stage abstraction in \LTP.
 They look like $\Lambda\alpha.M$ and $M A$, respectively.
-A transition abstraction binds a transition variable in a term.
+A stage abstraction binds a stage variable in a term.
 For example, all $\alpha$ in $\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x))$ are bound.
-It is only natural \AI{?} there is a reduction rule for transition application in \LTP.
+There is a reduction rule for stage application in \LTP.
 The rule is the following.
 \begin{align*}
 	(\Lambda\alpha.M)\ A \longrightarrow M[\alpha\mapsto A]
 \end{align*}
 For example, $\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x))\ (\beta\gamma)$ reduces to $\TB_{\beta\gamma} (\lambda x:\I.x)$.
 
-% transition-related symbols disappear when the empty transition is substituted.
+% stage-related symbols disappear when the empty stage is substituted.
 % In short, about "run"
 
-Another important rule about a transition variable is 
-that symbols with transition variables disappear 
-when the empty transition $\varepsilon$ is substituted to the transition variable.
+Another important rule about a stage variable is 
+that symbols with stage variables disappear 
+when the empty stage $\varepsilon$ is substituted to the stage variable.
 The purpose of this rule is express \verb|run| without any special symbol.
 In multi-stage calculus, \verb|run| is a very important operator which changes quoted code to the original code.
 For example, $(\TB_\varepsilon (\lambda x:\I.x))$ is equivalent to $(\lambda x:\I.x)$.
 Therefore, $\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x))\ \varepsilon$ becomes $\lambda x:\I.x$
-In \LTP, \verb|run| is realized with application to the empty transition $\varepsilon$.
+In \LTP, \verb|run| is realized with application to the empty stage $\varepsilon$.
 
-% transition in typing rules
+% stage in typing rules
 
 A type judgement of \LTP is of the form $\G \vdash M : \tau @ A$.
-A transition in a judgement represents where the judgement is true.
+A stage in a judgement represents where the judgement is true.
 For example, $\G \vdash (\lambda x:\I.x) : \I \to \I @ \alpha$ means 
-term $\lambda x:\I.x$ has type $\I \to \I$ at transition $\alpha$.
-Especially, terms without quoting exist at the empty transition $\varepsilon$.
-For example, $(\lambda x:\I.x)\ (1+2)$ is at $\varepsilon$ transition and 
-$\TB_\alpha (\lambda x:\I.x)$ is at $\alpha$ transition.
-Terefore, transitions appear in typing rules, too.
+term $\lambda x:\I.x$ has type $\I \to \I$ at stage $\alpha$.
+Especially, terms without quoting exist at the empty stage $\varepsilon$.
+For example, $(\lambda x:\I.x)\ (1+2)$ is at $\varepsilon$ stage and 
+$\TB_\alpha (\lambda x:\I.x)$ is at $\alpha$ stage.
+Terefore, stages appear in typing rules, too.
 \begin{center}
 	\infrule{\G\vdash M:\tau @{A\alpha}}{\G\vdash \TB_{\alpha}M:\TW_{\alpha}\tau @A}{\TTB} \andalso
 	\infrule{\G\vdash M:\TW_{\alpha}\tau @A}{\G\vdash \TBL_{\alpha}M:\tau @{A\alpha}}{\TTBL}
 \end{center}
 \TTB, corresponding to brackets, means 
-if $M$ is typed $\tau$ at transition $A\alpha$ then $\TB_{\alpha}M$, quoted $M$, is typed $\TW_{\alpha}\tau$ at $A$.
+if $M$ is typed $\tau$ at stage $A\alpha$ then $\TB_{\alpha}M$, quoted $M$, is typed $\TW_{\alpha}\tau$ at $A$.
 \TTBL\ is converse of \TTB.
 
 % CSP
 
 CSP, cross-stage persistence, is an important feature of \LTP.
-It enables us to embed value at an outer transition into an inner transition.
+It enables us to embed value at an outer stage into an inner stage.
 $\%$ is dedicated to CSP in \LTP.
 \AI{What should me mentioned here is that in MetaOCaml CSP is implicit but
 in \LTP it's explicit.}
@@ -132,9 +133,6 @@ $\G \vdash K \E J$ means a kind $K$ and a kind $J$ are equivalent under the envi
 \subsection{Extending \LTP with Dependent Types}
 
 Next, we develop \LMD by extending \LTP with \LLF-like dependent types.
-From here, we use the word "stage" instead of "transition" 
-because we develop a multi-stage calculus, not a multi-transition calculus.
-\red{stageのほうが言葉としてふさわしいと言いたい}
 There are three technical points in the extension from \LTP to \LMD.
 
 % Constants and Base Types
