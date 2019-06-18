@@ -85,9 +85,8 @@ if $M$ is typed $\tau$ at stage $A\alpha$ then $\TB_{\alpha}M$, quoted $M$, is t
 
 CSP, cross-stage persistence, is an important feature of \LTP.
 It enables us to embed value at an outer stage into an inner stage.
-$\%$ is dedicated to CSP in \LTP.
-\AI{What should me mentioned here is that in MetaOCaml CSP is implicit but
-in \LTP it's explicit.}
+In \LTP, CSP is written explicitly and $\%$ is a symbol dedicated to CSP
+although MetaOCaml CSP is implicit and there is no symbol for CSP.
 For example, $\lambda a:\I.\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x+\%_\alpha a))$
 \red{inner / outer は適切か?}
 \AI{What is \(a\)?}
@@ -111,19 +110,19 @@ It is based on Edinburgh LF\cite{harper1993framework}.
 \AI{Can you remind me of differences between Edinburgh LF and \LLF?}
 Therefore, \AI{``Therefore'' is used to show a logical consequence.} all constants and base types are declared in the signature.
 The \LLF type theory generalizes simply typed lambda calculus
-by replacing the function type $\tau\to\sigma$ with the dependent product type $\Pi x:\tau.\sigma$.  \AI{``dependent product'' vs. ``dependent function''.}
+by replacing the function type $\tau\to\sigma$ with the dependent function type $\Pi x:\tau.\sigma$.
 
 % Kind, Well-formed kind
 In addition to ordinary typing rules like simply typed lambda calculus,
 there are kinding rules, well-formed kinding rules, term equivalence rules, type equivalence rules, and kind equivalence rules in \LLF.
 Kinding rules and well-formed kinding rules are 
-introduced in order to prohibit making illegal types such as $\textrm{Vect}\ \textrm{Bool}$.  \AI{Vect\ true may be a better example?}
+introduced in order to prohibit making illegal types such as $\textrm{Vector}\ \textrm{true}$.
 For a well-formed type $\tau$, $\G \vdash \tau :: K$ means that $\tau$ has a kind $K$ under the environment $\G$ and 
 for a well-formed kind $K$, $\G \vdash K$ means that $K$ is a well-formed kind under an environment $\G$.
 
 % Type Equality
 Type equality rules are needed because the type equivalence is not obvious unlike simply typed lambda calculus.
-For example, $\textrm{Vect}\ 7$ should be equivalent to $\textrm{Vect}\ (3+4)$
+For example, $\textrm{Vector}\ 7$ should be equivalent to $\textrm{Vector}\ (3+4)$
 but they are not equivalent seemingly. Thus, we must define equivalence rules.
 In \LLF, equivalence is expressed with a symbol of $\E$.
 $\G \vdash M \E N$ means a term $M$ and a term $N$ are equivalent under the environment $\G$.
