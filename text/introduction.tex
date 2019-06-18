@@ -71,12 +71,13 @@ This problem is serious but existing type systems for multi-stage calculi cannot
 
 \AI{このイントロ、各段落はまあまあよいのですが、全体の流れが、ふたつ目の文から MetaOCaml という特定の多段階プログラミング言語の話をして、それから応用と問題点の話になりますが、ここが多段階プログラミング一般の話なのか MetaOCaml 固有の話なのかがぶれているように思います。まずは、多段階プログラミング一般の話を応用も含めてする。(他の多段階計算ができるシステムを無視しない。)それから、MetaOCaml の紹介と、その型システムの問題点の話をすべきでしょう。MetaOCaml の型システムでできることもふれておいた方がよいでしょう。}
 
-\subsection{Dependent Types}
+\subsection{Multi-stage Programming with Dependent Types}
 
-% \subsubsection{依存型とは何か?}
+% 依存型とは何か?
 
-Dependent types are types which is \AI{are} dependent on values.
-We can use dependent types for securer programming. \AI{Cite Xi--Pfenning, for example?}
+One natural idea to address this problem is the introduction of dependent types.
+Dependent types are types which are dependent on values.
+We can use dependent types for securer programming like Xi and Pfenning \cite{Xi98}.
 For example, we can realize vectors with their sizes with them.
 \begin{verbatim}
         Vector :: Int -> *
@@ -85,13 +86,7 @@ For example, we can realize vectors with their sizes with them.
 \verb|Vector 3| is a type for vectors whose lengths are 3.
 If \verb|vadd| function has the type of \verb|Vector n -> Vector n -> Vector n| for any positive number \verb|n|,
 we can confirm the two arguments of \verb|vadd| function has the same length.
-\red{secure programming? finer grained typing? とか}
-
-\subsection{Multi-stage Programming with Dependent Types}
-\red{このsubsectionは短いので上とくっつけてもいいかもしれない}
-\AI{くっつけましょう。Section 1 で指摘した問題を依存型で解決するというのは自然なアイデアだし。One natural idea to address this problem is the introduction of dependent types. みたいなこといって、依存型の導入をする。先行研究として Brady--Hammond にもふれる。}
-% \subsubsection{「生成した行列計算のコードは特定のサイズに特化しており、他のサイズでは使えない。
-% このため、間違って組み合わせると容易にエラーを引き起こす。」問題を依存型で解決する。}
+% \red{secure programming? finer grained typing? とか}
 
 As we pointed out in the above section,
 functions optimized with multi-stage programming can take only restricted values as arguments.
@@ -102,9 +97,14 @@ so that the type system can guarantee optimized functions are used properly.
 In this paper, we design a new multi-stage calculus \LMD by 
 merging dependent types into existing multi-stage calculus \LTP\cite{Hanada2014}.
 \LMD is multi-stage calculus which contains dependent types.
-\LMD makes multi-stage programming more safer \AI{remove ``more''} with the power of dependent types.
-
-\AI{Give a summary of our technical contribution as itemization.}
+\LMD makes multi-stage programming safer with the power of dependent types.
+Our technical contribution are summarized as follows:
+\begin{itemize}
+        \item we give the formal definition of \LMD with its syntax, 
+        type system which contains type equivalence, full, reduction, and staged reduction;
+        \item for the full reduction, we prove subject reduction, strong normalization, and confluence
+        \item fot the staged reduction, we prove unique decomposition and progress.
+\end{itemize}
 
 \subsection{Organization of the Paper}
 
