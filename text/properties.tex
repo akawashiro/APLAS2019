@@ -122,8 +122,19 @@ Since we have proved Strong Normalization, we can use Newman's Lemma~\cite{} to 
 	% So, we can reduce one of them after we reduce another.
 \end{proof}
 
-Now, we turn our attention to proving Progress for staged semantics.
-The following lemma Unique Decomposition ensures that, every typed
+Now, we turn our attention to staged semantics.  First, the staged
+reduction relation is a subrelation of full reduction, so Subject
+Reduction holds also for the staged reduction.
+
+\begin{theorem}
+  If $M \longrightarrow_s M'$, then $M \longrightarrow M'$.
+\end{theorem}
+\begin{proof}
+  Easy.
+ \qed
+\end{proof}
+
+The following theorem Unique Decomposition ensures that, every typed
 term is either a value or can be uniquely decomposed to an evaluation
 context and a redex, ensuring that a well typed term is not
 immediately stuck and the staged semantics is deterministic.
@@ -133,19 +144,19 @@ immediately stuck and the staged semantics is deterministic.
   and $\G \V M : \tau @ A$, then either
   \begin{enumerate}
   \item $ M \in V^A$, or
-  \item there uniquely exist $B, E^A_B$, and $R^B$ such that $M = E^A_B[R^B]$.
+  \item $M$ can be uniquely decomposed into an evaluation context and a redex, that is, there uniquely exist $B, E^A_B$, and $R^B$ such that $M = E^A_B[R^B]$.
   \end{enumerate}
 \end{theorem}
 
 \begin{proof}
   We can prove by straightforward induction on typing derivations.
-  Main cases are \TApp, \TTBL, and \TIns.
-  We need Inversion Lemmas for them.
+  Main cases are \TApp, \TTBL, and \TIns, where we use Inversion.
+  \qed
 \end{proof}
 
-In a usual setting, the type environment $\G$ has to be empty, namely
-the term has to be closed.  The condition is relaxed here because
-variables at stages higher than \(\varepsilon\) are considered
+The type environment $\G$ in the statement usually has to be empty;
+in other words, the term has to be closed.  The condition is relaxed here
+because variables at stages higher than \(\varepsilon\) are considered
 symbols.  In fact, this relaxation is required for proof by induction
 to work.
 
@@ -158,7 +169,7 @@ to work.
 Progress is a collorary of Unique Decomposition.
 
 \begin{corollary}[Progress]
-	If $\G$ does not have any variable declared at stage $\varepsilon$ and $\G \V M : \tau  @ A$ then
+	If $\G$ does not have any variable declared at stage $\varepsilon$ and $\G \V M : \tau  @ A$, then
 	$ M \in V^A $ or $M'$ exists such that $M \longrightarrow_s M'$.
 \end{corollary}
 
