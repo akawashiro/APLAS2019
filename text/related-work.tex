@@ -2,46 +2,19 @@
 
 \section{Related Work}
 
-\AI{歴史をふりかえる部分もあってもいいけど，本論文との「関連」も議論す
-  る必要あり．特に Brady--Hammond との比較は必須．あと，例えば他の MSP
-  体系に依存型を入れるとしたらどうなりそうかの見込みを議論するとか． }
-
-% 依存型の歴史
-
-There are many papers on dependent types and most of them are affected by the pioneering work of Per Martin-L\"{o}f. \AI{citation?}
-$\lambda^\Pi$\cite{Meyer1986}, Calculus of Constructions\cite{coquand:inria-00076024}, 
-and Harper, Honsell and Plotkin\cite{harper1993framework} are famous papers on dependent types.
-In Advanced Topics in Types and Programming Languages\cite{attapl},
-a dependent type system \LLF is designed with the basis of \cite{harper1993framework}.
-We adopted \cite{attapl}-like dependent types for \LMD.
-
-One can use dependent types in programming languages such as Idris\cite{brady2013idris} or
-interactive theorem provers such as Coq\cite{09thecoq} which based on \cite{coquand:inria-00076024}.
-\red{この段落要らない or 後ろとくっつけたほうが良いかも知れない?}
-
-% 依存型の応用
-
-Applications of dependent types for real problems were also researched.
-In Xi and Pfenning\cite{Xi98}, they extended SML with restricted dependent types
-and succeeded in reducing the bounds checking of arrays.
-In Xi and Robert\cite{xi2001dependently}, they design a type system for an assembly language and
-it is useful for spped up.
-Xi also gave dead code elimination and loop unrolling as examples of dependent types application in \cite{xi1999dependent}.
-
 % 多段階計算の歴史
 
-\red{Besides,} multi-stage calculi also have a long history of research.
-Davis revealed there is Curry-Howard correspondence between a multi-stage calculus and modal logic in $\lambda^\circ$\cite{davies1996temporal}.
+Multi-stage calculi also have a long history of research.
+Davis revealed there is Curry-Howard correspondence between a multi-stage calculus and modal logic in $\lambda^\circ$ \cite{davies1996temporal}.
 However, $\lambda^\circ$ don't have operators for run and CSP.
-\red{runはboldか? Besidesより適切な接続詞はないのか?}
 Benaissa, et al. \cite{benaissa1999logical} study the relationship between multi-stage calculus and category theory or modal logic.
 Taha and Sheard introduced run and CSP to a multi-stage calculus in \cite{MetaML}.
-Additionally, Taha and Nielsen invented the concept of environment classifiers in $\lambda^\alpha$\cite{taha2003environment} and 
+Additionally, Taha and Nielsen invented the concept of environment classifiers in $\lambda^\alpha$ \cite{taha2003environment} and 
 construct the type system for $\lambda^\alpha$, which can handle quoting, unquoting, run, and CSP.
 
-In $\lambda^\TW$\cite{Tsukada}, Tsukada and Igarashi found modal logic which corresponds to a multi-stage calculus with environment classifiers and
+In $\lambda^\TW$ \cite{Tsukada}, Tsukada and Igarashi found modal logic which corresponds to a multi-stage calculus with environment classifiers and
 show that run can be represented as application of $\varepsilon$ to transition abstractions.
-In \LTP\cite{Hanada2014}, Hanada and Igarashi extended $\lambda^\TW$ with CSP and discuss code residualization 
+In \LTP \cite{Hanada2014}, Hanada and Igarashi extended $\lambda^\TW$ with CSP and discuss code residualization 
 which allows us to dump the quoted code into an external file.
 
 % 他段階計算の機能拡張
@@ -56,3 +29,36 @@ MetaOCaml is a programming language with quoting, unquoting, run, and CSP.
 Oleg gave many examples of application of MetaOCaml in \cite{8384206}, 
 which include filtering in signal processing, matrix-vector product, and DSL compiler.
 
+% 依存型の歴史
+
+There are many papers on dependent types and most of them are affected by the pioneering work of Per Martin-L\"{o}f \cite{martin1973intuitionstic}.
+$\lambda^\Pi$ \cite{Meyer1986}, Calculus of Constructions \cite{coquand:inria-00076024}, 
+and Harper, Honsell and Plotkin \cite{harper1993framework} are famous papers on dependent types.
+In Advanced Topics in Types and Programming Languages \cite{attapl},
+a dependent type system \LLF is designed with the basis of \cite{harper1993framework}.
+We adopted \cite{attapl}-like dependent types for \LMD.
+
+% 依存型の応用
+
+Applications of dependent types for real problems were also researched.
+One can use dependent types in programming languages such as Idris\cite{brady2013idris} or
+interactive theorem provers such as Coq\cite{09thecoq} which based on \cite{coquand:inria-00076024}.
+In Xi and Pfenning \cite{Xi98}, they extended SML with restricted dependent types
+and succeeded in reducing the bounds checking of arrays.
+In Xi and Robert \cite{xi2001dependently}, they design a type system for an assembly language and
+it is useful for spped up.
+Xi also gave dead code elimination and loop unrolling as examples of dependent types application in \cite{xi1999dependent}.
+
+% 関連研究との比較
+
+Brady and Hammond \cite{brady2006dependently} extended a dependent type system 
+with Taha's staging technique \cite{taha2007gentle} in order to implement a staged interpreter.
+However, they focused on implementation and there is no theoritical discussion in their paper.
+
+% 他の方法としてどのようなものが考えられたか
+
+Although we define type equivalence of \LMD with composition of equivalence rules,
+there is another candiate to define,
+which gives reduction on types and compare the results of reduction such as \cite{sorensen2006lectures}.
+This method is better than one of \LMD because equivalence rules become simple.
+However, we reject it because it cannot handle CSP flexibly.
