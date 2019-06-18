@@ -2,75 +2,78 @@
 
 \section{Properties of \LMD \label{sec:properties}}
 
-In this section, we show basic properties of \LMD: preservation, strong normalization, confluence, and progress.
+In this section, we show basic properties of \LMD: preservation, strong normalization, confluence for full reduction, and progress for staged reduction.
 
 % Substitution Lemma
 
-Substitution Lemma in \LMD\ is little more complicated than an ordinary one 
-because there are six types of judgment and two types of substitution in \LMD.
-Substitution Lemma on Terms states that term substitution $[z \mapsto P]$ preserves
-typing, kinding, well-formed kinding, term equivalence, type equivalence, and king equivalence.
-Substitution Lemma on Terms states the same for stage substitution $[\beta\mapsto A]$.
-\red{2つの代入補題を指してSubstitution Lemmasということが出来るのか?}
+Substitution Lemma in \LMD{} is little more complicated than usual
+because there are eight judgment forms and two kinds of substitution.
+Term Substitution Lemma states that term substitution $[z \mapsto M]$
+preserves derivability of judgments and Stage Substitution Lemma
+states similarly for stage substitution $[\alpha\mapsto A]$.
 
-In order to write Substitution Lemma briefly, we write $\G\V J@A$ for an arbitary judgment
-amongst $\G\V M:\tau@A$, $\G\V \tau::K@A$, $\G\V K \iskind @A$, $\G\V M \E N : \tau @ A$, 
-$\G\V \tau \E \sigma @ A$, and $\G \V K \E J @ A$.
+We let $\mathcal{J}$ stand for judgments $K \iskind @A$, $\tau::K@A$,
+$M:\tau@A$, $K \E J @ A$, $\tau \E \sigma @ A$, and
+$M \E N : \tau @ A$.  Substitutions $\mathcal{J}[z \mapsto M]$ and
+$\mathcal{J}[\alpha \mapsto A]$ are defined in a straightforward
+manner.  Using these notations, the two substitution lemmas are stated as follows:
+\AI{Did we define $\Delta [x \mapsto N]$?}
 
-\begin{lemma}[Substitution Lemma on Terms]
-	If $\G, z:\xi@B, \D \V J @ A$ and $\G\V P:\xi @B$ then $\G, \D[z \mapsto P] \V J[z \mapsto P] @ A$.
+\begin{lemma}[Term Substitution]
+  If $\G, z:\xi@B, \D \V \mathcal{J}$ and $\G\V P:\xi @B$, then $\G, \D[z \mapsto P] \V \mathcal{J}[z \mapsto P]$.  Similarly, if $\V \G, z:\xi@B, \D$ and
+  $\G\V P:\xi @B$, then $\V \G, \D[z \mapsto P]$.
 \end{lemma}
 
 \red{TODO: Fix the proof.}
 \red{$\G\V J@A$における代入を定義する必要があるか?}
 
 \begin{proof}
-	Straightforward induction on derivations.
+  By simultaneous induction on derivations.
+ \qed
 \end{proof}
 
-\begin{lemma}[Substitution Lemma on Stages]
-	If $\G \V J @ A$ then $\G[\beta\mapsto B] \V J[\beta\mapsto B] @ A[\beta\mapsto B]$.
+\begin{lemma}[Stage Substitution]
+	If $\G \V \mathcal{J}$, then $\G[\beta\mapsto B] \V \mathcal{J}[\beta\mapsto B]$.  Similarly, if $\G \V \mathcal{J}$, then $\V \G[\beta\mapsto B]$.
 \end{lemma}
 
 \begin{proof}
-	Straightforward induction on derivations.
+  By simultaneous induction on derivations.
+  \qed
 \end{proof}
 
 % Inversion Lemma
 
-The following three Inversion Lemmas are needed to prove main theorems.
-As usual~\cite{TAPL}, Inversion Lemmas enable us to infer the types of subterms of a term from the type of the term.
+The following Inversion Lemma is needed to prove main theorems.
+As usual~\cite{TAPL}, Inversion Lemma enables us to infer the types of subterms of a term from the type of the term.
 
-\begin{lemma}[Inversion Lemma for $\Pi$-types]
-	If $\G \V (\lambda x:\sigma.M) : (\Pi x:\sigma'.\tau)@A$
-	then $\G \V \sigma \E \sigma'@A$ and $\G ,x:\sigma@A\V M:\tau @A$.
+\begin{lemma}[Inversion]\ 
+  \begin{enumerate}
+  \item If $\G \V (\lambda x:\sigma.M) : (\Pi x:\sigma'.\tau)@A$,
+    then $\G \V \sigma \E \sigma'@A$ and $\G ,x:\sigma@A\V M:\tau @A$.
+  \item If $\G \V \TB_\alpha M : \TW_\alpha \tau @A$ then $\G \V M : \tau @A$.
+  \item If $\G \V \Lambda\alpha.M : \forall\alpha.\tau @A$ then $\G \V M : \tau @A$ and $\alpha \notin \FTV(\G) \cup \FV(A)$.
+  \end{enumerate}
 \end{lemma}
 
 \begin{proof}
-	First, we generalize this theorem by adding statements about $\Pi$-types in equivalence relation in order to use induction.
-	After that, we can prove with straightforward induction on derivations.
+  Each item is strengthen by statements about type equivalence.
+  For example, the first statement is augmented by
+  \begin{quotation}
+    If $\G \V \rho \E (\Pi x:\sigma.\tau) : K @A$, then there exist
+    $\sigma'$ and $\tau'$ such that $\rho = \Pi x:\sigma'.\tau'$ and
+    $\G \V \sigma \E \sigma' : K @A$ and
+    $\G, x:\sigma@A\V \tau \E \tau' : J @A$.
+  \end{quotation}
+  and its symmetric version.  Then, they are proved simultaneously by induction on derivations.
+
+  Similarly for the others.
+ \qed
 \end{proof}
 
-\begin{lemma}[Inversion Lemma for $\TW$-types]
-	If $\G \V \TB_\alpha M : \TW_\alpha \tau @A$ then $\G \V M : \tau @A$.
-\end{lemma}
-
-\begin{proof}
-	Prove as with Inversion Lemma for $\Pi$-types.
-\end{proof}
-
-\begin{lemma}[Inversion Lemma for $\forall$-types]
-	If $\G \V \Lambda\alpha.M : \forall\alpha.\tau @A$ then $\G \V M : \tau @A$ and $\alpha \notin \FTV(\G) \cup \FV(A)$.
-\end{lemma}
-
-\begin{proof}
-	Prove as with Inversion Lemma for $\Pi$-types.
-\end{proof}
 
 % Preservation
 
 Thanks to Substitution Lemmas and Inversion Lemmas, we can prove Preservation easily.
-Preservations ensure that any one step reduction preserves type.
 
 \begin{theorem}[Preservation]
 	If $\G\V M:\tau @A$ and $M \longrightarrow M'$, then $\G\V M':\tau @A$.
@@ -79,30 +82,30 @@ Preservations ensure that any one step reduction preserves type.
 \begin{proof}
 	First, there are three cases for $M \longrightarrow M'$.
 	They are $M \longrightarrow_\beta M'$, $M \longrightarrow_\Lambda M'$, and $M \longrightarrow_\blacklozenge M'$.
-	For each case, we can use straightforward induction on derivations.
+	For each case, we can use straightforward induction on derivations. \AI{何の derivation?}
 	Difficult cases are \TApp, \TTBL, and \TIns.
 	We need Inversion Lemmas for them.
 \end{proof}
 
 % Strong Normalization
 
-Strong Normalization is also important property which guarantee that
+Strong Normalization is also an important property, which guarantees that
 no typed term has an infinite reduction sequence.
-We prove this thorem by translating \LMD to the symply typed lambda calculus.
+We prove this thorem by translating \LMD to the symply typed lambda calculus~\cite{Tsukada} \AI{what is a standard citation for a proof of SN of a dependently typed calculus?}.
 
 \begin{theorem}[Strong Normalization]
-	If $\G\V^A M:\tau$ then there is no infinite sequence of terms $(M_i)_{i\ge1}$ and 
+	If $\G\V M_1:\tau@A$ then there is no infinite sequence $(M_i)_{i\ge1}$ of terms such that
 	$M_i \longrightarrow M_{i+1}$ for $i\ge 1$.
 \end{theorem}
 
 \begin{proof}
-	In order prove this theorem, we define a translation $\natural$ from \LMD\ to the symply typed lambda calculus.
-	Second, we prove $\natural$ preserves typing and $\beta$-reductions.
-	Then, we can prove Strong Normalization of \LMD\ from Strong Normalization of the symply typed lambda calculus.
+	In order to prove this theorem, we define a translation $(\cdot)^\natural$ from \LMD\ to the symply typed lambda calculus.
+	Second, we prove the $\natural$-translation preserves typing and reduction.
+	Then, we can prove Strong Normalization of \LMD from Strong Normalization of the symply typed lambda calculus.
 \end{proof}
 
 Confluence is a property that any reduction sequences from one typed term converge.
-Because we have proved Strong Normalization, we can use Newman's Lemma to prove Confluence.
+Since we have proved Strong Normalization, we can use Newman's Lemma~\cite{} to prove Confluence.
 
 \begin{theorem}[Confluence]
 	For any term $M$, if $M \longrightarrow^* M'$ and $M \longrightarrow^* M''$ then
@@ -110,49 +113,63 @@ Because we have proved Strong Normalization, we can use Newman's Lemma to prove 
 \end{theorem}
 
 \begin{proof}
-	Because we proved Strong Normalization of \LMD, 
-	we can use Newman's lemma to prove Confluence of \LMD.
-	Then, what we must show is Weak Church-Rosser Property now.
-	When we consider two different redexes in a \LMD term, they can only be disjoint, or one is a part of the other.
-	In short, they are never overlapped each other.
-	So, we can reduce one of them after we reduce another.
+  We can easily show Weak Church-Rosser.  Use Newman's Lemma.
+	% Because we proved Strong Normalization of \LMD, 
+	% we can use Newman's lemma to prove Confluence of \LMD.
+	% Then, what we must show is Weak Church-Rosser Property now.
+	% When we consider two different redexes in a \LMD term, they can only be disjoint, or one is a part of the other.
+	% In short, they are never overlapped each other.
+	% So, we can reduce one of them after we reduce another.
 \end{proof}
 
-Unique Decomposition ensure that,
-for every typed term, we can find just one redex to reduce by the evaluation context or it is a value.
-This theorem is important because it guarantee
-that the evaluation context decides a redex to reduce deterministically.
-Specifically speaking, this theorem guarantee that 
-when you write a interpreter using the evaluation context of \LMD,
-your interpreter works just as intended.
-Although, in ordinary calculi, there is a condition that $\G$ is $\emptyset$,
-the condition is relaxed because variables at non-$\varepsilon$ stages are values in \LMD.
+Now, we turn our attention to staged semantics.  First, the staged
+reduction relation is a subrelation of full reduction, so Subject
+Reduction holds also for the staged reduction.
+
+\begin{theorem}
+  If $M \longrightarrow_s M'$, then $M \longrightarrow M'$.
+\end{theorem}
+\begin{proof}
+  Easy.
+ \qed
+\end{proof}
+
+The following theorem Unique Decomposition ensures that, every typed
+term is either a value or can be uniquely decomposed to an evaluation
+context and a redex, ensuring that a well typed term is not
+immediately stuck and the staged semantics is deterministic.
 
 \begin{theorem}[Unique Decomposition]
-	If $\G$ does not have any variable declared at stage $\varepsilon$ 
-	and $\G \V M : \tau @ A$ then either
-	\begin{enumerate}
-		\item $ M \in V^A$, or
-		\item there exist $B, E^A_B$, and $R^B$ such that $M = E^A_B[R^B]$ with $B = \varepsilon$ or $B = \beta$ for some $\beta$.
-	\end{enumerate}
+  If $\G$ does not have any variable declared at stage $\varepsilon$ 
+  and $\G \V M : \tau @ A$, then either
+  \begin{enumerate}
+  \item $ M \in V^A$, or
+  \item $M$ can be uniquely decomposed into an evaluation context and a redex, that is, there uniquely exist $B, E^A_B$, and $R^B$ such that $M = E^A_B[R^B]$.
+  \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-	We can prove by straightforward induction on derivations.
-	Difficult cases are \TApp, \TTBL, and \TIns.
-	We need Inversion Lemmas for them.
+  We can prove by straightforward induction on typing derivations.
+  Main cases are \TApp, \TTBL, and \TIns, where we use Inversion.
+  \qed
 \end{proof}
 
-Progress states $\longrightarrow_s$ defines appropriate reduction for typed terms of \LMD.
-Thanks to Unique Decomposition, we can prove this theorem easily.
+The type environment $\G$ in the statement usually has to be empty;
+in other words, the term has to be closed.  The condition is relaxed here
+because variables at stages higher than \(\varepsilon\) are considered
+symbols.  In fact, this relaxation is required for proof by induction
+to work.
 
-\begin{theorem}[Progress]
-	If $\G$ does not have any variable declared at stage $\varepsilon$ and $\G \V M : \tau  @ A$ then
+% This theorem is important because it guarantees
+% that the evaluation context decides a redex to reduce deterministically.
+% Specifically speaking, this theorem guarantee that 
+% when you write a interpreter using the evaluation context of \LMD,
+% your interpreter works just as intended.
+      
+Progress is a collorary of Unique Decomposition.
+
+\begin{corollary}[Progress]
+	If $\G$ does not have any variable declared at stage $\varepsilon$ and $\G \V M : \tau  @ A$, then
 	$ M \in V^A $ or $M'$ exists such that $M \longrightarrow_s M'$.
-\end{theorem}
+\end{corollary}
 
-\begin{proof}
-	We can prove by straightforward induction on derivations.
-	Difficult cases are \TApp, \TTBL, and \TIns.
-	We need Inversion Lemmas for them.
-\end{proof}
