@@ -6,8 +6,13 @@
 
 % \subsubsection{多段階計算とは何か?}
 
-Multi-stage programming enables us to generate and run fragments of code at runtime.  \AI{It sounds like the subject of ``generate and run'' is human being (``us'').  Something like ``Multi-stage programming offers linguistic support for dynamic code generation and execution.''?}
-MetaOCaml~\cite{oleg2014} \AI{You need a space between a word and a citation.  Taha's original MetaOCaml should be cited, too.} provides features for multi-stage programming, which are brackets, escape, and run.  \AI{CSP?}
+Multi-stage programming enables programmers to generate and run fragments of code at runtime.
+We can treat a piece of code as a value with multi-stage programming.
+It means code fragments can be substituted into variables, combined and run at runtime.
+Multi-stage programming improves the performance of programs by generating optimized code for a given input at runtime. \cite{taha2007gentle}
+% MetaOCamlを例に挙げて多段階計算について説明する
+
+MetaOCaml~\cite{calcagno2003implementing}\cite{oleg2014} provides features for multi-stage programming, which are brackets, escape, run, and CSP.
 Brackets, written \verb|.< e >.| in MetaOCaml, makes a code value from \verb|e|.
 Run, written \verb| run e | in MetaOCaml, runs a code value of \verb|e| and restore \verb|e|.
 Escape, written \verb| .~ e | in MetaOCaml, expands a code value of \verb|e|.
@@ -15,11 +20,11 @@ Unlike run, escape is supposed to use in a fragment of code, that is, escape can
 For example, the following MetaOCaml expression
 
 \begin{verbatim}
-        let plusone = .< fun x -> x + 1 >. in .< .~plusone 2 >.
+      let plusone = .< fun x -> x + 1 >. in .< .~plusone 2 >.
 \end{verbatim}
 evaluates to \verb|.< (fun x -> x + 1) 2 >.|. We can get the result with run.
 \begin{verbatim}
-        run (let plusone = .< fun x -> x + 1 >. in .< .~plusone 2 >.)
+    run (let plusone = .< fun x -> x + 1 >. in .< .~plusone 2 >.)
 \end{verbatim}
 is reduced to 3.
 
@@ -28,8 +33,8 @@ is reduced to 3.
 Cross-stage persistence (CSP) is another primitive of multi-stage programming, which enable us to embed computed values into a code value.
 This is an example of CSP.
 \begin{verbatim}
-        let plusone = fun x -> x + 1 in
-        let y = plusone 2 in  .< y >.
+               let plusone = fun x -> x + 1 in
+               let y = plusone 2 in  .< y >.
 \end{verbatim}
 This program evaluates to \verb|.< 3 >.| not  \verb|.< plusone 2 >.|.
 This is because the variable \verb|y| is introduced into a code fragment using CSP.
@@ -49,27 +54,30 @@ The optimized power function for the exponent of \verb|3| looks like \verb|power
 Multi-stage programming can optimize functions which take more than two arguments 
 by generating a code fragment optimized to a given argument.
 
-% \subsubsection{ベクトル計算も高速化できる}
+% 多段階計算の型理論の既存研究の紹介
+
+Existing type systems for multi-stage calculi ensure that
+the generated code is well-typed and code generation and evaluation are performed in the intended order.
+For example, the type system of MetaOCaml~\cite{taha1999multi} classify expressions in a program
+with the depth of brackets in order to handle them appropriately.
+In $\lambda^\triangleright$ by Tsukada and Igarashi~\cite{Tsukada},
+they use environment classifier to classify and 
+succeeded in recognizing code values which are run safely at type-checking time.
+
+% ベクトル計算も高速化できる
 
 Multi-stage programming can also optimize vector calculation.
 For example, \verb|vadd| function, which takes two vectors and return the sum of them,
 is implemented with a loop in many cases.
 We can unroll \verb|vadd| function for a given vector length and optimize it with multi-stage programming.
-\red{MetaOCamlで書いた長さ付きベクトルの例?}
 
-% \subsubsection{生成した行列計算のコードは特定のサイズに特化しており、他のサイズでは使えない。
-% このため、間違って組み合わせると容易にエラーを引き起こす。既存の型システムではこのエラーを防止できない}
+% 多段階計算で生成したコードは特殊化されているが故に問題も多い
 
 However, there is a sever problem in functions which are optimized by multi-stage programming.
 Although unrolled \verb|vadd| function is optimized, we cannot use it for different vector length.
 For example, when you optimize for the length of 5, you shouldn't use it for vectors of 3 lengths.
-Otherwise, we will get a Segmentation Fault error.
-\AI{Why SEGV?  MetaOCaml will raise an exception.}
+Otherwise, we will get a exception.
 This problem is serious but existing type systems for multi-stage calculi cannot prevent it.
-
-% We call this problem \red{Specialized Code Problem}.
-
-\AI{このイントロ、各段落はまあまあよいのですが、全体の流れが、ふたつ目の文から MetaOCaml という特定の多段階プログラミング言語の話をして、それから応用と問題点の話になりますが、ここが多段階プログラミング一般の話なのか MetaOCaml 固有の話なのかがぶれているように思います。まずは、多段階プログラミング一般の話を応用も含めてする。(他の多段階計算ができるシステムを無視しない。)それから、MetaOCaml の紹介と、その型システムの問題点の話をすべきでしょう。MetaOCaml の型システムでできることもふれておいた方がよいでしょう。}
 
 \subsection{Multi-stage Programming with Dependent Types}
 
@@ -93,6 +101,8 @@ functions optimized with multi-stage programming can take only restricted values
 When you optimize \verb|vadd| function for the length of 5, you should it only for 5 length vectors.
 We introduce dependent types into a multi-stage calculus
 so that the type system can guarantee optimized functions are used properly.
+Although there is a trial to combine multi-stage programming and dependent type by Brady and Hammond~\cite{brady2006dependently},
+they didn't give a formal definition and properties for the calculus.
 
 In this paper, we design a new multi-stage calculus \LMD by 
 merging dependent types into existing multi-stage calculus \LTP\cite{Hanada2014}.
@@ -102,18 +112,15 @@ Our technical contribution are summarized as follows:
 \begin{itemize}
         \item we give the formal definition of \LMD with its syntax, 
         type system which contains type equivalence, full, reduction, and staged reduction;
-        \item for the full reduction, we prove subject reduction, strong normalization, and confluence
+        \item for the full reduction, we prove preservation, strong normalization, and confluence
         \item fot the staged reduction, we prove unique decomposition and progress.
 \end{itemize}
 
 \subsection{Organization of the Paper}
 
 The organization of this paper is the following.
-Section 2 gives an informal overview of \LMD.
-Section 3 defines \LMD and
-Section 4 shows the properties of \LMD including Unique Decomposition \AI{There are more important properties that should be mentioned!  In fact, the properties should be mentioned earlier.}.
-Section 5 discusses future works.
-Finally, Section 6 discusses related works.
-\AI{Use $\backslash$label and $\backslash$ref!}
-\AI{``Related work'' and ``future work'' (they are uncountable).}
-\AI{Related work is discussed in Section 5?  Section 6 is the section for conclusion, which includes future work.}
+Section \ref{sec:informal-overview} gives an informal overview of \LMD.
+Section \ref{sec:formal-definition} defines \LMD and
+Section \ref{sec:properties} shows the properties of \LMD including preservation, strong normalization, confluence, and progress.
+Section \ref{sec:related-work} discusses related work.
+Finally, we conclude this paper in Section \ref{sec:conclusion} and discusses future work.
