@@ -32,11 +32,10 @@ The subscript $\alpha$ in $\TB_\alpha M$ is a \textit{stage variable}
 However, we call it a \textit{stage variable} in this paper.} and
 a sequence of stage variables is called \textit{stage}.
 The empty stage is represented by $\varepsilon$.
-They are used to show the thickness of brackets. \AI{Perhaps ``thickness'' doesn't make sense.}
+They are used to show the depth of brackets.
 For example, $\TB_\alpha (\lambda x:\I.x+10)$ is the fragment of code which becomes $(\lambda x:\I.x+10)$ after it was run once and
 $\TB_\alpha \TB_\beta (\lambda x:\I.x+10)$, which is abbreviated as $\TB_{\alpha\beta} (\lambda x:\I.x+10)$,
 becomes $(\lambda x:\I.x+10)$ after it was run it twice.
-\red{run twiceは表現が微妙}
 
 % stage abstraction and application
 
@@ -87,10 +86,8 @@ CSP, cross-stage persistence, is an important feature of \LTP.
 It enables us to embed value at an outer stage into an inner stage.
 In \LTP, CSP is written explicitly and $\%$ is a symbol dedicated to CSP
 although MetaOCaml CSP is implicit and there is no symbol for CSP.
-For example, $\lambda a:\I.\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x+\%_\alpha a))$
-\red{inner / outer は適切か?}
-\AI{What is \(a\)?}
-\AI{Is this explanation enough to understand the rest of the section?}
+For example, the variable $x$ is cross-staged into a code value in the following expression.
+\[\lambda x:\I.(\Lambda\alpha.(\TB_\alpha (\lambda y:\I.y+\%_\alpha x))\ \varepsilon)\ 10\]
 
 % Omitting Residualization
 % この段落は3章のM eのあとに、この制限の結果として...という形で入れる
@@ -105,10 +102,8 @@ For example, $\lambda a:\I.\Lambda\alpha.(\TB_\alpha (\lambda x:\I.x+\%_\alpha a
 
 % \LLF
 \LLF is a simple system of dependent types introduced in \cite{attapl}.
-\red{system / type system / calculus?}
-It is based on Edinburgh LF\cite{harper1993framework}.
-\AI{Can you remind me of differences between Edinburgh LF and \LLF?}
-Therefore, \AI{``Therefore'' is used to show a logical consequence.} all constants and base types are declared in the signature.
+It is made from Edinburgh LF\cite{harper1993framework} by omitting signatures and include declarative equality judgements.
+Hence, all constants and base types are declared in the signature.
 The \LLF type theory generalizes simply typed lambda calculus
 by replacing the function type $\tau\to\sigma$ with the dependent function type $\Pi x:\tau.\sigma$.
 
@@ -141,14 +136,12 @@ We adopt a signature $\Sigma$ to handle constants and type-level constants.
 This is because a signature simplifies kinding rules relating to type-level constants.
 A signature $\Sigma$ is composed of pairs of a base type and its kind or a constant and its type.
 For example, if you want to use boolean, $\Sigma = \B::*, \text{true}:\B, \text{false}:\B$
-\red{具体的な導出例を出したほうがよいか? また、なぜsimpleになるのを書くべきか?}
 
 % Kidinding and Well-formed Kinding Rules
 
 Second, we need kinding rules and well-formed kinding rules in order to extend \LMD with dependent types.
 It was lucky that almost all rules are determined easily.
 This is because multi-stage calculus and dependent types are almost orthogonal.
-\red{orthogonal は抽象的すぎるか?}
 Therefore, we can get kinding rules and well-formed kinding rules of \LMD just by 
 attaching stage anotations to ones of \LLF.
 For example, \KAbs-LF is a kinding rule for a dependent type in \LLF and \KAbs\ is a corresponding one.
@@ -161,50 +154,4 @@ For example, \KAbs-LF is a kinding rule for a dependent type in \LLF and \KAbs\ 
 
 Third, we also need type equivalence rules in \LMD because its type system contains dependent types.
 Although there are new primitives relating to stages which aren't in \LLF,
-we can design all rules except \QPercent\ easily from the syntax or the reductions of \LMD.  \AI{Don't refer to a concrete rule name without showing it because we haven't introduced rules.}
-
-\AI{If there's space, we should have introduced the \LTP-version of vadd.}
-
-\QPercent\ is different from other rules because it was designed from practical reason, not from the syntax or the reductions.
-For example, we discuss $\text{vadd}_\beta$ function,
-which takes a length of vector and returns addition function for vectors with the length.
-$\text{vadd}_1$ is a helper function to make $\text{vadd}$, 
-which takes a stage, a length of vectors, and two quoted vectors and returns a quoted vector.
-We assumed that type checker can know $n=0$ when process the $\textbf{then}$ clause.
-\newcommand{\Vpn}{\text{Vector}\ (\%_\alpha n)}
-\begin{align*}
-	  & \textbf{let}\ \text{vadd}_1 : \F\alpha.\Pi n:\I.\TW_\alpha\Vpn\to\TW_\alpha\Vpn\to\TW_\alpha\Vpn                                \\
-	  & \hspace{7mm} = \textbf{fix}\ f.\Lambda\alpha.\lambda n:\I.\ \lambda v_1:\TW_\alpha\Vpn.\ \lambda v_2:\TW_\alpha\Vpn.            \\
-	  & \hspace{14mm} \textbf{if}\ n = 0                                                                                                \\
-	  & \hspace{14mm} \textbf{then} \TB_\alpha \text{nil}                                                                               \\
-	  & \hspace{14mm} \textbf{else}\ \TB_\alpha (                                                                                       \\
-	  & \hspace{21mm} \textbf{let}\ t_1 = \text{tail}\ (\TBL_\alpha v_1)\ \textbf{in}                                                   \\
-	  & \hspace{21mm} \textbf{let}\ t_2 = \text{tail}\ (\TBL_\alpha v_2)\ \textbf{in}                                                   \\
-	  & \hspace{21mm} \text{cons}\ (\text{head}\ (\TBL_\alpha v_1) + \text{head}\ (\TBL_\alpha v_2))\ (\TBL_\alpha f\ (n-1)\ t_1\ t_2)) \\
-\end{align*}
-\AI{I think we should state the types of cons, tail, and head.}
-Using $\text{vadd}_1$, we can make $\text{vadd}$ function easily.
-This function takes the length of vectors and returns a quoted add function for vector of the given size.
-\renewcommand{\Vpn}{\text{Vector}\ (\%_\beta n)}
-\begin{align*}
-	  & \textbf{let}\ \text{vadd}: \Pi n:\I.\F\beta.\TW_\beta(\Vpn\to\Vpn\to\Vpn)                \\ 
-	  & \hspace{7mm} = \lambda n:\I.\Lambda\beta.\TB_\beta (\lambda v_1:\Vpn.\ \lambda v_2:\Vpn. \\
-	  & \hspace{63mm} \TBL_\beta \text{vadd}_1\ \beta\ n\ (\TB_\beta\ v_1)\ (\TB_\beta\ v_2))    \\
-\end{align*}
-\renewcommand{\Vpn}{\text{Vector}\ (\%_\beta 10)}
-When we use this function, we need to instantiate $\text{vadd}$ with a length.
-If we instantiate it with a integer 10, we get function $\text{vadd10}$ whose type is \\
-$\text{vadd10}: \F\beta.\TW_\beta(\Vpn\to\Vpn\to\Vpn)$.
-This function is difficult to use because its type contains $\Vpn$.
-In most cases, we have vectors of type $\text{Vector}\ 10$, not $\Vpn$.
-Therefore, we want to identify $\text{Vector}\ 10$ and $\Vpn$.
-
-In order to resolve this problem, we introduced \QPercent\ into \LMD.
-\QPercent\ enables us to identify $\text{Vector}\ 10$ and $\Vpn$.
-This rule says that if term $M$ has the same type at stage $A\alpha$ and $A$,
-we can assume $\%_\alpha M \E M$ which roughly means $\%_\alpha M$ and $M$ are equivalent.
-With this rule, we can identify $10$ and $\%_\beta 10$ and use $\text{vadd}$ to many vectors.
-\begin{center}
-	\infrule{\G\V M:\tau @{A\alpha} \andalso \G\V M:\tau @A}{\G\V\%_\alpha M \E M : \tau @{A\alpha}}{\QPercent}
-\end{center}
-
+we can design all rules easily from the syntax or the reductions of \LMD except one equivalence rule about CSP..
