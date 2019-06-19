@@ -168,7 +168,7 @@ $ M \longrightarrow_\Lambda M'$ and we call $\longrightarrow_\beta$,
 $\longrightarrow_\blacklozenge$, and $\longrightarrow_\Lambda$
 $\beta$-reduction, $\blacklozenge$-reduction, and $\Lambda$-reduction,
 respectively.
-\AI{Don't we need to define $\longrightarrow^*$?}
+$M \longrightarrow^* N$ means that there is a sequence of reduction $\longrightarrow$ whose length is greater than or equal to 0.
 
 The relation $\longrightarrow_\beta$ represents ordinary $\beta$-reduction in the \(\lambda\)-calculus; the relation
 $\longrightarrow_\blacklozenge$ represents that quotation $\TB_\alpha M$ is canceled by escape and $M$ is spliced into the code fragment surrounding the escape;
@@ -261,6 +261,7 @@ To add declarations to a signature, the kind/type of a (type-level)
 constant has to be well-formed at stage \(\varepsilon\) so that it is
 used at any stage. \AI{We should discuss implicit CSP at the type
   level somewhere.}
+\red{Conclusionに入れます}
 
 In what follows, well-formedness is not explicitly mentioned but
 we assume that all signatures and type environments are well-formed.
@@ -273,10 +274,11 @@ adaptation from \LLF.  So, we omit them.
 \subsubsection{Typing.}
 
 \AI{The second premises of \TConst and \TVar are not needed?}
+\red{Removed. TODO: Fix proofs.}
 \begin{figure}
   \begin{center}
-    \infrule[\TConst]{c:\tau \in \Sigma \andalso \G\V \tau::*@A}{\G \V c:\tau @A} \hfil
-    \infrule[\TVar]{x:\tau @A \in \G \andalso \G\V \tau::*@A}{\G \V x:\tau @A} \\[2mm]
+    \infrule[\TConst]{c:\tau \in \Sigma}{\G \V c:\tau @A} \hfil
+    \infrule[\TVar]{x:\tau @A \in \G}{\G \V x:\tau @A} \\[2mm]
     \infrule[\TAbs]{\G\V \sigma::*@A\andalso\G,x:\sigma@A\V M:\tau @A}{\G\V(\lambda (x:\sigma).M):(\Pi (x:\sigma).\tau)@A} \\[2mm]
     \infrule[\TApp]{\G\V M:(\Pi (x:\sigma).\tau)@A \andalso \G\V N:\sigma@A}{\G\V M\ N : \tau[x\mapsto N]@A} \\[2mm]
     \infrule[\TConv]{\G\V M:\tau @A \andalso \G\V \tau\equiv \sigma :: K@A}{\G\V M:\sigma@A} \\[2mm]
@@ -320,7 +322,6 @@ $*$ (\TAbs) at the stage where it is declared (\TVar{} and \TAbs).
 
 
 % \TConv
-\AI{Looks like a paper is written for those who know multi-stage calculi fairly well but don't know dependent type systems.  The reality is the opposite.}
 As in standard dependent type systems, \TConv{} allows us to replace
 the type of a term with an equivalent one.
 In a type system with dependent types, this kind of rule is essential
