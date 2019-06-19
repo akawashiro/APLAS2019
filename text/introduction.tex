@@ -2,125 +2,167 @@
 
 \section{Introduction}
 
-\subsection{Multi-stage Programming}
+\subsection{Multi-stage Programming and MetaOCaml}
 
 % \subsubsection{多段階計算とは何か?}
 
-Multi-stage programming enables programmers to generate and run fragments of code at runtime.
-We can treat a piece of code as a value with multi-stage programming.
-It means code fragments can be substituted into variables, combined and run at runtime.
-Multi-stage programming improves the performance of programs by generating optimized code for a given input at runtime. \cite{taha2007gentle}
-% MetaOCamlを例に挙げて多段階計算について説明する
+\AI{前の版は，まだ MetaOCaml specific な話と，MSP 一般の話が交互に出てきて
+わかりづらかったと思います．}
 
-MetaOCaml~\cite{calcagno2003implementing}\cite{oleg2014} provides features for multi-stage programming, which are brackets, escape, run, and CSP.
-Brackets, written \verb|.< e >.| in MetaOCaml, makes a code value from \verb|e|.
-Run, written \verb| run e | in MetaOCaml, runs a code value of \verb|e| and restore \verb|e|.
-Escape, written \verb| .~ e | in MetaOCaml, expands a code value of \verb|e|.
-Unlike run, escape is supposed to use in a fragment of code, that is, escape cannot be used as an alternative of run.
-For example, the following MetaOCaml expression
+Multi-stage programming makes it easier for programmers to implement
+generation and execution of code at run time by providing language
+constructs for composing and running pieces of code as first-class
+values.  A promising application of multi-stage programming is
+(run-time) code specialization, which is to generate program code
+specialized to partial inputs to the program and such applications are
+studied in the literature~\cite{taha2007gentle}  \AI{We should list
+applications of multi-stage programming, not necessarily of MetaOCaml.}
 
+MetaOCaml~\cite{calcagno2003implementing,oleg2014} is an extension of
+OCaml\footnote{\url{http://ocaml.org}} with constructs for multi-stage
+programming, including brackets, escape, run, and cross-stage
+persistence (CSP) .  Brackets, written \verb|.< e >.| in MetaOCaml,
+makes a value that represents the code (or abstract syntax tree) of
+expression \verb|e|; and escape, written \verb|.~ e| and is supposed
+to appear inside brackets, evaluates \verb|e| to a code value and
+expands the code into the surrounding code.
+For example,
 \begin{verbatim}
-      let plusone = .< fun x -> x + 1 >. in .< .~plusone 2 >.
+   let plusone = .< fun x -> x + 1 >. in .< .~plusone 2 >.
 \end{verbatim}
-evaluates to \verb|.< (fun x -> x + 1) 2 >.|. We can get the result with run.
+evaluates to \verb|.< (fun x -> x + 1) 2 >.|.  
+Run, written \verb|run e|, evaluates \verb|e| to a code value
+and executes it.  For example,
 \begin{verbatim}
-    run (let plusone = .< fun x -> x + 1 >. in .< .~plusone 2 >.)
+   run (let plusone = .< fun x -> x + 1 >. in .< .~plusone 2 >.)
 \end{verbatim}
-is reduced to 3.
-
-% \subsubsection{CSPに関する補足説明}
-
-Cross-stage persistence (CSP) is another primitive of multi-stage programming, which enable us to embed computed values into a code value.
-This is an example of CSP.
+yields \verb|3| (here, escape connects tighter than application).
+Finally, CSP is a primitive to embed values (not necessarily code
+values) into a code value.  In MetaOCaml, CSP is implicitly applied to
+occurrences of variables defined outside brackets.  For example,
 \begin{verbatim}
-               let plusone = fun x -> x + 1 in
-               let y = plusone 2 in  .< y >.
+   let plusone = fun x -> x + 1 in
+   let y = plusone 2 in  .< y * 2 >.
 \end{verbatim}
-This program evaluates to \verb|.< 3 >.| not  \verb|.< plusone 2 >.|.
-This is because the variable \verb|y| is introduced into a code fragment using CSP.
-Therefore, the variable \verb|y| is embedded after it was calculated.
-CSP is very important when we write practical programs 
-because CSP enables us to use library functions in code fragments as in \verb|.<List.combine [1;2] ['a';'b']>.|.
+evaluates to \verb|.< 3 * 2 >.|, not \verb|.< plusone 2 * 2 >.|.
+This is because the variable \verb|y| is bound to an integer \verb|3|
+before \verb|.<y>.| is evaluated and the value of \verb|y| is embedded
+into the code value.  In MetaOCaml, CSP can be applied to (variables of) any type.  CSP is practically important because it enables us to use library functions in brackets, e.g., \verb|.<List.combine [1;2] ['a';'b']>.|.
 
 % \subsubsection{多段階計算のメリットをべき乗の例を用いて説明する}
 
-The main application of multi-stage calculi is program optimization. 
-A famous example is power functions.
-Usual power functions take two arguments, which are the base and the exponent.
-We can make a specialized power function for given exponents with multi-stage programming and 
-optimize them by unrolling a loop in functions for given exponents.
-The optimized power function for the exponent of \verb|3| looks like \verb|power3 = fun x -> x * x * x|.
-\verb|power3| is faster than ordinary \verb|power| function because it contains no loop.
-Multi-stage programming can optimize functions which take more than two arguments 
-by generating a code fragment optimized to a given argument.
+% As we mentioned earlier, a main application of multi-stage
+% calculi is program optimization. 
+% A famous example is power functions.
+% Usual power functions take two arguments, which are the base and the exponent.
+% We can make a specialized power function for given exponents with multi-stage programming and 
+% optimize them by unrolling a loop in functions for given exponents.
+% The optimized power function for the exponent of \verb|3| looks like \verb|power3 = fun x -> x * x * x|.
+% \verb|power3| is faster than ordinary \verb|power| function because it contains no loop.
+% Multi-stage programming can optimize functions which take more than two arguments 
+% by generating a code fragment optimized to a given argument.
 
 % 多段階計算の型理論の既存研究の紹介
 
-Existing type systems for multi-stage calculi ensure that
-the generated code is well-typed and code generation and evaluation are performed in the intended order.
-For example, the type system of MetaOCaml~\cite{taha1999multi} classify expressions in a program
-with the depth of brackets in order to handle them appropriately.
-In $\lambda^\triangleright$ by Tsukada and Igarashi~\cite{Tsukada},
-they use environment classifier to classify and 
-succeeded in recognizing code values which are run safely at type-checking time.
+MetaOCaml is also equipped with a type system for safe code generation
+and execution.  The notion of code types is introduced to prevent code
+values that represent ill-typed expressions from being generated.  For
+example,
+\begin{verbatim}
+   let plusone = .< fun x -> x + 1 >. in .< .~plusone "foo" >.
+\end{verbatim}
+is rejected by the MetaOCaml typechecker as \verb|plusone| is given
+type \verb|(int -> int)| \verb|code| but it is used in the code context that
+requires a function from \verb|string| is expected.  Ensuring safety
+for \verb|run| is more challenging because basic code types do not
+guarantee code values to be closed.  Taha and
+Nielsen~\cite{taha2003environment} introduced the notion of
+environment classifiers to address the problem and developed a type
+system to ensure not only type-safe composition but also type-safe
+execution of code values with a type soundness theorem.
 
-% ベクトル計算も高速化できる
+However, the type system, which is based on Hindley--Milner
+polymorphism~\cite{}, is not strong enough to guarantee invariants
+beyond simple types.  For example, Kiselyov~\cite{} demonstrates
+specialization of vector/matrix computation with respect to the sizes
+of vectors and matrices but such specialized functions can be applied
+to vectors and matrices of different sizes.
 
-Multi-stage programming can also optimize vector calculation.
-For example, \verb|vadd| function, which takes two vectors and return the sum of them,
-is implemented with a loop in many cases.
-We can unroll \verb|vadd| function for a given vector length and optimize it with multi-stage programming.
+% Multi-stage programming can also optimize vector calculation.
+% For example, \verb|vadd| function, which takes two vectors and return the sum of them,
+% is implemented with a loop in many cases.
+% We can unroll \verb|vadd| function for a given vector length and optimize it with multi-stage programming.
 
-% 多段階計算で生成したコードは特殊化されているが故に問題も多い
+% % 多段階計算で生成したコードは特殊化されているが故に問題も多い
 
-However, there is a sever problem in functions which are optimized by multi-stage programming.
-Although unrolled \verb|vadd| function is optimized, we cannot use it for different vector length.
-For example, when you optimize for the length of 5, you shouldn't use it for vectors of 3 lengths.
-Otherwise, we will get a exception.
-This problem is serious but existing type systems for multi-stage calculi cannot prevent it.
+% However, there is a sever problem in functions which are optimized by multi-stage programming.
+% Although unrolled \verb|vadd| function is optimized, we cannot use it for different vector length.
+% For example, when you optimize for the length of 5, you shouldn't use it for vectors of 3 lengths.
+% Otherwise, we will get a exception.
+% This problem is serious but existing type systems for multi-stage calculi cannot prevent it.
 
 \subsection{Multi-stage Programming with Dependent Types}
 
 % 依存型とは何か?
 
-One natural idea to address this problem is the introduction of dependent types.
-Dependent types are types which are dependent on values.
-We can use dependent types for securer programming like Xi and Pfenning \cite{Xi98}.
-For example, we can realize vectors with their sizes with them.
+One natural idea to address this problem is the introduction of dependent types
+to express the size of data structure in static types~\cite{Xi98}.
+% Dependent types are types which are dependent on values.
+% We can use dependent types for securer programming like Xi and Pfenning
+For example, we could declare vector types indexed by the size of
+vectors as follows.
 \begin{verbatim}
-        Vector :: Int -> *
+    Vector :: Int -> *
 \end{verbatim}
-\verb|Vector| is a type constructor which takes the length of vectors, that is, 
-\verb|Vector 3| is a type for vectors whose lengths are 3.
-If \verb|vadd| function has the type of \verb|Vector n -> Vector n -> Vector n| for any positive number \verb|n|,
-we can confirm the two arguments of \verb|vadd| function has the same length.
-% \red{secure programming? finer grained typing? とか}
+\verb|Vector| is a type constructor that takes an integer (which
+represents the length of vectors): for example, \verb|Vector 3| is the
+type for vectors whose lengths are 3.  Then, our hope is to specialize
+vector/matrix functions with respect to their size and get a piece of
+function code, whose type respects the given size, \emph{provided at
+  specilization time}.  For example, we would like to specialize a
+function to add two vectors with respect to the size of vectors, that
+is, to implement a code generator that takes an integer $n$ as an
+input and generates a piece of function code of type
+\verb|(Vector |$n$\verb| -> Vector|$n$\verb| -> Vector |$n$\verb|) code|.
 
-As we pointed out in the above section,
-functions optimized with multi-stage programming can take only restricted values as arguments.
-When you optimize \verb|vadd| function for the length of 5, you should it only for 5 length vectors.
-We introduce dependent types into a multi-stage calculus
-so that the type system can guarantee optimized functions are used properly.
-Although there is a trial to combine multi-stage programming and dependent type by Brady and Hammond~\cite{brady2006dependently},
-they didn't give a formal definition and properties for the calculus.
+% As we pointed out in the above section,
+% functions optimized with multi-stage programming can take only restricted values as arguments.
+% When you optimize \verb|vadd| function for the length of 5, you should it only for 5 length vectors.
+% We introduce dependent types into a multi-stage calculus
+% so that the type system can guarantee optimized functions are used properly.
+% Although there is a trial to combine multi-stage programming and dependent type by Brady and Hammond~\cite{brady2006dependently},
+% they didn't give a formal definition and properties for the calculus.
 
-In this paper, we design a new multi-stage calculus \LMD by 
-merging dependent types into existing multi-stage calculus \LTP\cite{Hanada2014}.
-\LMD is multi-stage calculus which contains dependent types.
-\LMD makes multi-stage programming safer with the power of dependent types.
-Our technical contribution are summarized as follows:
+\subsection{Our Work}
+In this paper, we develop a new multi-stage calculus \LMD by extending
+the existing multi-stage calculus \LTP\cite{Hanada2014} with dependent
+types and study its properties.  We base our work on \LTP, in which
+the four multi-stage constructs are handled slightly differently from
+MetaOCaml, because its type system and semantics are arguably simpler
+than \(\lambda^\alpha\)~\cite{taha2003environment}, another calculus,
+which formalizes the design of MetaOCaml more faithfully.  Our
+technical contribution are summarized as follows:
 \begin{itemize}
-        \item we give the formal definition of \LMD with its syntax, 
-        type system which contains type equivalence, full, reduction, and staged reduction;
-        \item for the full reduction, we prove preservation, strong normalization, and confluence
-        \item fot the staged reduction, we prove unique decomposition and progress.
+\item We give the formal definition of \LMD with its syntax, 
+  type system and two kinds of reduction---full and staged reduction.
+\item We show preservation, strong normalization, and confluence for
+  full reduction; and show unique decomposition (and progress as its
+  corollary) for staged reduction, which formalizes program execution.
 \end{itemize}
+The combination of multi-stage programming and dependent types has
+been discussed by Brady and Hammond~\cite{brady2006dependently} but,
+to our knowledge, our work is a first formal calculus of dependently
+typed multi-stage programming.
 
-\subsection{Organization of the Paper}
+\AI{Informal discussion on how important CSP is?}
+\AI{Comments on Appendix required.}
 
-The organization of this paper is the following.
-Section \ref{sec:informal-overview} gives an informal overview of \LMD.
-Section \ref{sec:formal-definition} defines \LMD and
-Section \ref{sec:properties} shows the properties of \LMD including preservation, strong normalization, confluence, and progress.
-Section \ref{sec:related-work} discusses related work.
-Finally, we conclude this paper in Section \ref{sec:conclusion} and discusses future work.
+\subsubsection{Organization of the Paper.}
+
+The organization of this paper is as follows.
+Section~\ref{sec:informal-overview} gives an informal overview of
+\LMD.  Section~\ref{sec:formal-definition} defines \LMD and
+Section~\ref{sec:properties} shows properties of \LMD.  Section
+\ref{sec:related-work} discusses related work and Section
+\ref{sec:conclusion} concludes the paper with discussion of future
+work.
