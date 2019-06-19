@@ -133,15 +133,15 @@ input and generates a piece of function code of type
 % Although there is a trial to combine multi-stage programming and dependent type by Brady and Hammond~\cite{brady2006dependently},
 % they didn't give a formal definition and properties for the calculus.
 
+\subsection{Our Work}
 In this paper, we develop a new multi-stage calculus \LMD by extending
-the existing multi-stage calculus \LTP\cite{Hanada2014}---which
-formalizes the four constructs of MetaOCaml in a way slightly
-different from MetaOCaml---with dependent types and study its
-properties.  We base our work on \LTP because its type system and
-semantics are arguably simpler than
-\(\lambda^\alpha\)~\cite{taha2003environment}, which is more faithful
-to the design of MetaOCaml.  Our technical contribution are summarized
-as follows:
+the existing multi-stage calculus \LTP\cite{Hanada2014} with dependent
+types and study its properties.  We base our work on \LTP, in which
+the four multi-stage constructs are handled slightly differently from
+MetaOCaml, because its type system and semantics are arguably simpler
+than \(\lambda^\alpha\)~\cite{taha2003environment}, another calculus,
+which formalizes the design of MetaOCaml more faithfully.  Our
+technical contribution are summarized as follows:
 \begin{itemize}
 \item We give the formal definition of \LMD with its syntax, 
   type system and two kinds of reduction---full and staged reduction.
@@ -154,9 +154,10 @@ been discussed by Brady and Hammond~\cite{brady2006dependently} but,
 to our knowledge, our work is a first formal calculus of dependently
 typed multi-stage programming.
 
+\AI{Informal discussion on how important CSP is?}
 \AI{Comments on Appendix required.}
 
-\subsection{Organization of the Paper}
+\subsubsection{Organization of the Paper.}
 
 The organization of this paper is as follows.
 Section~\ref{sec:informal-overview} gives an informal overview of
