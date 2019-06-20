@@ -450,14 +450,18 @@ in implementation.  However, as an equational system for multi-stage
 programs, the rule \QPercent makes sense and, as we argue next,
 it is practically significant.
 
-\red{ここがやばい}
+\red{$\text{head}: \text{Vector}\ n \to \I$としているが
+$\text{head}: \Pi n:\I.\text{Vector}\ n \to \I$のほうが良いか? tail, consも同様}
 
 \QPercent\ is different from other rules because it was designed from practical reason, not from the syntax or the reductions.
 For example, we discuss $\text{vadd}_\beta$ function,
-which takes a length of vector and returns addition function for vectors with the length.
+which takes a length of integer vectors and returns addition function for vectors with the length.
 $\text{vadd}_1$ is a helper function to make $\text{vadd}$, 
 which takes a stage, a length of vectors, and two quoted vectors and returns a quoted vector.
-We assumed that type checker can know $n=0$ when process the $\textbf{then}$ clause.
+We assumed that type checker can know $n=0$ when process the $\textbf{then}$ clause,
+$\text{head}$ is of type $\text{Vector}\ n \to \I$,
+$\text{tail}$ is of type $(\text{Vector}\ n) \to (\text{Vector}\ (n-1))$, 
+and  $\text{cons}$ is of type $\I \to (\text{Vector}\ n) \to (\text{Vector}\ (n+1))$, 
 \newcommand{\Vpn}{\text{Vector}\ (\%_\alpha n)}
 \begin{align*}
 	  & \textbf{let}\ \text{vadd}_1 : \F\alpha.\Pi n:\I.\TW_\alpha\Vpn\to\TW_\alpha\Vpn\to\TW_\alpha\Vpn                                \\
@@ -469,7 +473,6 @@ We assumed that type checker can know $n=0$ when process the $\textbf{then}$ cla
 	  & \hspace{21mm} \textbf{let}\ t_2 = \text{tail}\ (\TBL_\alpha v_2)\ \textbf{in}                                                   \\
 	  & \hspace{21mm} \text{cons}\ (\text{head}\ (\TBL_\alpha v_1) + \text{head}\ (\TBL_\alpha v_2))\ (\TBL_\alpha f\ (n-1)\ t_1\ t_2)) \\
 \end{align*}
-\AI{I think we should state the types of cons, tail, and head.}
 Using $\text{vadd}_1$, we can make $\text{vadd}$ function easily.
 This function takes the length of vectors and returns a quoted add function for vector of the given size.
 \renewcommand{\Vpn}{\text{Vector}\ (\%_\beta n)}
@@ -479,35 +482,15 @@ This function takes the length of vectors and returns a quoted add function for 
 	  & \hspace{63mm} \TBL_\beta \text{vadd}_1\ \beta\ n\ (\TB_\beta\ v_1)\ (\TB_\beta\ v_2))    \\
 \end{align*}
 \renewcommand{\Vpn}{\text{Vector}\ (\%_\beta 10)}
-When we use this function, we need to instantiate $\text{vadd}$ with a length.
-If we instantiate it with a integer 10, we get function $\text{vadd10}$ whose type is \\
-$\text{vadd10}: \F\beta.\TW_\beta(\Vpn\to\Vpn\to\Vpn)$.
-This function is difficult to use because its type contains $\Vpn$.
-In most cases, we have vectors of type $\text{Vector}\ 10$, not $\Vpn$.
-Therefore, we want to identify $\text{Vector}\ 10$ and $\Vpn$.
 
-In order to resolve this problem, we introduced \QPercent\ into \LMD.
-\QPercent\ enables us to identify $\text{Vector}\ 10$ and $\Vpn$.
-This rule says that if term $M$ has the same type at stage $A\alpha$ and $A$,
-we can assume $\%_\alpha M \E M$ which roughly means $\%_\alpha M$ and $M$ are equivalent.
-With this rule, we can identify $10$ and $\%_\beta 10$ and use $\text{vadd}$ to many vectors.
-\begin{center}
-	\infrule{\G\V M:\tau @{A\alpha} \andalso \G\V M:\tau @A}{\G\V\%_\alpha M \E M : \tau @{A\alpha}}{\QPercent}
-\end{center}
-
-
-
-\AI{This paragraph should be polished later.}
 \renewcommand{\Vpn}{\text{Vector}\ (\%_\alpha n)}
-As we discussed in Section 2, $\text{vadd}$ function,
-which takes the length of vectors and returns a quoted add function for vector of the given size,
-has the type of $\Pi n:\I.\F\beta.\TW_\beta(\Vpn\to\Vpn\to\Vpn)$.
-When we use this function, we instansiate $\text{vadd}$ with some integer such as 5
+$\text{vadd}$ function has the type of $\Pi n:\I.\F\beta.\TW_\beta(\Vpn\to\Vpn\to\Vpn)$ and
+when we use this function, we instansiate $\text{vadd}$ with some integer such as 5
 and get code of a optimzed $\text{vadd}$ function such as $\text{vadd5}$.
 \renewcommand{\Vpn}{\text{Vector}\ (\%_\beta 5)}
 Although $\text{vadd5}$ is of type $\F\beta.\TW_\beta(\Vpn\to\Vpn\to\Vpn)$,
 a code value of this type is difficult to combine with another code fragment.
-For example, if we want to composite $\text{vadd5}$ with reverse fucntion,
+For example, if we want to composite $\text{vadd5}$ with code of reverse fucntion,
 which is of type $\text{rev5}:\F\alpha.\TW_\alpha(\text{Vector}\ 5\to\text{Vector}\ 5)$,
 we write a program like following.
 \begin{align*}
@@ -526,7 +509,7 @@ The condition is that a CSPed value equals to the original value when it has the
 For example, $\V \%_\alpha 5 \E 5 @ \alpha$ because $ \V 5 : \I @ \alpha $ from \TConst\ and  $ \V \%_\alpha 5 : \I @ \alpha$.
 In other words, we can remove a $\%_\alpha$ symbol of a value when it doesn't change the type.
 Thanks to \QPercent, we can identify $\text{Vector}\ 5$ and $\text{Vector}\ \%_\gamma 5$
-and compose code values of functions as we expected.
+and compose the code values of functions as we expected.
 
 \subsection{Staged Semantics}
 
