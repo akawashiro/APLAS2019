@@ -17,7 +17,6 @@ $M:\tau@A$, $K \E J @ A$, $\tau \E \sigma @ A$, and
 $M \E N : \tau @ A$.  Substitutions $\mathcal{J}[z \mapsto M]$ and
 $\mathcal{J}[\alpha \mapsto A]$ are defined in a straightforward
 manner.  Using these notations, the two substitution lemmas are stated as follows:
-\AI{Did we define $\Delta [x \mapsto N]$?}
 
 \begin{lemma}[Term Substitution]
   If $\G, z:\xi@B, \D \V \mathcal{J}$ and $\G\V P:\xi @B$, then $\G, \D[z \mapsto P] \V \mathcal{J}[z \mapsto P]$.  Similarly, if $\V \G, z:\xi@B, \D$ and
@@ -82,7 +81,7 @@ Thanks to Substitution Lemmas and Inversion Lemmas, we can prove Preservation ea
 \begin{proof}
 	First, there are three cases for $M \longrightarrow M'$.
 	They are $M \longrightarrow_\beta M'$, $M \longrightarrow_\Lambda M'$, and $M \longrightarrow_\blacklozenge M'$.
-	For each case, we can use straightforward induction on derivations. \AI{何の derivation?}
+	For each case, we can use straightforward induction on typing derivations.
 	Difficult cases are \TApp, \TTBL, and \TIns.
 	We need Inversion Lemmas for them.
 \end{proof}
