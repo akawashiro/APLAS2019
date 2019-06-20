@@ -17,8 +17,6 @@ over by \(x,y,z\), the denumerable set of \emph{constants}, ranged over by
 sequences of stage variables; we write \(\varepsilon\) for the empty
 sequence. \LMD is defined by the following grammar:
 
-% \AI{``Transition'' is still used.}
-
 \begin{align*}
     % \textrm{Type variables}  &   &                          & X,Y,Z                                                                                                      \\
     % \textrm{Variables}       &   &                          & x,y,z                                                                                                      \\
@@ -322,27 +320,20 @@ $*$ (\TAbs) at the stage where it is declared (\TVar{} and \TAbs).
 
 
 % \TConv
-As in standard dependent type systems, \TConv{} allows us to replace
-the type of a term with an equivalent one.
-In a type system with dependent types, this kind of rule is essential
-because \AI{?} two types which have different shapes may be equivalent.
+As in standard dependent type systems, \TConv{} allows us to replace the type of a term with an equivalent one.
 For example, when we use a vector type with its size ($\textrm{Vector}\ n$),
-$\textrm{Vector}\ 5$ is equivalent to $\textrm{Vector}\ (4+1)$ obviously although they are not syntactically equivalent.
+a value of type $\textrm{Vector}\ (4+1)$ can also has type $\textrm{Vector}\ 5$ because of \TConv{}.
 
 % Typing rules for a multi-stage calculus
-% \AI{This paragraph is not very informative.  We shouldn't just refer readers to previous work.}
 The rules \TTB, \TTBL, \TGen, \TIns, and \TCsp{} are rules for a multi-stage calculus.
-The rule \TTB{}, which corresponds to brackets \AI{Sounds like the rule corresponds to brackets.  What corresponds to brackets is $\TB$}, means that if term $M$ is of type $\tau$ at stage $A\alpha$,
-$\TB_\alpha M$ is of type $\TW_\alpha \tau$ at stage $A$.
-The rule \TTBL{}, which corresponds to escape, is the converse of \TTB.
+\TTB and \TTBL are the same with \LTP as we explained in Section \ref{sec:informal-overview}.
 The rule \TGen{} for stage abstraction is straightforward.
-The condition $\alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)$ ensures that
-the scope of $\alpha$ is in $M$.
+The condition $\alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)$ ensures that the scope of $\alpha$ is in $M$.
 The rule \TIns{} is for applications of stages to stage abstractions.
-\AI{Any comments?}
-The rule \TCsp is the rule for CSP, which means that
-if term $M$ is of type $\tau$ at stage $A$, $\%_\alpha M$ is of type $\tau$ at stage $A\alpha$.  \AI{This does not explain what this rule means.
-  It just gives how the rule is read.}
+\TIns{} is mainly used when we run a code value or rename a stage variable in the body of an abstraction.
+The rule \TCsp{} is the rule for CSP, which means that
+if term $M$ is of type $\tau$ at stage $A$, $\%_\alpha M$ is of type $\tau$ at stage $A\alpha$.
+This rule enable to embed computed values into a fragment of code.
 
 \subsubsection{Kind, Type and Term Equivalence.}
 
@@ -580,7 +571,7 @@ In order to define staged reduction, we define redex and evaluation contexts.
 \end{definition}
 
 \begin{definition}[Evaluation Context]
-  Let $B$ be either \(\varepsilon\) or a transition variable \(\beta\).
+  Let $B$ be either \(\varepsilon\) or a stage variable \(\beta\).
   The family of sets $ECtx^A_B$ of evaluation contexts, ranged over by $E^A_B$, is defined by the following grammar (in which $A'$ stands for a non-empty stage).
   %  $A$ is assumed to be nonempty (but $B,A'$ can be empty).
   \begin{align*}
