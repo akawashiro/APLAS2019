@@ -4,11 +4,6 @@
 
 \subsection{Multi-stage Programming and MetaOCaml}
 
-% \subsubsection{多段階計算とは何か?}
-
-\AI{前の版は，まだ MetaOCaml specific な話と，MSP 一般の話が交互に出てきて
-わかりづらかったと思います．}
-
 Multi-stage programming makes it easier for programmers to implement
 generation and execution of code at run time by providing language
 constructs for composing and running pieces of code as first-class
@@ -19,35 +14,57 @@ studied in the literature~\cite{taha2007gentle}  \AI{We should list
 applications of multi-stage programming, not necessarily of MetaOCaml.}
 
 MetaOCaml~\cite{calcagno2003implementing,oleg2014} is an extension of
-OCaml\footnote{\url{http://ocaml.org}} with constructs for multi-stage
-programming, including brackets, escape, run, and cross-stage
-persistence (CSP) .  Brackets, written \verb|.< e >.| in MetaOCaml,
-makes a value that represents the code (or abstract syntax tree) of
-expression \verb|e|; and escape, written \verb|.~ e| and is supposed
-to appear inside brackets, evaluates \verb|e| to a code value and
-expands the code into the surrounding code.
-For example,
-\begin{verbatim}
-   let plusone = .< fun x -> x + 1 >. in .< .~plusone 2 >.
-\end{verbatim}
-evaluates to \verb|.< (fun x -> x + 1) 2 >.|.  
-Run, written \verb|run e|, evaluates \verb|e| to a code value
-and executes it.  For example,
-\begin{verbatim}
-   run (let plusone = .< fun x -> x + 1 >. in .< .~plusone 2 >.)
-\end{verbatim}
-yields \verb|3| (here, escape connects tighter than application).
-Finally, CSP is a primitive to embed values (not necessarily code
-values) into a code value.  In MetaOCaml, CSP is implicitly applied to
-occurrences of variables defined outside brackets.  For example,
-\begin{verbatim}
-   let plusone = fun x -> x + 1 in
-   let y = plusone 2 in  .< y * 2 >.
-\end{verbatim}
-evaluates to \verb|.< 3 * 2 >.|, not \verb|.< plusone 2 * 2 >.|.
-This is because the variable \verb|y| is bound to an integer \verb|3|
-before \verb|.<y>.| is evaluated and the value of \verb|y| is embedded
-into the code value.  In MetaOCaml, CSP can be applied to (variables of) any type.  CSP is practically important because it enables us to use library functions in brackets, e.g., \verb|.<List.combine [1;2] ['a';'b']>.|.
+OCaml\footnote{\url{http://ocaml.org}} with special constructs for
+multi-stage programming, including brackets and espace, which are
+(hygienic) quasi-quotation, and \texttt{run}, which is similar to
+\texttt{eval} in Lisp, and cross-stage persistence
+(CSP)~\cite{MetaML}.  Programmers can easily write code generators by
+using these features.  Moreover, MetaOCaml is equipped with a powerful
+type system for safe code generation and execution.  The notion of
+code types is introduced to prevent code values that represent
+ill-typed expressions from being generated.  For example, a quotation
+of expression \texttt{1 + 1} is given type \texttt{int code}; a
+quotation of \texttt{abs} is given type \texttt{(int -> int) code};
+and a code-generating function, which takes a code value \(c\) as an
+argument and returns \(c \texttt{ + } c\), is given type \texttt{int
+  code -> int code} so that it cannot be applied to, say, a quotation
+of \texttt{"Hello"}, which is given type \texttt{string
+  code}.  Ensuring safety for \verb|run| is more challenging because
+basic code types do not guarantee that execution of code values never
+results in unbound variable errors.  Taha and
+Nielsen~\cite{taha2003environment} introduced the notion of
+environment classifiers to address the problem and developed a type
+system to ensure not only type-safe composition but also type-safe
+execution of code values with a type soundness theorem (for a pure
+subset of MetaOCaml).
+
+
+% rackets, written \verb|.< e >.| in
+% MetaOCaml, makes a value that represents the code (or abstract syntax
+% tree) of expression \verb|e|; and escape, written \verb|.~ e| and is
+% supposed to appear inside brackets, evaluates \verb|e| to a code value
+% and expands the code into the surrounding code.  For example,
+% \begin{verbatim}
+%    let plusone = .< fun x -> x + 1 >. in .< .~plusone 2 >.
+% \end{verbatim}
+% evaluates to \verb|.< (fun x -> x + 1) 2 >.|.  
+% Run, written \verb|run e|, evaluates \verb|e| to a code value
+% and executes it.  For example,
+% \begin{verbatim}
+%    run (let plusone = .< fun x -> x + 1 >. in .< .~plusone 2 >.)
+% \end{verbatim}
+% yields \verb|3| (here, escape connects tighter than application).
+% Finally, CSP is a primitive to embed values (not necessarily code
+% values) into a code value.  In MetaOCaml, CSP is implicitly applied to
+% occurrences of variables defined outside brackets.  For example,
+% \begin{verbatim}
+%    let plusone = fun x -> x + 1 in
+%    let y = plusone 2 in  .< y * 2 >.
+% \end{verbatim}
+% evaluates to \verb|.< 3 * 2 >.|, not \verb|.< plusone 2 * 2 >.|.
+% This is because the variable \verb|y| is bound to an integer \verb|3|
+% before \verb|.<y>.| is evaluated and the value of \verb|y| is embedded
+% into the code value.  In MetaOCaml, CSP can be applied to (variables of) any type.  CSP is practically important because it enables us to use library functions in brackets, e.g., \verb|.<List.combine [1;2] ['a';'b']>.|.
 
 % \subsubsection{多段階計算のメリットをべき乗の例を用いて説明する}
 
@@ -64,29 +81,13 @@ into the code value.  In MetaOCaml, CSP can be applied to (variables of) any typ
 
 % 多段階計算の型理論の既存研究の紹介
 
-MetaOCaml is also equipped with a type system for safe code generation
-and execution.  The notion of code types is introduced to prevent code
-values that represent ill-typed expressions from being generated.  For
-example,
-\begin{verbatim}
-   let plusone = .< fun x -> x + 1 >. in .< .~plusone "foo" >.
-\end{verbatim}
-is rejected by the MetaOCaml typechecker as \verb|plusone| is given
-type \verb|(int -> int)| \verb|code| but it is used in the code context that
-requires a function from \verb|string| is expected.  Ensuring safety
-for \verb|run| is more challenging because basic code types do not
-guarantee code values to be closed.  Taha and
-Nielsen~\cite{taha2003environment} introduced the notion of
-environment classifiers to address the problem and developed a type
-system to ensure not only type-safe composition but also type-safe
-execution of code values with a type soundness theorem.
-
-However, the type system, which is based on Hindley--Milner
-polymorphism~\cite{}, is not strong enough to guarantee invariants
-beyond simple types.  For example, Kiselyov~\cite{} demonstrates
-specialization of vector/matrix computation with respect to the sizes
-of vectors and matrices but such specialized functions can be applied
-to vectors and matrices of different sizes.
+However, the type system, which is based on the Hindley--Milner
+polymorphism~\cite{Milner78JCSS}, is not strong enough to guarantee
+invariants beyond simple types.  For example, Kiselyov~\cite{8384206}
+demonstrates specialization of vector/matrix computation with respect
+to the sizes of vectors and matrices in MetaOCaml but the type system
+cannot prevent such specialized functions from being applied to
+vectors and matrices of different sizes.
 
 % Multi-stage programming can also optimize vector calculation.
 % For example, \verb|vadd| function, which takes two vectors and return the sum of them,
@@ -123,7 +124,7 @@ function code, whose type respects the given size, \emph{provided at
 function to add two vectors with respect to the size of vectors, that
 is, to implement a code generator that takes an integer $n$ as an
 input and generates a piece of function code of type
-\verb|(Vector |$n$\verb| -> Vector|$n$\verb| -> Vector |$n$\verb|) code|.
+\verb|(Vector |$n$\verb| -> Vector |$n$\verb| -> Vector |$n$\verb|) code|.
 
 % As we pointed out in the above section,
 % functions optimized with multi-stage programming can take only restricted values as arguments.
