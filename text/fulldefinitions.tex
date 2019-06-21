@@ -5,9 +5,9 @@
 	                           &  &                          & \ \ \ \ \mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ A \mid M\ \varepsilon \mid \%_\alpha M                                                                       \\
 	\textrm{Types}             &  & \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} M \mid \F\alpha.\tau                                                                     \\
 	\textrm{Kinds}             &  & K,J,I,H,G                & ::= * \mid \Pi x:\tau.K                                                                                                                            \\
-	\textrm{Type environments} &  & \Gamma                   & ::= \emptyset \mid \Gamma,x:\tau@A                                             & (x\not\in\textrm{FV}(\tau)\ \text{and}\ x\not\in\textit{dom}(\G)) \\
-	\textrm{Signature}         &  & \Sigma                   & ::= \emptyset \mid \Sigma,X::K                                                 & (\V K \iskind @ \varepsilon)                                      \\
-	                           &  &                          & \ \ \ \ \mid \Sigma,c:\tau                                                             & (\V \tau :: K @ \varepsilon)                                      \\
+	\textrm{Type environments} &  & \Gamma                   & ::= \emptyset \mid \Gamma,x:\tau@A \hspace{9mm} (x\not\in\textrm{FV}(\tau)\ \text{and}\ x\not\in\textit{dom}(\G)) \\
+	\textrm{Signature}         &  & \Sigma                   & ::= \emptyset \mid \Sigma,X::K     \hspace{10mm} (\V K \iskind @ \varepsilon)                                      \\
+	                           &  &                          & \ \ \ \ \mid \Sigma,c:\tau         \hspace{18mm} (\V \tau :: K @ \varepsilon)                                      \\
 	\textrm{Stage variables}   &  &                          & \alpha,\beta,\gamma,...                                                                                                                            \\
 	\textrm{Stage}             &  &                          & A,B,C,...                                                                                                                                          \\
 	\textrm{Variables}         &  &                          & x,y,z,...                                                                                                                                          \\

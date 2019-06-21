@@ -3,39 +3,28 @@
 \AI{A period is needed for each statement (because it's a sentence).}
 \AI{TAPL gives plenty of examples of how to write proofs.}
 \begin{lemma}[Weakening]
-  \begin{enumerate}\ 
-  \item	If \(\G \V M:\tau@A\), then \(\G, z:\xi@B \V M:\tau@A\). 
-\AI{Apply similar changes and remove \%.}
-\item If \(\G \V M:\tau@A\), then \(\G, Z:G@B \V M:\tau@A\).  \AI{Type variables do not appear in type environments any longer.  This one is obsolete.}
-			% \text{If\ } \G \V \tau::K@A \text{\ then\ }& \G, z:\xi@B \V \tau::K@A &\\
-			% \text{If\ } \G \V \tau::K@A \text{\ then\ }& \G, Z:G@B \V \tau::K@A &\\
-			% \text{If\ } \G \V K\iskind@A \text{\ then\ }& \G, z:\xi@B \V K\iskind@A &\\
-			% \text{If\ } \G \V K\iskind@A \text{\ then\ }& \G, Z:G@B \V K\iskind@A &\\
-			% \text{If\ } \G \V M\E N : \tau@A \text{\ then\ }& \G, z:\xi@B \V M\E N : \tau@A &\\
-			% \text{If\ } \G \V M\E N : \tau@A \text{\ then\ }& \G, Z:G@B \V M\E N : \tau@A &\\
-			% \text{If\ } \G \V \tau\E \sigma : K@A \text{\ then\ }& \G, z:\xi@B \V \tau\E \sigma : K@A &\\
-			% \text{If\ } \G \V \tau\E \sigma : K@A \text{\ then\ }& \G, Z:G@B \V \tau\E \sigma : K@A &\\
-			% \text{If\ } \G \V K\E J@A \text{\ then\ }& \G, z:\xi@B \V K\E J@A &\\
-			% \text{If\ } \G \V K\E J@A \text{\ then\ }& \G, Z:G@B \V K\E J@A &\\
-		\end{enumerate}
-	\end{lemma}
+	If \(\G \V J@A\) and \(\G\) is a subsequence of \(\D\), then \(\D \V J@A\). 
+	\AI{Apply similar changes and remove \%.}
+	\red{このコメントはどういう意味ですか?}
+\end{lemma}
 
-        \begin{proof}
-          \AI{Use the proof environment.}
+\begin{proof}
+	\AI{Use the proof environment.}
 	By straightforward induction.
-
-	% \begin{itemize}
-	% 	\item \WStar
-
-	% 	      From the definition of \WStar.
-
-	% \end{itemize}
-          
-        \end{proof}
+	\begin{itemize}
+		\item \WAbs
+		\item \KAbs
+		\item \TAbs
+		\item \QKAbs
+		\item \QTAbs
+		\item \QAbs
+		\item \QBeta
+	\end{itemize}
+\end{proof}
 \fi
 
 \begin{theorem}[Term Substitution]
-  \AI{The statements should be fixed.}
+	\AI{The statements should be fixed.}
 	\begin{flalign*}
 		\text{If\ } \G,z:\xi@B \V M:\tau@A \text{\ and\ } \G\V P:\xi@B
 		&\text{\ then\ } \G\V M[z \mapsto P]:\tau[z \mapsto P]@A.&\\
