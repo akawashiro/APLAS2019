@@ -9,10 +9,18 @@
 \end{lemma}
 
 \begin{proof}
-	\AI{Use the proof environment.}
-	By straightforward induction.
+	By straightforward induction on the derivation of typing, kinding, well-formed kinding,
+	term equivalence, type equivalence or kind equivalence.
 	\begin{itemize}
-		\item \WAbs
+		\item[] Case \WAbs{} where $J = (\Pi x:\tau.K)\iskind @A$ and 
+		\begin{align*} 
+			& \G \V \tau :: * @ A && \G,x:\tau@A \V K \iskind @A
+		\end{align*}
+		By the induction hypothesis, we have
+		\begin{align*}
+			& \D \V \tau::*@A && \D, x:\tau@A \V K \iskind @ A
+		\end{align*}
+		from which $\D\V (\Pi x:\tau.K) \iskind @ A$ follows by $\WAbs$.
 		\item \KAbs
 		\item \TAbs
 		\item \QKAbs
