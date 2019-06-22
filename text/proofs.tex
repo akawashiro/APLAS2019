@@ -116,13 +116,13 @@ if and only we can get \(\G\) from \(\D\) by deleting some or no variables witho
 	\end{itemize}
 \end{proof}
 
+	\iffullversion
 \begin{itemize}
 				
 	\newcommand{\SB}{[z \mapsto P]}
 	\newcommand{\GG}{\G}
 	\newcommand{\GGV}{\G \V}
 				
-	\iffullversion
 				
 	\item \WStar
 	      	      	      	      
@@ -833,26 +833,32 @@ if and only we can get \(\G\) from \(\D\) by deleting some or no variables witho
 	      {\GGV \%_\alpha M\SB \E M\SB @ A\alpha}
 	      {\ID{\GGV M\SB : \tau\SB @A\alpha} \andalso \ID{\GGV M\SB : \sigma\SB @A} }
 	      	      	      	      
-	      \fi
-	      	      	      	      
 \end{itemize}
+\fi
 
 \begin{lemma}[Stage Substitution]
-	\begin{flalign*}
-		\text{If\ } \G \V M:\tau@A
-		&\text{\ then\ } \G[\beta \mapsto B]\V M[\beta \mapsto B]:\tau[\beta \mapsto B]@A[\beta \mapsto B].&\\
-		\text{If\ } \G \V \tau::K@A
-		&\text{\ then\ } \G[\beta \mapsto B]\V \tau[\beta \mapsto B]::K[\beta \mapsto B]@A[\beta \mapsto B].&\\
-		\text{If\ } \G \V K\iskind@A
-		&\text{\ then\ } \G[\beta \mapsto B]\V K[\beta \mapsto B] \iskind@A[\beta \mapsto B].&\\
-		\text{If\ } \G \V M\E N : \tau@A
-		&\text{\ then\ } \G[\beta \mapsto B]\V M[\beta \mapsto B]\E N[\beta \mapsto B] : \tau[\beta \mapsto B] @A[\beta \mapsto B].&\\
-		\text{If\ } \G \V \tau\E \sigma : K@A
-		&\text{\ then\ } \G[\beta \mapsto B]\V \tau[\beta \mapsto B]\E \sigma[\beta \mapsto B] : K[\beta \mapsto B]@A[\beta \mapsto B].&\\
-		\text{If\ } \G \V K\E J@A
-		&\text{\ then\ } \G[\beta \mapsto B]\V K[\beta \mapsto B]\E J[\beta \mapsto B]@A[\beta \mapsto B].&
-	\end{flalign*}
+	If $\G \V \mathcal{J}$, then $\G[\beta\mapsto B] \V \mathcal{J}[\beta\mapsto B]$.  Similarly, if $\G \V \mathcal{J}$, then $\V \G[\beta\mapsto B]$.
 \end{lemma}
+
+
+\begin{itemize}
+				
+	\newcommand{\SB}{[\beta \mapsto B]}
+	\newcommand{\GG}{\G\SB}
+	\newcommand{\GGV}{\G\SB \V}
+
+	\item \textit{Case} \TGen{} where $\mathcal{J} = \Lambda\alpha.M:\forall\alpha.\tau@A$ and
+	\begin{align*}
+    	& \G\V M:\tau@A && \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A).
+	\end{align*}
+	We can assume $\alpha \notin B$ because $\alpha$ is a bound variable.
+	By the induction hypothesis, we have \(\G\SB\V M\SB:\tau\SB@A\).
+	We can prove easily $\alpha \notin \FTV(\GG) \cup \FTV(A)$.
+	Then, \(\GGV (\Lambda\alpha.M)\SB:(\forall\alpha.\tau)\SB@A\SB\) by \TGen.
+
+	%%%%%%%%%%%%%%%%%%%%% RESUME FROM HERE %%%%%%%%%%%%%%%%%%%%% 
+
+\end{itemize}
 
 \begin{itemize}
 				
