@@ -33,7 +33,6 @@ sequence. \LMD is defined by the following grammar:
 
 % \AI{Add $M\,\alpha$ to terms.}
 
-\AI{Is $O$ used as a metavariable?}
 % \AI{Domain and FV are not defined (yet).  I think we should introduce the notion of well-formed type environments by prose below and assume every type environment is well formed.}
 
 % Description of meta variables
@@ -258,9 +257,7 @@ shown below:
 
 To add declarations to a signature, the kind/type of a (type-level)
 constant has to be well-formed at stage \(\varepsilon\) so that it is
-used at any stage. \AI{We should discuss implicit CSP at the type
-  level somewhere.}
-\red{Conclusionに入れます}
+used at any stage. 
 
 In what follows, well-formedness is not explicitly mentioned but
 we assume that all signatures and type environments are well-formed.
@@ -268,12 +265,18 @@ we assume that all signatures and type environments are well-formed.
 \subsubsection{Kind Wellformedness and Kinding.}
 
 The rules for kind wellformedness and kiding is straightforward
-adaptation from \LLF.  So, we omit them.
+adaptation from \LLF and \LTP, except for the rule for type-level CSP.
+\begin{center}
+  \infrule[K-Csp]{
+    \G \V \tau :: * @ A
+  }{
+    \G \V \tau :: * @ A\alpha
+  }
+\end{center}
+Unlike the term level, type-level CSP is implicit.
 
 \subsubsection{Typing.}
 
-\AI{The second premises of \TConst and \TVar are not needed?}
-\red{Removed. TODO: Fix proofs.}
 \begin{figure}
   \begin{center}
     \infrule[\TConst]{c:\tau \in \Sigma}{\G \V c:\tau @A} \hfil
@@ -334,7 +337,8 @@ The rule \TIns{} is for applications of stages to stage abstractions.
 \TIns{} is mainly used when we run a code value or rename a stage variable in the body of an abstraction.
 The rule \TCsp{} is the rule for CSP, which means that
 if term $M$ is of type $\tau$ at stage $A$, $\%_\alpha M$ is of type $\tau$ at stage $A\alpha$.
-This rule enable to embed computed values into a fragment of code.
+Note that CSP is also applied to the type \(\tau\) (although it is implicit) in the conclusion.  Thanks to implicit CSP, the typing rule is the same as \LTP.
+
 
 \subsubsection{Kind, Type and Term Equivalence.}
 
