@@ -1,6 +1,7 @@
 % !TEX root = ../main.tex
 
 \section{Formal Definition of \LMD \label{sec:formal-definition}}
+\label{sec:formal}
 
 In this section, we give a formal definition of \LMD, including
 the syntax, full reduction, and type system.  In addition to full reduction,
@@ -469,7 +470,6 @@ $\text{tail}$ is of type $\Pi n:\I.\text{Vector}\ (n+1) \to (\text{Vector}\ n)$.
 The helper function vadd$_1$ takes a stage, the length $n$ of vectors, and two quoted vectors and returns code that computes the addition of the given two vectors:
 %
 \newcommand{\Vpn}{\text{Vector}\ (\%_\alpha n)}
-{\small
 \begin{align*}
 	  & \textbf{let}\ \text{vadd}_1 : \F\alpha.\Pi n:\I.\TW_\alpha\Vpn\to\TW_\alpha\Vpn\to\TW_\alpha\Vpn                                \\
 	  & \hspace{7mm} = \textbf{fix}\ f.\Lambda\alpha.\lambda n:\I.\ \lambda v_1:\TW_\alpha\Vpn.\ \lambda v_2:\TW_\alpha\Vpn.            \\
@@ -479,7 +479,6 @@ The helper function vadd$_1$ takes a stage, the length $n$ of vectors, and two q
 	  & \hspace{21mm} \textbf{let}\ t_2 = \text{tail}\ (\TBL_\alpha v_2)\ \textbf{in}                                                   \\
 	  & \hspace{21mm} \text{cons}\ (\text{head}\ (\TBL_\alpha v_1) + \text{head}\ (\TBL_\alpha v_2))\ (\TBL_\alpha f\ (n-1)\ t_1\ t_2))
 \end{align*}
-}
 (Here, we assume that the type system can know whether $n=0$ when
 \textbf{then}- and \textbf{else}-branches are typechecked so that
 both branches can be given type \(\TW_\alpha \text{Vector }n\).)
