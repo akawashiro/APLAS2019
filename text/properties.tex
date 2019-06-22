@@ -87,7 +87,7 @@ Thanks to Substitution Lemmas and Inversion Lemmas, we can prove Preservation ea
 
 Strong Normalization is also an important property, which guarantees that
 no typed term has an infinite reduction sequence.
-We prove this thorem by translating \LMD to the symply typed lambda calculus~\cite{harper1993framework}.
+We prove this theorem by translating \LMD to the simply typed lambda calculus~\cite{harper1993framework}.
 
 \begin{theorem}[Strong Normalization]
 	If $\G\V M_1:\tau@A$ then there is no infinite sequence $(M_i)_{i\ge1}$ of terms such that
@@ -95,9 +95,9 @@ We prove this thorem by translating \LMD to the symply typed lambda calculus~\ci
 \end{theorem}
 
 \begin{proof}
-	In order to prove this theorem, we define a translation $(\cdot)^\natural$ from \LMD\ to the symply typed lambda calculus.
+	In order to prove this theorem, we define a translation $(\cdot)^\natural$ from \LMD\ to the simply typed lambda calculus.
 	Second, we prove the $\natural$-translation preserves typing and reduction.
-	Then, we can prove Strong Normalization of \LMD from Strong Normalization of the symply typed lambda calculus.
+	Then, we can prove Strong Normalization of \LMD from Strong Normalization of the simply typed lambda calculus.
 \end{proof}
 
 Confluence is a property that any reduction sequences from one typed term converge.
@@ -162,7 +162,7 @@ to work.
 % when you write a interpreter using the evaluation context of \LMD,
 % your interpreter works just as intended.
       
-Progress is a collorary of Unique Decomposition.
+Progress is a corollary of Unique Decomposition.
 
 \begin{corollary}[Progress]
 	If $\G$ does not have any variable declared at stage $\varepsilon$ and $\G \V M : \tau  @ A$, then

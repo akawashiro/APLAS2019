@@ -270,7 +270,7 @@ we assume that all signatures and type environments are well-formed.
 
 \subsubsection{Kind Wellformedness and Kinding.}
 
-The rules for kind wellformedness and kiding is straightforward
+The rules for kind wellformedness and kinding is straightforward
 adaptation from \LLF and \LTP, except for the rule for type-level CSP.
 \begin{center}
   \infrule[K-Csp]{
@@ -352,7 +352,7 @@ Since the syntax of kinds, types, and terms is mutually recursive,
 corresponding notions of equivalence are also mutually recursive.
 They are congruences closed under a few axioms for term equivalence.
 So, the rules for kind and type equivalences are not very interesting
-except implict CSP is allowed.
+except implicit CSP is allowed.
 We show a few representative rules below.
 
   {\small
@@ -457,11 +457,11 @@ do depend on stages and so this rule does not apply.
 This rule is motivated by a practical consideration.  We will discuss
 the motivation through an example of specializing a vector addition
 function with respect to the size of vectors.  The function
-vadd (with an auxilirary function vadd$_1$) below implements a code
+vadd (with an auxiliary function vadd$_1$) below implements a code
 generator in a hypothetical language based on \LTP.  This language
 provides definitions by \textbf{let}, recursive functions (represented
 by \textbf{fix}), \textbf{if}-expressions, and primitives cons, head,
-and tail to maniputlate vectors.
+and tail to manipulate vectors.
 We assume that
 $\text{cons}$ is of type $\Pi n:\I.\I \to \text{Vector}\ n \to \text{Vector}\ (n+1)$, 
 $\text{head}$ is of type $\Pi n:\I.\text{Vector}\ (n+1) \to \I$, and
@@ -582,7 +582,7 @@ In order to define staged reduction, we define redex and evaluation contexts.
   \end{align*}
 \end{definition}
 
-The subscripts $A$ and $B$ in $E^A_B$ stand for the stage of the evaluation context and of the hole, respectively.  The grammer represents that staged reduction is left-to-right and call-by-value and terms under \(\Lambda\) is reduced.
+The subscripts $A$ and $B$ in $E^A_B$ stand for the stage of the evaluation context and of the hole, respectively.  The grammar represents that staged reduction is left-to-right and call-by-value and terms under \(\Lambda\) is reduced.
 A few examples of evaluation context are shown below:
 \begin{align*}
   \square\ (\lambda x:\I.x)                  & \in  ECtx^\varepsilon_\varepsilon \\
@@ -607,7 +607,7 @@ Now we define staged reduction using the redex and evaluation contexts.
 This reduction relation represents a term reduces in a deterministic,
 left-to-right, call-by-value manner.  An application of an abstraction
 is executed only at stage \(\varepsilon\) and only a quotation at
-stage \(\varepsilon\) is spiliced into the surrounding code---notice
+stage \(\varepsilon\) is spliced into the surrounding code---notice
 that, if \(\TB_\alpha v^\alpha\) is at stage \(\varepsilon\), then the
 redex \(\TBL_\alpha \TB_\alpha v^\alpha\) is at stage \(\alpha\).
 In other words, terms in brackets are not evaluated until the terms are run

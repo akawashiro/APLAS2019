@@ -1725,7 +1725,7 @@ Use induction on type derivation tree.
 	      	      	      	      
 	      	      Use \TConv, $\G \V L:\sigma @A$.
 	      	      	      	      
-	      	      Use "Substituition Lemma" to $\G, x:\sigma \V N:\tau$ and $\G \V L:\sigma @A$, get $\G \V N[x\mapsto L]:\tau[x\mapsto L]$.
+	      	      Use "Substitution Lemma" to $\G, x:\sigma \V N:\tau$ and $\G \V L:\sigma @A$, get $\G \V N[x\mapsto L]:\tau[x\mapsto L]$.
 	      	      %Get $\G \V \tau
 	      	      	      	      
 	      	\item $M\ N \LB M'\ N$
@@ -1922,7 +1922,7 @@ Use induction on type derivation tree.
 	      	      Use "Inversion Lemma for $\Lambda$ type" to $\G \V \Lambda\alpha.M\ : \forall\alpha.\tau @ A$,
 	      	      get $\G \V M : \tau @ A$ and $\alpha \notin \FTV(\G) \cup \FV(A)$.
 	      	      	      	      
-	      	      Use "Stage Substituition Lemma" to $\G \V M : \tau @ A$,
+	      	      Use "Stage Substitution Lemma" to $\G \V M : \tau @ A$,
 	      	      get $\G[\alpha \mapsto B] \V M[\alpha \mapsto B] : \tau[\alpha \mapsto B] @ A[\alpha \mapsto B]$.
 	      	      	      	      
 	      	      Because $\alpha \notin \FTV(\G) \cup \FV(A)$, $\G[\alpha \mapsto B] = \G$ and $A[\alpha \mapsto B] = A$.
