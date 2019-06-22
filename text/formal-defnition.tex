@@ -448,25 +448,23 @@ For example, constants do not depend on the stage (see \TConst) and
 so \(\G\V \%_\alpha c \E c : \tau @ A\alpha\) holds but variables
 do depend on stages and so this rule does not apply.
 
-Interestingly, Hanada and Igarashi~\cite{Hanada2014} rejected the idea of
-reduction that removes $\%_\alpha$ when they developed \LTP{}, as such
-reduction does not match the operational behavior of the CSP operator
-in implementation.  However, as an equational system for multi-stage
-programs, the rule \QPercent makes sense and, as we argue next,
-it is practically significant.
+This rule is motivated by a practical consideration.  We will discuss
+the motivation through an example of specializing a vector addition
+function with respect to the size of vectors.  The following function
+vadd (with an auxilirary function vadd$_1$) implements a code
+generator in a hypothetical language based on \LTP.  This language
+provides definitions by \textbf{let}, recursive functions (represented
+by \textbf{fix}), \textbf{if}-expressions, and primitives cons, head,
+and tail to maniputlate vectors.
+We assume that
+$\text{cons}$ is of type $\I \to (\text{Vector}\ n) \to (\text{Vector}\ (n+1))$, 
+$\text{head}$ is of type $\text{Vector}\ n \to \I$, and
+$\text{tail}$ is of type $(\text{Vector}\ n) \to (\text{Vector}\ (n-1))$ for any integer $n$.
 
-\red{$\text{head}: \text{Vector}\ n \to \I$としているが
-$\text{head}: \Pi n:\I.\text{Vector}\ n \to \I$のほうが良いか? tail, consも同様}
+% type checker can know $n=0$ when process the $\textbf{then}$ clause,
 
-\QPercent\ is different from other rules because it was designed from practical reason, not from the syntax or the reductions.
-For example, we discuss $\text{vadd}_\beta$ function,
-which takes a length of integer vectors and returns addition function for vectors with the length.
-$\text{vadd}_1$ is a helper function to make $\text{vadd}$, 
-which takes a stage, a length of vectors, and two quoted vectors and returns a quoted vector.
-We assumed that type checker can know $n=0$ when process the $\textbf{then}$ clause,
-$\text{head}$ is of type $\text{Vector}\ n \to \I$,
-$\text{tail}$ is of type $(\text{Vector}\ n) \to (\text{Vector}\ (n-1))$, 
-and  $\text{cons}$ is of type $\I \to (\text{Vector}\ n) \to (\text{Vector}\ (n+1))$, 
+The helper function vadd$_1$ takes a stage, the length $n$ of vectors, and two quoted vectors and returns code that computes the addition of the given two vectors:
+%
 \newcommand{\Vpn}{\text{Vector}\ (\%_\alpha n)}
 \begin{align*}
 	  & \textbf{let}\ \text{vadd}_1 : \F\alpha.\Pi n:\I.\TW_\alpha\Vpn\to\TW_\alpha\Vpn\to\TW_\alpha\Vpn                                \\
@@ -476,45 +474,54 @@ and  $\text{cons}$ is of type $\I \to (\text{Vector}\ n) \to (\text{Vector}\ (n+
 	  & \hspace{14mm} \textbf{else}\ \TB_\alpha (                                                                                       \\
 	  & \hspace{21mm} \textbf{let}\ t_1 = \text{tail}\ (\TBL_\alpha v_1)\ \textbf{in}                                                   \\
 	  & \hspace{21mm} \textbf{let}\ t_2 = \text{tail}\ (\TBL_\alpha v_2)\ \textbf{in}                                                   \\
-	  & \hspace{21mm} \text{cons}\ (\text{head}\ (\TBL_\alpha v_1) + \text{head}\ (\TBL_\alpha v_2))\ (\TBL_\alpha f\ (n-1)\ t_1\ t_2)) \\
+	  & \hspace{21mm} \text{cons}\ (\text{head}\ (\TBL_\alpha v_1) + \text{head}\ (\TBL_\alpha v_2))\ (\TBL_\alpha f\ (n-1)\ t_1\ t_2))
 \end{align*}
-Using $\text{vadd}_1$, we can make $\text{vadd}$ function easily.
-This function takes the length of vectors and returns a quoted add function for vector of the given size.
+(Here, we assume that the type system can know whether $n=0$ when
+\textbf{then}- and \textbf{else}-branches are typechecked so that
+both branches can be given type \(\TW_\alpha \text{Vector }n\).)
+
+The main function vadd below takes the length $n$ and returns
+($\beta$-closed) code of a function that takes two vectors and returns
+their addition using vadd$_1$.
 \renewcommand{\Vpn}{\text{Vector}\ (\%_\beta n)}
 \begin{align*}
 	  & \textbf{let}\ \text{vadd}: \Pi n:\I.\F\beta.\TW_\beta(\Vpn\to\Vpn\to\Vpn)                \\ 
 	  & \hspace{7mm} = \lambda n:\I.\Lambda\beta.\TB_\beta (\lambda v_1:\Vpn.\ \lambda v_2:\Vpn. \\
-	  & \hspace{63mm} \TBL_\beta \text{vadd}_1\ \beta\ n\ (\TB_\beta\ v_1)\ (\TB_\beta\ v_2))    \\
+	  & \hspace{63mm} \TBL_\beta (\text{vadd}_1\ \beta\ n\ (\TB_\beta\ v_1)\ (\TB_\beta\ v_2))) 
 \end{align*}
-\renewcommand{\Vpn}{\text{Vector}\ (\%_\beta 10)}
-
-\renewcommand{\Vpn}{\text{Vector}\ (\%_\alpha n)}
-$\text{vadd}$ function has the type of $\Pi n:\I.\F\beta.\TW_\beta(\Vpn\to\Vpn\to\Vpn)$ and
-when we use this function, we instansiate $\text{vadd}$ with some integer such as 5
-and get code of a optimzed $\text{vadd}$ function such as $\text{vadd5}$.
 \renewcommand{\Vpn}{\text{Vector}\ (\%_\beta 5)}
-Although $\text{vadd5}$ is of type $\F\beta.\TW_\beta(\Vpn\to\Vpn\to\Vpn)$,
-a code value of this type is difficult to combine with another code fragment.
-For example, if we want to composite $\text{vadd5}$ with code of reverse fucntion,
-which is of type $\text{rev5}:\F\alpha.\TW_\alpha(\text{Vector}\ 5\to\text{Vector}\ 5)$,
-we write a program like following.
-\begin{align*}
-  \Lambda\gamma.\TB_\gamma.\lambda v_1:(\text{Vector}\ 5).\lambda v_2:(\text{Vector}\ 5).\TBL_\gamma
-  (\text{rev5}\ \gamma)\ (\TBL_\gamma (\text{vadd5}\ \gamma)\ \TBL_\gamma v_1\ \TBL_\gamma v_2)
-\end{align*}
-However, this program cannot be typed without \QPercent{}
-because the type of $v_1$: $\text{Vector}\ 5$ isn't equivalent with the type of arguments of $\text{vadd5}$: $\text{Vector}\ \%_\gamma 5$.
+If this function is applied to a concrete
+(nonnegative) integer, say 5, it returns function code for adding
+two vectors of size 5.  The type of vadd\ 5, obtained by
+substituting 5 for $n$, is
+$\F\beta.\TW_\beta(\Vpn\to\Vpn\to\Vpn)$.
+\renewcommand{\Vpn}{\text{Vector}\ 5}
+If the obtained code is run by applying to \(\varepsilon\),
+the type of vadd\ 5\ $\varepsilon$ is
+\(\Vpn\to\Vpn\to\Vpn\) as expected.
+Without \QPercent, however, it would not be possible
+to compose this function code with another piece of code
+$v$ of type, say, \(\TW_\gamma \text{Vector }5\) because
+\(\text{Vector }5\) and \(\text{Vector }(\%_\beta 5)\) are
+syntactically different types.
+% : \(\TB_\gamma (\TBL_\gamma (\text{vadd}\ 5\ \gamma)\ v\ v)\).
 
-In order to resolve this problem, we introduce \QPercent{} into \LMD.
-\begin{center}
-  \infrule[\QPercent]{\G\V M:\tau @{A\alpha} \andalso \G\V M:\tau @A}{\G\V\%_\alpha M \E M : \tau @{A\alpha}}
-\end{center}
-\QPercent\ states that we can erase this $\%_\alpha$ under a condition.
-The condition is that a CSPed value equals to the original value when it has the same type in the original stage.
-For example, $\V \%_\alpha 5 \E 5 @ \alpha$ because $ \V 5 : \I @ \alpha $ from \TConst\ and  $ \V \%_\alpha 5 : \I @ \alpha$.
-In other words, we can remove a $\%_\alpha$ symbol of a value when it doesn't change the type.
-Thanks to \QPercent, we can identify $\text{Vector}\ 5$ and $\text{Vector}\ \%_\gamma 5$
-and compose the code values of functions as we expected.
+Interestingly, Hanada and Igarashi~\cite{Hanada2014} rejected the idea of
+reduction that removes $\%_\alpha$ when they developed \LTP{}, as such
+reduction does not match the operational behavior of the CSP operator
+in implementation.  However, as an equational system for multi-stage
+programs, the rule \QPercent makes sense.
+
+\renewcommand{\Vpn}{\text{Vector}\ n}
+\paragraph{Remark:} By using implicit type-level CSP, the type of vadd
+could have been written
+\(\Pi n:\I.\F\beta.\TW_\beta(\Vpn\to\Vpn\to\Vpn)\).  In this type,
+Vector\ $n$ is given kind at stage \(\varepsilon\) and type-level CSP
+implicitly lifts it to stage \(\beta\).  However, if a type-level
+constant takes two or more arguments from different stages, term-level
+CSP is necessary.  A matrix type (indexed by the numbers of columns
+and rows) is such an example.
+
 
 \subsection{Staged Semantics}
 
