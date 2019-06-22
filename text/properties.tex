@@ -23,9 +23,6 @@ manner.  Using these notations, the two substitution lemmas are stated as follow
   $\G\V P:\xi @B$, then $\V \G, \D[z \mapsto P]$.
 \end{lemma}
 
-\red{TODO: Fix the proof.}
-\red{$\G\V J@A$における代入を定義する必要があるか?}
-
 \begin{proof}
   By simultaneous induction on derivations.
  \qed
@@ -91,8 +88,6 @@ Thanks to Substitution Lemmas and Inversion Lemmas, we can prove Preservation ea
 Strong Normalization is also an important property, which guarantees that
 no typed term has an infinite reduction sequence.
 We prove this thorem by translating \LMD to the symply typed lambda calculus~\cite{harper1993framework}.
-\AI{what is a standard citation for a proof of SN of a dependently typed calculus?}.
-\red{とりあえずA Framework for Defining Logicsを引用しました。}
 
 \begin{theorem}[Strong Normalization]
 	If $\G\V M_1:\tau@A$ then there is no infinite sequence $(M_i)_{i\ge1}$ of terms such that

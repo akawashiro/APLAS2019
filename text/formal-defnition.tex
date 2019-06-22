@@ -17,6 +17,7 @@ over by \(x,y,z\), the denumerable set of \emph{constants}, ranged over by
 sequences of stage variables; we write \(\varepsilon\) for the empty
 sequence. \LMD is defined by the following grammar:
 
+{\small
 \begin{align*}
     % \textrm{Type variables}  &   &                          & X,Y,Z                                                                                                      \\
     % \textrm{Variables}       &   &                          & x,y,z                                                                                                      \\
@@ -30,7 +31,7 @@ sequence. \LMD is defined by the following grammar:
     \textrm{signatures}         &  & \Sigma                   & ::= \emptyset \mid \Sigma, X::K \mid \Sigma, c:\tau                               \\
     \textrm{type environments} &  & \Gamma                   & ::= \emptyset \mid  \Gamma,x:\tau @A                                              \\
 \end{align*}
-
+}
 % \AI{Add $M\,\alpha$ to terms.}
 
 % \AI{Domain and FV are not defined (yet).  I think we should introduce the notion of well-formed type environments by prose below and assume every type environment is well formed.}
@@ -134,6 +135,7 @@ term $N$ for $x$ in term $M$, type $\tau$, kind $K$, and stage $B$, respectively
 We also define substitutions of a stage or a term for variables in type environment $\G$.
 We show representative cases below.
 %
+{\small
 \begin{align*}
     (\lambda x:\tau.M)[\alpha \mapsto A] & = \lambda x:(\tau[\alpha \mapsto A]).(M[\alpha \mapsto A])                                  \\
     (M\ B)[\alpha \mapsto A]             & = (M[\alpha \mapsto A])\ B[\alpha\mapsto A]                                                 \\
@@ -143,6 +145,7 @@ We show representative cases below.
     (\beta B)[\alpha \mapsto A]          & = \beta (B[\alpha\mapsto A])                               & (\text{if } \alpha \neq \beta) \\
     (\beta B)[\alpha \mapsto A]          & = A (B[\alpha\mapsto A])                                   & (\text{if } \alpha = \beta)
 \end{align*}
+}
 Here, $\TB_{\alpha_1\cdots\alpha_n} M$,
 $\TBL_{\alpha_1\cdots\alpha_n} M$, and $\%_{\alpha_1\cdots\alpha_n} M$
 $(n \geq 0)$ stand for $\TB_{\alpha_1} \cdots \TB_{\alpha_n} M$,
@@ -154,11 +157,13 @@ $\TB_{\varepsilon} M = \TBL_{\varepsilon} M = \%_{\varepsilon} M = M$.
     The relations $M \longrightarrow_\beta N$, $M \longrightarrow_\blacklozenge N$, and $M \longrightarrow_\Lambda N$
     are the least compatible relations closed under the rules below.
 %    Congruence rules are omitted from the definition.
+{\small
     \begin{align*}
          (\lambda x:\tau.M) N & \longrightarrow_\beta M[x \mapsto N]         \\
          \TBL_\alpha \TB_\alpha M & \longrightarrow_\blacklozenge M          \\
          (\Lambda \alpha.M)\ A & \longrightarrow_\Lambda M[\alpha \mapsto A]
     \end{align*}
+  }    
 \end{definition}
 We write $ M \longrightarrow M'$ iff $ M \longrightarrow_\beta M'$,
 $ M \longrightarrow_\blacklozenge M'$, or
@@ -195,7 +200,7 @@ We list the judgments forms in Figure~\ref{fig:LMD-six-judgments}.
 They are all defined in a mutual recursive manner.  We will discuss
 each judgment below.
 
-\begin{figure}
+\begin{figure}[tbp]
   \begin{center}
     \begin{align*}
       \vdash & \Sigma                     & \text{signature well-formedness}        \\
@@ -418,7 +423,7 @@ and compatibility.
 The rules \QBeta, \QTBLTB, and \QLambda{} correspond to
 $\beta$-reduction, $\blacklozenge$-reduction, and $\Lambda$-reduction, respectively.
 
-\begin{figure}
+\begin{figure}[tbp]
   \begin{center}
     % \infrule[\QAbs]{\G\V \tau \E \sigma :: *@A \andalso \G,x:\tau @A \V M \E N : \rho @A}{\G\V\lambda x:\tau.M \E \lambda x:\sigma.N : (\Pi x:\tau.\rho)@A} \\[2mm]
     % \infrule[\QApp]{\G\V M \E L : (\Pi x:\sigma.\tau)@A \andalso \G\V N \E O : \sigma@A}{\G\V M\ N \E L\ O : \tau[x \mapsto N]@A} \\[2mm]
@@ -450,32 +455,31 @@ do depend on stages and so this rule does not apply.
 
 This rule is motivated by a practical consideration.  We will discuss
 the motivation through an example of specializing a vector addition
-function with respect to the size of vectors.  The following function
-vadd (with an auxilirary function vadd$_1$) implements a code
+function with respect to the size of vectors.  The function
+vadd (with an auxilirary function vadd$_1$) below implements a code
 generator in a hypothetical language based on \LTP.  This language
 provides definitions by \textbf{let}, recursive functions (represented
 by \textbf{fix}), \textbf{if}-expressions, and primitives cons, head,
 and tail to maniputlate vectors.
 We assume that
-$\text{cons}$ is of type $\I \to (\text{Vector}\ n) \to (\text{Vector}\ (n+1))$, 
-$\text{head}$ is of type $\text{Vector}\ n \to \I$, and
-$\text{tail}$ is of type $(\text{Vector}\ n) \to (\text{Vector}\ (n-1))$ for any integer $n$.
-
-% type checker can know $n=0$ when process the $\textbf{then}$ clause,
+$\text{cons}$ is of type $\Pi n:\I.\I \to \text{Vector}\ n \to \text{Vector}\ (n+1)$, 
+$\text{head}$ is of type $\Pi n:\I.\text{Vector}\ (n+1) \to \I$, and
+$\text{tail}$ is of type $\Pi n:\I.\text{Vector}\ (n+1) \to (\text{Vector}\ n)$.
 
 The helper function vadd$_1$ takes a stage, the length $n$ of vectors, and two quoted vectors and returns code that computes the addition of the given two vectors:
 %
 \newcommand{\Vpn}{\text{Vector}\ (\%_\alpha n)}
+{\small
 \begin{align*}
 	  & \textbf{let}\ \text{vadd}_1 : \F\alpha.\Pi n:\I.\TW_\alpha\Vpn\to\TW_\alpha\Vpn\to\TW_\alpha\Vpn                                \\
 	  & \hspace{7mm} = \textbf{fix}\ f.\Lambda\alpha.\lambda n:\I.\ \lambda v_1:\TW_\alpha\Vpn.\ \lambda v_2:\TW_\alpha\Vpn.            \\
-	  & \hspace{14mm} \textbf{if}\ n = 0                                                                                                \\
-	  & \hspace{14mm} \textbf{then} \TB_\alpha \text{nil}                                                                               \\
+	  & \hspace{14mm} \textbf{if}\ n = 0 \ \textbf{then}\ \TB_\alpha \text{nil}                                                                               \\
 	  & \hspace{14mm} \textbf{else}\ \TB_\alpha (                                                                                       \\
 	  & \hspace{21mm} \textbf{let}\ t_1 = \text{tail}\ (\TBL_\alpha v_1)\ \textbf{in}                                                   \\
 	  & \hspace{21mm} \textbf{let}\ t_2 = \text{tail}\ (\TBL_\alpha v_2)\ \textbf{in}                                                   \\
 	  & \hspace{21mm} \text{cons}\ (\text{head}\ (\TBL_\alpha v_1) + \text{head}\ (\TBL_\alpha v_2))\ (\TBL_\alpha f\ (n-1)\ t_1\ t_2))
 \end{align*}
+}
 (Here, we assume that the type system can know whether $n=0$ when
 \textbf{then}- and \textbf{else}-branches are typechecked so that
 both branches can be given type \(\TW_\alpha \text{Vector }n\).)
