@@ -18,7 +18,7 @@ over by \(x,y,z\), the denumerable set of \emph{constants}, ranged over by
 sequences of stage variables; we write \(\varepsilon\) for the empty
 sequence. \LMD is defined by the following grammar:
 
-{\small
+{%\small
 \begin{align*}
     % \textrm{Type variables}  &   &                          & X,Y,Z                                                                                                      \\
     % \textrm{Variables}       &   &                          & x,y,z                                                                                                      \\
@@ -30,7 +30,7 @@ sequence. \LMD is defined by the following grammar:
     \textrm{terms}             &  & M,N,L,O,P                & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M                   \\
                                &  &                          & \ \ \ \ \mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ A \mid \%_\alpha M        \\
     \textrm{signatures}         &  & \Sigma                   & ::= \emptyset \mid \Sigma, X::K \mid \Sigma, c:\tau                               \\
-    \textrm{type environments} &  & \Gamma                   & ::= \emptyset \mid  \Gamma,x:\tau @A                                              \\
+    \textrm{type env.} &  & \Gamma                   & ::= \emptyset \mid  \Gamma,x:\tau @A                                              \\
 \end{align*}
 }
 % \AI{Add $M\,\alpha$ to terms.}
@@ -83,7 +83,7 @@ is a sequence of declarations of the form $c:\tau$ and $X:K$.
 For example, when we use Boolean in \LMD, $\Sigma$ includes $\B :: *, \textrm{true}:\B, \textrm{false}:\B$.
 Type environments are sequences of triples of a variable, its type, and its stage.
 We write \(\textit{dom}(\Sigma)\) and \(\textit{dom}(\Gamma)\)
-for the set of (type-level) constants declared in \(\Sigma\) and \(\Gamma\), respectively.   As in other multi-stage calculi~\cite{Taha03,Tsukada,Hanada2014},
+for the set of (type-level) constants declared in \(\Sigma\) and \(\Gamma\), respectively.   As in other multi-stage calculi~\cite{taha2003environment,Tsukada,Hanada2014},
 a variable declaration is associated with a stage
 so that a variable can be referenced only at the declared stage.
 Constants and type-level constants are not associated with stages;
@@ -136,7 +136,7 @@ term $N$ for $x$ in term $M$, type $\tau$, kind $K$, and stage $B$, respectively
 We also define substitutions of a stage or a term for variables in type environment $\G$.
 We show representative cases below.
 %
-{\small
+{%\small
 \begin{align*}
     (\lambda x:\tau.M)[\alpha \mapsto A] & = \lambda x:(\tau[\alpha \mapsto A]).(M[\alpha \mapsto A])                                  \\
     (M\ B)[\alpha \mapsto A]             & = (M[\alpha \mapsto A])\ B[\alpha\mapsto A]                                                 \\
@@ -158,7 +158,7 @@ $\TB_{\varepsilon} M = \TBL_{\varepsilon} M = \%_{\varepsilon} M = M$.
     The relations $M \longrightarrow_\beta N$, $M \longrightarrow_\blacklozenge N$, and $M \longrightarrow_\Lambda N$
     are the least compatible relations closed under the rules below.
 %    Congruence rules are omitted from the definition.
-{\small
+{%\small
     \begin{align*}
          (\lambda x:\tau.M) N & \longrightarrow_\beta M[x \mapsto N]         \\
          \TBL_\alpha \TB_\alpha M & \longrightarrow_\blacklozenge M          \\
@@ -283,7 +283,7 @@ Unlike the term level, type-level CSP is implicit.
 
 \subsubsection{Typing.}
 
-\begin{figure}
+\begin{figure}[tbp]
   \begin{center}
     \infrule[\TConst]{c:\tau \in \Sigma}{\G \V c:\tau @A} \hfil
     \infrule[\TVar]{x:\tau @A \in \G}{\G \V x:\tau @A} \\[2mm]
