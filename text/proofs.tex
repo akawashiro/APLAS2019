@@ -1,18 +1,21 @@
-\iffullversion
 \AI{Put a comma before ``then''.}
 \AI{A period is needed for each statement (because it's a sentence).}
 \AI{TAPL gives plenty of examples of how to write proofs.}
+$\mathcal{J}$ is a metavariable for judgments as in Section \ref{sec:properties}.
+We say type environment \(\G\) is a subsequence of type environment \(\D\)
+if and only we can get \(\G\) from \(\D\) by deleting some or no variables without changing the order of the remaining elements.
 \begin{lemma}[Weakening]
-	If \(\G \V J@A\) and \(\G\) is a subsequence of \(\D\), then \(\D \V J@A\). 
-	\AI{Apply similar changes and remove \%.}
-	\red{このコメントはどういう意味ですか?}
+	If \(\G \V \mathcal{J}@A\) and \(\G\) is a subsequence of \(\D\), then \(\D \V J@A\). 
+	% \AI{Apply similar changes and remove \%.}
+	% \red{このコメントはどういう意味ですか?}
 \end{lemma}
 
 \begin{proof}
 	By straightforward induction on the derivation of typing, kinding, well-formed kinding,
 	term equivalence, type equivalence or kind equivalence.
+	We show only representative cases.
 	\begin{itemize}
-		\item[] Case \WAbs{} where $J = (\Pi x:\tau.K)\iskind @A$ and 
+		\item[] Case \WAbs{} where $\mathcal{J} = (\Pi x:\tau.K)\iskind @A$ and 
 		\begin{align*} 
 			& \G \V \tau :: * @ A && \G,x:\tau@A \V K \iskind @A
 		\end{align*}
@@ -21,15 +24,33 @@
 			& \D \V \tau::*@A && \D, x:\tau@A \V K \iskind @ A
 		\end{align*}
 		from which $\D\V (\Pi x:\tau.K) \iskind @ A$ follows by $\WAbs$.
-		\item \KAbs
-		\item \TAbs
-		\item \QKAbs
-		\item \QTAbs
-		\item \QAbs
-		\item \QBeta
+
+		\item[] Case \KAbs{} where $\mathcal{J} = (\Pi x:\tau.) :: (\Pi x:\tau.J)@A$ and 
+		\begin{align*} 
+			& \G \V \tau::*@A && \G,x:\tau@A\V \sigma :: J @ A
+		\end{align*}
+		By the induction hypothesis, we have
+		\begin{align*} 
+			& \D \V \tau::*@A && \D,x:\tau@A\V \sigma :: J @ A
+		\end{align*}
+		from which $\D \V (\Pi x:\tau.) :: (\Pi x:\tau.J)@A$ follows.
+		% \item \TAbs
+		% \item \QKAbs
+
+		\item[] Case \QTAbs{} where \( \mathcal{J} = \rho \E \pi :: * @ A \) and
+		\begin{align*} 
+			& \G\V \tau \E \sigma :: *@A && \G,x:\tau@A \V \rho \E \pi :: *@A
+		\end{align*}
+		By the induction hypothesis, we have
+		\begin{align*} 
+			& \D\V \tau \E \sigma :: *@A && \D,x:\tau@A \V \rho \E \pi :: *@A
+		\end{align*}
+		from which \( \D\V \rho \E \pi :: * @ A \) follows.
+
+		% \item \QAbs
+		% \item \QBeta
 	\end{itemize}
 \end{proof}
-\fi
 
 \begin{theorem}[Term Substitution]
 	\AI{The statements should be fixed.}
