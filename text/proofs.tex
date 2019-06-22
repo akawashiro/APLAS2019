@@ -840,171 +840,219 @@ if and only we can get \(\G\) from \(\D\) by deleting some or no variables witho
 	If $\G \V \mathcal{J}$, then $\G[\beta\mapsto B] \V \mathcal{J}[\beta\mapsto B]$.  Similarly, if $\G \V \mathcal{J}$, then $\V \G[\beta\mapsto B]$.
 \end{lemma}
 
+\begin{proof}
+	The six items are proved simultaneously by induction on derivations with case analysis on the last rule used.
+	We show only representative cases.
+	\begin{itemize}
+						
+		\newcommand{\SB}{[\beta \mapsto B]}
+		\newcommand{\GG}{\G\SB}
+		\newcommand{\GGV}{\G\SB \V}
+		
+		\item \textit{Case} \TGen{} where $\mathcal{J} = \Lambda\alpha.M:\forall\alpha.\tau@A$ and
+		      \begin{align*}
+		      	  & \G\V M:\tau@A &   & \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A). 
+		      \end{align*}
+		      We can assume $\alpha \notin B$ because $\alpha$ is a bound variable.
+		      By the induction hypothesis, we have \(\G\SB\V M\SB:\tau\SB@A\).
+		      We can prove easily $\alpha \notin \FTV(\GG) \cup \FTV(A)$.
+		      Then, \(\GGV (\Lambda\alpha.M)\SB:(\forall\alpha.\tau)\SB@A\SB\) by \TGen.
+		      
+	    \item \textit{Case} \KTW{} where \(\mathcal{J} = \G\V \TW_\alpha \tau :: * @ A \) and \( \G\V \tau :: * @ A\alpha \).
+	      \begin{itemize}
+	      	\item If $\alpha \neq \beta$,\\
+					\( \GGV \tau\SB :: *\SB @ A\alpha\SB \) from the induction hypothesis.
+					\( \GGV \TW_\alpha \tau\SB :: *\SB @ A\SB \) from \KTW.
+	      	      	      	      	      	      	      	      	     	      
+	      	\item If $\alpha = \beta$, \\
+					\( \GGV \tau\SB :: *\SB @ A\alpha\SB \) from the induction hypothesis and
+					it is identical with \( \GGV \tau\SB :: * @ AB \).
+					We can get \( \GGV \TW_B \tau\SB :: * @ A \) after repeat using \KTW the length of $B$ times.
+
+	      \end{itemize}
+		
+		\item \textit{Case} \QGen{} where \(\mathcal{J} = \Lambda\alpha.M \E \Lambda\alpha.N : \forall\alpha.\tau@A\) and 
+		\begin{align*}
+    		& \G\V M\E N : \tau@A && \alpha \notin \FTV(\G)\cup\FTV(A).
+		\end{align*}
+		From the induction hypothesis, \( \GGV M\SB \E N\SB : \tau\SB@A\SB \).
+		We can assume \(\alpha \notin B \) because \(\alpha\) is a bound variable thus
+		\( \alpha \notin \FTV(\G\SB)\cup\FTV(A\SB) \).
+		\( \GGV \Lambda\alpha.M\SB \E \Lambda\alpha.N\SB : \tau\SB@A\SB \) from \QGen{} and
+		it is identical with \( \GGV (\Lambda\alpha.M)\SB \E (\Lambda\alpha.N)\SB : \tau\SB@A\SB \).
+		      
+	\end{itemize}
+\end{proof}
 
 \begin{itemize}
-				
+					
 	\newcommand{\SB}{[\beta \mapsto B]}
 	\newcommand{\GG}{\G\SB}
 	\newcommand{\GGV}{\G\SB \V}
-
-	\item \textit{Case} \TGen{} where $\mathcal{J} = \Lambda\alpha.M:\forall\alpha.\tau@A$ and
-	\begin{align*}
-    	& \G\V M:\tau@A && \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A).
-	\end{align*}
-	We can assume $\alpha \notin B$ because $\alpha$ is a bound variable.
-	By the induction hypothesis, we have \(\G\SB\V M\SB:\tau\SB@A\).
-	We can prove easily $\alpha \notin \FTV(\GG) \cup \FTV(A)$.
-	Then, \(\GGV (\Lambda\alpha.M)\SB:(\forall\alpha.\tau)\SB@A\SB\) by \TGen.
-
-	%%%%%%%%%%%%%%%%%%%%% RESUME FROM HERE %%%%%%%%%%%%%%%%%%%%% 
-
-\end{itemize}
-
-\begin{itemize}
-				
-	\newcommand{\SB}{[\beta \mapsto B]}
-	\newcommand{\GG}{\G\SB}
-	\newcommand{\GGV}{\G\SB \V}
-				
+					
 	\iffullversion
-				
+					
 	\item \WStar
-	      	      	      	      
+	      	      	      	      	      
 	      From the definition of \WStar, we can get $\mathcal{D}_1$.
-	      	      	      	      
+	      	      	      	      	      
 	      $\mathcal{D}_1$ = \infer[\WStar]
 	      {\GGV * \iskind @A\SB}
 	      {}
-	      	      	      	      
+	      	      	      	      	      
 	\item \WAbs
-	      	      	      	      
+	      	      	      	      	      
 	      From the induction hypothesis and \WAbs, we get $\mathcal{D}_1$.
-	      	      	      	      
+	      	      	      	      	      
 	      $\mathcal{D}_1$ = \infer[\WAbs]
 	      {\GGV (\Pi x:\tau.K)\SB \iskind @A}
 	      {
 	      	\ID{\GGV \tau\SB::*@A\SB} \andalso
 	      	\ID{\GG, x:\tau\SB \V K\SB \iskind@}
 	      }
-	      	      	      	      
+	      	      	      	      	      
 	\item \WCsp
-	      	      	      	      
+	      	      	      	      	      
 	      \begin{itemize}
-	      		      		      		      	
+	      		      		      		      		      	
 	      	\item $\alpha \neq \beta$
-	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      
 	      	      From the induction hypothesis and \WCsp, we can get $\mathcal{D}_1$.
-	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      
 	      	      $\mathcal{D}_1$ = \infer[\WCsp]
 	      	      {\GGV K\SB \iskind @A\alpha\SB}
 	      	      {\ID{\GGV K\SB \iskind @A\SB}}
-	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      
 	      	\item $\alpha = \beta$
-	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      
 	      	      The conclusion is identical with the induction hypothesis.
-	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      
 	      \end{itemize}
-	      	      	      	      
+	      	      	      	      	      
 	\item \WTW
-	      	      	      	      
+	      	      	      	      	      
 	      \begin{itemize}
-	      		      		      		      	
+	      		      		      		      		      	
 	      	\item $\alpha \neq \beta$
-	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      
 	      	      From the induction hypothesis and \WTW, we can get $\mathcal{D}_1$.
-	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      
 	      	      $\mathcal{D}_1$ = \infer[\WTW]
 	      	      {\GGV K\SB \iskind @A\SB}
 	      	      {\ID{\GGV K\SB \iskind @A\alpha\SB}}
-	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      
 	      	\item $\alpha = \beta$
-	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      
 	      	      The conclusion is identical with the induction hypothesis.
-	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      
 	      \end{itemize}
-	      	      	      	      
+	      	      	      	      	      
 	\item \KVar
-	      	      	      	      
+	      	      	      	      	      
 	      We can easily show that $X::K\SB \in \GG$.
 	      From the induction hypothesis and \KVar, we can get $\mathcal{D}_1$.
-	      	      	      	      
+	      	      	      	      	      
 	      $\mathcal{D}_1$ = \infer[\KVar]
 	      {\GGV X :: K\SB @A\SB}
 	      {X::K\SB \in \GG \andalso \ID{\GGV K\SB \iskind @A\SB}}
-	      	      	      	      
+	      	      	      	      	      
 	\item \KAbs
-	      	      	      	      
+	      	      	      	      	      
 	      From the induction hypothesis, we can get $\mathcal{D}_1$ and $\mathcal{D}_2$.
-	      	      	      	      
+	      	      	      	      	      
 	      $\mathcal{D}_1$ = \infer[]
 	      {\GGV \tau\SB :: * @ A\SB}
 	      {\vdots}
-	      	      	      	      
+	      	      	      	      	      
 	      $\mathcal{D}_2$ = \infer[]
 	      {\GG, x:\tau\SB@A\V \sigma\SB::J\SB@A\SB}
 	      {\vdots}
-	      	      	      	      
+	      	      	      	      	      
 	      Use \KAbs,
-	      	      	      	      
+	      	      	      	      	      
 	      $\mathcal{D}_3$ = \infer[\KAbs]
 	      {\GGV (\Pi x:\tau\SB.\sigma\SB)::(\Pi x:\tau\SB.J\SB)@A\SB}
 	      {\mathcal{D}_1 \andalso \mathcal{D}_2}
-	      	      	      	      
+	      	      	      	      	      
 	      We can arrange the substitution.
-	      	      	      	      
+	      	      	      	      	      
 	      $\mathcal{D}'_3$ = \infer[\KAbs]
 	      {\GGV (\Pi x:\tau.\sigma)\SB::(\Pi x:\tau.J)\SB@A\SB}
 	      {\mathcal{D}_1 \andalso \mathcal{D}_2}
-	      	      	      	      
+	      	      	      	      	      
 	\item \KApp
-	      	      	      	      
+	      	      	      	      	      
 	      From the induction hypothesis and \KApp, we can get $\mathcal{D}_1$.
-	      	      	      	      
+	      	      	      	      	      
 	      $\mathcal{D}_1$ = \infer[\KApp]
 	      {\GGV (\sigma\SB\ M\SB)::K\SB[x \mapsto M\SB]@A\SB}
 	      {\ID{\GGV \sigma\SB::(\Pi x:\tau\SB.K\SB)@A\SB} \andalso \ID{\GGV M\SB:\tau\SB@A}}
-	      	      	      	      
+	      	      	      	      	      
 	      Arrange substitutions,
-	      	      	      	      
+	      	      	      	      	      
 	      $\mathcal{D}'_1$ = \infer[\KApp]
 	      {\GGV (\sigma\ M)\SB::K[x \mapsto M]\SB@A\SB}
 	      {\ID{\GGV \sigma\SB::(\Pi x:\tau\SB.K\SB)@A\SB} \andalso \ID{\GGV M\SB:\tau\SB@A\SB}}
-	      	      	      	      
+	      	      	      	      	      
 	\item \KConv
-	      	      	      	      
+	      	      	      	      	      
 	      From the induction hypothesis, we have $\mathcal{D}_1$ and $\mathcal{D}_2$.
-	      	      	      	      
+	      	      	      	      	      
 	      $\mathcal{D}_1$ = \infer[]
 	      {\GGV \tau\SB : K[z\mapsto P]@A\SB}
 	      {\vdots}
-	      	      	      	      
+	      	      	      	      	      
 	      $\mathcal{D}_2$ = \infer[]
 	      {\GGV K\SB \E J\SB @A\SB}
 	      {\vdots}
-	      	      	      	      
+	      	      	      	      	      
 	      Use \KConv,
-	      	      	      	      
+	      	      	      	      	      
 	      $\mathcal{D}_2$ = \infer[\KConv]
 	      {\GGV \tau\SB : J[z\mapsto P]@A\SB}
 	      {\mathcal{D}_1 \andalso \mathcal{D}_2}
-	      	      	      	      
+	      	      	      	      	      
 	\item \KTW
-	      	      	      	      
+	      	      	      	      	      
 	      \begin{itemize}
-	      		      		      		      	
+	      		      		      		      		      	
 	      	\item $\alpha \neq \beta$
-	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      
 	      	      From the induction hypothesis, we have $\mathcal{D}_1$.
-	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      
 	      	      $\mathcal{D}_1$ = \infer[]
 	      	      {\GGV \tau\SB :: K\SB @ A\alpha\SB}
 	      	      {\vdots}
-	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      
 	      	      Use \KTW,
-	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      
 	      	      $\mathcal{D}_2$ = \infer[]
 	      	      {\GGV \TW_\alpha \tau\SB :: K\SB @ A\SB}
 	      	      {\mathcal{D}_1}
+	      	      	      	      	      	      	      	      	      	      
+	      	\item $\alpha = \beta$
+	      	      	      	      	      	      	      	      	      	      
+	      	      The conclusion is identical with the induction hypothesis.
+	      	      	      	      	      	      	      	      	      	      
+	      \end{itemize}
+	      	      	      	      	      
+	\item \KTWL
+	      	      	      	      	      
+	      \begin{itemize}
+	      		      		      		      		      	
+	      	\item $\alpha \neq \beta$
+	      	      	      	      	      	      	      	      	      	      
+	      	      From the induction hypothesis, we have $\mathcal{D}_1$.
+	      	      	      	      	      	      	      	      	      	      
+	      	      $\mathcal{D}_1$ = \infer[]
+	      	      {\GGV \TW_\alpha \tau\SB :: K\SB @ A\alpha\SB}
+	      	      {\vdots}
+	      	      	      	      	      	      	      	      	      	      
+	      	      Use \KTWL,
+	      	      	      	      	      	      	      	      	      	      
+	      	      $\mathcal{D}_2$ = \infer[]
+	      	      {\GGV \tau\SB :: K\SB @ A\alpha\SB}
+	      	      {\mathcal{D}_1}
 	      	      	      	      	      	      	      	      
 	      	\item $\alpha = \beta$
 	      	      	      	      	      	      	      	      
@@ -1012,576 +1060,552 @@ if and only we can get \(\G\) from \(\D\) by deleting some or no variables witho
 	      	      	      	      	      	      	      	      
 	      \end{itemize}
 	      	      	      	      
-	\item \KTWL
+	      	      	      	      
+	\item \KGen
+	      	      	      	      
+	      From the induction hypothesis, we have $\mathcal{D}_1$.
+	      	      	      	      
+	      $\mathcal{D}_1$ = \infer[]
+	      {\GGV \tau\SB :: K\SB @ A\SB}
+	      {\vdots}
+	      	      	      	      
+	      And we can prove easily $\alpha \notin \FTV(\GG) \cup \FTV(A)$.
+	      	      	      	      
+	      Use \KGen,
+	      	      	      	      
+	      $\mathcal{D}_2$ = \infer[\KGen]
+	      {\GGV \forall\alpha.\tau\SB :: K\SB @ A\SB}
+	      {\mathcal{D}_1 \andalso \alpha \notin \FTV(\GG) \cup \FTV(A)}
+	      	      	      	      
+	\item \KCsp
 	      	      	      	      
 	      \begin{itemize}
 	      		      		      		      	
 	      	\item $\alpha \neq \beta$
-	      	      	      	      	      	      	      	      
-	      	      From the induction hypothesis, we have $\mathcal{D}_1$.
-	      	      	      	      	      	      	      	      
-	      	      $\mathcal{D}_1$ = \infer[]
-	      	      {\GGV \TW_\alpha \tau\SB :: K\SB @ A\alpha\SB}
-	      	      {\vdots}
-	      	      	      	      	      	      	      	      
-	      	      Use \KTWL,
-	      	      	      	      	      	      	      	      
-	      	      $\mathcal{D}_2$ = \infer[]
-	      	      {\GGV \tau\SB :: K\SB @ A\alpha\SB}
-	      	      {\mathcal{D}_1}
 	      	      	      	      	      	      
-	      	\item $\alpha = \beta$
-	      	      	      	      	      	      
-	      	      The conclusion is identical with the induction hypothesis.
-	      	      	      	      	      	      
-	      \end{itemize}
-	      	      	      
-	      	      	      
-	\item \KGen
-	      	      	      
-	      From the induction hypothesis, we have $\mathcal{D}_1$.
-	      	      	      
-	      $\mathcal{D}_1$ = \infer[]
-	      {\GGV \tau\SB :: K\SB @ A\SB}
-	      {\vdots}
-	      	      	      
-	      And we can prove easily $\alpha \notin \FTV(\GG) \cup \FTV(A)$.
-	      	      	      
-	      Use \KGen,
-	      	      	      
-	      $\mathcal{D}_2$ = \infer[\KGen]
-	      {\GGV \forall\alpha.\tau\SB :: K\SB @ A\SB}
-	      {\mathcal{D}_1 \andalso \alpha \notin \FTV(\GG) \cup \FTV(A)}
-	      	      	      
-	\item \KCsp
-	      	      	      
-	      \begin{itemize}
-	      		      		      	
-	      	\item $\alpha \neq \beta$
-	      	      	      	      
 	      	      From the induction hypothesis and \KCsp, we have $\mathcal{D}_1$.
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      $\mathcal{D}_1$ = \infer[\KCsp]
 	      	      {\GGV \tau\SB :: K\SB @ A\alpha\SB}
 	      	      {\ID{\GGV \tau\SB :: K\SB @ A\SB}}
-	      	      	      	      
+	      	      	      	      	      	      
 	      	\item $\alpha = \beta$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      The conclusion is identical with the induction hypothesis.
-	      	      	      	      
+	      	      	      	      	      	      
 	      \end{itemize}
-	      	      
+	      	      	      
 	\item \TVar
-	      	      
+	      	      	      
 	      We can easily prove $x:\tau\SB \in \GG$.
-	      	      
+	      	      	      
 	      From the induction hypothesis and \TVar, we have $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[]
 	      {\GGV x:\tau\SB @A\SB}
 	      {x:\tau\SB \in \GG \andalso \ID{\GGV \tau\SB::*@A\SB}}
-	      	      
+	      	      	      
 	\item \TAbs
-	      	      
+	      	      	      
 	      From the induction hypothesis and \TAbs, we get
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\TAbs]
 	      {\GGV (\lambda x:\sigma\SB.M\SB):(\Pi x:\sigma\SB.\tau\SB)@A\SB}
 	      {\ID{\GGV \sigma\SB::*@A\SB} \andalso \ID{\GG, x:\sigma\SB@A\SB \V M\SB:\tau\SB@A\SB}}
-	      	      
+	      	      	      
 	      Arrange substitutions,
-	      	      
+	      	      	      
 	      $\mathcal{D}'_1$ = \infer[\TAbs]
 	      {\GGV (\lambda x:\sigma.M)\SB:(\Pi x:\sigma.\tau)\SB@A\SB}
 	      {\ID{\GGV \sigma\SB::*@A\SB} \andalso \ID{\GG, x:\sigma\SB@A\SB \V M\SB:\tau\SB@A\SB}}
-	      	      
+	      	      	      
 	\item \TApp
-	      	      
+	      	      	      
 	      We have a derivation trees from the premise.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\TApp]
 	      {\G, z:\xi@B, \D \V M\ L:\tau[y\mapsto L]@A}
 	      {\infer[]{\G, z:\xi@B, \D \V M:\Pi(y:\rho).\tau@A \andalso \G, z:\xi@B, \D \V L:\rho@A}{\vdots}}
-	      	      
+	      	      	      
 	      We get 2 trees from the induction hypothesis and $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_2$ = \infer[]
 	      {\GGV M\SB: (\Pi(y:\rho).\tau)\SB@A}
 	      {\vdots}
-	      	      
+	      	      	      
 	      and
-	      	      
+	      	      	      
 	      $\mathcal{D}_3$ = \infer[]
 	      {\GGV L\SB: \rho\SB@A}
 	      {\vdots}
-	      	      
+	      	      	      
 	      \red{distribute the substitution} in $\mathcal{D}_2$
-	      	      
+	      	      	      
 	      $\mathcal{D'}_2$ = \infer[]
 	      {\GGV M\SB: (\Pi(y:\rho\SB).\tau\SB)@A}
 	      {\vdots}
-	      	      
+	      	      	      
 	      From $\mathcal{D'}_2$ and $\mathcal{D}_3$
-	      	      
+	      	      	      
 	      $\mathcal{D}_4$ = \infer[\TApp]
 	      {\GGV (M\SB\ L\SB): \tau\SB[y \mapsto L]@A}
 	      {\mathcal{D'}_2 \andalso \mathcal{D}_3}
-	      	      
+	      	      	      
 	      \red{We can transform the conclusion of $\mathcal{D}_4$ into} \\
 	      $\GGV (M\ L)\SB: \tau[y \mapsto L]\SB@A$
-	      	      
+	      	      	      
 	\item \TConv
-	      	      
+	      	      	      
 	      We have 2 derivation trees from the premise and the induction hypothesis.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[]
 	      {\GGV t\SB:T\SB@A}
 	      {\vdots}
-	      	      
+	      	      	      
 	      $\mathcal{D}_2$ = \infer[]
 	      {\GGV T\SB \E T'\SB@A}
 	      {\vdots}
-	      	      
+	      	      	      
 	      And then \\
 	      \infer[\TConv]
 	      {\GGV t\SB:T'\SB@A}
 	      {\mathcal{D}_1 \andalso \mathcal{D}_2}
-	      	      
+	      	      	      
 	\item \TTB
-	      	      
+	      	      	      
 	      \begin{itemize}
-	      		      	
+	      		      		      	
 	      	\item $\alpha \neq \beta$
 	      	      From the induction hypothesis and \TTB, we get
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      $\mathcal{D}_1$ = \infer[\TTB]
 	      	      {\GGV \TB_\alpha M\SB:\tau\SB@A\SB}
 	      	      {\infer[]{\GGV M\SB:\tau\SB@A\alpha\SB}{\vdots}}
-	      	      	      	      
+	      	      	      	      	      	      
 	      	\item $\alpha = \beta$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      The conclusion is identical with the induction hypothesis.
-	      	      	      	      
+	      	      	      	      	      	      
 	      \end{itemize}
-	      	      
+	      	      	      
 	\item \TTBL
-	      	      
+	      	      	      
 	      \begin{itemize}
-	      		      	
+	      		      		      	
 	      	\item $\alpha \neq \beta$
 	      	      From the induction hypothesis and \TTBL, we get
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      $\mathcal{D}_3$ = \infer[\TTBL]
 	      	      {\GGV \TBL_\alpha M\SB:\tau\SB@A\SB}
 	      	      {
 	      	      	\infer[]{\GGV M\SB: \TW_\alpha \tau\SB@A\alpha\SB}{\vdots}
 	      	      }
-	      	      	      	      
+	      	      	      	      	      	      
 	      	\item $\alpha = \beta$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      The conclusion is identical with the induction hypothesis.
-	      	      	      	      
+	      	      	      	      	      	      
 	      \end{itemize}
-	      	      
+	      	      	      
 	\item \TGen
-	      	      
+	      	      	      
 	      From the induction hypothesis, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[]
 	      {\GGV M\SB:\tau\SB@A\SB}
 	      {\vdots}
-	      	      
+	      	      	      
 	      And we can prove easily $\alpha \notin \FTV(\GG) \cup \FTV(A)$.
-	      	      
+	      	      	      
 	      Use \TGen,
-	      	      
+	      	      	      
 	      $\mathcal{D}_2$ = \infer[\TGen]
 	      {\GGV (\Lambda\alpha.M)\SB:(\forall\alpha.\tau)\SB@A\SB}
 	      {\mathcal{D}_1 \andalso \alpha \notin \FTV(\GG) \cup \FTV(A)}
-	      	      
+	      	      	      
 	\item \TIns
-	      	      
+	      	      	      
 	      We can assume $\alpha \neq \beta$ because $\alpha$ appears only in $M:\forall\alpha.\tau$ and we can rename $\alpha$ to an arbitary name.
-	      	      
+	      	      	      
 	      From the induction hypothesis and \TIns, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\TIns]
 	      {\GGV (M\ \varepsilon)\SB:\tau\SB@A\SB}
 	      {\ID{\GGV M\SB:(\forall\alpha.\tau)\SB@A\SB}}
-	      	      
+	      	      	      
 	\item \TCsp
-	      	      
+	      	      	      
 	      \begin{itemize}
-	      		      	
+	      		      		      	
 	      	\item $\alpha \neq \beta$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      From the induction hypothesis and \TCsp, we get $\mathcal{D}_1$.
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      $\mathcal{D}_2$ = \infer[\TCsp]
 	      	      {\GGV (\%_\alpha M)\SB:\tau\SB@A\alpha}
 	      	      {\ID{\GGV M\SB:\tau\SB@A}}
-	      	      	      	      
+	      	      	      	      	      	      
 	      	\item $\alpha = \beta$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      The conclusion is identical with the induction hypothesis.
-	      	      	      	      
+	      	      	      	      	      	      
 	      \end{itemize}
-	      	      
+	      	      	      
 	\item \QKAbs
-	      	      
+	      	      	      
 	      From the induction hypothesis and \QKAbs, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QKAbs]
 	      {\GGV (\Pi x:\tau.K)\SB \E (\Pi x:\sigma.J)\SB@A\SB}
 	      {\infer[]{\GGV \tau\SB \E \sigma\SB :: *@A\SB}{\vdots} \andalso
 	      	\infer[]{\GG,x:\tau@A \V K\SB\E J\SB@A\SB}{\vdots} }
-	      	      
+	      	      	      
 	\item \QKCsp
-	      	      
+	      	      	      
 	      \begin{itemize}
-	      		      	
+	      		      		      	
 	      	\item $\alpha \neq \beta$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      From the induction hypothesis and \QKCsp, we get $\mathcal{D}_1$.
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      $\mathcal{D}_1$ = \infer[\QKCsp]
 	      	      {\GGV K\SB \E J\SB @A\alpha\SB}
 	      	      {\infer[]{\GGV K\SB \E J\SB @A\SB}{\vdots}}
-	      	      	      	      
-	      	      	      	      
+	      	      	      	      	      	      
+	      	      	      	      	      	      
 	      	\item $\alpha = \beta$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      The conclusion is identical with the induction hypothesis.
-	      	      	      	      
+	      	      	      	      	      	      
 	      \end{itemize}
-	      	      
+	      	      	      
 	\item \QKRefl
-	      	      
+	      	      	      
 	      From the induction hypothesis and \QKRefl, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QKRefl]
 	      {\GGV K\SB \E K\SB @A\SB}
 	      {\infer[]{\GGV K\SB \iskind @A\SB}{\vdots}}
-	      	      
+	      	      	      
 	\item \QKSym
-	      	      
+	      	      	      
 	      From the induction hypothesis and \QKSym, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QKSym]
 	      {\GGV J\SB\E K\SB@A\SB}
 	      {\GGV K\SB\E J\SB@A\SB}
-	      	      
+	      	      	      
 	\item \QKTrans
-	      	      
+	      	      	      
 	      From the induction hypothesis and \QKTrans, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QKTrans]
 	      {\GGV K\SB\E I\SB@A\SB}
 	      {\GGV K\SB\E J\SB@A\SB \andalso \GGV J\SB\E I\SB@A\SB}
-	      	      
+	      	      	      
 	\item \QTAbs
-	      	      
+	      	      	      
 	      From the induction hypothesis and, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QTAbs]
 	      {\GGV \Pi x:\tau\SB.\rho\SB \E \Pi x:\sigma\SB.\pi\SB@A\SB}
 	      {\ID{\GGV \tau\SB \E \sigma\SB :: *@A\SB} \andalso \ID{\GG, x:\tau\SB@A\SB \V \rho\SB \E \pi\SB @A\SB}}
-	      	      
+	      	      	      
 	      Arrange substitutions,
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QTAbs]
 	      {\GGV (\Pi x:\tau.\rho)\SB \E (\Pi x:\sigma.\pi)\SB@A\SB}
 	      {\ID{\GGV \tau\SB \E \sigma\SB :: *@A\SB} \andalso \ID{\GG, x:\tau\SB@A\SB \V \rho\SB \E \pi\SB @A\SB}}
-	      	      
+	      	      	      
 	\item \QTApp
-	      	      
+	      	      	      
 	      From the induction hypothesis and \QTApp, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QTApp]
 	      {\GGV\pi\SB\ M\SB \E \sigma\SB\ N\SB@A\SB}
 	      {\ID{\GGV\tau\SB\E\sigma\SB :: (\Pi x:\rho\SB.K\SB)@A\SB} \andalso \ID{\GGV M\SB\E N\SB:\rho\SB@A\SB}}
-	      	      
+	      	      	      
 	      Arrange substitutions,
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QTApp]
 	      {\GGV(\pi\ M)\SB \E (\sigma\ N)\SB@A\SB}
 	      {\ID{\GGV\tau\SB\E\sigma\SB :: (\Pi x:\rho\SB.K\SB)@A\SB} \andalso \ID{\GGV M\SB\E N\SB:\rho\SB@A\SB}}
-	      	      
+	      	      	      
 	\item \QTTW
-	      	      
+	      	      	      
 	      \begin{itemize}
-	      		      	
+	      		      		      	
 	      	\item $\alpha \neq \beta$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      From the induction hypothesis and \QTTW, we get $\mathcal{D}_1$.
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      $\mathcal{D}_1$ = \infer[\QTTW]
 	      	      {\GGV(\TW_\alpha \tau)\SB\E(\TW_\alpha\sigma)\SB@A\SB}
 	      	      {\ID{\GGV\tau\SB\E\sigma\SB@A\alpha\SB}}
-	      	      	      	      
+	      	      	      	      	      	      
 	      	\item $\alpha = \beta$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      The conclusion is identical with the induction hypothesis.
-	      	      	      	      
+	      	      	      	      	      	      
 	      \end{itemize}
-	      	      
+	      	      	      
 	\item \QTGen
-	      	      
+	      	      	      
 	      We can assume $\alpha \neq \beta$ because $\alpha$ appears only in $M:\forall\alpha.\tau$ and we can rename $\alpha$ to an arbitary name.
-	      	      
+	      	      	      
 	      We can prove easily $\alpha \notin \FTV(\GG) \cup \FTV(A)$.
 	      From the induction hypothesis and \QTGen, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QTGen]
 	      {\GGV (\forall\alpha.\tau)\SB \E (\forall\alpha.\sigma)\SB@A\SB}
 	      {\ID{\GGV \tau\SB \E \sigma\SB@A\SB} \andalso \alpha \notin \FTV(\GG) \cup \FTV(A)}
-	      	      
+	      	      	      
 	\item \QTCsp
-	      	      
+	      	      	      
 	      \begin{itemize}
-	      		      	
+	      		      		      	
 	      	\item $\alpha \neq \beta$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      From the induction hypothesis and \QTCsp, we get $\mathcal{D}_1$.
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      $\mathcal{D}_1$ = \infer[\QTCsp]
 	      	      {\GGV\tau\SB \E \sigma\SB@A\alpha\SB}
 	      	      {\ID{\GGV\tau\SB \E \sigma\SB@A\SB}}
-	      	      	      	      
+	      	      	      	      	      	      
 	      	\item $\alpha = \beta$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      The conclusion is identical with the induction hypothesis.
-	      	      	      	      
+	      	      	      	      	      	      
 	      \end{itemize}
-	      	      
+	      	      	      
 	\item \QTRefl
-	      	      
+	      	      	      
 	      From the induction hypothesis and \QTRefl, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QTRefl]
 	      {\GGV\tau\SB\E\tau\SB@A\SB}
 	      {\ID{\GGV\tau\SB::K\SB@A\SB}}
-	      	      
+	      	      	      
 	\item \QTSym
-	      	      
+	      	      	      
 	      From the induction hypothesis and \QTSym, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QTSym]
 	      {\GGV\sigma\SB\E\tau\SB@A\SB}
 	      {\ID{\GGV\tau\SB\E\sigma\SB@A\SB}}
-	      	      
+	      	      	      
 	\item \QTTrans
-	      	      
+	      	      	      
 	      From the induction hypothesis and \QTTrans, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QTTrans]
 	      {\GGV \tau\SB\E\rho\SB@A\SB}
 	      {\ID{\GGV\tau\SB\E\sigma\SB@A\SB} \andalso \ID{\GGV\sigma\SB\E\rho\SB@A\SB}}
-	      	      
+	      	      	      
 	\item \QAbs
-	      	      
+	      	      	      
 	      From the induction hypothesis and \QAbs, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QAbs]
 	      {\GGV \Pi x:\tau\SB.\rho\SB \E \Pi x:\sigma\SB.\pi\SB@A\SB}
 	      {\ID{\GGV\tau\SB \E \sigma\SB :: * @A\SB} \andalso \ID{\GG,x:\tau\SB@A\SB\V\rho\SB \E \pi\SB@A\SB}}
-	      	      
+	      	      	      
 	      Arrange substitutions,
-	      	      
+	      	      	      
 	      $\mathcal{D}'_1$ = \infer[\QAbs]
 	      {\GGV (\Pi x:\tau.\rho)\SB \E (\Pi x:\sigma.\pi)\SB@A\SB}
 	      {\ID{\GGV\tau\SB \E \sigma\SB :: * @A\SB} \andalso \ID{\GG,x:\tau\SB@A\SB\V\rho\SB \E \pi\SB@A\SB}}
-	      	      
+	      	      	      
 	\item \QApp
-	      	      
+	      	      	      
 	      From the induction hypothesis
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \ID{\GGV M\SB \E L\SB :: (\Pi x:\sigma.\tau)\SB@A\SB}
-	      	      
+	      	      	      
 	      Arrange substitutions,
-	      	      
+	      	      	      
 	      $\mathcal{D}'_1$ = \ID{\GGV M\SB \E L\SB :: (\Pi x:\sigma\SB.\tau\SB)@A\SB}
-	      	      
+	      	      	      
 	      Using \QApp\ to $\mathcal{D}'_1$ and the induction hypothesis, we get $\mathcal{D}_2$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_2$ = \infer[\QApp]
 	      {\GGV M\SB\ N\SB \E L\SB\ O\SB @A\SB}
 	      {\mathcal{D}'_1 \andalso \ID{\GGV N\SB \E O\SB : \sigma\SB @A\SB}}
-	      	      
+	      	      	      
 	      Arrange substitutions,
-	      	      
+	      	      	      
 	      $\mathcal{D}'_2$ = \infer[\QApp]
 	      {\GGV (M\ N)\SB \E (L\ O)\SB @A\SB}
 	      {\mathcal{D}'_1 \andalso \ID{\GGV N\SB \E O\SB : \sigma\SB @A\SB}}
-	      	      
+	      	      	      
 	\item \QTB
-	      	      
+	      	      	      
 	      \begin{itemize}
-	      		      	
+	      		      		      	
 	      	\item $\alpha \neq \beta$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      From the induction hypothesis and \QTB, we get $\mathcal{D}_1$.
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      $\mathcal{D}_1$ = \infer[\QTB]
 	      	      {\GGV\TB_\alpha M\SB \E \TB_\alpha N\SB @A\SB}
 	      	      {\GGV M\SB \E N\SB @A\alpha\SB}
-	      	      	      	      
+	      	      	      	      	      	      
 	      	\item $\alpha = \beta$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      The conclusion is identical with the induction hypothesis.
-	      	      	      	      
+	      	      	      	      	      	      
 	      \end{itemize}
-	      	      
+	      	      	      
 	\item \QTBL
-	      	      
+	      	      	      
 	      \begin{itemize}
-	      		      	
+	      		      		      	
 	      	\item $\alpha \neq \beta$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      From the induction hypothesis and \QTBL, we get $\mathcal{D}_1$.
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      $\mathcal{D}_1$ = \infer[\QTBL]
 	      	      {\GGV\TBL_\alpha M\SB \E \TBL_\alpha N\SB@A\alpha\SB}
 	      	      {\GGV M\SB \E N\SB : \TW_\alpha \tau@A\SB}
-	      	      	      	      
+	      	      	      	      	      	      
 	      	\item $\alpha = \beta$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      The conclusion is identical with the induction hypothesis.
-	      	      	      	      
+	      	      	      	      	      	      
 	      \end{itemize}
-	      	      
+	      	      	      
 	\item \QGen
-	      	      
+	      	      	      
 	      \begin{itemize}
-	      		      	
+	      		      		      	
 	      	\item $\alpha \neq \beta$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      We can prove easily $\alpha \notin \FTV(\GG) \cup \FTV(A)$.
 	      	      From the induction hypothesis and \QGen, we get $\mathcal{D}_1$.
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      $\mathcal{D}_1$ = \infer[\QGen]
 	      	      {\GGV\Lambda\alpha.M\SB \E \Lambda\alpha.N\SB@A\SB}
 	      	      {\ID{\GGV M\SB \E N\SB @A\SB} \andalso \alpha \notin \FTV(\GG) \cup \FTV(A)}
-	      	      	      	      
+	      	      	      	      	      	      
 	      	\item $\alpha = \beta$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      The conclusion is identical with the induction hypothesis.
-	      	      	      	      
+	      	      	      	      	      	      
 	      \end{itemize}
-	      	      
+	      	      	      
 	\item \QIns
-	      	      
+	      	      	      
 	      We can assume $\alpha \neq \beta$ because $\alpha$ appears only in $M:\forall\alpha.\tau$ and we can rename $\alpha$ to an arbitary name.
-	      	      
+	      	      	      
 	      From the induction hypothesis and \QIns, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QIns]
 	      {\GGV M\SB\ \varepsilon \E N\SB \ \varepsilon @A\SB }
 	      {\ID{\GGV M\SB \E N\SB : (\forall\alpha.\tau\SB) @A\SB}}
-	      	      
+	      	      	      
 	\item \QCsp
-	      	      
+	      	      	      
 	      \begin{itemize}
-	      		      	
+	      		      		      	
 	      	\item $\alpha \neq \beta$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      From the induction hypothesis and \QCsp, we get $\mathcal{D}_1$.
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      $\mathcal{D}_1$ = \infer[\QCsp]
 	      	      {\GGV \%_\alpha M\SB \E \%_\alpha N\SB @A\SB}
 	      	      {\ID{\GGV M\SB \E N\SB @A\alpha\SB}}
-	      	      	      	      
+	      	      	      	      	      	      
 	      	\item $\alpha = \beta$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      The conclusion is identical with the induction hypothesis.
-	      	      	      	      
+	      	      	      	      	      	      
 	      \end{itemize}
-	      	      
+	      	      	      
 	\item \QRefl
-	      	      
+	      	      	      
 	      From the induction hypothesis and \QRefl, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QRefl]
 	      {\GGV M\SB \E M\SB @A\SB}
 	      {\ID{\GGV M\SB : \tau\SB @A\SB}}
-	      	      
+	      	      	      
 	\item \QSym
-	      	      
+	      	      	      
 	      From the induction hypothesis and \QSym, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QSym]
 	      {\GGV N\SB \E M\SB @A\SB}
 	      {\ID{\GGV M\SB \E N\SB @A\SB}}
-	      	      
+	      	      	      
 	\item \QTrans
-	      	      
+	      	      	      
 	      From the induction hypothesis and \QTrans, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QTrans]
 	      {\GGV M\SB \E L\SB @A\SB}
 	      {\ID{\GGV M\SB \E N\SB @A\SB } \andalso \ID{\GGV N\SB \E L\SB @A\SB}}
-	      	      
+	      	      	      
 	\item \QBeta
-	      	      
+	      	      	      
 	      From the induction hypothesis and \QBeta, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QBeta]
 	      {\GGV (\lambda x:\sigma\SB:M\SB)\ N\SB \E (M\SB)[x \mapsto N\SB]@A\SB}
 	      {\ID{\GG, x: \sigma\SB@A\SB \V M\SB:\tau\SB@A\SB} \andalso \ID{\GGV N\SB:\sigma\SB @A\SB }}
-	      	      
+	      	      	      
 	      Arrange substitutions,
-	      	      
+	      	      	      
 	      $\mathcal{D}'_1$ = \infer[\QBeta]
 	      {\GGV ((\lambda x:\sigma:M)\ N)\SB \E (M[x \mapsto N])\SB@A\SB}
 	      {\ID{\GG, x: \sigma\SB@A\SB \V M\SB:\tau\SB@A\SB} \andalso \ID{\GGV N\SB:\sigma\SB @A\SB }}
-	      	      
+	      	      	      
 	\item \QEta
-	      	      
+	      	      	      
 	      From the induction hypothesis and \QEta, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QEta]
 	      {\GGV (\lambda x:\sigma\SB.M\SB\ x) \E M\SB@A\SB}
 	      {\ID{\GGV M\SB : (\Pi x:\sigma\SB.\tau\SB)@A\SB} \andalso x \notin \FV(M\SB)}
-	      	      
+	      	      	      
 	      Arrange substitutions,
-	      	      
+	      	      	      
 	      $\mathcal{D}'_2$ = \infer[\QEta]
 	      {\GGV (\lambda x:\sigma.M\ x)\SB \E M\SB@A\SB}
 	      {\ID{\GGV M\SB : (\Pi x:\sigma\SB.\tau\SB)\SB@A\SB} \andalso x \notin \FV(M\SB)}
-	      	      
+	      	      	      
 	\item \QTBLTB
-	      	      
+	      	      	      
 	      From the induction hypothesis and \QTBLTB, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QTBLTB]
 	      {\GGV \TBL_\alpha \TB_\alpha M\SB \E N\SB@A\SB}
 	      {\ID{\GGV M\SB \E N\SB @A\SB}}
-	      	      
+	      	      	      
 	\item \QLambda
-	      	      
+	      	      	      
 	      From the induction hypothesis and \QLambda, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QLambda]
 	      {\GGV (\Lambda\alpha.M\SB)\ \varepsilon \E M\SB[\alpha \mapsto \varepsilon]}
 	      {\ID{\GGV (\Lambda\alpha.M\SB) : \forall\alpha.\tau\SB @A\SB}}
-	      	      
+	      	      	      
 	      Arrange substitutions,
-	      	      
+	      	      	      
 	      $\mathcal{D}'_1$ = \infer[\QLambda]
 	      {\GGV ((\Lambda\alpha.M)\ \varepsilon)\SB \E M[\alpha \mapsto \varepsilon]\SB}
 	      {\ID{\GGV (\Lambda\alpha.M\SB) : \forall\alpha.\tau\SB @A\SB}}
-	      	      
-	      	      
+	      	      	      
+	      	      	      
 	      \fi
-	      	      
+	      	      	      
 	\item \QPercent
-	      	      
+	      	      	      
 	      From the induction hypothesis and \QPercent, we get $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\QPercent]
 	      {\GGV \%_\alpha M\SB \E M\SB @ A\alpha}
 	      {\ID{\GGV M\SB : \tau\SB @A\alpha\SB} \andalso \ID{\GGV M\SB : \sigma\SB @A\SB} }
-	      	      
+	      	      	      
 \end{itemize}
 
 \begin{lemma}[Agreement]
@@ -1602,33 +1626,33 @@ We can prove for these cases directly from the definition of rules.
 Others are proved by using induction hypothesis and a rule. We show some cases as examples.
 \begin{itemize}
 	\item \KCsp
-	      	      
+	      	      	      
 	      We have a derivation tree from the premise.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\KCsp]
 	      {\G\V \tau::K@A\alpha}
 	      {\infer[]{\G\V \tau::K @A}{\vdots}}
-	      	      
+	      	      	      
 	      From the hypothesis of the reduction, we can get
-	      	      
+	      	      	      
 	      $\mathcal{D}_2$ = \infer[]{\G\V K\iskind @A}{\vdots}
-	      	      
+	      	      	      
 	      Use \WCsp\ to $\mathcal{D}_2$, we get the conclusion.
-	      	      
+	      	      	      
 	      $\mathcal{D}_3$ = \infer[\WCsp]
 	      {\G\V K \iskind @A\alpha}
 	      {\mathcal{D}_2}
-	      	      
+	      	      	      
 	\item \KTW
-	      	      
+	      	      	      
 	      We have a derivation tree from the premise.
-	      	      
+	      	      	      
 	      $\MD{1}$ = \infer[\KTW]
 	      {\G\V\TW_\alpha \tau::*@A}
 	      {\vdots}
-	      	      
+	      	      	      
 	      From \WStar, $\G\V * \iskind @A$.
-	      	      
+	      	      	      
 \end{itemize}
 
 \begin{lemma}[Inversion Lemma for $\Pi$ type]
@@ -1655,45 +1679,45 @@ Proved by induction on the derivation tree.
 
 \begin{itemize}
 	\item \TAbs
-	      	      
+	      	      	      
 	      We have a derivation tree $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\TAbs]
 	      {\G \V ((\lambda x:\sigma).M) : (\Pi (x:\sigma).\tau) @ A}
 	      {\ID{\G \V \sigma :: * @ A} \andalso \ID{\G, x:\sigma@A \V M:\tau@A}}
-	      	      
+	      	      	      
 	      Following conclusion are obvious.
 	      \begin{enumerate}
 	      	\item $\G \V \sigma \E \sigma'@A$
 	      	\item $\G ,x:\sigma@A\V M:\tau@A$
 	      \end{enumerate}
-	      	      
+	      	      	      
 	\item \TConv
-	      	      
+	      	      	      
 	      We have a derivation tree $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\TConv]
 	      {\G \V M : (\Pi x:\sigma.\tau)@A}
 	      {\ID{\G \V M : \rho@A } \andalso \ID{\G \V \rho \E (\Pi x:\sigma.\tau)@A}}
-	      	      
+	      	      	      
 	      Now, we can use the induction hypothesis to $\G \V M : \rho@A$ and $\G \V \rho \E (\Pi x:\sigma.\tau)@A$.
-	      	      
+	      	      	      
 	\item \QTRefl
-	      	      
+	      	      	      
 	      There two cases for the conclusion.
 	      \begin{itemize}
 	      	\item $\G \V \rho \E (\Pi x:\sigma.\tau) : K @A$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      In this case, we can use the induction hypothesis of statement 3.
 	      	\item $\G \V (\Pi x:\sigma.\tau) \E \rho : K @A$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      In this case, we can use the induction hypothesis of statement 2.
 	      \end{itemize}
-	      	      
+	      	      	      
 	\item Otherwise
-	      	      
+	      	      	      
 	      It is obvious.
-	      	      
+	      	      	      
 \end{itemize}
 
 \begin{theorem}[Preservation on $\beta$ reduction]
@@ -1706,101 +1730,101 @@ Use induction on type derivation tree.
 
 \begin{itemize}
 	\newcommand{\LB}{\longrightarrow_{\beta}}
-		
+			
 	\item \TApp
-	      	      
+	      	      	      
 	      We can assume the reduction has following shape.
-	      	      
+	      	      	      
 	      \begin{itemize}
 	      	\item $(\lambda x:\sigma.N)\ L \LB N[x\mapsto L]$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      Because the last rule is \TApp, we have $\mathcal{D}_1$.
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      $\mathcal{D}_1$ = \infer[\TApp]
 	      	      {\G \V (\lambda x:\sigma.N)\ L : \tau[x\mapsto N]@A}
 	      	      {\ID{\G \V (\lambda x:\sigma.N) : (\Pi x:\sigma'.\tau')@A} \andalso \ID{\G \V L:\sigma' @A}} \\
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      Use "Inversion Lemma for $\Pi$ type" to $\G \V (\lambda x:\sigma.N) : (\Pi x:\sigma'.\tau')@A$,\\
 	      	      get $\G, x:\sigma \V N:\tau$ and $\G \V \sigma \E \sigma'$ and $\G ,x:\sigma \V \tau \E \tau'@A$.
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      Use \TConv, $\G \V L:\sigma @A$.
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      Use "Substituition Lemma" to $\G, x:\sigma \V N:\tau$ and $\G \V L:\sigma @A$, get $\G \V N[x\mapsto L]:\tau[x\mapsto L]$.
 	      	      %Get $\G \V \tau
-	      	      	      	      
+	      	      	      	      	      	      
 	      	\item $M\ N \LB M'\ N$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      From the induction hypothesis and \TApp, the type is preserved for the reduction.
 	      	\item $M\ N \LB M\ N'$
-	      	      	      	      
+	      	      	      	      	      	      
 	      	      From the induction hypothesis and \TApp, the type is preserved for the reduction.
 	      \end{itemize}
-	      	      
+	      	      	      
 	      \iffullversion
-	      	      
+	      	      	      
 	\item \TVar
-	      	      
+	      	      	      
 	      In this case, there is no reduction from $x$.
-	      	      
+	      	      	      
 	\item \TAbs
-	      	      
+	      	      	      
 	      We can assume the reduction has following shape.
-	      	      
+	      	      	      
 	      $\lambda x:\sigma.M \LB \lambda x:\sigma.M'$
-	      	      
+	      	      	      
 	      From the induction hypothesis and \TAbs, the type is preserved for the reduction.
-	      	      
-	      	      
+	      	      	      
+	      	      	      
 	\item \TConv
-	      	      
+	      	      	      
 	      We can assume the reduction has following shape.
-	      	      
+	      	      	      
 	      $M \LB M'$
-	      	      
+	      	      	      
 	      From the induction hypothesis and \TConv, the type is preserved for the reduction.
-	      	      
+	      	      	      
 	\item \TTB
-	      	      
+	      	      	      
 	      We can assume the reduction has following shape.
-	      	      
+	      	      	      
 	      $\TB M \LB \TB M'$
-	      	      
+	      	      	      
 	      From the induction hypothesis and \TTB, the type is preserved for the reduction.
-	      	      
+	      	      	      
 	\item \TTBL
-	      	      
+	      	      	      
 	      We can assume the reduction has following shape.
-	      	      
+	      	      	      
 	      $\TBL M \LB \TBL M'$
-	      	      
+	      	      	      
 	      From the induction hypothesis and \TTBL, the type is preserved for the reduction.
-	      	      
+	      	      	      
 	\item \TGen
-	      	      
+	      	      	      
 	      We can assume the reduction has following shape.
-	      	      
+	      	      	      
 	      $\Lambda\alpha. M \LB \Lambda\alpha. M'$
-	      	      
+	      	      	      
 	      From the induction hypothesis and \TGen, the type is preserved for the reduction.
-	      	      
+	      	      	      
 	\item \TIns
-	      	      
+	      	      	      
 	      We can assume the reduction has following shape.
-	      	      
+	      	      	      
 	      $M\ \varepsilon \LB M'\ \varepsilon$
-	      	      
+	      	      	      
 	      From the induction hypothesis and \TIns, the type is preserved for the reduction.
-	      	      
+	      	      	      
 	\item \TCsp
-	      	      
+	      	      	      
 	      We can assume the reduction has following shape.
-	      	      
+	      	      	      
 	      $\%_\alpha M \LB \%_\alpha M'$
-	      	      
+	      	      	      
 	      From the induction hypothesis and \TCsp, the type is preserved for the reduction.
-	      	      
+	      	      	      
 	      \fi
-	      	      
+	      	      	      
 \end{itemize}
 
 \begin{lemma}[Inversion Lemma for $\TW$ type]
@@ -1821,17 +1845,17 @@ Use induction on type derivation tree.
 
 \begin{itemize}
 	\item \TTB
-	      	      
+	      	      	      
 	      The derivation tree looks like $\mathcal{D}_1$.
-	      	      
+	      	      	      
 	      $\mathcal{D}_1$ = \infer[\TTB]
 	      {\G \V \TB_\alpha M : \TW_\alpha \tau@A}
 	      {\ID{\G \V M : \tau@A\alpha}}
-	      	      
+	      	      	      
 	\item Otherwise
-	      	      
+	      	      	      
 	      It is obvious.
-	      	      
+	      	      	      
 \end{itemize}
 
 \begin{theorem}[Preservation for term on $\TBL\TB$ reduction]
