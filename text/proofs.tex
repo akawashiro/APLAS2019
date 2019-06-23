@@ -1987,7 +1987,8 @@ We prove by induction on the derivation of $\beta$ reduction of \LMD.
 \begin{theorem}[Strong Normalization]
 	If $\G\V^A t:T$ then there is no infinite sequence of terms $(t_i)_{i\ge1}$ and $t_i \longrightarrow_{\beta, \TBL \TB,\Lambda} t_{i+1}$ for $i\ge 1$
 \end{theorem}
-	
+
+\begin{proof}
 If there are infinite reductions in $\lambda^{\text{MD}}$ 
 then there are infinite beta reductions in $\lambda^{\text{MD}}$.
 This is because reductions other than $\beta$-reduction reduce the size of term.
@@ -1997,6 +1998,7 @@ We assume that there is an infinite reduction in a typed \LMD from typed term $M
 We can construct a typed term of simply typed lambda calculus $\natural(M)$ from Preservation of typing in $\natural$ and
 $\natural(M)$ has infinite reductions from Preservation of $\beta$ reduction in $\natural$.
 But, indeed, $\lambda^\to$ has a property of Strong Normalization, so there is no infinite reductions.
+\end{proof}
 	
 \begin{theorem}[Confluence(Church-Rosser Property)]
 	Define $M \longrightarrow N$ as $M \longrightarrow_{\beta} N$ or $M\longrightarrow_\blacklozenge N$ or  $M \longrightarrow_{\Lambda} N$.\\
@@ -2004,163 +2006,15 @@ But, indeed, $\lambda^\to$ has a property of Strong Normalization, so there is n
 	there exists $O$ that satisfies $N \longrightarrow^* O$ and $L \longrightarrow^* O$.
 \end{theorem}
 	
-\textsc{Proof.}
-	
+\begin{proof}	
 Because we show the Strong Normalization of $\lambda^{\text{MD}}$, we can use Newman's lemma to prove Church-Rosser property of $\lambda^{\text{MD}}$.
 Then, what we must show is Weak Church-Rosser Property now.
 	
 When we consider two dirfferent redux in a $\lambda^{\text{MD}}$ term, they can only be disjoint, or one is a part of the other.
 In short, they are never overlapped each other.
-So, we can reduce one of them after we reduce another.\\
-	
-\figheader{Values and Redexes}{}
-$A \neq \varepsilon$\\
-\begin{align*}
-	\textrm{Values}  &   & v^\varepsilon \in V^\varepsilon & ::= \lambda x:\tau.M \mid\ \TB_\alpha v^\alpha \mid \Lambda\alpha.v^\varepsilon              &   \\
-	&   & v^A \in V^A                     & ::= x \mid \lambda x:\tau.v^A \mid v^A\ v^A \mid\ \TB_\alpha v^{A\alpha}
-	\mid \Lambda\alpha.v^A \mid v^A\ \varepsilon &                                                                                                                                      \\
-	                 &   &                                 & \quad\   \mid\ \TBL_\alpha v^{A'} (\text{if } A'\alpha = A \text{ and } A' \neq \varepsilon) &   \\
-	                 &   &                                 & \quad\   \mid \%_\alpha v^{A'} (\text{if } A'\alpha = A)                                     &   \\
-	\textrm{Redexes} &   & R^\varepsilon                   & ::= (\lambda x:\tau.M)\ v^\varepsilon \mid (\Lambda\alpha.v^\varepsilon)\ \varepsilon        &   \\
-	                 &   & R^\alpha                        & ::=\ \TBL_\alpha \TB_\alpha v^\alpha                                                         &   \\
-\end{align*}
-	
-\begin{dfn}[Reduction]
-	$ M \longrightarrow M'$ iff \\
-	$ M \longrightarrow_\Lambda M' $, $ M \longrightarrow_\blacklozenge M' $ or $ M \longrightarrow_\beta M' $.
-\end{dfn}
-	
-\begin{theorem}[Progress]
-	If $x:\tau@\varepsilon \notin \G$ and $\G \V M : \tau @ A$ then $ M \in V^A $ or $\exists M'$ such that $M \longrightarrow M'$.
-\end{theorem}
-	
-Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
-	
-\begin{itemize}
-	\item \TVar
-	      \begin{itemize}
-	      	\item $ A = \varepsilon$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
-	      	      This case is impossible because $x:\tau@\varepsilon \notin \G$.
-	      	\item Otherwise
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
-	      	      This case is obvious because $x \in V^A$.
-	      \end{itemize}
-	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	\item \TTBL
-	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	      The derivation is $\MD{1}$.
-	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	      $\MD{1}$ = \infer[\TTBL]
-	      {\G \V \TBL_\alpha M :\tau @ A\alpha}
-	      {\ID{\G \V M : \TW_\alpha \tau @ A}}
-	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	      There are two cases for the induction hypothesis.
-	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	      \begin{itemize}
-	      		      		      		      		      		      		      		      		      		      		      			      		      		      		      	
-	      	\item $ M \in V^A $
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
-	      	      \begin{itemize}
-	      	      	\item $ A = \varepsilon $
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
-	      	      	      Use "Inversion Lemma" for all cases of $v^\varepsilon$, the case of $ M = \TB_\alpha v^\alpha $ is only reasonable.\\
-	      	      	      From the definition of $ \longrightarrow $, $\TBL_\alpha \TB_\alpha v^\alpha \longrightarrow v^\alpha$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
-	      	      	\item Otherwise
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
-	      	      	      $ \TBL_\alpha M \in V^{A\alpha}$.
-	      	      \end{itemize}
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
-	      	\item $\exists M'$ such that $M \longrightarrow M'$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
-	      	      From the definition of $ \longrightarrow $, $\TBL_\alpha M \longrightarrow \TBL_\alpha M'$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
-	      \end{itemize}
-	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	\item \TApp
-	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	      The derivation looks like $\MD{1}$.
-	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	      $\MD{1}$ = \infer[\TApp]
-	      {\G \V M\ N :\tau[x\mapsto N] @ A}
-	      {\ID{\G \V M : (\Pi x:\sigma.\tau) @ A} \andalso \ID{\G \V N : \sigma @ A}}
-	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	      \begin{itemize}
-	      	\item $M \in V^A$ and $N \in V^A$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
-	      	      \begin{itemize}
-	      	      	\item $A=\varepsilon$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
-	      	      	      $M = \lambda x:\sigma.L$ from the definition of $V^\varepsilon$ and Inversion Lemma.\\
-	      	      	      Then, $\lambda x:\sigma.L\ N \longrightarrow_\beta L[x\mapsto N]$.
-	      	      	\item Otherwise
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
-	      	      	      $M\ N \in V^A$.
-	      	      \end{itemize}
-	      	\item Otherwise
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
-	      	      $M\ N \longrightarrow M'\ N$ or $M\ N \longrightarrow M\ N'$.
-	      \end{itemize}
-	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	\item \TIns
-	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	      The derivation looks like $\MD{1}$.
-	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	      $\MD{1}$ = \infer[\TIns]
-	      {\G \V M\ B : \tau[\alpha \mapsto B] @ A}
-	      {\ID{\G \V M : \forall\alpha.\tau @ A}}
-	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	      \begin{itemize}
-	      	\item $ M \in V^A $
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
-	      	      \begin{itemize}
-	      	      	\item $A=\varepsilon$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
-	      	      	      $M = \Lambda\alpha.v^\varepsilon$ from the definition of $V^\varepsilon$ and Inversion Lemma.\\
-	      	      	      Then, $\Lambda\alpha.v^\varepsilon\ B \longrightarrow_\Lambda v^\varepsilon[x\mapsto B]$.
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
-	      	      	\item Otherwise
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
-	      	      	      $v^A B \in V^A$.
-	      	      \end{itemize}
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
-	      	\item $\exists M'$ such that $M \longrightarrow M'$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
-	      	      $M\ \varepsilon \longrightarrow M'\ B$
-	      \end{itemize}
-	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	\item Others
-	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	      It is obvious from the induction hypothesis.
-	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-\end{itemize}
-	
-\section{ Staged Semantics }
-	
-\AI{You don't have to repeat definitions.}
-	
-\figheader{Staged Reduction}{}
-$A \neq \varepsilon$\\
-\begin{align*}
-	E^A_\varepsilon [(\lambda x:\tau.M)\ v^\varepsilon] & \longrightarrow_s E^A_\varepsilon[M[x\mapsto v^\varepsilon]]      \\
-	E^A_\varepsilon [(\Lambda\alpha.v^\varepsilon)\ B]  & \longrightarrow_s E^A_\varepsilon[v^\varepsilon[\alpha\mapsto B]] \\
-	E^A_\alpha [\TBL_\alpha \TB_\alpha v^\alpha]        & \longrightarrow_s E^A_\alpha[v^\alpha]                            \\
-\end{align*}
-	
-\figheader{Evaluation Context}{}
-$A \neq \varepsilon$\\
-\begin{align*}
-	E^\varepsilon_B \in ECtx^\varepsilon_B & ::= \square\ (\text{if\ } B = \varepsilon) \mid E^\varepsilon_B\ M \mid v^e\ E^\varepsilon_B 
-	\mid \TB_\alpha E^\alpha_B \mid \Lambda\alpha.E^\varepsilon_B
-	\mid E^\varepsilon_B\ B                                                                                                     \\
-	E^A_B \in ECtx^A_B                     & ::= \square\ (\text{if } A = B) \mid \lambda x:\tau.E^A_B \mid E^A_B\ M \mid v^A\ E^A_B      
-	\mid E^\varepsilon_B \mid \TB_\alpha E^{A\alpha}_B
-	\mid \TBL_\alpha E^{A'}_B \ (\text{where } A'\alpha = A)                                                                              \\
-	                                       & \quad \mid \Lambda\alpha.E^\varepsilon_B                                                     
-	\mid E^A_B\ B \mid \%_\alpha\ E^{A'}_B \ (\text{where } A'\alpha = A)                                                       \\
-\end{align*}
-	
+So, we can reduce one of them after we reduce another.
+\end{proof}
+
 \begin{lemma}[Unique Decomposition]
 	If $x:\tau@\varepsilon \notin \G$ and $\G \V M : \tau @ A$ then 1 or 2 is true.
 	\begin{enumerate}
@@ -2326,6 +2180,113 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 	      We can use the induction hypothesis directly.
 	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 \end{itemize}
+
+\begin{theorem}[Progress]
+	If $x:\tau@\varepsilon \notin \G$ and $\G \V M : \tau @ A$ then $ M \in V^A $ or $\exists M'$ such that $M \longrightarrow M'$.
+\end{theorem}
+	
+Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
+	
+\begin{itemize}
+	\item \TVar
+	      \begin{itemize}
+	      	\item $ A = \varepsilon$
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      This case is impossible because $x:\tau@\varepsilon \notin \G$.
+	      	\item Otherwise
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      This case is obvious because $x \in V^A$.
+	      \end{itemize}
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	\item \TTBL
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      The derivation is $\MD{1}$.
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      $\MD{1}$ = \infer[\TTBL]
+	      {\G \V \TBL_\alpha M :\tau @ A\alpha}
+	      {\ID{\G \V M : \TW_\alpha \tau @ A}}
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      There are two cases for the induction hypothesis.
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      \begin{itemize}
+	      		      		      		      		      		      		      		      		      		      		      			      		      		      		      	
+	      	\item $ M \in V^A $
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      \begin{itemize}
+	      	      	\item $ A = \varepsilon $
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      Use "Inversion Lemma" for all cases of $v^\varepsilon$, the case of $ M = \TB_\alpha v^\alpha $ is only reasonable.\\
+	      	      	      From the definition of $ \longrightarrow $, $\TBL_\alpha \TB_\alpha v^\alpha \longrightarrow v^\alpha$
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	\item Otherwise
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      $ \TBL_\alpha M \in V^{A\alpha}$.
+	      	      \end{itemize}
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	\item $\exists M'$ such that $M \longrightarrow M'$
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      From the definition of $ \longrightarrow $, $\TBL_\alpha M \longrightarrow \TBL_\alpha M'$
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      \end{itemize}
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	\item \TApp
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      The derivation looks like $\MD{1}$.
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      $\MD{1}$ = \infer[\TApp]
+	      {\G \V M\ N :\tau[x\mapsto N] @ A}
+	      {\ID{\G \V M : (\Pi x:\sigma.\tau) @ A} \andalso \ID{\G \V N : \sigma @ A}}
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      \begin{itemize}
+	      	\item $M \in V^A$ and $N \in V^A$
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      \begin{itemize}
+	      	      	\item $A=\varepsilon$
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      $M = \lambda x:\sigma.L$ from the definition of $V^\varepsilon$ and Inversion Lemma.\\
+	      	      	      Then, $\lambda x:\sigma.L\ N \longrightarrow_\beta L[x\mapsto N]$.
+	      	      	\item Otherwise
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      $M\ N \in V^A$.
+	      	      \end{itemize}
+	      	\item Otherwise
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      $M\ N \longrightarrow M'\ N$ or $M\ N \longrightarrow M\ N'$.
+	      \end{itemize}
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	\item \TIns
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      The derivation looks like $\MD{1}$.
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      $\MD{1}$ = \infer[\TIns]
+	      {\G \V M\ B : \tau[\alpha \mapsto B] @ A}
+	      {\ID{\G \V M : \forall\alpha.\tau @ A}}
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      \begin{itemize}
+	      	\item $ M \in V^A $
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      \begin{itemize}
+	      	      	\item $A=\varepsilon$
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      $M = \Lambda\alpha.v^\varepsilon$ from the definition of $V^\varepsilon$ and Inversion Lemma.\\
+	      	      	      Then, $\Lambda\alpha.v^\varepsilon\ B \longrightarrow_\Lambda v^\varepsilon[x\mapsto B]$.
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	\item Otherwise
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      $v^A B \in V^A$.
+	      	      \end{itemize}
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	\item $\exists M'$ such that $M \longrightarrow M'$
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      $M\ \varepsilon \longrightarrow M'\ B$
+	      \end{itemize}
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	\item Others
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      It is obvious from the induction hypothesis.
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+\end{itemize}
+	
 	
 \AI{Removed the work-in-progress part.}
 \endinput
