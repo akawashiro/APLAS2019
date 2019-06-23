@@ -1859,7 +1859,6 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 		      \end{itemize}
 	\end{itemize}
 \end{proof}
-	
 
 \begin{theorem}[Preservation for term on $\Lambda$ reduction]
 	If $\G\V M:\tau@A$ and $M \longrightarrow_{\Lambda} N$, then $\G\V N:\tau@A$.
@@ -1867,39 +1866,26 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 	
 \begin{proof}
 	We can prove using induction on the type derivation tree.
-	We show some cases as examples.
+	We show the case of \TIns{}{} as examples.
+	Other cases are easy.
 	\begin{itemize}
 		\newcommand{\R}{\longrightarrow_{\Lambda}}
 		\item \TIns
 		      		      	      	      	      	      	      	      	      	      		      	      	      	      
 		      There are two cases for the reduction.
 		      \begin{itemize}
-		      	\item $\Lambda\alpha.M\ B \R M[\alpha \mapsto B]$
-		      	      		      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
-		      	      The type derivation tree looks like $\mathcal{D}_1$.
-		      	      		      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
-		      	      $\mathcal{D}_1$ = \infer[\TIns]
-		      	      {\G \V \Lambda\alpha.M\ B : \tau[\alpha \mapsto B] @ A}
-		      	      {\ID{\G \V \Lambda\alpha.M\ : \forall\alpha.\tau @ A}}
-		      	      		      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
-		      	      Use "Inversion Lemma for $\Lambda$ type" to $\G \V \Lambda\alpha.M\ : \forall\alpha.\tau @ A$,
-		      	      get $\G \V M : \tau @ A$ and $\alpha \notin \FTV(\G) \cup \FV(A)$.
-		      	      		      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
-		      	      Use "Stage Substituition Lemma" to $\G \V M : \tau @ A$,
-		      	      get $\G[\alpha \mapsto B] \V M[\alpha \mapsto B] : \tau[\alpha \mapsto B] @ A[\alpha \mapsto B]$.
-		      	      		      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
-		      	      Because $\alpha \notin \FTV(\G) \cup \FV(A)$, $\G[\alpha \mapsto B] = \G$ and $A[\alpha \mapsto B] = A$.
-		      	      		      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
-		      	      So, we can rewrite $\G[\alpha \mapsto B] \V M[\alpha \mapsto B] : \tau[\alpha \mapsto B] @ A[\alpha \mapsto B]$ to
-		      	      $\G \V M[\alpha \mapsto B] : \tau[\alpha \mapsto B] @ A$.
-		      	\item $M\ B \R M'\ B$
-		      	      		      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
-		      	      We can use induction hypothesis directly.
+		      	\item $\Lambda\alpha.M\ B \R M[\alpha \mapsto B]$\\
+					Because the last rule is \TIns{}, we have $\G \V \Lambda\alpha.M\ : \forall\alpha.\tau @ A$.
+		      	    By using Inversion Lemma for $\Lambda$ type to $\G \V \Lambda\alpha.M\ : \forall\alpha.\tau @ A$,
+		      	    we obtain $\G \V M : \tau @ A$.
+		      	    By using Stage Substituition Lemma to $\G \V M : \tau @ A$,
+					we obtain $\G[\alpha \mapsto B] \V M[\alpha \mapsto B] : \tau[\alpha \mapsto B] @ A[\alpha \mapsto B]$.
+					$\alpha$ is a bound variable therefore we can assume $\alpha \notin \FTV(\G) \cup \FTV(A)$.
+		      	    So, we can rewrite $\G[\alpha \mapsto B] \V M[\alpha \mapsto B] : \tau[\alpha \mapsto B] @ A[\alpha \mapsto B]$ to
+		      	    $\G \V M[\alpha \mapsto B] : \tau[\alpha \mapsto B] @ A$.
+		      	\item $M\ B \R M'\ B$\\
+		      	      We can prove the induction hypothesis and \TIns.
 		      \end{itemize}
-		      		      	      	      	      	      	      	      	      	      		      	      	      	      
-		\item Otherwise
-		      		      	      	      	      	      	      	      	      	      		      	      	      	      
-		      we can use induction hypothesis directly.
 	\end{itemize}
 \end{proof}
 	
@@ -1940,85 +1926,76 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 \begin{lemma}[Preservation of equality in $\natural$]
 	If $\G \V \tau \E \sigma @ A$ then $\natural(\tau) = \natural(\sigma)$.
 \end{lemma}
-	
-Prove by induction on the derivation tree.
+
+\begin{proof}
+	We can prove using induction on the type derivation tree.
+\end{proof}
 	
 \begin{lemma}[Preservation of typing in $\natural$]
 	If $\G \V M:\tau@A$ in $\lambda^{\text{MD}}$ then $\natural(\G) \V \natural(M): \natural(\tau)$ in $\lambda^\to$.
 \end{lemma}
-	
-Prove by induction on the type derivation tree.
-	
+
+\begin{proof}
+	We can prove using induction on the type derivation tree.
+	We show the case of \TApp{} and \TConv{} as examples.
+	Other cases are easy.
 \begin{itemize}
-	\item \TApp
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	      We have a derivation tree $\MD{1}$.
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	      $\MD{1}$ = \infer[\TApp]
-	      {\G \V M N : \tau[x \mapsto N] @A}
-	      {\ID{\G \V M : (\Pi(x:\sigma).\tau) @ A} \andalso \ID{\G \V N :\sigma @A}}
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	\item[] \textit{Case} \TApp{} where $\G \V M : (\Pi(x:\sigma).\tau) @ A$ and $\G \V N :\sigma @A$.\\
 	      From the induction hypothesis, we have $\natural(\G) \V \natural(M) : \natural(\sigma) \to \natural(\tau)$ and $\natural(\G) \V \natural(N) : \natural(\sigma)$.
 	      Use the Application rule in $\lambda^\to$, we get $\natural(\G) \V \natural(M)\ \natural(N) : \natural(\tau)$.
 	      Because $\natural(M)\ \natural(N) = \natural(M\ N)$ from the definition of $\natural$, $\natural(\G) \V \natural(M\ N) : \natural(\tau)$ in $\lambda^\to$.
-	\item \TConv
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	      We have a derivation tree $\MD{1}$.
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	      $\MD{1}$ = \infer[\TConv]
-	      {\G\V M:\sigma@A}
-	      {\ID{\G\V M:\tau@A} \andalso \ID{\G\V \tau\E\sigma@A}}
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	      Use "Preservation of typing in $\natural$" to $\G\V \tau\E\sigma@A$, we get $\natural(\tau) = \natural(\sigma)$.
-	      On the otherhand, $\natural(\G) \V \natural(M):\natural(\tau)$ from the induction hypothesis.
-	      Then $\natural(\G) \V \natural(M):\natural(\sigma)$.
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	\item[] \textit{Case} \TConv{} where $\G\V M:\tau@A$ and $\G\V \tau\E\sigma@A$.\\
+	      By using Preservation of typing in $\natural$ to $\G\V \tau\E\sigma@A$, we get $\natural(\tau) = \natural(\sigma)$.
+	      $\natural(\G) \V \natural(M):\natural(\tau)$ from the induction hypothesis.
+	      Then, $\natural(\G) \V \natural(M):\natural(\sigma)$.
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 \end{itemize}
+\end{proof}
 
 \begin{lemma}[Preservation of substitution in $\natural$]
 	If $\G, x:\sigma \V M:\tau@A$ and $\G \V N:\sigma@A$ in $\lambda^{\text{MD}}$
 	then $\natural(M[x \mapsto N])$ = $\natural(M)[x\mapsto\natural(N)]$
 \end{lemma}
-	
-Prove by induction on the type derivation tree of $\G, x:\sigma \V M:\tau@A$.
+
+\begin{proof}
+We prove by induction on the type derivation tree of $\G, x:\sigma \V M:\tau@A$.
+\end{proof}
 	
 \begin{lemma}[Preservation of $\beta$ reduction in $\natural$]
 	If $\G \V M:\tau@A$ and $M \longrightarrow_\beta N$ in $\lambda^{\text{MD}}$
 	then $\natural(M) \longrightarrow_\beta^+ \natural(N)$.
 \end{lemma}
-	
-Prove by induction on the derivation of $\beta$ reduction.
-	
+
+\begin{proof}
+We prove by induction on the derivation of $\beta$ reduction of \LMD.
 \begin{itemize}
 	\newcommand{\R}{\longrightarrow_{\beta}}
-	\item $(\lambda x:\tau.M)\ N \R M[x \mapsto N]$
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	      From the definition of $\natural$, $\natural((\lambda x:\tau.M)\ N)$ = $\lambda x:\natural(\tau).\natural(M)\ \natural(N)$.
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	      $\lambda x:\natural(\tau).\natural(M)\ \natural(N)$ is a typed term in $\lambda^\to$, we can do $\beta$ reduction from it.\\
+	\item $(\lambda x:\tau.M)\ N \R M[x \mapsto N]$\\
+		  From the definition of $\natural$, 
+		  $\natural((\lambda x:\tau.M)\ N)$ = $\lambda x:\natural(\tau).\natural(M)\ \natural(N)$.
+		  Because $\lambda x:\natural(\tau).\natural(M)\ \natural(N)$ is a typed term in $\lambda^\to$, 
+		  we can do $\beta$ reduction from it.
 	      As a result of the reduction, we get $\natural(M)[x\mapsto\natural(N)]$.
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	      On the otherside, use "Inversion Lemma for Application" to $(\lambda x:\tau.M)\ N$, get $\G, x:\sigma \V M:\tau@A$ and $\G \V N:\sigma@A$.
-	      From "Preservation of substitution in $\natural$", $\natural(M[x \mapsto N])$ = $\natural(M)[x\mapsto\natural(N)]$.
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	\item Otherwise
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	      Use the induction hypothesis.
+	      From Preservation of substitution in $\natural$, $\natural(M[x \mapsto N])$ = $\natural(M)[x\mapsto\natural(N)]$.
+		%   By applying Inversion Lemma for Application to $(\lambda x:\tau.M)\ N$,
+		%   we get $\G, x:\sigma \V M:\tau@A$ and $\G \V N:\sigma@A$.
+	\item Otherwise\\
+	      We can prove by the induction hypothesis.
 \end{itemize}
+\end{proof}
 	
 \begin{theorem}[Strong Normalization]
 	If $\G\V^A t:T$ then there is no infinite sequence of terms $(t_i)_{i\ge1}$ and $t_i \longrightarrow_{\beta, \TBL \TB,\Lambda} t_{i+1}$ for $i\ge 1$
 \end{theorem}
 	
-Prove if there are infinite reductions in $\lambda^{\text{MD}}$ then there are infinite beta reductions in $\lambda^{\text{MD}}$.\\
-This is because other reductions reduce the size of term.\\
+If there are infinite reductions in $\lambda^{\text{MD}}$ 
+then there are infinite beta reductions in $\lambda^{\text{MD}}$.
+This is because reductions other than $\beta$-reduction reduce the size of term.
 	
-Now, we can conclude there are no infinite reductions in a typed $\lambda^{\text{MD}}$ term. \\
-	
-This is because if there are no infinite reduction in a typed $\lambda^{\text{MD}}$ term $M$,
-we can construct a typed term of simply typed lambda calculus $\natural(M)$ from "Preservation of typing in $\natural$".
-And $\natural(M)$ has infinite reductions from "Preservation of $\beta$ reduction in $\natural$".\\
-	
+Then, we show Strong Normalization by proof by contradiction.
+We assume that there is an infinite reduction in a typed \LMD from typed term $M$.
+We can construct a typed term of simply typed lambda calculus $\natural(M)$ from Preservation of typing in $\natural$ and
+$\natural(M)$ has infinite reductions from Preservation of $\beta$ reduction in $\natural$.
 But, indeed, $\lambda^\to$ has a property of Strong Normalization, so there is no infinite reductions.
 	
 \begin{theorem}[Confluence(Church-Rosser Property)]
@@ -2063,100 +2040,100 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 	\item \TVar
 	      \begin{itemize}
 	      	\item $ A = \varepsilon$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      This case is impossible because $x:\tau@\varepsilon \notin \G$.
 	      	\item Otherwise
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      This case is obvious because $x \in V^A$.
 	      \end{itemize}
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	\item \TTBL
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	      The derivation is $\MD{1}$.
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	      $\MD{1}$ = \infer[\TTBL]
 	      {\G \V \TBL_\alpha M :\tau @ A\alpha}
 	      {\ID{\G \V M : \TW_\alpha \tau @ A}}
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	      There are two cases for the induction hypothesis.
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	      \begin{itemize}
-	      		      		      		      		      		      		      		      		      		      			      		      		      		      	
+	      		      		      		      		      		      		      		      		      		      		      			      		      		      		      	
 	      	\item $ M \in V^A $
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      \begin{itemize}
 	      	      	\item $ A = \varepsilon $
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	      Use "Inversion Lemma" for all cases of $v^\varepsilon$, the case of $ M = \TB_\alpha v^\alpha $ is only reasonable.\\
 	      	      	      From the definition of $ \longrightarrow $, $\TBL_\alpha \TB_\alpha v^\alpha \longrightarrow v^\alpha$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	\item Otherwise
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	      $ \TBL_\alpha M \in V^{A\alpha}$.
 	      	      \end{itemize}
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	\item $\exists M'$ such that $M \longrightarrow M'$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      From the definition of $ \longrightarrow $, $\TBL_\alpha M \longrightarrow \TBL_\alpha M'$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      \end{itemize}
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	\item \TApp
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	      The derivation looks like $\MD{1}$.
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	      $\MD{1}$ = \infer[\TApp]
 	      {\G \V M\ N :\tau[x\mapsto N] @ A}
 	      {\ID{\G \V M : (\Pi x:\sigma.\tau) @ A} \andalso \ID{\G \V N : \sigma @ A}}
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	      \begin{itemize}
 	      	\item $M \in V^A$ and $N \in V^A$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      \begin{itemize}
 	      	      	\item $A=\varepsilon$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	      $M = \lambda x:\sigma.L$ from the definition of $V^\varepsilon$ and Inversion Lemma.\\
 	      	      	      Then, $\lambda x:\sigma.L\ N \longrightarrow_\beta L[x\mapsto N]$.
 	      	      	\item Otherwise
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	      $M\ N \in V^A$.
 	      	      \end{itemize}
 	      	\item Otherwise
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      $M\ N \longrightarrow M'\ N$ or $M\ N \longrightarrow M\ N'$.
 	      \end{itemize}
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	\item \TIns
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	      The derivation looks like $\MD{1}$.
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	      $\MD{1}$ = \infer[\TIns]
 	      {\G \V M\ B : \tau[\alpha \mapsto B] @ A}
 	      {\ID{\G \V M : \forall\alpha.\tau @ A}}
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	      \begin{itemize}
 	      	\item $ M \in V^A $
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      \begin{itemize}
 	      	      	\item $A=\varepsilon$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	      $M = \Lambda\alpha.v^\varepsilon$ from the definition of $V^\varepsilon$ and Inversion Lemma.\\
 	      	      	      Then, $\Lambda\alpha.v^\varepsilon\ B \longrightarrow_\Lambda v^\varepsilon[x\mapsto B]$.
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	\item Otherwise
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	      $v^A B \in V^A$.
 	      	      \end{itemize}
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	\item $\exists M'$ such that $M \longrightarrow M'$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      $M\ \varepsilon \longrightarrow M'\ B$
 	      \end{itemize}
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	\item Others
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	      It is obvious from the induction hypothesis.
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 \end{itemize}
 	
 \section{ Staged Semantics }
@@ -2198,156 +2175,156 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 	\item \TVar
 	      \begin{itemize}
 	      	\item $ A = \varepsilon$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      This case is impossible because $x:\tau@\varepsilon \notin \G$.
 	      	\item Otherwise
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      This case is obvious because $x \in V^A$.
 	      \end{itemize}
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	\item \TTBL
 	      \begin{itemize}
 	      	\item $ A = \varepsilon$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      This case is impossible because the stage of the conclusion of \TTBL\ cannot be $\varepsilon$.
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	\item Otherwise
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      The derivation is $\MD{1}$.
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      $\MD{1}$ = \infer[\TTBL]
 	      	      {\G \V \TBL_\alpha M :\tau @ \alpha}
 	      	      {\ID{\G \V M : \TW_\alpha \tau @ \varepsilon}}
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      From the induction hypothesis, 1 or 2 is true.
 	      	      \begin{enumerate}
 	      	      	\item $ M \in V^\varepsilon$
 	      	      	\item $\exists ! B, E^\varepsilon_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^\varepsilon_B[R^B]$.
 	      	      \end{enumerate}
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      \begin{itemize}
 	      	      	\item $ M \in V^\varepsilon$ is true
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	      Use "Inversion Lemma" for all cases of $v^\varepsilon$, the case of $ M = \TB_\alpha v^\alpha $ is only reasonable.
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	      Then, $\TBL_\alpha \TB_\alpha v^\alpha = E^\alpha_\alpha [R^\alpha]$.
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	\item $\exists ! B, E^\varepsilon_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^\varepsilon_B[R^B]$ is true.
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	      \begin{itemize}
 	      	      	      	\item $ M = \TB_\alpha E^\alpha_B[R^B] $
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	      	      $ \TBL_\alpha \TB_\alpha E^\alpha_B[R^B] \longrightarrow_s E^\alpha_B[R^B]$ doesn't hold because $ E^\alpha_B[R^B] \notin v^\alpha$.
 	      	      	      	      So, given $B, E^\varepsilon_B, R^B$ are the unique tuples satisfies the condition.
 	      	      	      	\item Otherwise
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	      	      It is obvious from the induction hypothesis and the definition of $E^A_B$.
 	      	      	      \end{itemize}
 	      	      \end{itemize}
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      \end{itemize}
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	\item \TIns
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	      \begin{itemize}
 	      	\item $ A = \varepsilon$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      The derivation is $\MD{1}$.
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      $\MD{1}$ = \infer[\TIns]
 	      	      {\G \V M\ C :\tau[\alpha \mapsto C] @ \varepsilon}
 	      	      {\ID{\G \V M : \forall\alpha.\tau @ \varepsilon}}
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      From the induction hypothesis, 1 or 2 is true.
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      \begin{enumerate}
 	      	      	\item $ M \in V^\varepsilon$
 	      	      	\item $\exists ! B, E^\varepsilon_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^\varepsilon_B[R^B]$.
 	      	      \end{enumerate}
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      \begin{itemize}
 	      	      	\item $ M \in V^\varepsilon$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	      Use Inversion Lemma for all shape in $v^\varepsilon$, the case of $ M = \Lambda\alpha.v^\varepsilon$ is only reasonable.
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	      Then, $ \Lambda\alpha.v^\varepsilon\ C = E^\varepsilon_\varepsilon [R^\varepsilon]$
 	      	      	\item $\exists ! B, E^\varepsilon_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^\varepsilon_B[R^B]$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	      Because $ E^\varepsilon_B[R^B] \neq \Lambda\alpha.v^\varepsilon$, we can decompose $E^\varepsilon_B[R^B]\ B$ uniquely.
 	      	      \end{itemize}
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	\item $ A \neq \varepsilon $
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      The derivation is $\MD{1}$.
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      $\MD{1}$ = \infer[\TIns]
 	      	      {\G \V M\ C :\tau[\alpha \mapsto C] @ A}
 	      	      {\ID{\G \V M : \forall\alpha.\tau @ A}}
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      From the induction hypothesis, 1 or 2 is true.
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      \begin{enumerate}
 	      	      	\item $ M \in V^A$
 	      	      	\item $\exists ! B, E^A_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
 	      	      \end{enumerate}
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      \begin{itemize}
 	      	      	\item $ M \in V^A$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	      It is clear that $v^A\ C \in V^A$.
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	\item $\exists ! B, E^A_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	      Because we cannot $\Lambda$ reduction at stage $A$, we can decompose $E^A_B[R^B]\ C$ uniquely.
 	      	      \end{itemize}
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      \end{itemize}
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	\item \TApp
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	      \begin{itemize}
 	      	\item $ A = \varepsilon$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      The derivation is $\MD{1}$.
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      $\MD{1}$ = \infer[\TApp]
 	      	      {\G \V M\ N :\tau[\tau \mapsto N] @ \varepsilon}
 	      	      {\ID{\G \V M : \Pi x:\sigma.\tau @ \varepsilon} \andalso \ID{\G \V N : \sigma @ \varepsilon}}
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      From the induction hypothesis, 1 or 2 is true.
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      \begin{enumerate}
 	      	      	\item $ M \in V^\varepsilon$ and $ N \in V^\varepsilon$
 	      	      	\item $ M \in V^\varepsilon$ and $\exists ! B, E^\varepsilon_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $N = E^\varepsilon_B[R^B]$
 	      	      	\item $\exists ! B, E^\varepsilon_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^\varepsilon_B[R^B]$ and $ N \in V^\varepsilon$
 	      	      	\item $\exists ! B, E^\varepsilon_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^\varepsilon_B[R^B]$ and $\exists ! B', E^\varepsilon_{B'}, R^{B'}$ such that ($B' = \varepsilon$ or $B' = \beta$) and $N = E^\varepsilon_{B'}[R^{B'}]$
 	      	      \end{enumerate}
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      \begin{itemize}
 	      	      	\item Case of 1
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	      Use Inversion Lemma for all shape in $v^\varepsilon$, the case of $ M = \lambda x:\sigma.v^\varepsilon$ is only reasonable.
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	      Then $M N = R^\varepsilon$.
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	\item Otherwise
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      	      	      
 	      	      	      It is clear.
 	      	      \end{itemize}
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	\item $ A \neq \varepsilon $
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      $M N \notin R^\varepsilon$ because $ A \neq \varepsilon$.
 	      	      So, we can decompose uniquely.
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      \end{itemize}
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	\item \TConv
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	      We can use the induction hypothesis directly.
-	      	      	      	      	      	      	      	      	      	      		      	      	      	      
+	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 \end{itemize}
 	
 \AI{Removed the work-in-progress part.}
