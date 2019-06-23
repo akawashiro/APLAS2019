@@ -20,13 +20,13 @@ $\TB_\alpha$; it evaluates $M$ to a code value and splice it into the
 surrounding code fragment.  Such splicing is expressed by the
 following reduction rule:
 \begin{align*}
-	\TBL_\alpha (\TB_\alpha M) \longrightarrow M 
+	\TBL_\alpha (\TB_\alpha M) \longrightarrow M .
 \end{align*}
-The type of
-$\TB_\alpha M$ is $\TW_\alpha \tau$ if $M$ has type $\tau$; the type
-of $\TBL_\alpha M$ is $\tau$ if $M$ has $\TW_\alpha \tau$.
+% Using the type constructor $\TW_\alpha$ for code values, the type of
+% $\TB_\alpha M$ is given $\TW_\alpha \tau$ if $M$ has type $\tau$; the type
+% of $\TBL_\alpha M$ is $\tau$ if $M$ has $\TW_\alpha \tau$.
 
-The subscript $\alpha$ in $\TB_\alpha M$ is a \textit{stage
+The subscript $\alpha$ in $\TB_\alpha$ and $\TBL_\alpha$ is a \textit{stage
   variable}\footnote{%
   In Hanada and Igarashi~\cite{Hanada2014}, it was called a
   \textit{transition variable}, which is derived from correspondence
@@ -35,21 +35,21 @@ a sequence of stage variables is called \textit{stage}.  Intuitively,
 they represent the depth of nested brackets.  Stage variables can be
 abstracted by $\Lambda\alpha.M$ and instantiated by an application
 $M\ A$ to stages.  For example,
-$\Lambda\alpha.\TB_\alpha ((\lambda x:\I.x+10) 5)$ is a code value,
-where \(\alpha\) is abstracted.  If it is applied to \(\varepsilon\),
-which is the empty sequence standing for zero, \(\TB_\alpha\) becomes
-\(\TB_\varepsilon\), which stands for zero brackets, and so, in fact,
-\(\TB_\alpha\) disappears.  As a result, the application reduces to
-(unquoted) \((\lambda x:\I.x+10) 5\) and to 15.  So, application of a
+$\Lambda\alpha.\TB_\alpha ((\lambda x:\I.x+10)\ 5)$ is a code value,
+where \(\alpha\) is abstracted.  If it is applied to \(\alpha_1 \cdots \alpha_n\), \(\TB_\alpha\) becomes \(\TB_{\alpha_1} \cdots \TB_{\alpha_n}\); in particular,
+if \(n = 0\), \(\TB_\alpha\) disappears.  So, an
+application of $\Lambda\alpha.\TB_\alpha ((\lambda x:\I.x+10)\ 5)$
+to the empty sequence \(\varepsilon\) reduces to
+(unquoted) \((\lambda x:\I.x+10)\ 5\) and to 15.  In other words, application of of
 \(\Lambda\)-abstraction to $\varepsilon$ corresponds to \texttt{run}.
-If \(\alpha\) is instantiated with, say, \(\beta\gamma\), then
-\(\TB_\alpha\) becomes nested brackets \(\TB_{\beta} \TB_\gamma\).
-These are expressed by the following reduction rule:
+% If \(\alpha\) is instantiated with, say, \(\beta\gamma\), then
+% \(\TB_\alpha\) becomes nested brackets \(\TB_{\beta} \TB_\gamma\).
+This is expressed by the following reduction rule:
 \begin{align*}
 	(\Lambda\alpha.M)\ A \longrightarrow M[\alpha\mapsto A]
 \end{align*}
 where stage substitution \([\alpha \mapsto A]\) manipulates nesting of
-\(\TB\) and \(\TBL\) (and also \(\%_\alpha\) as we see later).
+\(\TB_\alpha\) and \(\TBL_\alpha\) (and also \(\%_\alpha\) as we see later).
 
 Cross-stage persistence (CSP), which is an important feature of \LTP,
 is a primitive to embed values (not necessarily code values) into a
@@ -57,29 +57,33 @@ code value.  For example, a \LTP-term
 \[
   M_1 = \lambda x:\I.\Lambda\alpha.(\TB_\alpha ((\%_\alpha x) * 2))
 \]
-takes an integer \(x\) as an input and returns the code value into
-which \(x\) is embedded.  CSP is practically important because
-one can call library functions from inside quotations.  If the above
-\(\lambda\)-abstraction is applied to $1 + 2$ as in
+takes an integer \(x\) as an input and returns a code value, into
+which \(x\) is embedded.  If $M_1$ is applied to $38 + 4$ as in
 \[
-  M_2 = (\lambda x:\I.\Lambda\alpha.(\TB_\alpha ((\%_\alpha x) * 2)))\ (38 + 4)
+  M_2 = (\lambda x:\I.\Lambda\alpha.(\TB_\alpha ((\%_\alpha x) * 2)))\ (38 + 4),
 \]
-it evaluates to
+then it evaluates to
 \(M_3 = \Lambda\alpha.(\TB_\alpha ((\%_\alpha 42) * 2))\).  According
 to the semantics of \LTP, the subterm $\%_\alpha 42$ means that it
 waits for the surrounding code to be run (by an application to
 $\varepsilon$) and so it does not reduce further.  If \(M_3\) is run
 by application to \(\varepsilon\), substitution of \(\varepsilon\) for
 \(\alpha\) eliminates \(\TB_\alpha\) and \(\%_\alpha\) and so
-\(42 * 2\) is obtained.
+\(42 * 2\), which reduces to 84, is obtained.
+CSP is practically important because
+one can call library functions from inside quotations.  
 
 The type system of \LTP uses code types---the type of code of type
 \(\tau\) is written \(\TW_\alpha \tau\)---for typing \(\TB_\alpha\),
 \(\TBL_\alpha\) and \(\%_\alpha\).  It takes stages into account: A
-variable declaration in a type environment is associated with its
-declared stage as well as its type and a type judgement of \LTP is of
-the form $\G \vdash M : \tau @ A$, in which $A$ stands for the stage
-of term $M$.  For example,
+variable declaration (written $x:\tau@A$) in a type environment is associated with its
+declared stage $A$ as well as its type $\tau$ and the type judgement of \LTP is of
+the form $\G \vdash M : \tau@A$, in which $A$ stands for the stage
+of term $M$.\footnote{%
+  In Hanada and Igarashi~\cite{Hanada2014}, it is written
+  $\G \vdash^A M : \tau$.
+  }
+For example,
 $y:\I@\alpha \vdash (\lambda x:\I.y) : \I \to \I @ \alpha$ holds, but
 $y:\I@\alpha \vdash (\lambda x:\I.y) : \I \to \I @ \varepsilon$ does
 not because the latter uses $y$ at stage \(\varepsilon\) but $y$ is
@@ -89,7 +93,7 @@ stage \(A\alpha\); unquote \(\TBL_\alpha M\) is given type \(\tau\)
 at stage \(A\alpha\) if \(M\) is given type \(\TW_\alpha \tau\) at
 stage \(A\alpha\); and CSP \(\%_\alpha M\) is give type \(\tau\)
 at stage \(A\alpha\) if \(M\) is given type \(\tau\) at \(A\).
-These are expressed by the following inference rules:
+These are expressed by the following typing rules.
 \begin{center}
 	\infrule{\G\vdash M:\tau @{A\alpha}}{\G\vdash \TB_{\alpha}M:\TW_{\alpha}\tau @A} \hfil
 	\infrule{\G\vdash M:\TW_{\alpha}\tau @A}{\G\vdash \TBL_{\alpha}M:\tau @{A\alpha}} \hfil
@@ -140,7 +144,7 @@ These are expressed by the following inference rules:
 \subsection{Extending \LTP with Dependent Types}
 
 In this paper, we add a simple form of dependent types---{\`a} la
-Edinburgh LF~\cite{} and \LLF~\cite{}---to \LTP and develop \LMD.
+Edinburgh LF~\cite{harper1993framework} and \LLF~\cite{attapl}---to \LTP.
 Types can be indexed by terms as in \texttt{Vector} in
 Section~\ref{sec:intro} and \(\lambda\)-abstractions can be given
 dependent function types of the form \(\Pi x:\tau. \sigma\) but we do
@@ -163,9 +167,9 @@ consider
   \text{ and }
   \lambda x:\I. \TB_\alpha (\lambda y:\text{Vector }x.M).
 \]
-Is Vector\ \(x\) a legitimate type at \(\varepsilon\) (or \(\alpha\),
-resp.)  even if \(x:\I\) is declared at stage \(\alpha\) (or
-\(\varepsilon\), resp.)?  We give our answer to this question in two
+Is Vector\ \(x\) a legitimate type at \(\varepsilon\) (and \(\alpha\),
+resp.)  even if \(x:\I\) is declared at stage \(\alpha\) (and
+\(\varepsilon\), resp.)?  We will give our answer to this question in two
 steps.
 
 First, type-level constants such as \(\I\) and Vector can be used at
@@ -174,7 +178,7 @@ declares kinds of type-level constants and types of constants.  For
 example, a signature for the Boolean type and constants is given as
 follows $\B::*, \text{true}:\B, \text{false}:\B$ (where $*$ is the
 kind of proper types).  Declarations in a signature are not
-associated to particular stages and so they are used at every stage.
+associated to particular stages; so they can be used at every stage.
 
 Second, an indexed type such as Vector\ 3 or Vector\ $x$ is well
 formed only at the stage(s) where the index term is well typed.  Since
@@ -202,8 +206,8 @@ this problem by CSP---In fact,
 $\text{Vector }x$ is not well formed at $\alpha$ under $x:\I@\epsilon$
 but $\text{Vector }(\%_\alpha x)$ is!  So, we can still write
 \(\lambda x:\I. \TB_\alpha (\lambda y:\text{Vector }(\%_\alpha x).M) \)
-for the typical code generator.
+for the typical sort of code generators.
 
-Our decision that wellformedness of types takes stages of index terms
+Our decision that well-formedness of types takes stages of index terms
 into account will lead to the introduction of CSP at the type level
 and special equivalence rules, as we will see later.
