@@ -1671,6 +1671,34 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 		      \end{itemize}
 	\end{itemize}
 \end{proof}
+
+\begin{lemma}[Inversion Lemma for $\TW$ type]
+	\begin{item}
+		  \item If $\G \V \TB_\alpha M : \tau@A$ then 
+		  there is $\sigma$ such that $\tau = \TW_\alpha \sigma$ and $\G \V M : \sigma@A$.
+	      \item If $\G \V \rho \E \TW_\alpha \tau : K @A$ then there are $\tau', K$, and $J$ such that
+	      $\rho = \TW_\alpha \tau'$ and $\G \V \tau \E \tau' : K @A$.
+	      \item If $\G \V \TW_\alpha \tau \E \rho : K @A$ then there are $\tau', K$, and $J$ such that
+	      $\rho = \TW_\alpha \tau'$ and $\G \V \tau \E \tau' : K @A$.
+	\end{item}
+\end{lemma}
+
+\begin{proof}
+	We can prove using induction on the derivation tree.
+	We show some cases as examples.
+				
+\begin{itemize}
+	\item \textit{Case} \TTB{} where \(\G \V M : \sigma'@A\alpha\).
+		  We can take $\sigma'$ as $\sigma$.	      	      		      	      	      	      	      
+	\item \textit{Case} \TConv{} where \( \G \V \TB_\alpha M : \tau'@A \) and \( \G\V\tau' \E \tau :: K@A \).\\
+		  There are $\sigma$ such that $\tau' = \TW_\alpha \sigma$ and $\G \V M : \sigma@A$
+		  by using the induction hypothesis to \( \G \V \TB_\alpha M : \tau' @A\).
+		  Then, we can rewrite $\tau'$ with $\TW_\alpha \sigma$.
+		  There are $\sigma'$ and $K'$ such that $\tau = \TW_\alpha \sigma'$ and $\G \V \sigma \E \sigma' : K @ A$
+		  by using the induction hypothesis to \( \G \V \TW_\alpha \sigma : \tau :: K' @A\).
+		  This $\sigma'$ also satisfies $\G \V M : \sigma' @ A $ from \TConv.
+\end{itemize}
+\end{proof}	
 	
 \begin{theorem}[Preservation on $\beta$ reduction]
 	\AI{I'm not sure ``on'' is the correct preposition.  Maybe ``for''?'}
@@ -1778,38 +1806,7 @@ Use induction on type derivation tree.
 	      \fi
 	      	      	      		      	      	      	      	      
 \end{itemize}
-	
-\begin{lemma}[Inversion Lemma for $\TW$ type]
-	\begin{item}
-	      \item If $\G \V \TB_\alpha M : \TW_\alpha \tau@A$ then $\G \V M : \tau @A$.
-	      \item If $\G \V \rho \E  \TW_\alpha \tau : K @A$ then $\exists \tau', K, J$ such that
-	      \begin{enumerate}
-	      	\item $\rho = \TW_\alpha \tau'$
-	      	\item $\G @A\V \tau \E \tau' : K @A$
-	      \end{enumerate}
-	      \item If $\G \V \TW_\alpha \tau \E \rho : K @A$ then $\exists \tau', K, J$ such that
-	      \begin{enumerate}
-	      	\item $\rho = \TW_\alpha \tau'$
-	      	\item $\G @A\V \tau \E \tau' : K @A$
-	      \end{enumerate}
-	\end{item}
-\end{lemma}
-	
-\begin{itemize}
-	\item \TTB
-	      	      	      		      	      	      	      	      
-	      The derivation tree looks like $\mathcal{D}_1$.
-	      	      	      		      	      	      	      	      
-	      $\mathcal{D}_1$ = \infer[\TTB]
-	      {\G \V \TB_\alpha M : \TW_\alpha \tau@A}
-	      {\ID{\G \V M : \tau@A\alpha}}
-	      	      	      		      	      	      	      	      
-	\item Otherwise
-	      	      	      		      	      	      	      	      
-	      It is obvious.
-	      	      	      		      	      	      	      	      
-\end{itemize}
-	
+
 \begin{theorem}[Preservation for term on $\TBL\TB$ reduction]
 	If $\G\V M:\tau@A$ and $M\longrightarrow_\blacklozenge N$, then $\G\V N:\tau@A$\\
 \end{theorem}

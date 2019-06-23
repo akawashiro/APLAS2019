@@ -43,12 +43,13 @@ The following Inversion Lemma is needed to prove main theorems.
 As usual~\cite{TAPL}, Inversion Lemma enables us to infer the types of subterms of a term from the type of the term.
 
 \begin{lemma}[Inversion]\ 
-  \begin{enumerate}
-	\item If $\G \V (\lambda x:\sigma.M) : \rho$ then there are $\sigma'$ and $\tau'$ such that
-	$\rho = \Pi x:\sigma'.\tau'$, $\G \V \sigma \E \sigma'@A$ and $\G ,x:\sigma'@A\V M:\tau'@A$.
-  \item If $\G \V \TB_\alpha M : \TW_\alpha \tau @A$ then $\G \V M : \tau @A$.
-  \item If $\G \V \Lambda\alpha.M : \forall\alpha.\tau @A$ then $\G \V M : \tau @A$ and $\alpha \notin \FTV(\G) \cup \FV(A)$.
-  \end{enumerate}
+	\begin{enumerate}
+		\item If $\G \V (\lambda x:\sigma.M) : \rho$ then there are $\sigma'$ and $\tau'$ such that
+		      $\rho = \Pi x:\sigma'.\tau'$, $\G \V \sigma \E \sigma'@A$ and $\G ,x:\sigma'@A\V M:\tau'@A$.
+		\item If $\G \V \TB_\alpha M : \tau@A$ then 
+		      there is $\sigma$ such that $\tau = \TW_\alpha \sigma$ and $\G \V M : \sigma@A$.
+		\item If $\G \V \Lambda\alpha.M : \forall\alpha.\tau @A$ then $\G \V M : \tau @A$ and $\alpha \notin \FTV(\G) \cup \FV(A)$.
+	\end{enumerate}
 \end{lemma}
 
 \begin{proof}
