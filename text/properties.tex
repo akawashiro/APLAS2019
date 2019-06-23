@@ -48,7 +48,8 @@ As usual~\cite{TAPL}, Inversion Lemma enables us to infer the types of subterms 
 		      $\rho = \Pi x:\sigma'.\tau'$, $\G \V \sigma \E \sigma'@A$ and $\G ,x:\sigma'@A\V M:\tau'@A$.
 		\item If $\G \V \TB_\alpha M : \tau@A$ then 
 		      there is $\sigma$ such that $\tau = \TW_\alpha \sigma$ and $\G \V M : \sigma@A$.
-		\item If $\G \V \Lambda\alpha.M : \forall\alpha.\tau @A$ then $\G \V M : \tau @A$ and $\alpha \notin \FTV(\G) \cup \FV(A)$.
+		  \item If $\G \V \Lambda\alpha.M : \tau$ then 
+		  there is $\sigma$ such that $\sigma = \forall\alpha.\sigma$ and $\G \V M : \sigma@A$.% and $\alpha \notin \FTV(\G) \cup \FV(A)$.
 	\end{enumerate}
 \end{lemma}
 
