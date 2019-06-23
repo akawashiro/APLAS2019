@@ -2139,7 +2139,7 @@ So, we can reduce one of them after we reduce another.
 \end{proof}
 
 \begin{corollary}[Progress]
-	If $x:\tau@\varepsilon \notin \G$ and $\G \V M : \tau @ A$ then $ M \in V^A $ or $\exists M'$ such that $M \longrightarrow M'$.
+	If $x:\tau@\varepsilon \notin \G$ and $\G \V M : \tau @ A$ then $ M \in V^A $ or there is $M'$ such that $M \longrightarrow M'$.
 \end{corollary}
 
 \begin{proof}
@@ -2157,20 +2157,20 @@ So, we can reduce one of them after we reduce another.
 \end{proof}
 	
 \endinput
-\blue{\huge{It is work in progress from here.}}
+% \blue{\huge{It is work in progress from here.}}
 	
-\begin{dfn}[\% Powerset of a Term]
-	For a term $M$, $M^\%$ is a set of terms.\\
-	$M' \in M^\%$ iff you can get $M'$ from $M$ by removing arbitary number $\%$.
-\end{dfn}
+% \begin{dfn}[\% Powerset of a Term]
+% 	For a term $M$, $M^\%$ is a set of terms.\\
+% 	$M' \in M^\%$ iff you can get $M'$ from $M$ by removing arbitary number $\%$.
+% \end{dfn}
 	
-\begin{lemma}[Equality and Reduction]
-	$\G \V M \E N : \tau @A$ if and only if\\
-	$\exists M' \in M^\%, M' \in M^\%, \exists N' \in N^\%, \exists L$
-	such that $\G \V M' : \tau$, $\G \V N' : \tau$, $M' \longrightarrow^* L$ and $N' \longrightarrow^* L$.
-\end{lemma}
+% \begin{lemma}[Equality and Reduction]
+% 	$\G \V M \E N : \tau @A$ if and only if\\
+% 	$\exists M' \in M^\%, M' \in M^\%, \exists N' \in N^\%, \exists L$
+% 	such that $\G \V M' : \tau$, $\G \V N' : \tau$, $M' \longrightarrow^* L$ and $N' \longrightarrow^* L$.
+% \end{lemma}
 	
-\red{TODO}
+% \red{TODO}
 	
 	
 % \section{ Deterministic Typechecking }
