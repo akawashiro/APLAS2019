@@ -2022,33 +2022,32 @@ So, we can reduce one of them after we reduce another.
 		\item $\exists ! B, E^A_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
 	\end{enumerate}
 \end{lemma}
-	
-Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
+
+\begin{proof}
+We prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 	
 \begin{itemize}
-	\item \TVar
+	\item \textit{Case}  \TVar
 	      \begin{itemize}
-	      	\item $ A = \varepsilon$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	\item $ A = \varepsilon$\\
 	      	      This case is impossible because $x:\tau@\varepsilon \notin \G$.
-	      	\item Otherwise
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	\item $ A \neq \varepsilon$\\
 	      	      This case is obvious because $x \in V^A$.
 	      \end{itemize}
 	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	\item \TTBL
+	\item \textit{Case}  \TTBL
 	      \begin{itemize}
-	      	\item $ A = \varepsilon$
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
+	      	\item $ A = \varepsilon$\\
 	      	      This case is impossible because the stage of the conclusion of \TTBL\ cannot be $\varepsilon$.
-	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
-	      	\item Otherwise
+	      	\item $ A \neq \varepsilon$\\
 	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      The derivation is $\MD{1}$.
 	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      $\MD{1}$ = \infer[\TTBL]
-	      	      {\G \V \TBL_\alpha M :\tau @ \alpha}
-	      	      {\ID{\G \V M : \TW_\alpha \tau @ \varepsilon}}
+	      	      {\G \V \TBL_\alpha M :\tau @ A\alpha}
+					{\ID{\G \V M : \TW_\alpha \tau @ A}}
+					
+					%%%%%%%%%%%%%%%%%%%%%%%%%% RESUME FROM HERE %%%%%%%%%%%%%%%%%%%%%%%%%% 
 	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      	      From the induction hypothesis, 1 or 2 is true.
 	      	      \begin{enumerate}
@@ -2078,7 +2077,7 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      \end{itemize}
 	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	\item \TIns
+	\item \textit{Case}  \TIns
 	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	      \begin{itemize}
 	      	\item $ A = \varepsilon$
@@ -2135,7 +2134,7 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 	      \end{itemize}
 	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	\item \TApp
+	\item \textit{Case}  \TApp
 	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	      \begin{itemize}
 	      	\item $ A = \varepsilon$
@@ -2175,11 +2174,12 @@ Prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 	      \end{itemize}
 	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
-	\item \TConv
+	\item \textit{Case}  \TConv
 	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	      We can use the induction hypothesis directly.
 	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 \end{itemize}
+\end{proof}
 
 \begin{theorem}[Progress]
 	If $x:\tau@\varepsilon \notin \G$ and $\G \V M : \tau @ A$ then $ M \in V^A $ or $\exists M'$ such that $M \longrightarrow M'$.
