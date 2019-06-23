@@ -1,6 +1,7 @@
 % !TEX root = ../main.tex
 
-\section{Related Work \label{sec:related-work}}
+\section{Related Work}
+\label{sec:related-work}
 
 MetaOCaml is a programming language with quoting, unquoting, run, and
 CSP.  Kiselyov give many applications of MetaOCaml in \cite{8384206},
@@ -27,9 +28,9 @@ Finally, Taha and Nielsen invented the concept of environment
 classifiers~\cite{taha2003environment} and developed a typed calculus
 $\lambda^\alpha$, which was equipped with all the features above in a
 type sound manner and formed a basis of earlier versions of MetaOCaml.
-A different approach to type-safe multi-stage programming with
-different semantics for quasi-quotations has been studied by Kim, Yi,
-and Calcagno~\cite{DBLP:conf/popl/KimYC06}.
+Different approaches to type-safe multi-stage programming with
+slightly different constructs for composing and running code values have been studied by Kim, Yi,
+and Calcagno~\cite{DBLP:conf/popl/KimYC06} and Nanevski and Pfenning~\cite{DBLP:journals/jfp/NanevskiP05}.
 
 Later, Tsukada and Igarashi~\cite{Tsukada} found correspondence
 between a variant of \(\lambda^\alpha\) called $\lambda^\TW$
@@ -51,7 +52,7 @@ $\lambda^\TW$ with CSP.
 % 依存型の歴史
 
 There is much work on dependent types and most of them are affected by
-the pioneering work by Martin-L\"{o}f~\cite{martin1973intuitionstic}.
+the pioneering work by Martin-L\"{o}f~\cite{martin1973intuitionistic}.
 Among many dependent type systems such as
 $\lambda^\Pi$~\cite{Meyer1986}, Calculus of
 Constructions~\cite{coquand:inria-00076024}, and Edinburgh
@@ -83,7 +84,7 @@ control operators~\cite{KameyamaKiselyovShan09PEPM,oishi2017staging},
 a combination with dependent types has been little studied.
 One exception is Brady and Hammond~\cite{brady2006dependently},
 who have discussed a
-combination of dependently typeed programming with staging in the
+combination of dependently typed programming with staging in the
 style of MetaOCaml to implement a staged interpreter, which is
 statically guaranteed to generate well typed code.  However, they
 focused on concrete programming examples and there is no theoretical investigation
@@ -92,7 +93,7 @@ of the programming language they used.
 % 他の方法としてどのようなものが考えられたか
 
 % Although we define type equivalence of \LMD with composition of equivalence rules,
-% there is another candiate to define,
+% there is another candidate to define,
 % which gives reduction on types and compare the results of reduction such as~\cite{sorensen2006lectures}.
 % This method is better than one of \LMD because equivalence rules become simple.
 % However, we reject it because it cannot handle CSP flexibly.

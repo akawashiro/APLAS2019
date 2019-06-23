@@ -18,7 +18,7 @@ over by \(x,y,z\), the denumerable set of \emph{constants}, ranged over by
 sequences of stage variables; we write \(\varepsilon\) for the empty
 sequence. \LMD is defined by the following grammar:
 
-{\small
+{%\small
 \begin{align*}
     % \textrm{Type variables}  &   &                          & X,Y,Z                                                                                                      \\
     % \textrm{Variables}       &   &                          & x,y,z                                                                                                      \\
@@ -30,7 +30,7 @@ sequence. \LMD is defined by the following grammar:
     \textrm{terms}             &  & M,N,L,O,P                & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M                   \\
                                &  &                          & \ \ \ \ \mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ A \mid \%_\alpha M        \\
     \textrm{signatures}         &  & \Sigma                   & ::= \emptyset \mid \Sigma, X::K \mid \Sigma, c:\tau                               \\
-    \textrm{type environments} &  & \Gamma                   & ::= \emptyset \mid  \Gamma,x:\tau @A                                              \\
+    \textrm{type env.} &  & \Gamma                   & ::= \emptyset \mid  \Gamma,x:\tau @A                                              \\
 \end{align*}
 }
 % \AI{Add $M\,\alpha$ to terms.}
@@ -83,7 +83,7 @@ is a sequence of declarations of the form $c:\tau$ and $X:K$.
 For example, when we use Boolean in \LMD, $\Sigma$ includes $\B :: *, \textrm{true}:\B, \textrm{false}:\B$.
 Type environments are sequences of triples of a variable, its type, and its stage.
 We write \(\textit{dom}(\Sigma)\) and \(\textit{dom}(\Gamma)\)
-for the set of (type-level) constants declared in \(\Sigma\) and \(\Gamma\), respectively.   As in other multi-stage calculi~\cite{Taha03,Tsukada,Hanada2014},
+for the set of (type-level) constants declared in \(\Sigma\) and \(\Gamma\), respectively.   As in other multi-stage calculi~\cite{taha2003environment,Tsukada,Hanada2014},
 a variable declaration is associated with a stage
 so that a variable can be referenced only at the declared stage.
 Constants and type-level constants are not associated with stages;
@@ -136,7 +136,7 @@ term $N$ for $x$ in term $M$, type $\tau$, kind $K$, and stage $B$, respectively
 We also define substitutions of a stage or a term for variables in type environment $\G$.
 We show representative cases below.
 %
-{\small
+{%\small
 \begin{align*}
     (\lambda x:\tau.M)[\alpha \mapsto A] & = \lambda x:(\tau[\alpha \mapsto A]).(M[\alpha \mapsto A])                                  \\
     (M\ B)[\alpha \mapsto A]             & = (M[\alpha \mapsto A])\ B[\alpha\mapsto A]                                                 \\
@@ -158,7 +158,7 @@ $\TB_{\varepsilon} M = \TBL_{\varepsilon} M = \%_{\varepsilon} M = M$.
     The relations $M \longrightarrow_\beta N$, $M \longrightarrow_\blacklozenge N$, and $M \longrightarrow_\Lambda N$
     are the least compatible relations closed under the rules below.
 %    Congruence rules are omitted from the definition.
-{\small
+{%\small
     \begin{align*}
          (\lambda x:\tau.M) N & \longrightarrow_\beta M[x \mapsto N]         \\
          \TBL_\alpha \TB_\alpha M & \longrightarrow_\blacklozenge M          \\
@@ -270,7 +270,7 @@ we assume that all signatures and type environments are well-formed.
 
 \subsubsection{Kind Wellformedness and Kinding.}
 
-The rules for kind wellformedness and kiding is straightforward
+The rules for kind wellformedness and kinding is straightforward
 adaptation from \LLF and \LTP, except for the rule for type-level CSP.
 \begin{center}
   \infrule[K-Csp]{
@@ -283,7 +283,7 @@ Unlike the term level, type-level CSP is implicit.
 
 \subsubsection{Typing.}
 
-\begin{figure}
+\begin{figure}[tbp]
   \begin{center}
     \infrule[\TConst]{c:\tau \in \Sigma}{\G \V c:\tau @A} \hfil
     \infrule[\TVar]{x:\tau @A \in \G}{\G \V x:\tau @A} \\[2mm]
@@ -352,7 +352,7 @@ Since the syntax of kinds, types, and terms is mutually recursive,
 corresponding notions of equivalence are also mutually recursive.
 They are congruences closed under a few axioms for term equivalence.
 So, the rules for kind and type equivalences are not very interesting
-except implict CSP is allowed.
+except implicit CSP is allowed.
 We show a few representative rules below.
 
   {\small
@@ -457,11 +457,11 @@ do depend on stages and so this rule does not apply.
 This rule is motivated by a practical consideration.  We will discuss
 the motivation through an example of specializing a vector addition
 function with respect to the size of vectors.  The function
-vadd (with an auxilirary function vadd$_1$) below implements a code
+vadd (with an auxiliary function vadd$_1$) below implements a code
 generator in a hypothetical language based on \LTP.  This language
 provides definitions by \textbf{let}, recursive functions (represented
 by \textbf{fix}), \textbf{if}-expressions, and primitives cons, head,
-and tail to maniputlate vectors.
+and tail to manipulate vectors.
 We assume that
 $\text{cons}$ is of type $\Pi n:\I.\I \to \text{Vector}\ n \to \text{Vector}\ (n+1)$, 
 $\text{head}$ is of type $\Pi n:\I.\text{Vector}\ (n+1) \to \I$, and
@@ -582,7 +582,7 @@ In order to define staged reduction, we define redex and evaluation contexts.
   \end{align*}
 \end{definition}
 
-The subscripts $A$ and $B$ in $E^A_B$ stand for the stage of the evaluation context and of the hole, respectively.  The grammer represents that staged reduction is left-to-right and call-by-value and terms under \(\Lambda\) is reduced.
+The subscripts $A$ and $B$ in $E^A_B$ stand for the stage of the evaluation context and of the hole, respectively.  The grammar represents that staged reduction is left-to-right and call-by-value and terms under \(\Lambda\) is reduced.
 A few examples of evaluation context are shown below:
 \begin{align*}
   \square\ (\lambda x:\I.x)                  & \in  ECtx^\varepsilon_\varepsilon \\
@@ -607,7 +607,7 @@ Now we define staged reduction using the redex and evaluation contexts.
 This reduction relation represents a term reduces in a deterministic,
 left-to-right, call-by-value manner.  An application of an abstraction
 is executed only at stage \(\varepsilon\) and only a quotation at
-stage \(\varepsilon\) is spiliced into the surrounding code---notice
+stage \(\varepsilon\) is spliced into the surrounding code---notice
 that, if \(\TB_\alpha v^\alpha\) is at stage \(\varepsilon\), then the
 redex \(\TBL_\alpha \TB_\alpha v^\alpha\) is at stage \(\alpha\).
 In other words, terms in brackets are not evaluated until the terms are run

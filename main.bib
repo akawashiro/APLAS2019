@@ -1,3 +1,7 @@
+@string{proc = "Proc.\ of"}
+@string{lncs = "Lecture Notes in Computer Science"}
+@string{POPL = "ACM SIGPLAN-SIGACT Symposium on Principles of Programming
+                  Languages"}
 @phdthesis{taha1999multi,
   title={Multi-stage programming: Its theory and applications},
   author={Taha, Walid},
@@ -6,7 +10,7 @@
 }
 
 @inproceedings{calcagno2003implementing,
-  title={Implementing multi-stage languages using ASTs, gensym, and reflection},
+  title={Implementing multi-stage languages using {ASTs}, gensym, and reflection},
   author={Calcagno, Cristiano and Taha, Walid and Huang, Liwen and Leroy, Xavier},
   booktitle={International Conference on Generative Programming and Component Engineering},
   pages={57--76},
@@ -40,7 +44,7 @@
   bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 
-@article{martin1973intuitionstic,
+@article{martin1973intuitionistic,
 author = {Martin-L{\"o}f, P.},
 year = {1973},
 month = {01},
@@ -192,20 +196,17 @@ isbn="978-3-319-07151-0"
 @inproceedings{Xi98,
  author = {Xi, Hongwei and Pfenning, Frank},
  title = {Eliminating Array Bound Checking Through Dependent Types},
- booktitle = {Proceedings of the ACM SIGPLAN 1998 Conference on Programming Language Design and Implementation},
- series = {PLDI '98},
+ booktitle = {Proc. of the ACM SIGPLAN Conference on Programming Language Design and Implementation (PLDI'98)},
  year = {1998},
  isbn = {0-89791-987-4},
  location = {Montreal, Quebec, Canada},
  pages = {249--257},
  numpages = {9},
  acmid = {277732},
- publisher = {ACM},
- address = {New York, NY, USA},
-}
-@comment{
- url = {http://doi.acm.org/10.1145/277650.277732},
- doi = {10.1145/277650.277732},
+ OPTpublisher = {ACM},
+ OPTaddress = {New York, NY, USA},
+ OPTurl = {http://doi.acm.org/10.1145/277650.277732},
+ OPTdoi = {10.1145/277650.277732},
 }
 
 @MISC{09thecoq,
@@ -294,8 +295,7 @@ volume={23},
 @inproceedings{taha2003environment,
  author = {Taha, Walid and Nielsen, Michael Florentin},
  title = {Environment Classifiers},
- booktitle = {Proceedings of the 30th ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages},
- series = {POPL '03},
+ booktitle = proc # POPL # { (POPL'03)},
  year = {2003},
  isbn = {1-58113-628-5},
  location = {New Orleans, Louisiana, USA},
@@ -373,10 +373,12 @@ volume={23},
   bibsource = {dblp computer science bibliography, https://dblp.org}
 }
 
-@inbook{attapl,
-  title={Advanced topics in types and programming languages},
+@incollection{attapl,
+  title={Dependent Types},
   author={David Aspinall and Martin Hofmann},
-  chapter={2 Dependent Types},
+  booktitle={Advanced topics in types and programming languages},
+  editor = {Benjamin C. Pierce},
+  chapter={2},
   year={2005},
   publisher={MIT press}
 }
@@ -457,16 +459,15 @@ volume={23},
 @inproceedings{oishi2017staging,
  author = {Oishi, Junpei and Kameyama, Yukiyoshi},
  title = {Staging with Control: Type-safe Multi-stage Programming with Control Operators},
- booktitle = {Proceedings of the 16th ACM SIGPLAN International Conference on Generative Programming: Concepts and Experiences},
- series = {GPCE 2017},
+ booktitle = {Proc.\ of the 16th ACM SIGPLAN Conference on Generative Programming: Concepts and Experiences (GPCE 2017)},
  year = {2017},
  isbn = {978-1-4503-5524-7},
  location = {Vancouver, BC, Canada},
  pages = {29--40},
  numpages = {12},
  acmid = {3136049},
- publisher = {ACM},
- address = {New York, NY, USA},
+ OPTpublisher = {ACM},
+ OPTaddress = {New York, NY, USA},
  keywords = {code generation, generative programming, language design, program transformation, staging, type system},
 } 
 @comment{
@@ -485,7 +486,7 @@ pages={},
 keywords={Partial Evaluation;Program Transformations and Optimizations;Compilation and Interpretation Techniques;Domain Specific Languages},
 doi={},
 ISSN={},
-publisher={now},
+publisher={NOW Publishing},
 isbn={9781680834369},}
 @comment{
 url={https://ieeexplore.ieee.org/document/8384206},}
@@ -539,12 +540,12 @@ url={https://ieeexplore.ieee.org/document/8384206},}
   author    = {Daan Leijen and
                Erik Meijer},
   title     = {Domain specific embedded compilers},
-  booktitle = {Proceedings of the Second Conference on Domain-Specific Languages
-               {(DSL} '99), Austin, Texas, USA, October 3-5, 1999},
+  booktitle = {Proc.\ of the 2nd Conference on Domain-Specific Languages
+               (DSL '99)},
   pages     = {109--122},
   year      = {1999},
-   url       = {https://doi.org/10.1145/331960.331977},
-  doi       = {10.1145/331960.331977},
+  OPTurl       = {https://doi.org/10.1145/331960.331977},
+  OPTdoi       = {10.1145/331960.331977},
   timestamp = {Tue, 06 Nov 2018 11:06:54 +0100},
   biburl    = {https://dblp.org/rec/bib/conf/dsl/LeijenM99},
   bibsource = {dblp computer science bibliography, https://dblp.org}
@@ -567,13 +568,11 @@ url={https://ieeexplore.ieee.org/document/8384206},}
                Chiyan Chen and
                Gang Chen},
   title     = {Guarded recursive datatype constructors},
-  booktitle = {Conference Record of {POPL} 2003: The 30th {SIGPLAN-SIGACT} Symposium
-               on Principles of Programming Languages, New Orleans, Louisisana, USA,
-               January 15-17, 2003},
+  booktitle = proc # POPL # { (POPL'03)},
   pages     = {224--235},
   year      = {2003},
-  url       = {https://doi.org/10.1145/640128.604150},
-  doi       = {10.1145/640128.604150},
+  OPTurl       = {https://doi.org/10.1145/640128.604150},
+  OPTdoi       = {10.1145/640128.604150},
   timestamp = {Tue, 06 Nov 2018 11:07:43 +0100},
   biburl    = {https://dblp.org/rec/bib/conf/popl/XiCC03},
   bibsource = {dblp computer science bibliography, https://dblp.org}
@@ -606,14 +605,25 @@ url={https://ieeexplore.ieee.org/document/8384206},}
                Kwangkeun Yi and
                Cristiano Calcagno},
   title     = {A polymorphic modal type system for lisp-like multi-staged languages},
-  booktitle = {Proceedings of the 33rd {ACM} {SIGPLAN-SIGACT} Symposium on Principles
-               of Programming Languages, {POPL} 2006, Charleston, South Carolina,
-               USA, January 11-13, 2006},
+  booktitle = proc # POPL # { (POPL 2003)},
   pages     = {257--268},
   year      = {2006},
-   url       = {https://doi.org/10.1145/1111037.1111060},
-  doi       = {10.1145/1111037.1111060},
   timestamp = {Tue, 06 Nov 2018 11:07:43 +0100},
   biburl    = {https://dblp.org/rec/bib/conf/popl/KimYC06},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+@article{DBLP:journals/jfp/NanevskiP05,
+  author    = {Aleksandar Nanevski and
+               Frank Pfenning},
+  title     = {Staged computation with names and necessity},
+  journal   = {J. Funct. Program.},
+  volume    = {15},
+  number    = {5},
+  pages     = {893--939},
+  year      = {2005},
+  OPTurl       = {https://doi.org/10.1017/S095679680500568X},
+  OPTdoi       = {10.1017/S095679680500568X},
+  timestamp = {Sat, 27 May 2017 14:24:34 +0200},
+  biburl    = {https://dblp.org/rec/bib/journals/jfp/NanevskiP05},
   bibsource = {dblp computer science bibliography, https://dblp.org}
 }

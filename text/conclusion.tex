@@ -2,15 +2,17 @@
 
 \section{Conclusion \label{sec:conclusion}}
 
-We have proposed a new multi-stage calculus \LMD with dependent types.
-\LMD enables finer-grained typing of multi-stage programming comparing to existing type systems.
-This extention prevents some bugs relating to generated functions with multi-stage programming,
-such as \verb|vadd| function for vectors of a fixed length.
-We proved properties of \LMD including preservation, confluence, 
-strong normalization for full reduction, and progress for staged reduction.
-The technical difficulty of extention is how to deal with the symbol of CSP $\%$ in the equation rules.
-We resolve this problem by ignoring $\%$ under some condition.
+We have proposed a new multi-stage calculus \LMD with dependent types,
+which make it possible for programmers to express finer-grained
+properties about the behavior of code values.  The combination leads
+to augmentation of almost all judgments in the type system with stage
+information.  CSP and type equivalence specially tailored for it are
+keys to expressing dependently typed practical code generators.  We
+have proved basic properties of \LMD, including preservation,
+confluence, strong normalization for full reduction, and progress for
+staged reduction.
 
-Developing a typechecking algorithmic for \LMD is left for future work.
-They would be complicated but possible 
-because we can realize them by defining a new weak head normal form which contains $\%$ erasing rule.
+Developing a typechecking algorithmic for \LMD is left for future
+work.  We expect that most of the development is straigtforward,
+except for implicit CSP at the type-level and \%-erasing equivalence
+rules.
