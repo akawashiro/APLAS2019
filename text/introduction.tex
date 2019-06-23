@@ -24,20 +24,18 @@ using these features.  Moreover, MetaOCaml is equipped with a powerful
 type system for safe code generation and execution.  The notion of
 code types is introduced to prevent code values that represent
 ill-typed expressions from being generated.  For example, a quotation
-of expression \texttt{1 + 1} is given type \texttt{int code}; a
-quotation of \texttt{abs} is given type \texttt{(int -> int) code};
+of expression \texttt{1 + 1} is given type \texttt{int code}
 and a code-generating function, which takes a code value \(c\) as an
 argument and returns \(c \texttt{ + } c\), is given type \texttt{int
   code -> int code} so that it cannot be applied to, say, a quotation
 of \texttt{"Hello"}, which is given type \texttt{string
   code}.  Ensuring safety for \verb|run| is more challenging because
-basic code types do not guarantee that execution of code values never
+code types per by themselves do not guarantee that the execution of code values never
 results in unbound variable errors.  Taha and
 Nielsen~\cite{taha2003environment} introduced the notion of
-environment classifiers to address the problem and developed a type
+environment classifiers to address the problem, developed a type
 system to ensure not only type-safe composition but also type-safe
-execution of code values with a type soundness theorem (for a pure
-subset of MetaOCaml).
+execution of code values, and proved a type soundness theorem (for a formal calculus \(\lambda^\alpha\) modeling a pure subset of MetaOCaml).
 
 
 % rackets, written \verb|.< e >.| in
@@ -87,7 +85,7 @@ polymorphism~\cite{Milner78JCSS}, is not strong enough to guarantee
 invariants beyond simple types.  For example, Kiselyov~\cite{8384206}
 demonstrates specialization of vector/matrix computation with respect
 to the sizes of vectors and matrices in MetaOCaml but the type system
-cannot prevent such specialized functions from being applied to
+of MetaOCaml cannot prevent such specialized functions from being applied to
 vectors and matrices of different sizes.
 
 % Multi-stage programming can also optimize vector calculation.
@@ -123,7 +121,7 @@ vector/matrix functions with respect to their size and get a piece of
 function code, whose type respects the given size, \emph{provided at
   specialization time}.  For example, we would like to specialize a
 function to add two vectors with respect to the size of vectors, that
-is, to implement a code generator that takes an integer $n$ as an
+is, to implement a code generator that takes a (nonnegative) integer $n$ as an
 input and generates a piece of function code of type
 \verb|(Vector |$n$\verb| -> Vector |$n$\verb| -> Vector |$n$\verb|) code|.
 
@@ -141,11 +139,12 @@ the existing multi-stage calculus \LTP\cite{Hanada2014} with dependent
 types and study its properties.  We base our work on \LTP, in which
 the four multi-stage constructs are handled slightly differently from
 MetaOCaml, because its type system and semantics are arguably simpler
-than \(\lambda^\alpha\)~\cite{taha2003environment}, another calculus,
-which formalizes the design of MetaOCaml more faithfully.  Our
-technical contribution are summarized as follows:
+than \(\lambda^\alpha\)~\cite{taha2003environment}, which formalizes
+the design of MetaOCaml more faithfully.  Dependent types are based on
+\LLF~\cite{attapl}, which has one of the simplest form of dependent
+types.  Our technical contribution are summarized as follows:
 \begin{itemize}
-\item We give the formal definition of \LMD with its syntax, 
+\item We give a formal definition of \LMD with its syntax, 
   type system and two kinds of reduction---full and staged reduction.
 \item We show preservation, strong normalization, and confluence for
   full reduction; and show unique decomposition (and progress as its

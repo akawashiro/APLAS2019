@@ -6,21 +6,21 @@ In this section, we show basic properties of \LMD: preservation, strong normaliz
 
 % Substitution Lemma
 
-Substitution Lemma in \LMD{} is little more complicated than usual
+Substitution Lemma in \LMD{} is a little more complicated than usual
 because there are eight judgment forms and two kinds of substitution.
 Term Substitution Lemma states that term substitution $[z \mapsto M]$
 preserves derivability of judgments and Stage Substitution Lemma
 states similarly for stage substitution $[\alpha\mapsto A]$.
 
-We let $\mathcal{J}$ stand for judgments $K \iskind @A$, $\tau::K@A$,
+We let $\mathcal{J}$ stand for the judgments $K \iskind @A$, $\tau::K@A$,
 $M:\tau@A$, $K \E J @ A$, $\tau \E \sigma @ A$, and
 $M \E N : \tau @ A$.  Substitutions $\mathcal{J}[z \mapsto M]$ and
 $\mathcal{J}[\alpha \mapsto A]$ are defined in a straightforward
 manner.  Using these notations, the two substitution lemmas are stated as follows:
 
 \begin{lemma}[Term Substitution]
-  If $\G, z:\xi@B, \D \V \mathcal{J}$ and $\G\V P:\xi @B$, then $\G, \D[z \mapsto P] \V \mathcal{J}[z \mapsto P]$.  Similarly, if $\V \G, z:\xi@B, \D$ and
-  $\G\V P:\xi @B$, then $\V \G, \D[z \mapsto P]$.
+  If $\G, z:\xi@B, \D \V \mathcal{J}$ and $\G\V P:\xi @B$, then $\G, (\D[z \mapsto P]) \V \mathcal{J}[z \mapsto P]$.  Similarly, if $\V \G, z:\xi@B, \D$ and
+  $\G\V P:\xi @B$, then $\V \G, (\D[z \mapsto P])$.
 \end{lemma}
 
 \begin{proof}
@@ -63,7 +63,6 @@ As usual~\cite{TAPL}, Inversion Lemma enables us to infer the types of subterms 
     $\G, x:\sigma@A\V \tau \E \tau' : J @A$.
   \end{quotation}
   and its symmetric version.  Then, they are proved simultaneously by induction on derivations.
-
   Similarly for the others.
  \qed
 \end{proof}
@@ -71,7 +70,7 @@ As usual~\cite{TAPL}, Inversion Lemma enables us to infer the types of subterms 
 
 % Preservation
 
-Thanks to Substitution Lemmas and Inversion Lemmas, we can prove Preservation easily.
+Thanks to Term/Stage Substitution and Inversion, we can prove Preservation easily.
 
 \begin{theorem}[Preservation]
 	If $\G\V M:\tau @A$ and $M \longrightarrow M'$, then $\G\V M':\tau @A$.
@@ -81,15 +80,15 @@ Thanks to Substitution Lemmas and Inversion Lemmas, we can prove Preservation ea
 	First, there are three cases for $M \longrightarrow M'$.
 	They are $M \longrightarrow_\beta M'$, $M \longrightarrow_\Lambda M'$, and $M \longrightarrow_\blacklozenge M'$.
 	For each case, we can use straightforward induction on typing derivations.
-	Difficult cases are \TApp, \TTBL, and \TIns.
-	We need Inversion Lemmas for them.
+	% Difficult cases are \TApp, \TTBL, and \TIns.
+	% We need Inversion Lemmas for them.
 \end{proof}
 
 % Strong Normalization
 
 Strong Normalization is also an important property, which guarantees that
 no typed term has an infinite reduction sequence.
-We prove this theorem by translating \LMD to the simply typed lambda calculus~\cite{harper1993framework}.
+Following standard proofs (see, e.g., \cite{harper1993framework}), we prove this theorem by translating \LMD to the simply typed lambda calculus.
 
 \begin{theorem}[Strong Normalization]
 	If $\G\V M_1:\tau@A$ then there is no infinite sequence $(M_i)_{i\ge1}$ of terms such that
@@ -103,7 +102,7 @@ We prove this theorem by translating \LMD to the simply typed lambda calculus~\c
 \end{proof}
 
 Confluence is a property that any reduction sequences from one typed term converge.
-Since we have proved Strong Normalization, we can use Newman's Lemma~\cite{} to prove Confluence.
+Since we have proved Strong Normalization, we can use Newman's Lemma~\cite{DBLP:books/daglib/0092409} to prove Confluence.
 
 \begin{theorem}[Confluence]
 	For any term $M$, if $M \longrightarrow^* M'$ and $M \longrightarrow^* M''$ then
@@ -148,7 +147,7 @@ immediately stuck and the staged semantics is deterministic.
 
 \begin{proof}
   We can prove by straightforward induction on typing derivations.
-  Main cases are \TApp, \TTBL, and \TIns, where we use Inversion.
+%  Main cases are \TApp, \TTBL, and \TIns, where we use Inversion.
   \qed
 \end{proof}
 

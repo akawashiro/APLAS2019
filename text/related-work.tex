@@ -4,18 +4,17 @@
 \label{sec:related-work}
 
 MetaOCaml is a programming language with quoting, unquoting, run, and
-CSP.  Kiselyov give many applications of MetaOCaml in \cite{8384206},
-which includes filtering in signal processing, matrix-vector product,
+CSP.  Kiselyov~\cite{8384206} describes many applications of MetaOCaml, including filtering in signal processing, matrix-vector product,
 and DSL compiler.  
 
 % 多段階計算の歴史
 
 Theoretical studies on multi-stage programming owe a lot to seminal
 work by Davies and Pfenning~\cite{DaviesPfenning01JACM} and
-Davies~\cite{davies1996temporal}, which found Curry-Howard
+Davies~\cite{davies1996temporal}, who found Curry-Howard
 correspondence between multi-stage calculi and modal logic.  In
 particular, Davies' $\lambda^\circ$~\cite{davies1996temporal} has been
-a basis for multi-stage calculi with quasi-quotation.  $\lambda^\circ$
+a basis for several multi-stage calculi with quasi-quotation.  $\lambda^\circ$
 did not have operators for run and CSP; a few
 studies~\cite{benaissa1999logical,MoggiTahaBenaissaSheard99ESOP}
 enhanced and improved $\lambda^\circ$ towards the development of a
@@ -35,7 +34,7 @@ and Calcagno~\cite{DBLP:conf/popl/KimYC06} and Nanevski and Pfenning~\cite{DBLP:
 Later, Tsukada and Igarashi~\cite{Tsukada} found correspondence
 between a variant of \(\lambda^\alpha\) called $\lambda^\TW$
 and modal logic and showed that run could be represented as a special
-case of application of a transition abstraction ($\Lambda\alpha$) to
+case of application of a transition abstraction ($\Lambda\alpha.M$) to
 the empty sequence $\varepsilon$.  Hanada and
 Igarashi~\cite{Hanada2014} developed \LTP as an extension
 $\lambda^\TW$ with CSP.
@@ -54,7 +53,7 @@ $\lambda^\TW$ with CSP.
 There is much work on dependent types and most of them are affected by
 the pioneering work by Martin-L\"{o}f~\cite{martin1973intuitionistic}.
 Among many dependent type systems such as
-$\lambda^\Pi$~\cite{Meyer1986}, Calculus of
+$\lambda^\Pi$~\cite{Meyer1986}, The Calculus of
 Constructions~\cite{coquand:inria-00076024}, and Edinburgh
 LF~\cite{harper1993framework}, we base our work on \LLF~\cite{attapl}
 (which is quite close to $\lambda^\Pi$ and Edinburgh LF) due to its
