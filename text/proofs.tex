@@ -3,7 +3,7 @@
 % \AI{TAPL gives plenty of examples of how to write proofs.}
 $\mathcal{J}$ is a metavariable for judgments as in Section \ref{sec:properties}.
 We say type environment \(\G\) is a subsequence of type environment \(\D\)
-if and only we can get \(\G\) from \(\D\) by deleting some or no variables without changing the order of the remaining elements.
+if and only if we can get \(\G\) from \(\D\) by deleting some or no variables without changing the order of the remaining elements.
 \begin{lemma}[Weakening]
 	If \(\G \V \mathcal{J}@A\) and \(\G\) is a subsequence of \(\D\), then \(\D \V J@A\). 
 	% \AI{Apply similar changes and remove \%.}
@@ -50,14 +50,14 @@ if and only we can get \(\G\) from \(\D\) by deleting some or no variables witho
 		      % \item \QAbs
 		      % \item \QBeta
 	\end{itemize}
-\end{proof}
+\qed\end{proof}
 
 \begin{theorem}[Term Substitution]
 	If $\G, z:\xi@B, \D \V \mathcal{J}$ and $\G\V P:\xi @B$, then $\G, \D[z \mapsto P] \V \mathcal{J}[z \mapsto P]$.  Similarly, if $\V \G, z:\xi@B, \D$ and
 	$\G\V P:\xi @B$, then $\V \G, \D[z \mapsto P]$.
 \end{theorem}
 \begin{proof}
-	The six items are proved simultaneously by induction on derivations with case analysis on the last rule used.
+	Proved simultaneously by induction on derivations with case analysis on the last rule used.
 	We show only representative cases.
 	\begin{itemize}
 										
@@ -65,18 +65,12 @@ if and only we can get \(\G\) from \(\D\) by deleting some or no variables witho
 		\newcommand{\GG}{\G}
 		\newcommand{\GGV}{\G \V}
 										
-		\item[] \textit{Case} \TVar{} where \(\mathcal{J} = y:\tau@A\) and 
-		      \begin{align*} 
-		      	  & y:\tau@A \in \G, z:\xi@B, \D &   & \G, z:\xi@B,\D \V \tau::*@A. 
-		      \end{align*}
-		      By the induction hypothesis, we have \(\G, \D\SB \V \tau\SB::*@A.\)
-		      		      		      		      
+		\item[] \textit{Case} \TVar{} where \(\mathcal{J} = y:\tau@A\) and \(y:\tau@A \in (\G, z:\xi@B, \D)\).
 		      \begin{itemize}
-		      	\item If $y:\tau@A \in \G$ or $y:\tau@A \in \D$ then\\
-		      	      it is obvious that $y:\tau\SB@A \in \GG$.\\
+		      	\item If $y:\tau@A \in \G$ or $y:\tau@A \in \D$, then it is obvious that $y:\tau\SB@A \in \GG$.
 		      	      \(\G,\D\SB \V y\SB:\tau\SB@A\) from \TVar.
 		      	      		      	      	      	      		      	      	      		      	      
-		      	\item If $y:\tau@A = z:\xi@B$ then\\
+		      	\item If $y:\tau@A = z:\xi@B$, then
 		      	      $y = z$, $\tau = \xi$, and $A = B$.
 		      	      From the well-formedness of \( \G, z:\xi@B,\D \), there is no $z$ in $\xi$.
 		      	      Therefore, $\tau\SB = \xi\SB = \xi$.
@@ -96,11 +90,11 @@ if and only we can get \(\G\) from \(\D\) by deleting some or no variables witho
 		      \begin{align*}
 		      	  & \G,\D\SB \V \tau\SB::*@A &   & \G,\D\SB, x:\tau\SB \V K\SB \iskind@. 
 		      \end{align*}
-		      $\G,\D\SB \V (\Pi x:\tau\SB.K\SB) \iskind @A$ from \WAbs and 
+		      $\G,\D\SB \V (\Pi x:\tau\SB.K\SB) \iskind @A$ from \WAbs{} and 
 		      it is equivalent to $\G,\D\SB \V (\Pi x:\tau.K)\SB \iskind @A$.
 		      \vspace{3mm}
 		      
-		\item[] \textit{Case} \TApp{} where \( \G, z:\xi@B, \D \V M\ N:\tau[x\mapsto N]@A \)
+		\item[] \textit{Case} \TApp{} where \( \mathcal{J} = M\ N:\tau[x\mapsto N]@A \)
 		      \begin{align*}
 		      	  & \G, z:\xi@B, \D \V M:\Pi(x:\sigma).\tau@A && \G, z:\xi@B, \D \V N:\sigma@A 
 		      \end{align*}
@@ -114,7 +108,7 @@ if and only we can get \(\G\) from \(\D\) by deleting some or no variables witho
 		      From \TApp, \(\G,\D\SB (M\SB\ N\SB): \tau\SB[x \mapsto N\SB]@A\) and this is equivalent to
 		      \(\G,\D\SB \V (M\ N)\SB: \tau[x \mapsto N]\SB@A\).
 	\end{itemize}
-\end{proof}
+\qed\end{proof}
 
 % \iffullversion
 % \begin{itemize}
@@ -837,11 +831,11 @@ if and only we can get \(\G\) from \(\D\) by deleting some or no variables witho
 % \fi
 
 \begin{lemma}[Stage Substitution]
-	If $\G \V \mathcal{J}$, then $\G[\beta\mapsto B] \V \mathcal{J}[\beta\mapsto B]$.  Similarly, if $\G \V \mathcal{J}$, then $\V \G[\beta\mapsto B]$.
+	If $\G \V \mathcal{J}$, then $\G[\beta\mapsto B] \V \mathcal{J}[\beta\mapsto B]$.  Similarly, if $\V \G$, then $\V \G[\beta\mapsto B]$.
 \end{lemma}
 
 \begin{proof}
-	The six items are proved simultaneously by induction on derivations with case analysis on the last rule used.
+	Proved simultaneously by induction on derivations with case analysis on the last rule used.
 	We show only representative cases.
 	\begin{itemize}
 								
@@ -866,8 +860,8 @@ if and only we can get \(\G\) from \(\D\) by deleting some or no variables witho
 		      	      	      	      	      	      	      	      	      	      	     	      
 		      	\item If $\alpha = \beta$, \\
 		      	      \( \GGV \tau\SB :: *\SB @ A\alpha\SB \) from the induction hypothesis and
-		      	      it is identical with \( \GGV \tau\SB :: * @ AB \).
-		      	      We can get \( \GGV \TW_B \tau\SB :: * @ A \) after repeat using \KTW{} the length of $B$ times.
+		      	      it is identical to \( \GGV \tau\SB :: * @ AB \).
+		      	      We can get \( \GGV \TW_B \tau\SB :: * @ A \) after repeatedly using \KTW{}.
 		      	      
 		      \end{itemize}
 		      		
@@ -879,10 +873,10 @@ if and only we can get \(\G\) from \(\D\) by deleting some or no variables witho
 		      We can assume \(\alpha \notin B \) because \(\alpha\) is a bound variable.
 		      Thus, \( \alpha \notin \FTV(\G\SB)\cup\FTV(A\SB) \).
 		      \( \GGV \Lambda\alpha.M\SB \E \Lambda\alpha.N\SB : \tau\SB@A\SB \) from \QGen{} and
-		      it is identical with \( \GGV (\Lambda\alpha.M)\SB \E (\Lambda\alpha.N)\SB : \tau\SB@A\SB \).
+		      it is identical to \( \GGV (\Lambda\alpha.M)\SB \E (\Lambda\alpha.N)\SB : \tau\SB@A\SB \).
 		      		      
 	\end{itemize}
-\end{proof}
+\qed\end{proof}
 
 % \iffullversion
 % \begin{itemize}
@@ -1607,27 +1601,25 @@ if and only we can get \(\G\) from \(\D\) by deleting some or no variables witho
 % \fi
 
 \begin{lemma}[Agreement]
-	\begin{flalign*}
-		\text{If\ } \G\V \tau::K@A &\text{\ then\ } \G\V K\iskind@A. &\\
-		\text{If\ } \G\V M:\tau@A &\text{\ then\ } \G\V \tau::*@A.&\\
-		\text{If\ } \G\V K\E J@A &\text{\ then\ } \G\V K\iskind@A \text{\ and\ } \G\V J\iskind@A.&\\
-		\text{If\ } \G\V \tau\E \sigma :: K@A &\text{\ then\ } \G\V \tau::K@A \text{\ and\ } \G\V \sigma::K@A.&\\
-		\text{If\ } \G\V M\E N : \tau@A &\text{\ then\ } \G\V M:\tau@A \text{\ and\ } \G\V N:\tau@A.&\\
-	\end{flalign*}
+	\begin{enumerate}
+		\item If \(\G\V \tau::K@A\), then \(\G\V K\iskind@A \).
+		\item If \(\G\V M:\tau@A\), then \(\G\V \tau::*@A\).
+		\item If \(\G\V K\E J@A\), then \(\G\V K\iskind@A\) and \(\G\V J\iskind@A\).
+		\item If \(\G\V \tau\E \sigma :: K@A\), then \(\G\V \tau::K@A\) and \(\G\V \sigma::K@A\).
+		\item If \(\G\V M\E N : \tau@A\), then \(\G\V M:\tau@A\) and \(\G\V N:\tau@A\).
+	\end{enumerate}
 \end{lemma}
 
 We can prove using induction on the derivation tree.
 We show some cases as examples.
 
 \begin{itemize}
-	\item \textit{Case} \KCsp{} where \(\G\V \tau::* @A\) \\
-	      From \WStar, \(\G\V *\iskind @A\alpha\).
-	      	  
-	\item \textit{Case} \TCsp{} where \( \G\V M:\tau@A \) \\
-	      From the induction hypothesis, \( \G \V \tau :: * @ A \).
-	      From \KCsp, \( \G \V \tau :: * @ A\alpha \).
-	      
-	\item \textit{Case} \QBeta{} where
+	\item \textit{Case} \KCsp{} where \( \G \V K :: * @A\alpha \) is derived from \( \G \V K :: * @A \).
+	      By \WStar, \(\G\V *\iskind @A\alpha\).
+	\item \textit{Case} \TCsp{} where \(\G\V \%_\alpha M :: \tau @A\alpha \) is derived from \(\G\V M :: \tau @A \).
+	      By the induction hypothesis, \( \G \V \tau :: * @ A \).
+	      By \KCsp, \( \G \V \tau :: * @ A\alpha \).
+	\item \textit{Case} \QBeta{} where \( \G\V(\lambda x:\sigma.M)\ N\E M[x\mapsto N] : \tau[x \mapsto N]@A \) is derived from
 	      \begin{align*} 
 	      	  & \G,x:\sigma@A\V M:\tau@A &   & \G\V N:\sigma@A. 
 	      \end{align*}
@@ -1637,26 +1629,28 @@ We show some cases as examples.
 
 As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use induction.
 \begin{lemma}[Inversion Lemma for $\Pi$ type]
+\begin{enumerate}
 	\item If $\G \V (\lambda x:\sigma.M) : \rho$, then there are $\sigma'$ and $\tau'$ such that
 	$\rho = \Pi x:\sigma'.\tau'$, $\G \V \sigma \E \sigma'@A$ and $\G ,x:\sigma'@A\V M:\tau'@A$.
 	\item If $\G \V \rho \E (\Pi x:\sigma.\tau) : K @A$, then there are $\sigma', \tau', K$, and $J$ such that
 	$\rho = \Pi x:\sigma'.\tau'$, $\G \V \sigma \E \sigma' : K @A$, and $\G, x:\sigma@A\V \tau \E \tau' : J @A$.
 	\item If $\G \V (\Pi x:\sigma.\tau) \E \rho : K @A$, then there are $\sigma', \tau', K$, and $J$ such that
 	$\rho = \Pi x:\sigma'.\tau'$, $\G \V \sigma \E \sigma' : K @A$, and $\G, x:\sigma@A\V \tau \E \tau' : J @A$.
+\end{enumerate}
 \end{lemma}
 
 \begin{proof}
 	We can prove using induction on the derivation tree.
-	We show some cases as examples.
+	We show a few main cases.
 				
 	\begin{itemize}
 		\item \textit{Case} \TAbs{} where $\G\V \sigma::*@A$ and $\G,x:\sigma@A\V M:\tau@A$. \\
-		      We can take $\sigma$ and $\tau$ as $\sigma$ and $\tau$. 
+		      We can take $\sigma$ and $\tau$ as $\sigma'$ and $\tau'$ in the statement. 
 		      		      		      		      	      	      	      
 		\item \textit{Case} \TConv{} where \(\G \V (\lambda x:\sigma.M) : \rho@A\) and \(\G \V \rho \E (\Pi x:\sigma'.\tau)@A\).
 		      There are $\sigma'$ and $\tau'$ such that
-		      $\rho = \Pi x:\sigma'.\tau'$, $\G \V \sigma \E \sigma'@A$ and $\G ,x:\sigma'@A\V M:\tau'@A$.
-		      by using the induction hypothesis to \(\G \V (\lambda x:\sigma.M) : \rho@A\).
+		      $\rho = \Pi x:\sigma'.\tau'$, $\G \V \sigma \E \sigma'@A$ and $\G ,x:\sigma'@A\V M:\tau'@A$
+		      by the induction hypothesis.
 		      %   There are $\sigma'', \tau'', K$, and $J$ such that
 		      %   $\rho = \Pi x:\sigma''.\tau''$, $\G \V \sigma \E \sigma'' : K @A$, and $\G, x:\sigma@A\V \tau \E \tau'' : J @A$ 
 		      %   by using the induction hypothesis to \(\G \V \rho \E (\Pi x:\sigma'.\tau)@A\).
@@ -1664,13 +1658,13 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 		\item \textit{Case} \QTRefl.
 		      There two cases for the conclusion.
 		      \begin{itemize}
-		      	\item If $\G \V \rho \E (\Pi x:\sigma.\tau) : K @A$,\\
+		      	\item If $\G \V \rho \E (\Pi x:\sigma.\tau) : K @A$,
 		      	      we can use the third statement of the lemma as the induction hypothesis.
-		      	\item If $\G \V (\Pi x:\sigma.\tau) \E \rho : K @A$,\\
+		      	\item If $\G \V (\Pi x:\sigma.\tau) \E \rho : K @A$,
 		      	      we can use the second statement of the lemma as the induction hypothesis.
 		      \end{itemize}
 	\end{itemize}
-\end{proof}
+\qed\end{proof}
 
 \begin{lemma}[Inversion Lemma for $\TW$ type]
 	\begin{item}
@@ -1691,14 +1685,13 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 	\item \textit{Case} \TTB{} where \(\G \V M : \sigma'@A\alpha\).
 		  We can take $\sigma'$ as $\sigma$.	      	      		      	      	      	      	      
 	\item \textit{Case} \TConv{} where \( \G \V \TB_\alpha M : \tau'@A \) and \( \G\V\tau' \E \tau :: K@A \).\\
-		  There are $\sigma$ such that $\tau' = \TW_\alpha \sigma$ and $\G \V M : \sigma@A$
+		  There is $\sigma$ such that $\tau' = \TW_\alpha \sigma$ and $\G \V M : \sigma@A$
 		  by using the induction hypothesis to \( \G \V \TB_\alpha M : \tau' @A\).
-		  Then, we can rewrite $\tau'$ with $\TW_\alpha \sigma$.
 		  There are $\sigma'$ and $K'$ such that $\tau = \TW_\alpha \sigma'$ and $\G \V \sigma \E \sigma' : K @ A$
 		  by using the induction hypothesis to \( \G \V \TW_\alpha \sigma : \tau :: K' @A\).
-		  This $\sigma'$ also satisfies $\G \V M : \sigma' @ A $ from \TConv.
+		  Finally, $\G \V M : \sigma' @ A $ by \TConv.
 \end{itemize}
-\end{proof}	
+\qed\end{proof}	
 
 \begin{lemma}[Inversion for $\Lambda$ type]
 	\begin{item}
@@ -1720,7 +1713,7 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 	% 	\item \textit{Case} \TGen\ where $\G\V M:\sigma'@A$.\\
 	% 	      We can take $\sigma'$ as $\sigma$.	      	      		      	      	      	      
 	% \end{itemize}
-\end{proof}
+\qed\end{proof}
 		
 \begin{lemma}[Inversion Lemma for Application]
 	\begin{item}
@@ -1738,7 +1731,7 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 	% 		  we get $\G, x:\sigma \V M : \pi @A$ and $\G \V N:\sigma @ A$.
 	% 	      Then, we can fix $x, \pi$ as $x, \rho$ in the statement correspondingly.
 	% \end{itemize}
-\end{proof}
+\qed\end{proof}
 	
 \begin{theorem}[Preservation for $\beta$ reduction]
 	If $\G\V M:\tau@A$ and $M \longrightarrow_{\beta} M'$, then $\G\V M':\tau@A$.
@@ -1752,19 +1745,19 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 																
 		\item \textit{Case} \TApp{} where the shape of the reduction is one of following three.
 		      \begin{itemize}
-		      	\item $(\lambda x:\sigma.N)\ L \LB N[x\mapsto L]$\\
+		      	\item $(\lambda x:\sigma.N)\ L \LB N[x\mapsto L]$.\\
 		      	      Because the last rule of the type derivation tree is \TApp, 
 		      	      we have $\G \V (\lambda x:\sigma.N) : (\Pi x:\sigma'.\tau')@A$ and
 		      	      $\G \V L:\sigma' @A$.
 		      	      By using Inversion Lemma for $\Pi$ type to $\G \V (\lambda x:\sigma.N) : (\Pi x:\sigma'.\tau')@A$,
 		      	      we get $\G, x:\sigma \V N:\tau$ and $\G \V \sigma \E \sigma'$ and $\G ,x:\sigma \V \tau \E \tau'@A$.
-		      	      From \TConv , $\G \V L:\sigma @A$.
-		      	      By Term Substituition Lemma to $\G, x:\sigma \V N:\tau$ and $\G \V L:\sigma @A$, 
+		      	      By \TConv , $\G \V L:\sigma @A$.
+		      	      By Term Substitution Lemma, 
 		      	      we get $\G \V N[x\mapsto L]:\tau[x\mapsto L]$.
 		      	      		      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      	      	      
-		      	\item $M\ N \LB M'\ N$\\
+		      	\item $M\ N \LB M'\ N$.\\
 		      	      From the induction hypothesis and \TApp, the type is preserved for the reduction.
-		      	\item $M\ N \LB M\ N'$\\
+		      	\item $M\ N \LB M\ N'$.\\
 		      	      From the induction hypothesis and \TApp, the type is preserved for the reduction.
 		      \end{itemize}
 		      		      	      	      	      	      	      	      		      	      	      	      	      
@@ -1834,7 +1827,7 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 		%       \fi
 		      		      	      	      	      	      	      	      		      	      	      	      	      
 	\end{itemize}
-\end{proof}
+\qed\end{proof}
 
 \begin{theorem}[Preservation for term on $\TBL\TB$ reduction]
 	If $\G\V M:\tau@A$ and $M\longrightarrow_\blacklozenge N$, then $\G\V N:\tau@A$\\
@@ -1848,17 +1841,17 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 		\newcommand{\R}{\longrightarrow_{\blacklozenge}}
 																	
 		\item \textit{Case} \TTBL{}\\
-		      There are 2 cases for $\R$.
+		      There are two cases for.
 		      \begin{itemize}
-		      	\item $\TBL\TB M \R M$\\
+		      	\item $\TBL\TB M \R M$.\\
 		      	      Because the last rule is \TTBL, we have $\G \V \TB M : \TW_\alpha \tau @A$.
 		      	      By using Inversion Lemma for $\TW$ type to $\G \V \TB M : \TW_\alpha \tau @A$,
 		      	      we get $\G \V M : \tau @A$
-		      	\item $\TBL M \R \TBL M'$\\
+		      	\item $\TBL M \R \TBL M'$.\\
 		      	      We can use the induction hypothesis and \TTBL.
 		      \end{itemize}
 	\end{itemize}
-\end{proof}
+\qed\end{proof}
 
 \begin{theorem}[Preservation for term on $\Lambda$ reduction]
 	If $\G\V M:\tau@A$ and $M \longrightarrow_{\Lambda} N$, then $\G\V N:\tau@A$.
@@ -1872,25 +1865,25 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 		\newcommand{\R}{\longrightarrow_{\Lambda}}
 		\item \TIns
 		      		      	      	      	      	      	      	      	      	      		      	      	      	      
-		      There are two cases for the reduction.
+		      There are two cases.
 		      \begin{itemize}
-		      	\item $\Lambda\alpha.M\ B \R M[\alpha \mapsto B]$\\
+		      	\item $(\Lambda\alpha.M)\ B \R M[\alpha \mapsto B]$\\
 					Because the last rule is \TIns{}, we have $\G \V \Lambda\alpha.M\ : \forall\alpha.\tau @ A$.
 		      	    By using Inversion Lemma for $\Lambda$ type to $\G \V \Lambda\alpha.M\ : \forall\alpha.\tau @ A$,
 		      	    we obtain $\G \V M : \tau @ A$.
-		      	    By using Stage Substituition Lemma to $\G \V M : \tau @ A$,
+		      	    By using Stage Substitution Lemma to $\G \V M : \tau @ A$,
 					we obtain $\G[\alpha \mapsto B] \V M[\alpha \mapsto B] : \tau[\alpha \mapsto B] @ A[\alpha \mapsto B]$.
 					$\alpha$ is a bound variable therefore we can assume $\alpha \notin \FTV(\G) \cup \FTV(A)$.
 		      	    So, we can rewrite $\G[\alpha \mapsto B] \V M[\alpha \mapsto B] : \tau[\alpha \mapsto B] @ A[\alpha \mapsto B]$ to
 		      	    $\G \V M[\alpha \mapsto B] : \tau[\alpha \mapsto B] @ A$.
 		      	\item $M\ B \R M'\ B$\\
-		      	      We can prove the induction hypothesis and \TIns.
+		      	      By the induction hypothesis and \TIns.
 		      \end{itemize}
 	\end{itemize}
-\end{proof}
+\qed\end{proof}
 	
 \begin{dfn}[$\natural$ translation]
-	$\natural$ translation is a translation from $\lambda^\text{MD}$ to $\lambda^\to$.
+	The $\natural$ translation is a translation from $\lambda^\text{MD}$ to $\lambda^\to$.
 	\begin{itemize}
 		\item Term
 		      \begin{flalign*}
@@ -1929,7 +1922,7 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 
 \begin{proof}
 	We can prove using induction on the type derivation tree.
-\end{proof}
+\qed\end{proof}
 	
 \begin{lemma}[Preservation of typing in $\natural$]
 	If $\G \V M:\tau@A$ in $\lambda^{\text{MD}}$ then $\natural(\G) \V \natural(M): \natural(\tau)$ in $\lambda^\to$.
@@ -1949,7 +1942,7 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 	      $\natural(\G) \V \natural(M):\natural(\tau)$ from the induction hypothesis.
 	      Then, $\natural(\G) \V \natural(M):\natural(\sigma)$.
 \end{itemize}
-\end{proof}
+\qed\end{proof}
 
 \begin{lemma}[Preservation of substitution in $\natural$]
 	If $\G, x:\sigma \V M:\tau@A$ and $\G \V N:\sigma@A$ in $\lambda^{\text{MD}}$
@@ -1958,7 +1951,7 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 
 \begin{proof}
 We prove by induction on the type derivation tree of $\G, x:\sigma \V M:\tau@A$.
-\end{proof}
+\qed\end{proof}
 	
 \begin{lemma}[Preservation of $\beta$ reduction in $\natural$]
 	If $\G \V M:\tau@A$ and $M \longrightarrow_\beta N$ in $\lambda^{\text{MD}}$
@@ -1982,23 +1975,23 @@ We show only the main case.
 	% \item Otherwise\\
 	    %   We can prove by the induction hypothesis.
 \end{itemize}
-\end{proof}
+\qed\end{proof}
 	
 \begin{theorem}[Strong Normalization]
 	If $\G\V^A t:T$ then there is no infinite sequence of terms $(t_i)_{i\ge1}$ and $t_i \longrightarrow_{\beta, \TBL \TB,\Lambda} t_{i+1}$ for $i\ge 1$
 \end{theorem}
 
 \begin{proof}
-If there are infinite reductions in $\lambda^{\text{MD}}$ 
-then there are infinite beta reductions in $\lambda^{\text{MD}}$.
-This is because reductions other than $\beta$-reduction reduce the size of term.
+If there is an infinite reduction sequence in $\lambda^{\text{MD}}$ 
+then there are infinite beta reductions in the sequence.
+This is because reductions other than $\beta$-reduction reduce the size of a term.
 	
 Then, we show Strong Normalization by proof by contradiction.
 We assume that there is an infinite reduction in a typed \LMD from typed term $M$.
 We can construct a typed term of simply typed lambda calculus $\natural(M)$ from Preservation of typing in $\natural$ and
 $\natural(M)$ has infinite reductions from Preservation of $\beta$ reduction in $\natural$.
 However, $\lambda^\to$ has a property of Strong Normalization, so there is no infinite reductions.
-\end{proof}
+\qed\end{proof}
 	
 \begin{theorem}[Confluence(Church-Rosser Property)]
 	Define $M \longrightarrow N$ as $M \longrightarrow_{\beta} N$ or $M\longrightarrow_\blacklozenge N$ or  $M \longrightarrow_{\Lambda} N$.
@@ -2008,32 +2001,33 @@ However, $\lambda^\to$ has a property of Strong Normalization, so there is no in
 	
 \begin{proof}	
 Because we show the Strong Normalization of $\lambda^{\text{MD}}$, we can use Newman's lemma to prove Church-Rosser property of $\lambda^{\text{MD}}$.
-Then, what we must show is Weak Church-Rosser Property now.
+Then, what we must show is Weak Church-Rosser Property.
 	
-When we consider two dirfferent redux in a $\lambda^{\text{MD}}$ term, they can only be disjoint, or one is a part of the other.
-In short, they are never overlapped each other.
+When we consider two different redexes in a $\lambda^{\text{MD}}$ term, they can only be disjoint, or one is a part of the other.
+In short, they never overlap each other.
 So, we can reduce one of them after we reduce another.
-\end{proof}
+\qed\end{proof}
 
 \begin{lemma}[Unique Decomposition]
-	If $x:\tau@\varepsilon \notin \G$ and $\G \V M : \tau @ A$ then 1 or 2 is true.
-	\begin{enumerate}
-		\item $ M \in V^A$.
-		\item There is an unique triple of $(B, E^A_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
-	\end{enumerate}
+  If $\G$ does not have any variable declared at stage $\varepsilon$ 
+  and $\G \V M : \tau @ A$, then either
+  \begin{enumerate}
+  \item $ M \in V^A$, or
+  \item $M$ can be uniquely decomposed into an evaluation context and a redex, that is, there uniquely exist $B, E^A_B$, and $R^B$ such that $M = E^A_B[R^B]$.
+  \end{enumerate}
 \end{lemma}
 
 \begin{proof}
 	We prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 			
 	\begin{itemize}
-		\item \textit{Case} \TVar\\
+		\item \textit{Case} \TVar
 		      where \(\G\V x:\tau@A\) is the root of the type derivation tree.
 		      We can assume $A \neq \varepsilon$ because $x:\tau@\varepsilon \notin \G$.
-		      Then, when $ A \neq \varepsilon$, $x \in V^A$.
-		\item \textit{Case} \TTBL{}\\
+		      Then, $x \in V^A$.
+		\item \textit{Case} \TTBL{}
 		      where \(\G \V \TBL_\alpha M :\tau @ A\alpha\) is derived from \(\G \V M : \TW_\alpha \tau @ A\).
-		      From the induction hypothesis, 1 or 2 is true.
+		      From the induction hypothesis, one of the following holds.
 		      \begin{enumerate}
 		      	\item $ M \in V^A$.
 		      	\item There is an unique triple of $(B, E^A_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
@@ -2062,10 +2056,10 @@ So, we can reduce one of them after we reduce another.
 		      		      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 		      \begin{itemize}
 		      	\item If $ A = \varepsilon$,\\
-		      	      1 or 2 is true from the induction hypothesis.
+		      	      By the induction hypothesis, either
 		      	      \begin{enumerate}
-		      	      	\item $ M \in V^\varepsilon$
-		      	      	\item There is an unique triple of $(B, E^\varepsilon_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^\varepsilon_B[R^B]$.
+		      	      	\item $ M \in V^\varepsilon$ or
+		      	      	\item there is a unique triple of $(B, E^\varepsilon_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^\varepsilon_B[R^B]$.
 		      	      \end{enumerate}
 		      	      		      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 		      	      \begin{itemize}
@@ -2078,10 +2072,10 @@ So, we can reduce one of them after we reduce another.
 		      	      \end{itemize}
 		      	      		      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      	      	      	      	      
 		      	\item If $ A \neq \varepsilon $,\\
-		      	      1 or 2 is true from the induction hypothesis.
+		      	      By the induction hypothesis, either
 		      	      \begin{enumerate}
-		      	      	\item $ M \in V^A$
-		      	      	\item There are an unique triple of $(B, E^A_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
+		      	      	\item $ M \in V^A$ or
+		      	      	\item there is a unique triple of $(B, E^A_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
 		      	      \end{enumerate}
 		      	      \begin{itemize}
 		      	      	\item If $ M \in V^A$,
@@ -2136,25 +2130,25 @@ So, we can reduce one of them after we reduce another.
 		%       We can use the induction hypothesis directly.
 		      		      	      	      	      	      	      	      	      	      	      	      	      		      	      	      	      
 	\end{itemize}
-\end{proof}
+\qed\end{proof}
 
 \begin{corollary}[Progress]
 	If $x:\tau@\varepsilon \notin \G$ and $\G \V M : \tau @ A$ then $ M \in V^A $ or there is $M'$ such that $M \longrightarrow M'$.
 \end{corollary}
 
 \begin{proof}
-	From Unique Decomposition, 1 or 2 is true.
-	\begin{enumerate}
-		\item $ M \in V^A$.
-		\item There is an unique triple of $(B, E^A_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
-	\end{enumerate}
-	\begin{itemize}
-		\item If $ M \in V^A$,
-			it is obvious.
-		\item If there is an unique triple of $(B, E^A_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$,
-			we can redex $R^B$.
-	\end{itemize}
-\end{proof}
+	Immediate from Unique Decomposition.
+	% \begin{enumerate}
+	% 	\item $ M \in V^A$.
+	% 	\item There is an unique triple of $(B, E^A_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
+	% \end{enumerate}
+	% \begin{itemize}
+	% 	\item If $ M \in V^A$,
+	% 		it is obvious.
+	% 	\item If there is an unique triple of $(B, E^A_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$,
+	% 		we can redex $R^B$.
+	% \end{itemize}
+\qed\end{proof}
 	
 \endinput
 % \blue{\huge{It is work in progress from here.}}
