@@ -1628,7 +1628,7 @@ We show some cases as examples.
 \end{itemize}
 
 As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use induction.
-\begin{lemma}[Inversion Lemma for $\Pi$ type]
+\begin{lemma}[Inversion Lemma for $\Pi$ Type]
 \begin{enumerate}
 	\item If $\G \V (\lambda x:\sigma.M) : \rho$, then there are $\sigma'$ and $\tau'$ such that
 	$\rho = \Pi x:\sigma'.\tau'$, $\G \V \sigma \E \sigma'@A$ and $\G ,x:\sigma'@A\V M:\tau'@A$.
@@ -1693,7 +1693,7 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 \end{itemize}
 \qed\end{proof}	
 
-\begin{lemma}[Inversion for $\Lambda$ type]
+\begin{lemma}[Inversion for $\Lambda$ Type]
 	\begin{item}
 	      \item If $\G \V \Lambda\alpha.M : \tau$, then 
 	      there is $\sigma$ such that $\sigma = \forall\alpha.\sigma$ and $\G \V M : \sigma@A$.% and $\alpha \notin \FTV(\G) \cup \FV(A)$.
@@ -1733,7 +1733,7 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 	% \end{itemize}
 \qed\end{proof}
 	
-\begin{theorem}[Preservation for $\beta$ reduction]
+\begin{theorem}[Preservation for $\beta$-Reduction]
 	If $\G\V M:\tau@A$ and $M \longrightarrow_{\beta} M'$, then $\G\V M':\tau@A$.
 \end{theorem}
 	
@@ -1829,7 +1829,7 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 	\end{itemize}
 \qed\end{proof}
 
-\begin{theorem}[Preservation for term on $\TBL\TB$ reduction]
+\begin{theorem}[Preservation for Term on $\blacklozenge$-Reduction]
 	If $\G\V M:\tau@A$ and $M\longrightarrow_\blacklozenge N$, then $\G\V N:\tau@A$\\
 \end{theorem}
 	
@@ -1853,7 +1853,7 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 	\end{itemize}
 \qed\end{proof}
 
-\begin{theorem}[Preservation for term on $\Lambda$ reduction]
+\begin{theorem}[Preservation for Term on $\Lambda$ Reduction]
 	If $\G\V M:\tau@A$ and $M \longrightarrow_{\Lambda} N$, then $\G\V N:\tau@A$.
 \end{theorem}
 	
@@ -1916,7 +1916,7 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 	\end{itemize}
 \end{dfn}
 	
-\begin{lemma}[Preservation of equality in $\natural$]
+\begin{lemma}[Preservation of Equality in $\natural$]
 	If $\G \V \tau \E \sigma @ A$ then $\natural(\tau) = \natural(\sigma)$.
 \end{lemma}
 
@@ -1924,7 +1924,7 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 	We can prove using induction on the type derivation tree.
 \qed\end{proof}
 	
-\begin{lemma}[Preservation of typing in $\natural$]
+\begin{lemma}[Preservation of Typing in $\natural$]
 	If $\G \V M:\tau@A$ in $\lambda^{\text{MD}}$ then $\natural(\G) \V \natural(M): \natural(\tau)$ in $\lambda^\to$.
 \end{lemma}
 
@@ -1944,7 +1944,7 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 \end{itemize}
 \qed\end{proof}
 
-\begin{lemma}[Preservation of substitution in $\natural$]
+\begin{lemma}[Preservation of Substitution in $\natural$]
 	If $\G, x:\sigma \V M:\tau@A$ and $\G \V N:\sigma@A$ in $\lambda^{\text{MD}}$
 	then $\natural(M[x \mapsto N])$ = $\natural(M)[x\mapsto\natural(N)]$
 \end{lemma}
@@ -1953,7 +1953,7 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 We prove by induction on the type derivation tree of $\G, x:\sigma \V M:\tau@A$.
 \qed\end{proof}
 	
-\begin{lemma}[Preservation of $\beta$ reduction in $\natural$]
+\begin{lemma}[Preservation of $\beta$-Reduction in $\natural$]
 	If $\G \V M:\tau@A$ and $M \longrightarrow_\beta N$ in $\lambda^{\text{MD}}$
 	then $\natural(M) \longrightarrow_\beta^+ \natural(N)$.
 \end{lemma}
@@ -1976,6 +1976,37 @@ We show only the main case.
 	    %   We can prove by the induction hypothesis.
 \end{itemize}
 \qed\end{proof}
+
+\begin{lemma}[Preservation of $\Lambda$-Reduction in $\natural$]
+	If $\G \V M:\tau@A$ and $M \longrightarrow_\beta N$ in $\lambda^{\text{MD}}$
+	then $\natural(M)$ =  $\natural(N)$.
+\end{lemma}
+
+\begin{proof}
+	We prove by induction on the derivation of $\Lambda$-reduction of \LMD.
+	We show only the main case.
+	\begin{itemize}
+		\item \textit{Case} \( (\Lambda\alpha.M)\ A \longrightarrow_\Lambda M[\alpha\mapsto A] \).\\
+		By the definition of $\natural$, \(\natural((\Lambda\alpha.M)\ A) = \natural(M)\).
+		Because \(\natural(M)\) does not contain \(\alpha\), \(\natural(M[\alpha\mapsto A]) = \natural(M)\).
+	\end{itemize}
+	\qed
+\end{proof}
+	
+\begin{lemma}[Preservation of $\blacklozenge$-Reduction in $\natural$]
+	If $\G \V M:\tau@A$ and $M \longrightarrow_\blacklozenge N$ in $\lambda^{\text{MD}}$
+	then $\natural(M)$ =  $\natural(N)$.
+\end{lemma}
+
+\begin{proof}
+	We prove by induction on the derivation of $\blacklozenge$-reduction of \LMD.
+	We show only the main case.
+	\begin{itemize}
+		\item \textit{Case} \( \TBL_\alpha \TB_\alpha M \longrightarrow_\blacklozenge M \).\\
+		By the definition of $\natural$, \(\natural(\TBL_\alpha \TB_\alpha M) = \natural(M)\).
+	\end{itemize}
+	\qed
+\end{proof}
 	
 \begin{theorem}[Strong Normalization]
 	If $\G\V^A t:T$ then there is no infinite sequence of terms $(t_i)_{i\ge1}$ and $t_i \longrightarrow_{\beta, \TBL \TB,\Lambda} t_{i+1}$ for $i\ge 1$
@@ -1988,8 +2019,8 @@ This is because reductions other than $\beta$-reduction reduce the size of a ter
 	
 Then, we show Strong Normalization by proof by contradiction.
 We assume that there is an infinite reduction in a typed \LMD from typed term $M$.
-We can construct a typed term of simply typed lambda calculus $\natural(M)$ from Preservation of typing in $\natural$ and
-$\natural(M)$ has infinite reductions from Preservation of $\beta$ reduction in $\natural$.
+We can construct a typed term of simply typed lambda calculus $\natural(M)$ from Preservation of Typing in $\natural$ and
+$\natural(M)$ has infinite reductions from Preservation of Reduction in $\natural$.
 However, $\lambda^\to$ has a property of Strong Normalization, so there is no infinite reductions.
 \qed\end{proof}
 	
@@ -2000,7 +2031,7 @@ However, $\lambda^\to$ has a property of Strong Normalization, so there is no in
 \end{theorem}
 	
 \begin{proof}	
-Because we show the Strong Normalization of $\lambda^{\text{MD}}$, we can use Newman's lemma to prove Church-Rosser property of $\lambda^{\text{MD}}$.
+Because we show the Strong Normalization of $\lambda^{\text{MD}}$, we can use Newman's lemma to prove Church-Rosser Property of $\lambda^{\text{MD}}$.
 Then, what we must show is Weak Church-Rosser Property.
 	
 When we consider two different redexes in a $\lambda^{\text{MD}}$ term, they can only be disjoint, or one is a part of the other.
