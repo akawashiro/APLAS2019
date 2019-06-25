@@ -90,9 +90,9 @@ On the contrary, constants and type-level constants are \emph{not} associated wi
 so, they can appear at any stage.
 We define well-formed signature and well-formed type environments later.
 
-The variable $x$ is bound in $M$ of $\lambda x:\tau.M$ and in $\sigma$
-of $\Pi x:\tau.\sigma$, as usual; the stage variable $\alpha$ is
-bound in $M$ of $\Lambda \alpha.M$ and $\tau$ of $\F\alpha.\tau$.
+The variable $x$ is bound in $M$ by $\lambda x:\tau.M$ and in $\sigma$
+by $\Pi x:\tau.\sigma$, as usual; the stage variable $\alpha$ is
+bound in $M$ by $\Lambda \alpha.M$ and $\tau$ by $\F\alpha.\tau$.
 The notion of free variables is defined in a standard manner.
 We write $\FV(M)$ and $\FTV(M)$ for the set of free variables and the set of free stage variables in $M$, respectively.  Similarly, $\FV(\tau)$, $\FTV(\tau)$,
 $\FV(K)$, and $\FTV(K)$ are defined.
@@ -477,7 +477,7 @@ The helper function vadd$_1$ takes a stage, the length $n$ of vectors, and two q
 	  \>\>\> $\textbf{let}\ t_2 = \text{tail}\ (\TBL_\alpha v_2)\ \textbf{in}$ \\
           \>\>\> $\text{cons}\ (\text{head}\ (\TBL_\alpha v_1) + \text{head}\ (\TBL_\alpha v_2))\ (\TBL_\alpha f\ (n-1)\ t_1\ t_2))$
 \end{tabbing}
-(Here, we assume that the type system can know whether $n=0$ when
+(Here, we assume that the type system can determine whether $n=0$ when
 \textbf{then}- and \textbf{else}-branches are typechecked so that
 both branches can be given type \(\TW_\alpha \text{Vector }n\).)
 
@@ -580,7 +580,7 @@ In order to define staged reduction, we define redex and evaluation contexts.
   \end{align*}
 \end{definition}
 
-The subscripts $A$ and $B$ in $E^A_B$ stand for the stage of the evaluation context and of the hole, respectively.  The grammar represents that staged reduction is left-to-right and call-by-value and terms under \(\Lambda\) is reduced.
+The subscripts $A$ and $B$ in $E^A_B$ stand for the stage of the evaluation context and of the hole, respectively.  The grammar represents that staged reduction is left-to-right and call-by-value and terms under \(\Lambda\) are reduced.
 A few examples of evaluation context are shown below:
 \begin{align*}
   \square\ (\lambda x:\I.x)                  & \in  ECtx^\varepsilon_\varepsilon \\

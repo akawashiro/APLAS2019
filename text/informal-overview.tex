@@ -16,7 +16,7 @@ In \LTP, brackets (quasi-quotation) and escape (unquote) are written
 $\TB_\alpha M$ and $\TBL_\alpha M$, respectively.  For example,
 $\TB_\alpha (1 + 1)$ represents code of expression $1 + 1$ and thus
 evaluates to itself.  Escape $\TBL_\alpha M$ may appear under
-$\TB_\alpha$; it evaluates $M$ to a code value and splice it into the
+$\TB_\alpha$; it evaluates $M$ to a code value and splices it into the
 surrounding code fragment.  Such splicing is expressed by the
 following reduction rule:
 \begin{align*}
@@ -31,7 +31,7 @@ The subscript $\alpha$ in $\TB_\alpha$ and $\TBL_\alpha$ is a \textit{stage
   In Hanada and Igarashi~\cite{Hanada2014}, it was called a
   \textit{transition variable}, which is derived from correspondence
   to modal logic, studied by Tsukada and Igarashi~\cite{Tsukada}.} and
-a sequence of stage variables is called \textit{stage}.  Intuitively,
+a sequence of stage variables is called a \textit{stage}.  Intuitively,
 they represent the depth of nested brackets.  Stage variables can be
 abstracted by $\Lambda\alpha.M$ and instantiated by an application
 $M\ A$ to stages.  For example,
@@ -183,7 +183,7 @@ associated to particular stages; so they can be used at every stage.
 Second, an indexed type such as Vector\ 3 or Vector\ $x$ is well
 formed only at the stage(s) where the index term is well typed.  Since
 constant \(3\) is well typed at every stage (if it is declared in the
-signature), so Vector\ 3 is a well-formed type at every stage, too.
+signature), Vector\ 3 is a well-formed type at every stage, too.
 However, Vector\ $M$ is well formed only at the stage where index term
 $M$ is typed.  Thus, the kinding judgment
 of \LMD takes the form \(\G\V \tau :: K @ A\), where stage $A$ stands for
