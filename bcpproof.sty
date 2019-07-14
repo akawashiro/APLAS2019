@@ -33,7 +33,7 @@
    }{\endofpf\endtrivlist}
 
 % Aliases
-\newenvironment{proof}{\begin{pf}}{\end{pf}}
+% \newenvironment{proof}{\begin{pf}}{\end{pf}}
 \newenvironment{proofof}{\begin{pfof}}{\end{pfof}}
 \newenvironment{proofsketch}{\begin{pfsketch}}{\end{pfsketch}}
 
@@ -102,10 +102,10 @@
         \noindent #1 \\[\smallskipamount] \ignorespaces}%
         {}
 
-\newenvironment{case}[1]{%
-        \refstepcounter{casecounter}%
-        \begin{namedcase}{\casefont{Case \thecasecounter: } #1}%
-        }{\end{namedcase}}
+% \newenvironment{case}[1]{%
+%         \refstepcounter{casecounter}%
+%         \begin{namedcase}{\casefont{Case \thecasecounter: } #1}%
+%         }{\end{namedcase}}
 
 \newenvironment{textcase}[1]{%
         \refstepcounter{casecounter}%

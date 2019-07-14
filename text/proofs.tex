@@ -14,6 +14,19 @@ if and only if we can get \(\G\) from \(\D\) by deleting some or no variables wi
 	By straightforward induction on the derivation of typing, kinding, well-formed kinding,
 	term equivalence, type equivalence or kind equivalence.
 	We show only representative cases.
+
+        \begin{rneqncase}{\WAbs{}}{
+            \mathcal{J} = (\Pi x:\tau.K)\iskind @A \\
+            \G \V \tau :: * @ A & \G,x:\tau@A \V K \iskind @A
+          }
+          By the induction hypothesis, we have
+          \begin{align*}
+            & \D \V \tau::*@A &   & \D, x:\tau@A \V K \iskind @ A 
+          \end{align*}
+          from which $\D\V (\Pi x:\tau.K) \iskind @ A$ follows by $\WAbs$.
+        \end{rneqncase}
+
+
 	\begin{itemize}
 		\item[] Case \WAbs{} where $\mathcal{J} = (\Pi x:\tau.K)\iskind @A$ and 
 		      \begin{align*} 
