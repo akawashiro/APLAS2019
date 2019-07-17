@@ -839,46 +839,51 @@ if and only if we can get \(\G\) from \(\D\) by deleting some or no variables wi
 \begin{proof}
 	Proved simultaneously by induction on derivations with case analysis on the last rule used.
 	We show only representative cases.
-	\begin{itemize}
+		{
+			\newcommand{\SB}{[\beta \mapsto B]}
+			\newcommand{\GG}{\G\SB}
+			\newcommand{\GGV}{\G\SB \V}
 
-		\newcommand{\SB}{[\beta \mapsto B]}
-		\newcommand{\GG}{\G\SB}
-		\newcommand{\GGV}{\G\SB \V}
+			\begin{rneqncase}{\TGen{}}{
+					\mathcal{J} = \Lambda\alpha.M:\forall\alpha.\tau@A\\
+					\G\V M:\tau@A & \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A).
+				}
+				We can assume $\alpha \notin B$ because $\alpha$ is a bound variable.
+				By the induction hypothesis, we have \(\G\SB\V M\SB:\tau\SB@A\).
+				We can prove easily $\alpha \notin \FTV(\GG) \cup \FTV(A)$.
+				Then, \(\GGV (\Lambda\alpha.M)\SB:(\forall\alpha.\tau)\SB@A\SB\) by \TGen.
+			\end{rneqncase}
 
-		\item \textit{Case} \TGen{} where $\mathcal{J} = \Lambda\alpha.M:\forall\alpha.\tau@A$ and
-		      \begin{align*}
-			       & \G\V M:\tau@A &  & \alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A).
-		      \end{align*}
-		      We can assume $\alpha \notin B$ because $\alpha$ is a bound variable.
-		      By the induction hypothesis, we have \(\G\SB\V M\SB:\tau\SB@A\).
-		      We can prove easily $\alpha \notin \FTV(\GG) \cup \FTV(A)$.
-		      Then, \(\GGV (\Lambda\alpha.M)\SB:(\forall\alpha.\tau)\SB@A\SB\) by \TGen.
+			\begin{rneqncase}{\KTW{}}{
+					\mathcal{J} = \G\V \TW_\alpha \tau :: * @ A\\
+					\G\V \tau :: * @ A\alpha.
+				}
+				\begin{itemize}
+					\item If $\alpha \neq \beta$,\\
+					      \( \GGV \tau\SB :: *\SB @ A\alpha\SB \) from the induction hypothesis.
+					      \( \GGV \TW_\alpha \tau\SB :: *\SB @ A\SB \) from \KTW.
 
-		\item \textit{Case} \KTW{} where \(\mathcal{J} = \G\V \TW_\alpha \tau :: * @ A \) and \( \G\V \tau :: * @ A\alpha \).
-		      \begin{itemize}
-			      \item If $\alpha \neq \beta$,\\
-			            \( \GGV \tau\SB :: *\SB @ A\alpha\SB \) from the induction hypothesis.
-			            \( \GGV \TW_\alpha \tau\SB :: *\SB @ A\SB \) from \KTW.
+					\item If $\alpha = \beta$, \\
+					      \( \GGV \tau\SB :: *\SB @ A\alpha\SB \) from the induction hypothesis and
+					      it is identical to \( \GGV \tau\SB :: * @ AB \).
+					      We can get \( \GGV \TW_B \tau\SB :: * @ A \) after repeatedly using \KTW{}.
 
-			      \item If $\alpha = \beta$, \\
-			            \( \GGV \tau\SB :: *\SB @ A\alpha\SB \) from the induction hypothesis and
-			            it is identical to \( \GGV \tau\SB :: * @ AB \).
-			            We can get \( \GGV \TW_B \tau\SB :: * @ A \) after repeatedly using \KTW{}.
+				\end{itemize}
+			\end{rneqncase}
 
-		      \end{itemize}
-
-		\item \textit{Case} \QGen{} where \(\mathcal{J} = \Lambda\alpha.M \E \Lambda\alpha.N : \forall\alpha.\tau@A\) and
-		      \begin{align*}
-			       & \G\V M\E N : \tau@A &  & \alpha \notin \FTV(\G)\cup\FTV(A).
-		      \end{align*}
-		      From the induction hypothesis, \( \GGV M\SB \E N\SB : \tau\SB@A\SB \).
-		      We can assume \(\alpha \notin B \) because \(\alpha\) is a bound variable.
-		      Thus, \( \alpha \notin \FTV(\G\SB)\cup\FTV(A\SB) \).
-		      \( \GGV \Lambda\alpha.M\SB \E \Lambda\alpha.N\SB : \tau\SB@A\SB \) from \QGen{} and
-		      it is identical to \( \GGV (\Lambda\alpha.M)\SB \E (\Lambda\alpha.N)\SB : \tau\SB@A\SB \).
-
-	\end{itemize}
-	\qed\end{proof}
+			\begin{rneqncase}{\QGen{}}{
+					\mathcal{J} = \Lambda\alpha.M \E \Lambda\alpha.N : \forall\alpha.\tau@A\\
+					\G\V M\E N : \tau@A &  \alpha \notin \FTV(\G)\cup\FTV(A).
+				}
+				From the induction hypothesis, \( \GGV M\SB \E N\SB : \tau\SB@A\SB \).
+				We can assume \(\alpha \notin B \) because \(\alpha\) is a bound variable.
+				Thus, \( \alpha \notin \FTV(\G\SB)\cup\FTV(A\SB) \).
+				\( \GGV \Lambda\alpha.M\SB \E \Lambda\alpha.N\SB : \tau\SB@A\SB \) from \QGen{} and
+				it is identical to \( \GGV (\Lambda\alpha.M)\SB \E (\Lambda\alpha.N)\SB : \tau\SB@A\SB \).
+			\end{rneqncase}
+		}
+	\qed
+\end{proof}
 
 % \iffullversion
 % \begin{itemize}
@@ -1611,23 +1616,32 @@ if and only if we can get \(\G\) from \(\D\) by deleting some or no variables wi
 		\item If \(\G\V M\E N : \tau@A\), then \(\G\V M:\tau@A\) and \(\G\V N:\tau@A\).
 	\end{enumerate}
 \end{lemma}
+\begin{proof}
 
-We can prove using induction on the derivation tree.
-We show some cases as examples.
+	We can prove using induction on the derivation tree.
+	We show some cases as examples.
 
-\begin{itemize}
-	\item \textit{Case} \KCsp{} where \( \G \V K :: * @A\alpha \) is derived from \( \G \V K :: * @A \).
-	      By \WStar, \(\G\V *\iskind @A\alpha\).
-	\item \textit{Case} \TCsp{} where \(\G\V \%_\alpha M :: \tau @A\alpha \) is derived from \(\G\V M :: \tau @A \).
-	      By the induction hypothesis, \( \G \V \tau :: * @ A \).
-	      By \KCsp, \( \G \V \tau :: * @ A\alpha \).
-	\item \textit{Case} \QBeta{} where \( \G\V(\lambda x:\sigma.M)\ N\E M[x\mapsto N] : \tau[x \mapsto N]@A \) is derived from
-	      \begin{align*}
-		       & \G,x:\sigma@A\V M:\tau@A &  & \G\V N:\sigma@A.
-	      \end{align*}
-	      From \TAbs{} and \TApp, \( \G\V(\lambda x:\sigma.M)\ N : \tau[x \mapsto N]@A \).
-	      From Term Substitution, \( \G\V M[x\mapsto N] : \tau[x \mapsto N]@A \).
-\end{itemize}
+	\begin{rneqncase}{\KCsp{}}{
+			\G \V K :: * @A\alpha \text{ is derived from } \G \V K :: * @A.
+		}
+		By \WStar, \(\G\V *\iskind @A\alpha\).
+	\end{rneqncase}
+
+	\begin{rneqncase}{\TCsp{}}{
+			\G\V \%_\alpha M :: \tau @A\alpha \text{ is derived from } \G\V M :: \tau @A
+		}
+		By the induction hypothesis, \( \G \V \tau :: * @ A \).
+		By \KCsp, \( \G \V \tau :: * @ A\alpha \).
+	\end{rneqncase}
+	\begin{rneqncase}{\QBeta{}}{
+			\G\V(\lambda x:\sigma.M)\ N\E M[x\mapsto N] : \tau[x \mapsto N]@A \text{ is derived from }\\
+			\G,x:\sigma@A\V M:\tau@A \text{ and } \G\V N:\sigma@A.
+		}
+		From \TAbs{} and \TApp, \( \G\V(\lambda x:\sigma.M)\ N : \tau[x \mapsto N]@A \).
+		From Term Substitution, \( \G\V M[x\mapsto N] : \tau[x \mapsto N]@A \).
+	\end{rneqncase}
+	\qed
+\end{proof}
 
 As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use induction.
 \begin{lemma}[Inversion Lemma for $\Pi$ Type]
@@ -1645,28 +1659,31 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 	We can prove using induction on the derivation tree.
 	We show a few main cases.
 
-	\begin{itemize}
-		\item \textit{Case} \TAbs{} where $\G\V \sigma::*@A$ and $\G,x:\sigma@A\V M:\tau@A$. \\
-		      We can take $\sigma$ and $\tau$ as $\sigma'$ and $\tau'$ in the statement.
+	\begin{rneqncase}{\TAbs{}}{
+			\G\V \sigma::*@A \text{ and } \G,x:\sigma@A\V M:\tau@A.
+		}
+		We can take $\sigma$ and $\tau$ as $\sigma'$ and $\tau'$ in the statement.
+	\end{rneqncase}
 
-		\item \textit{Case} \TConv{} where \(\G \V (\lambda x:\sigma.M) : \rho@A\) and \(\G \V \rho \E (\Pi x:\sigma'.\tau)@A\).
-		      There are $\sigma'$ and $\tau'$ such that
-		      $\rho = \Pi x:\sigma'.\tau'$, $\G \V \sigma \E \sigma'@A$ and $\G ,x:\sigma'@A\V M:\tau'@A$
-		      by the induction hypothesis.
-		      %   There are $\sigma'', \tau'', K$, and $J$ such that
-		      %   $\rho = \Pi x:\sigma''.\tau''$, $\G \V \sigma \E \sigma'' : K @A$, and $\G, x:\sigma@A\V \tau \E \tau'' : J @A$ 
-		      %   by using the induction hypothesis to \(\G \V \rho \E (\Pi x:\sigma'.\tau)@A\).
+	\begin{rneqncase}{\TConv{}}{
+			\G \V (\lambda x:\sigma.M) : \rho@A \text{ and } \G \V \rho \E (\Pi x:\sigma'.\tau)@A.
+		}
+		There are $\sigma'$ and $\tau'$ such that
+		$\rho = \Pi x:\sigma'.\tau'$, $\G \V \sigma \E \sigma'@A$ and $\G ,x:\sigma'@A\V M:\tau'@A$
+		by the induction hypothesis.
+	\end{rneqncase}
 
-		\item \textit{Case} \QTRefl.
-		      There two cases for the conclusion.
-		      \begin{itemize}
-			      \item If $\G \V \rho \E (\Pi x:\sigma.\tau) : K @A$,
-			            we can use the third statement of the lemma as the induction hypothesis.
-			      \item If $\G \V (\Pi x:\sigma.\tau) \E \rho : K @A$,
-			            we can use the second statement of the lemma as the induction hypothesis.
-		      \end{itemize}
-	\end{itemize}
-	\qed\end{proof}
+	\begin{rneqncase}{\QTRefl{}}{}
+		There two cases for the conclusion.
+		\begin{itemize}
+			\item If $\G \V \rho \E (\Pi x:\sigma.\tau) : K @A$,
+			      we can use the third statement of the lemma as the induction hypothesis.
+			\item If $\G \V (\Pi x:\sigma.\tau) \E \rho : K @A$,
+			      we can use the second statement of the lemma as the induction hypothesis.
+		\end{itemize}
+	\end{rneqncase}
+	\qed
+\end{proof}
 
 \begin{lemma}[Inversion Lemma for $\TW$ type]
 	\begin{item}
@@ -1683,17 +1700,20 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 	We can prove using induction on the derivation tree.
 	We show some cases as examples.
 
-	\begin{itemize}
-		\item \textit{Case} \TTB{} where \(\G \V M : \sigma'@A\alpha\).
-		      We can take $\sigma'$ as $\sigma$.
-		\item \textit{Case} \TConv{} where \( \G \V \TB_\alpha M : \tau'@A \) and \( \G\V\tau' \E \tau :: K@A \).\\
-		      There is $\sigma$ such that $\tau' = \TW_\alpha \sigma$ and $\G \V M : \sigma@A$
-		      by using the induction hypothesis to \( \G \V \TB_\alpha M : \tau' @A\).
-		      There are $\sigma'$ and $K'$ such that $\tau = \TW_\alpha \sigma'$ and $\G \V \sigma \E \sigma' : K @ A$
-		      by using the induction hypothesis to \( \G \V \TW_\alpha \sigma : \tau :: K' @A\).
-		      Finally, $\G \V M : \sigma' @ A $ by \TConv.
-	\end{itemize}
-	\qed\end{proof}
+	\begin{rneqncase}{\TTB{}}{\G \V M : \sigma'@A\alpha.}
+		We can take $\sigma'$ as $\sigma$.
+	\end{rneqncase}
+	\begin{rneqncase}{\TConv{}}{
+			\G \V \TB_\alpha M : \tau'@A \text{ and } \G\V\tau' \E \tau :: K@A.
+		}
+		There is $\sigma$ such that $\tau' = \TW_\alpha \sigma$ and $\G \V M : \sigma@A$
+		by using the induction hypothesis to \( \G \V \TB_\alpha M : \tau' @A\).
+		There are $\sigma'$ and $K'$ such that $\tau = \TW_\alpha \sigma'$ and $\G \V \sigma \E \sigma' : K @ A$
+		by using the induction hypothesis to \( \G \V \TW_\alpha \sigma : \tau :: K' @A\).
+		Finally, $\G \V M : \sigma' @ A $ by \TConv.
+	\end{rneqncase}
+	\qed
+\end{proof}
 
 \begin{lemma}[Inversion for $\Lambda$ Type]
 	\begin{item}
