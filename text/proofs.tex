@@ -1735,7 +1735,8 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 	% 	\item \textit{Case} \TGen\ where $\G\V M:\sigma'@A$.\\
 	% 	      We can take $\sigma'$ as $\sigma$.	      	      		      	      	      	      
 	% \end{itemize}
-	\qed\end{proof}
+	\qed
+\end{proof}
 
 \begin{lemma}[Inversion Lemma for Application]
 	\begin{item}
@@ -1753,156 +1754,149 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 	% 		  we get $\G, x:\sigma \V M : \pi @A$ and $\G \V N:\sigma @ A$.
 	% 	      Then, we can fix $x, \pi$ as $x, \rho$ in the statement correspondingly.
 	% \end{itemize}
-	\qed\end{proof}
+	\qed
+\end{proof}
 
 \begin{theorem}[Preservation for $\beta$-Reduction]
 	If $\G\V M:\tau@A$ and $M \longrightarrow_{\beta} M'$, then $\G\V M':\tau@A$.
 \end{theorem}
 
 \begin{proof}
-	We can prove using induction on the type derivation tree.
-	We show some cases as examples.
-	\begin{itemize}
+	{
+		We can prove using induction on the type derivation tree.
+		We show some cases as examples.
 		\newcommand{\LB}{\longrightarrow_{\beta}}
+		\begin{rneqncase}{\TApp{}}{}
+			The shape of the reduction is one of following three.
+			\begin{itemize}
+				\item $(\lambda x:\sigma.N)\ L \LB N[x\mapsto L]$.\\
+				      Because the last rule of the type derivation tree is \TApp,
+				      we have $\G \V (\lambda x:\sigma.N) : (\Pi x:\sigma'.\tau')@A$ and
+				      $\G \V L:\sigma' @A$.
+				      By using Inversion Lemma for $\Pi$ type to $\G \V (\lambda x:\sigma.N) : (\Pi x:\sigma'.\tau')@A$,
+				      we get $\G, x:\sigma \V N:\tau$ and $\G \V \sigma \E \sigma'$ and $\G ,x:\sigma \V \tau \E \tau'@A$.
+				      By \TConv , $\G \V L:\sigma @A$.
+				      By Term Substitution Lemma,
+				      we get $\G \V N[x\mapsto L]:\tau[x\mapsto L]$.
 
-		\item \textit{Case} \TApp{} where the shape of the reduction is one of following three.
-		      \begin{itemize}
-			      \item $(\lambda x:\sigma.N)\ L \LB N[x\mapsto L]$.\\
-			            Because the last rule of the type derivation tree is \TApp,
-			            we have $\G \V (\lambda x:\sigma.N) : (\Pi x:\sigma'.\tau')@A$ and
-			            $\G \V L:\sigma' @A$.
-			            By using Inversion Lemma for $\Pi$ type to $\G \V (\lambda x:\sigma.N) : (\Pi x:\sigma'.\tau')@A$,
-			            we get $\G, x:\sigma \V N:\tau$ and $\G \V \sigma \E \sigma'$ and $\G ,x:\sigma \V \tau \E \tau'@A$.
-			            By \TConv , $\G \V L:\sigma @A$.
-			            By Term Substitution Lemma,
-			            we get $\G \V N[x\mapsto L]:\tau[x\mapsto L]$.
+				\item $M\ N \LB M'\ N$.\\
+				      From the induction hypothesis and \TApp, the type is preserved for the reduction.
+				\item $M\ N \LB M\ N'$.\\
+				      From the induction hypothesis and \TApp, the type is preserved for the reduction.
+			\end{itemize}
+		\end{rneqncase}
+	}
+	\qed
+\end{proof}
+% \begin{itemize}
+% \newcommand{\LB}{\longrightarrow_{\beta}}
 
-			      \item $M\ N \LB M'\ N$.\\
-			            From the induction hypothesis and \TApp, the type is preserved for the reduction.
-			      \item $M\ N \LB M\ N'$.\\
-			            From the induction hypothesis and \TApp, the type is preserved for the reduction.
-		      \end{itemize}
+% \item \textit{Case} \TApp{} where the shape of the reduction is one of following three.
+%   \begin{itemize}
+%       \item $(\lambda x:\sigma.N)\ L \LB N[x\mapsto L]$.\\
+%             Because the last rule of the type derivation tree is \TApp,
+%             we have $\G \V (\lambda x:\sigma.N) : (\Pi x:\sigma'.\tau')@A$ and
+%             $\G \V L:\sigma' @A$.
+%             By using Inversion Lemma for $\Pi$ type to $\G \V (\lambda x:\sigma.N) : (\Pi x:\sigma'.\tau')@A$,
+%             we get $\G, x:\sigma \V N:\tau$ and $\G \V \sigma \E \sigma'$ and $\G ,x:\sigma \V \tau \E \tau'@A$.
+%             By \TConv , $\G \V L:\sigma @A$.
+%             By Term Substitution Lemma,
+%             we get $\G \V N[x\mapsto L]:\tau[x\mapsto L]$.
 
-		      %       \iffullversion
+%       \item $M\ N \LB M'\ N$.\\
+%             From the induction hypothesis and \TApp, the type is preserved for the reduction.
+%       \item $M\ N \LB M\ N'$.\\
+%             From the induction hypothesis and \TApp, the type is preserved for the reduction.
+%   \end{itemize}
 
-		      % \item \TVar
-
-		      %       In this case, there is no reduction from $x$.
-
-		      % \item \TAbs
-
-		      %       We can assume the reduction has following shape.
-
-		      %       $\lambda x:\sigma.M \LB \lambda x:\sigma.M'$
-
-		      %       From the induction hypothesis and \TAbs, the type is preserved for the reduction.
-
-
-		      % \item \TConv
-
-		      %       We can assume the reduction has following shape.
-
-		      %       $M \LB M'$
-
-		      %       From the induction hypothesis and \TConv, the type is preserved for the reduction.
-
-		      % \item \TTB
-
-		      %       We can assume the reduction has following shape.
-
-		      %       $\TB M \LB \TB M'$
-
-		      %       From the induction hypothesis and \TTB, the type is preserved for the reduction.
-
-		      % \item \TTBL
-
-		      %       We can assume the reduction has following shape.
-
-		      %       $\TBL M \LB \TBL M'$
-
-		      %       From the induction hypothesis and \TTBL, the type is preserved for the reduction.
-
-		      % \item \TGen
-
-		      %       We can assume the reduction has following shape.
-
-		      %       $\Lambda\alpha. M \LB \Lambda\alpha. M'$
-
-		      %       From the induction hypothesis and \TGen, the type is preserved for the reduction.
-
-		      % \item \TIns
-
-		      %       We can assume the reduction has following shape.
-
-		      %       $M\ \varepsilon \LB M'\ \varepsilon$
-
-		      %       From the induction hypothesis and \TIns, the type is preserved for the reduction.
-
-		      % \item \TCsp
-
-		      %       We can assume the reduction has following shape.
-
-		      %       $\%_\alpha M \LB \%_\alpha M'$
-
-		      %       From the induction hypothesis and \TCsp, the type is preserved for the reduction.
-
-		      %       \fi
-
-	\end{itemize}
-	\qed\end{proof}
+%       \iffullversion
+% \item \TVar
+%       In this case, there is no reduction from $x$.
+% \item \TAbs
+%       We can assume the reduction has following shape.
+%       $\lambda x:\sigma.M \LB \lambda x:\sigma.M'$
+%       From the induction hypothesis and \TAbs, the type is preserved for the reduction.
+% \item \TConv
+%       We can assume the reduction has following shape.
+%       $M \LB M'$
+%       From the induction hypothesis and \TConv, the type is preserved for the reduction.
+% \item \TTB
+%       We can assume the reduction has following shape.
+%       $\TB M \LB \TB M'$
+%       From the induction hypothesis and \TTB, the type is preserved for the reduction.
+% \item \TTBL
+%       We can assume the reduction has following shape.
+%       $\TBL M \LB \TBL M'$
+%       From the induction hypothesis and \TTBL, the type is preserved for the reduction.
+% \item \TGen
+%       We can assume the reduction has following shape.
+%       $\Lambda\alpha. M \LB \Lambda\alpha. M'$
+%       From the induction hypothesis and \TGen, the type is preserved for the reduction.
+% \item \TIns
+%       We can assume the reduction has following shape.
+%       $M\ \varepsilon \LB M'\ \varepsilon$
+%       From the induction hypothesis and \TIns, the type is preserved for the reduction.
+% \item \TCsp
+%       We can assume the reduction has following shape.
+%       $\%_\alpha M \LB \%_\alpha M'$
+%       From the induction hypothesis and \TCsp, the type is preserved for the reduction.
+%       \fi
+% \end{itemize}
 
 \begin{theorem}[Preservation for Term on $\blacklozenge$-Reduction]
 	If $\G\V M:\tau@A$ and $M\longrightarrow_\blacklozenge N$, then $\G\V N:\tau@A$\\
 \end{theorem}
 
 \begin{proof}
-	We can prove using induction on the type derivation tree.
-	We show the case of \TTBL{} as examples.
-	Other cases are easy.
-	\begin{itemize}
+	{
+		We can prove using induction on the type derivation tree.
+		We show the case of \TTBL{} as examples.
+		Other cases are easy.
 		\newcommand{\R}{\longrightarrow_{\blacklozenge}}
-
-		\item \textit{Case} \TTBL{}\\
-		      There are two cases for.
-		      \begin{itemize}
-			      \item $\TBL\TB M \R M$.\\
-			            Because the last rule is \TTBL, we have $\G \V \TB M : \TW_\alpha \tau @A$.
-			            By using Inversion Lemma for $\TW$ type to $\G \V \TB M : \TW_\alpha \tau @A$,
-			            we get $\G \V M : \tau @A$
-			      \item $\TBL M \R \TBL M'$.\\
-			            We can use the induction hypothesis and \TTBL.
-		      \end{itemize}
-	\end{itemize}
-	\qed\end{proof}
+		\begin{rneqncase}{\TTBL{}}{}
+			There are two cases for $\R$.
+			\begin{itemize}
+				\item $\TBL\TB M \R M$.\\
+				      Because the last rule is \TTBL, we have $\G \V \TB M : \TW_\alpha \tau @A$.
+				      By using Inversion Lemma for $\TW$ type to $\G \V \TB M : \TW_\alpha \tau @A$,
+				      we get $\G \V M : \tau @A$
+				\item $\TBL M \R \TBL M'$.\\
+				      We can use the induction hypothesis and \TTBL.
+			\end{itemize}
+		\end{rneqncase}
+		\qed
+	}
+\end{proof}
 
 \begin{theorem}[Preservation for Term on $\Lambda$ Reduction]
 	If $\G\V M:\tau@A$ and $M \longrightarrow_{\Lambda} N$, then $\G\V N:\tau@A$.
 \end{theorem}
 
 \begin{proof}
-	We can prove using induction on the type derivation tree.
-	We show the case of \TIns{}{} as examples.
-	Other cases are easy.
-	\begin{itemize}
+	{
 		\newcommand{\R}{\longrightarrow_{\Lambda}}
-		\item \TIns
-
-		      There are two cases.
-		      \begin{itemize}
-			      \item $(\Lambda\alpha.M)\ B \R M[\alpha \mapsto B]$\\
-			            Because the last rule is \TIns{}, we have $\G \V \Lambda\alpha.M\ : \forall\alpha.\tau @ A$.
-			            By using Inversion Lemma for $\Lambda$ type to $\G \V \Lambda\alpha.M\ : \forall\alpha.\tau @ A$,
-			            we obtain $\G \V M : \tau @ A$.
-			            By using Stage Substitution Lemma to $\G \V M : \tau @ A$,
-			            we obtain $\G[\alpha \mapsto B] \V M[\alpha \mapsto B] : \tau[\alpha \mapsto B] @ A[\alpha \mapsto B]$.
-			            $\alpha$ is a bound variable therefore we can assume $\alpha \notin \FTV(\G) \cup \FTV(A)$.
-			            So, we can rewrite $\G[\alpha \mapsto B] \V M[\alpha \mapsto B] : \tau[\alpha \mapsto B] @ A[\alpha \mapsto B]$ to
-			            $\G \V M[\alpha \mapsto B] : \tau[\alpha \mapsto B] @ A$.
-			      \item $M\ B \R M'\ B$\\
-			            By the induction hypothesis and \TIns.
-		      \end{itemize}
-	\end{itemize}
-	\qed\end{proof}
+		We can prove using induction on the type derivation tree.
+		We show the case of \TIns{}{} as examples.
+		Other cases are easy.
+		\begin{rneqncase}{\TIns{}}{}
+			There are two cases $\R$.
+			\begin{itemize}
+				\item $(\Lambda\alpha.M)\ B \R M[\alpha \mapsto B]$\\
+				      Because the last rule is \TIns{}, we have $\G \V \Lambda\alpha.M\ : \forall\alpha.\tau @ A$.
+				      By using Inversion Lemma for $\Lambda$ type to $\G \V \Lambda\alpha.M\ : \forall\alpha.\tau @ A$,
+				      we obtain $\G \V M : \tau @ A$.
+				      By using Stage Substitution Lemma to $\G \V M : \tau @ A$,
+				      we obtain $\G[\alpha \mapsto B] \V M[\alpha \mapsto B] : \tau[\alpha \mapsto B] @ A[\alpha \mapsto B]$.
+				      $\alpha$ is a bound variable therefore we can assume $\alpha \notin \FTV(\G) \cup \FTV(A)$.
+				      So, we can rewrite $\G[\alpha \mapsto B] \V M[\alpha \mapsto B] : \tau[\alpha \mapsto B] @ A[\alpha \mapsto B]$ to
+				      $\G \V M[\alpha \mapsto B] : \tau[\alpha \mapsto B] @ A$.
+				\item $M\ B \R M'\ B$\\
+				      By the induction hypothesis and \TIns.
+			\end{itemize}
+		\end{rneqncase}
+		\qed
+	}
+\end{proof}
 
 \begin{dfn}[$\natural$ translation]
 	The $\natural$ translation is a translation from $\lambda^\text{MD}$ to $\lambda^\to$.
@@ -1954,17 +1948,22 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 	We can prove using induction on the type derivation tree.
 	We show the case of \TApp{} and \TConv{} as examples.
 	Other cases are easy.
-	\begin{itemize}
-		\item \textit{Case} \TApp{} where $\G \V M : (\Pi(x:\sigma).\tau) @ A$ and $\G \V N :\sigma @A$.\\
-		      From the induction hypothesis, we have $\natural(\G) \V \natural(M) : \natural(\sigma) \to \natural(\tau)$ and $\natural(\G) \V \natural(N) : \natural(\sigma)$.
-		      Use the Application rule in $\lambda^\to$, we get $\natural(\G) \V \natural(M)\ \natural(N) : \natural(\tau)$.
-		      Because $\natural(M)\ \natural(N) = \natural(M\ N)$ from the definition of $\natural$, $\natural(\G) \V \natural(M\ N) : \natural(\tau)$ in $\lambda^\to$.
-		\item \textit{Case} \TConv{} where $\G\V M:\tau@A$ and $\G\V \tau\E\sigma@A$.\\
-		      By using Preservation of typing in $\natural$ to $\G\V \tau\E\sigma@A$, we get $\natural(\tau) = \natural(\sigma)$.
-		      $\natural(\G) \V \natural(M):\natural(\tau)$ from the induction hypothesis.
-		      Then, $\natural(\G) \V \natural(M):\natural(\sigma)$.
-	\end{itemize}
-	\qed\end{proof}
+	\begin{rneqncase}{\TApp{}}{
+			\G \V M : (\Pi(x:\sigma).\tau) @ A \text{ and } \G \V N :\sigma @A
+		}
+		From the induction hypothesis, we have $\natural(\G) \V \natural(M) : \natural(\sigma) \to \natural(\tau)$ and $\natural(\G) \V \natural(N) : \natural(\sigma)$.
+		Use the Application rule in $\lambda^\to$, we get $\natural(\G) \V \natural(M)\ \natural(N) : \natural(\tau)$.
+		Because $\natural(M)\ \natural(N) = \natural(M\ N)$ from the definition of $\natural$, $\natural(\G) \V \natural(M\ N) : \natural(\tau)$ in $\lambda^\to$.
+	\end{rneqncase}
+	\begin{rneqncase}{\TConv{}}{
+			\G\V M:\tau@A \text{ and } \G\V \tau\E\sigma@A
+		}
+		By using Preservation of typing in $\natural$ to $\G\V \tau\E\sigma@A$, we get $\natural(\tau) = \natural(\sigma)$.
+		$\natural(\G) \V \natural(M):\natural(\tau)$ from the induction hypothesis.
+		Then, $\natural(\G) \V \natural(M):\natural(\sigma)$.
+	\end{rneqncase}
+	\qed
+\end{proof}
 
 \begin{lemma}[Preservation of Substitution in $\natural$]
 	If $\G, x:\sigma \V M:\tau@A$ and $\G \V N:\sigma@A$ in $\lambda^{\text{MD}}$
