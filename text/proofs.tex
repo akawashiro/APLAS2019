@@ -1980,23 +1980,21 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 \end{lemma}
 
 \begin{proof}
-	We prove by induction on the derivation of $\beta$ reduction of \LMD.
-	We show only the main case.
-	\begin{itemize}
+	{
+		We prove by induction on the derivation of $\beta$ reduction of \LMD.
+		We show only the main case.
 		\newcommand{\R}{\longrightarrow_{\beta}}
-		\item \textit{Case} $(\lambda x:\tau.M)\ N \R M[x \mapsto N]$\\
-		      From the definition of $\natural$,
-		      $\natural((\lambda x:\tau.M)\ N)$ = $\lambda x:\natural(\tau).\natural(M)\ \natural(N)$.
-		      Because $\lambda x:\natural(\tau).\natural(M)\ \natural(N)$ is a typed term in $\lambda^\to$,
-		      we can do $\beta$ reduction from it.
-		      As a result of the reduction, we get $\natural(M)[x\mapsto\natural(N)]$.
-		      From Preservation of substitution in $\natural$, $\natural(M[x \mapsto N])$ = $\natural(M)[x\mapsto\natural(N)]$.
-		      %   By applying Inversion Lemma for Application to $(\lambda x:\tau.M)\ N$,
-		      %   we get $\G, x:\sigma \V M:\tau@A$ and $\G \V N:\sigma@A$.
-		      % \item Otherwise\\
-		      %   We can prove by the induction hypothesis.
-	\end{itemize}
-	\qed\end{proof}
+		\begin{rneqncase}{$(\lambda x:\tau.M)\ N \R M[x \mapsto N]$}{}
+			From the definition of $\natural$,
+			$\natural((\lambda x:\tau.M)\ N)$ = $\lambda x:\natural(\tau).\natural(M)\ \natural(N)$.
+			Because $\lambda x:\natural(\tau).\natural(M)\ \natural(N)$ is a typed term in $\lambda^\to$,
+			we can do $\beta$ reduction from it.
+			As a result of the reduction, we get $\natural(M)[x\mapsto\natural(N)]$.
+			From Preservation of substitution in $\natural$, $\natural(M[x \mapsto N])$ = $\natural(M)[x\mapsto\natural(N)]$.
+		\end{rneqncase}
+		\qed
+	}
+\end{proof}
 
 \begin{lemma}[Preservation of $\Lambda$-Reduction in $\natural$]
 	If $\G \V M:\tau@A$ and $M \longrightarrow_\beta N$ in $\lambda^{\text{MD}}$
@@ -2043,7 +2041,8 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 	We can construct a typed term of simply typed lambda calculus $\natural(M)$ from Preservation of Typing in $\natural$ and
 	$\natural(M)$ has infinite reductions from Preservation of Reduction in $\natural$.
 	However, $\lambda^\to$ has a property of Strong Normalization, so there is no infinite reductions.
-	\qed\end{proof}
+	\qed
+\end{proof}
 
 \begin{theorem}[Confluence(Church-Rosser Property)]
 	Define $M \longrightarrow N$ as $M \longrightarrow_{\beta} N$ or $M\longrightarrow_\blacklozenge N$ or  $M \longrightarrow_{\Lambda} N$.
@@ -2058,7 +2057,8 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 	When we consider two different redexes in a $\lambda^{\text{MD}}$ term, they can only be disjoint, or one is a part of the other.
 	In short, they never overlap each other.
 	So, we can reduce one of them after we reduce another.
-	\qed\end{proof}
+	\qed
+\end{proof}
 
 \begin{lemma}[Unique Decomposition]
 	If $\G$ does not have any variable declared at stage $\varepsilon$
@@ -2070,119 +2070,114 @@ As we said in Section \ref{sec:properties}, we generalize Inversion Lemma to use
 \end{lemma}
 
 \begin{proof}
+	{
 	We prove by induction on the type derivation tree of $\G \V M:\tau@A$.
 
-	\begin{itemize}
-		\item \textit{Case} \TVar
-		      where \(\G\V x:\tau@A\) is the root of the type derivation tree.
-		      We can assume $A \neq \varepsilon$ because $x:\tau@\varepsilon \notin \G$.
-		      Then, $x \in V^A$.
-		\item \textit{Case} \TTBL{}
-		      where \(\G \V \TBL_\alpha M :\tau @ A\alpha\) is derived from \(\G \V M : \TW_\alpha \tau @ A\).
-		      From the induction hypothesis, one of the following holds.
-		      \begin{enumerate}
-			      \item $ M \in V^A$.
-			      \item There is an unique triple of $(B, E^A_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
-		      \end{enumerate}
-		      \begin{itemize}
-			      \item If $ M \in V^A$ is true
-			            \begin{itemize}
-				            \item and $A=\varepsilon$, then\\
-				                  $ M = \TB_\alpha v^\alpha $ from Inversion Lemma and
-				                  $\TBL_\alpha \TB_\alpha v^\alpha = E^\alpha_\alpha [R^\alpha]$.
-				            \item and $A\neq\varepsilon$, then\\
-				                  $\TBL_\alpha v^A \in V^{A\alpha}$.
-			            \end{itemize}
-			      \item If there is an unique triple of $(B, E^A_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$
-			            \begin{itemize}
-				            \item and $ M = \TB_\alpha E^\alpha_B[R^B] $, then\\
-				                  $ \TBL_\alpha \TB_\alpha E^\alpha_B[R^B] \longrightarrow_s E^\alpha_B[R^B]$ doesn't hold because $ E^\alpha_B[R^B] \notin v^\alpha$.
-				                  So, given $B, E^A_B, R^B$ are the unique tuples satisfies the condition.
-				            \item Otherwise,\\
-				                  It is obvious from the induction hypothesis and the definition of $E^A_B$.
-			            \end{itemize}
-		      \end{itemize}
+	\begin{rneqncase}{\TVar{}}{
+			\G\V x:\tau@A \text{ is the root of the type derivation tree. }
+		}
+		We can assume $A \neq \varepsilon$ because $x:\tau@\varepsilon \notin \G$.
+		Then, $x \in V^A$.
+	\end{rneqncase}
 
-		\item \textit{Case} \TIns\\
-		      where \(\G \V M\ C :\tau[\alpha \mapsto C] @ A\) is derived from \(\G \V M : \forall\alpha.\tau @ A\).
+	\begin{rneqncase}{\TTBL}{
+			\G \V \TBL_\alpha M :\tau @ A\alpha \text{ is derived from } \G \V M : \TW_\alpha \tau @ A.
+		}
+		From the induction hypothesis, one of the following holds.
+		\begin{enumerate}
+			\item $ M \in V^A$.
+			\item There is an unique triple of $(B, E^A_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
+		\end{enumerate}
+		\begin{itemize}
+			\item If $ M \in V^A$ is true
+			      \begin{itemize}
+				      \item and $A=\varepsilon$, then\\
+				            $ M = \TB_\alpha v^\alpha $ from Inversion Lemma and
+				            $\TBL_\alpha \TB_\alpha v^\alpha = E^\alpha_\alpha [R^\alpha]$.
+				      \item and $A\neq\varepsilon$, then\\
+				            $\TBL_\alpha v^A \in V^{A\alpha}$.
+			      \end{itemize}
+			\item If there is an unique triple of $(B, E^A_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$
+			      \begin{itemize}
+				      \item and $ M = \TB_\alpha E^\alpha_B[R^B] $, then\\
+				            $ \TBL_\alpha \TB_\alpha E^\alpha_B[R^B] \longrightarrow_s E^\alpha_B[R^B]$ doesn't hold because $ E^\alpha_B[R^B] \notin v^\alpha$.
+				            So, given $B, E^A_B, R^B$ are the unique tuples satisfies the condition.
+				      \item Otherwise,\\
+				            It is obvious from the induction hypothesis and the definition of $E^A_B$.
+			      \end{itemize}
+		\end{itemize}
 
-		      \begin{itemize}
-			      \item If $ A = \varepsilon$,\\
-			            By the induction hypothesis, either
-			            \begin{enumerate}
-				            \item $ M \in V^\varepsilon$ or
-				            \item there is a unique triple of $(B, E^\varepsilon_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^\varepsilon_B[R^B]$.
-			            \end{enumerate}
+	\end{rneqncase}
 
-			            \begin{itemize}
-				            \item If $ M \in V^\varepsilon$,\\
-				                  $ M = \Lambda\alpha.v^\varepsilon$ from Inversion Lemma.
-				                  Thus, $ \Lambda\alpha.v^\varepsilon\ C = E^\varepsilon_\varepsilon [R^\varepsilon]$
-				            \item If there is an unique triple of $(B, E^\varepsilon_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^\varepsilon_B[R^B]$,
-				                  we can decompose $E^\varepsilon_B[R^B]\ B$ uniquely
-				                  because $ E^\varepsilon_B[R^B] \neq \Lambda\alpha.v^\varepsilon$,
-			            \end{itemize}
+	\begin{rneqncase}{\TIns}{
+			\G \V M\ C :\tau[\alpha \mapsto C] @ A\\
+			\text{ is derived from }  \G \V M : \forall\alpha.\tau @ A.
+		}
 
-			      \item If $ A \neq \varepsilon $,\\
-			            By the induction hypothesis, either
-			            \begin{enumerate}
-				            \item $ M \in V^A$ or
-				            \item there is a unique triple of $(B, E^A_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
-			            \end{enumerate}
-			            \begin{itemize}
-				            \item If $ M \in V^A$,
-				                  it is clear that $v^A\ C \in V^A$.
-				            \item If there are an unique triple of $(B, E^A_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$,
-				                  we can decompose $E^A_B[R^B]\ C$ uniquely because we cannot $\Lambda$ reduction at stage $A$.
-			            \end{itemize}
-		      \end{itemize}
+		\begin{itemize}
+			\item If $ A = \varepsilon$,\\
+			      By the induction hypothesis, either
+			      \begin{enumerate}
+				      \item $ M \in V^\varepsilon$ or
+				      \item there is a unique triple of $(B, E^\varepsilon_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^\varepsilon_B[R^B]$.
+			      \end{enumerate}
 
+			      \begin{itemize}
+				      \item If $ M \in V^\varepsilon$,\\
+				            $ M = \Lambda\alpha.v^\varepsilon$ from Inversion Lemma.
+				            Thus, $ \Lambda\alpha.v^\varepsilon\ C = E^\varepsilon_\varepsilon [R^\varepsilon]$
+				      \item If there is an unique triple of $(B, E^\varepsilon_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^\varepsilon_B[R^B]$,
+				            we can decompose $E^\varepsilon_B[R^B]\ B$ uniquely
+				            because $ E^\varepsilon_B[R^B] \neq \Lambda\alpha.v^\varepsilon$,
+			      \end{itemize}
+
+			\item If $ A \neq \varepsilon $,\\
+			      By the induction hypothesis, either
+			      \begin{enumerate}
+				      \item $ M \in V^A$ or
+				      \item there is a unique triple of $(B, E^A_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$.
+			      \end{enumerate}
+			      \begin{itemize}
+				      \item If $ M \in V^A$,
+				            it is clear that $v^A\ C \in V^A$.
+				      \item If there are an unique triple of $(B, E^A_B, R^B)$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^A_B[R^B]$,
+				            we can decompose $E^A_B[R^B]\ C$ uniquely because we cannot $\Lambda$ reduction at stage $A$.
+			      \end{itemize}
+		\end{itemize}
+	\end{rneqncase}
+	}
+	% \begin{itemize}
+		% \item
 		      % \item \textit{Case}  \TApp
-
 		      %       \begin{itemize}
 		      %       	\item $ A = \varepsilon$
-
 		      %       	      The derivation is $\MD{1}$.
-
 		      %       	      $\MD{1}$ = \infer[\TApp]
 		      %       	      {\G \V M\ N :\tau[\tau \mapsto N] @ \varepsilon}
 		      %       	      {\ID{\G \V M : \Pi x:\sigma.\tau @ \varepsilon} \andalso \ID{\G \V N : \sigma @ \varepsilon}}
-
 		      %       	      From the induction hypothesis, 1 or 2 is true.
-
 		      %       	      \begin{enumerate}
 		      %       	      	\item $ M \in V^\varepsilon$ and $ N \in V^\varepsilon$
 		      %       	      	\item $ M \in V^\varepsilon$ and $\exists ! B, E^\varepsilon_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $N = E^\varepsilon_B[R^B]$
 		      %       	      	\item $\exists ! B, E^\varepsilon_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^\varepsilon_B[R^B]$ and $ N \in V^\varepsilon$
 		      %       	      	\item $\exists ! B, E^\varepsilon_B, R^B$ such that ($B = \varepsilon$ or $B = \beta$) and $M = E^\varepsilon_B[R^B]$ and $\exists ! B', E^\varepsilon_{B'}, R^{B'}$ such that ($B' = \varepsilon$ or $B' = \beta$) and $N = E^\varepsilon_{B'}[R^{B'}]$
 		      %       	      \end{enumerate}
-
 		      %       	      \begin{itemize}
 		      %       	      	\item Case of 1
-
 		      %       	      	      Use Inversion Lemma for all shape in $v^\varepsilon$, the case of $ M = \lambda x:\sigma.v^\varepsilon$ is only reasonable.
-
 		      %       	      	      Then $M N = R^\varepsilon$.
-
 		      %       	      	\item Otherwise
-
 		      %       	      	      It is clear.
 		      %       	      \end{itemize}
-
 		      %       	\item $ A \neq \varepsilon $
-
 		      %       	      $M N \notin R^\varepsilon$ because $ A \neq \varepsilon$.
 		      %       	      So, we can decompose uniquely.
-
 		      %       \end{itemize}
-
-
 		      % \item \textit{Case}  \TConv
-
 		      %       We can use the induction hypothesis directly.
-
-	\end{itemize}
-	\qed\end{proof}
+	% \end{itemize}
+	\qed
+\end{proof}
 
 \begin{corollary}[Progress]
 	If $x:\tau@\varepsilon \notin \G$ and $\G \V M : \tau @ A$ then $ M \in V^A $ or there is $M'$ such that $M \longrightarrow M'$.
