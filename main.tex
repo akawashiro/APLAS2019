@@ -2,7 +2,7 @@
 % LLNCS macro package for Springer Computer Science proceedings;
 % Version 2.20 of 2017/10/04
 %
-\newif\ifnotanonymous \notanonymousfalse
+\newif\ifnotanonymous \notanonymoustrue
 \newif\iffullversion \fullversiontrue
 \documentclass[runningheads]{llncs}
 %
@@ -120,7 +120,7 @@
 \begin{document}
 %
 \title{A Dependently Typed Multi-Stage Calculus%
-	\ifnotanonymous\thanks{Supported by organization x.}\fi
+	% \ifnotanonymous\thanks{Supported by organization x.}\fi
 }
 %
 %\titlerunning{Abbreviated paper title}
@@ -193,6 +193,8 @@
 \input{text/related-work.tex}
 
 \input{text/conclusion.tex}
+
+\input{text/acknowledgments.tex}
 
 % \begin{enumerate}
 % 	\item Done: On Cross-Stage Persistence in Multi-Stage\cite{Hanada2014}
