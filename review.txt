@@ -1,0 +1,389 @@
+Dear Akira,
+
+Thank you for your submission to APLAS19. The APLAS19 review
+response period will be between now and 30 July (AoE).
+
+During this time, you will have access to the current state of
+your reviews and have the opportunity to submit a response. 
+No length limit is imposed, but I strongly encourage that you
+keep it within 500 words. Please keep in mind the following
+during this process:
+
+* The response must focus on any factual errors in the reviews
+and any questions posed by the reviewers. It must not provide
+new research results or reformulate the presentation. Try to be
+as concise and to the point as possible.
+
+* The review response period is an opportunity to react to the
+reviews, but not a requirement to do so. Thus, if you feel the
+reviews are accurate and the reviewers have not asked any
+questions, then you do not have to respond.
+
+* The reviews are as submitted by the PC members, without any
+coordination between them. Thus, there may be inconsistencies.
+Furthermore, these are not the final versions of the reviews.
+The reviews can later be updated to take into account the
+discussions at the program committee meeting, and we may find
+it necessary to solicit other outside reviews after the review
+response period.
+
+* The program committee will read your responses carefully and
+take this information into account during the discussions. On
+the other hand, the program committee will not directly respond
+to your responses, either before the program committee meeting
+or in the final versions of the reviews.
+
+* Your response will be seen by all PC members who have access
+to the discussion of your paper, so please try to be polite and
+constructive.
+
+The reviews on your paper are attached to this letter. To
+submit your response you should log on the EasyChair Web page
+for APLAS19 and select your submission on the menu.
+
+Best wishes,
+
+Anthony
+
+----------------------- REVIEW 1 ---------------------
+SUBMISSION: 8
+TITLE: A Dependently Typed Multi-Stage Calculus
+AUTHORS: Akira Kawata and Atsushi Igarashi
+
+----------- Overall evaluation -----------
+SCORE: 2 (accept)
+----- TEXT:
+Synopsis:
+
+  This submission describes an idealised, pure, dependently-typed
+  programming language with multiple execution stages, and its
+  meta-theory. It contains a formal (pen-and-pencil) definition of the
+  language and its type-system, its beta-reduction semantics, and a
+  small-step call-by-value operational semantics. It then shows the
+  usual, desirable, meta-theoretic properties: Felleisen-style type
+  soundness (progress + preservation), termination/strong
+  normalisation, and confluence. The manuscript contains core
+  proof-ideas and sketches, while an appendix contains more complete
+  definitions and proofs. The introduction sections 1-2 contain a more
+  informal treatment of the language, and the body of the submission
+  is peppered with useful, albeit theoretical, examples demonstrating
+  the various definitions well.
+
+  Review:
+
+  I recommend accepting the submission.
+
+  Pros:
+
+  1) The topic of the submission has received much attention from the
+  APLAS community in the past and currently, and so likely to be of
+  interest. There is ongoing interest in multi-staged metaprogramming,
+  also in the dependently-typed community, usually trying to encode
+  metaprogramming using dependent types. So it is useful and
+  interesting to develop idealised calculi mixing dependent-types and
+  staging to demonstrate what built-in support for both can offer.
+
+  2) The contribution seems substantial and non-trivial. Both
+  dependently-typed and multi-staged formalisms have many moving parts
+  that require careful case analysis, which this submission does well.
+
+  3) The manuscript is well-thought through and mostly clearly
+  written. It is self-contained and clear, so that it is accessible to
+  non-experts who have some experience in operational semantics and
+  are interested in dependent types and multi-staged programming, but
+  might not possess extensive expert knowledge in these areas.
+
+  Cons:
+
+  A minor disadvantage is that the development is mostly theoretical
+  in nature. A future implementation could help us see these concepts
+  in operation. However, a full-blown implementation is plausibly
+  beyond the scope of one submission.
+
+
+
+  Some detailed line-by-line comments (mostly typos):
+
+  Abstract:
+
+  Par 1, first sentence: replace 'eval' with 'an evaluation construct'
+  to match the other forms in the sentence ('quasi quotation',
+  'cross-stage persistence').
+
+  Same place: replace 'the' by 'this' in 'the code manipulation'.
+
+  Par 2, last sentence: I don't understand what you mean in this
+  sentence, and I'm not sure which part of the submission it refers
+  to. Removing this sentence doesn't diminish the significance of your
+  results.
+
+  Page 1, last paragraph, 2nd line, typo: espace -> escape
+
+  Page 3, Section 1, last line: in [the] Appendix.
+
+  Page 3, please explain briefly what is the difference between 'full
+  reduction' and 'staged reduction', e.g.: ... and two kinds of
+  reduction. \emph{Full reduction}, allowing reduction of any redex,
+  including under $\lambda$-abstraction and quotation, and
+  \emph{staged reduction}, a small-step call-by-value operational
+  semantics that is closer to the intended multi-staged
+  implementations.
+
+  Page 4, first line: manipulates [the] nesting of
+
+  Page 4, last paragraph of Section 2.2, line 2: lowercase the
+  indefinite article: [a] variable
+
+  Page 5, paragraph beginning with 'Second', line before last:
+  \epsilon should be \varepsilon (or the other way around)
+
+  Page 6, paragraph following the syntax, third line from the end:
+  "if, say, [the] type-level constant Vector..."
+
+  Page 6, paragraph before last, last line: well-formed signature[s].
+
+  Page 7, last sentence before Section 3.2: Please elaborate on the
+  status of this statement. Have you shown these properties but
+  ommitted these details for simplicity/brevity, or do you conjecture
+  it wouldn't be difficult?
+
+  Page 8, reduction sequence: the first two subscripts on the
+  reduction relation seem wrong. The first one should be beta, and the
+  second one should be diamond.
+
+  Page 9, Kind wellformedness and Kinding paragraph: please provide
+  justification for this design choice to make type-level CSP implicit
+  (which is reasonable).
+
+  Page 9, first line of Typing paragraph: [The t]yping rules of ...
+
+  Page 10, last paragraph before "Kind, Type, and Term Equivalence":
+  ... are the same as [in] lambda^{triangle\%}, as we explained in
+  Section 2. ... ensures that the scope of alpha is in M[, and avoids
+  capturing variables in the rest of the judgement].
+
+  Page 10, paragraph labelled "Kind, Type, and Term Equivalence",
+  second line: is mutually recursive, [the] corresponding notions
+  ... are not very interesting[,] except [that] implicit CSP is
+  allowed.
+
+  Page 11, vadd and vadd_1 example: please spend some more time
+  highlighting why this example is so interesting. First, the setting
+  is that we have potentially many pairs of vectors of the same
+  length, unknown at compile time, that we need to add
+  element-wise. Second, highlight the benefit of this system. If we
+  didn't have dependent-types, we would either be forced to determine
+  statically the dimension of all the vectors and use tuples, or use
+  lists and dynamically check the dimension of every pair of
+  lists. With staging + dependent-types, we obtain a middle ground: we
+  dynamically find out the dimension, and then produce a specialised
+  staged code that avoids the repeated 'if...then..else' construct for
+  each pair of elements in every pair of lists.
+
+  Page 11, paragraph before last, line before last: ... operator in
+  implementation[s].
+
+  Page 12, definition of evaluation contexts, final case (\%): should
+  $A'$ in the superscript be $A$ instead?
+
+  Page 12, also, while this kind of set-up is standard for
+  multi-staged language, please explain what is happening in prose:
+  'values' at later stages can be unevaluated computations, so long as
+  they don't contain escaped computations, and similarly, evaluation
+  contexts can locate escaped/promoted sub-expressions inside quoted
+  code.
+
+  Page 13, the first sentence following Definition 5 seems mangled,
+  perhaps you meant: This reduction relation [] reduces [terms] in a
+  deterministic ...
+
+  Page 13, Section 4, first two paragraphs: In this section, we show
+  [the] basic properties of ... staged reduction.  [The] Substitution
+  Lemma in ... . [The] Term Substitution Lemma states that ... [.]
+  [The] Stage Substitution Lemma ... .
+
+  Page 14, paragraph after the proof of Lemma 2: ... to prove [the]
+  main theorems. As usual [24], [the] Inversion Lemma ...
+
+  Page 15, proof of Strong Normalisation: I think this proof crucially
+  relies on the fact that the calculus doesn't have dependent pairs
+  and pattern matching. Consider sketching how the proof would change
+  to accommodate such extensions: the target $\lambda$-calculus would
+  have an exception/failure effect, which doesn't affect its Strong
+  Normalisation property, and the missing cases in case-splits that
+  are ruled out by dependent types are added as
+  exceptions/failure. The (later) progress theorem ensures these are
+  never exercised and evaluation never gets stuck.
+
+
+
+
+  Suggestions for improvement:
+
+  Abstract:
+
+  Par 1, the flow in the last sentence can be improved: ... not
+  trivial because [such] a type system would have to take stages [of
+  types] --- roughly speaking ... --- [] into account.
+
+  Par 2, the flow in the beginning of last sentence can improve:
+  @Motivated by code generators [] that [] generate[] code [whose
+  type] depends on a value from outside [the] quotation.
+
+  Page 5, notation for kinding judgements: since the formalisation is
+  closer to OCaml than Haskell, consider keeping the single colon (:)
+  for kind ascription, if it's easy for you to do so.
+
+  Page 6, paragraph before last, last line: consider making
+  hyphenation consistent across the manuscript: "well-formed" here,
+  vs. "Wellformedness" on Page 9, vs. "well typed" on page 16, and so
+  on.
+
+  Page 6, last paragraph, the first sentence reads strangely to me,
+  but maybe it's just a matter of taste. Consider this minor
+  rewording: In $\lambda x : \tau. M$ and $\Pi x : \tau. \sigma$, the
+  first occurrence of $x$ is binding for its occurrences in $M$ and
+  $\sigma$.
+
+  Page 7, the third line similarly reads strangely. Consider: "... and
+  $\%_{\alpha}$ take precedence over the three forms $\tau\ M$, ..."
+
+  Page 12, definitions of values and evaluation contexts: consider
+  being consistent between the two displays with the roles of $A$ and
+  $A'$, i.e., either $A = A'\alpha$ for some $\alpha$ or $A\alpha =
+  A'$ for some $\alpha$.
+
+  Page 14, top of the page: consider omitting the 'proofs' and state
+  before the two lemmas: "We prove the next to lemma by simultaneous
+  induction on derivations:"
+----------- Reviewer's confidence -----------
+SCORE: 3 ((medium))
+
+
+----------------------- REVIEW 2 ---------------------
+SUBMISSION: 8
+TITLE: A Dependently Typed Multi-Stage Calculus
+AUTHORS: Akira Kawata and Atsushi Igarashi
+
+----------- Overall evaluation -----------
+SCORE: 2 (accept)
+----- TEXT:
+Summary of the paper:
+
+The paper introduces a multi-stage calculus, lambda^MD, which adds dependent types
+to the existing calculus lambda^->%. lambda^->% was proposed as a model for MetaOCaml
+that enforces safe use of cross-stage persistence.
+
+Details of proofs are given in an appendix, which I have not checked.
+
+Contribution of the paper:
+
+The result is reasonable and, to the best of my knowledge, the first calculus that
+adds dependent types to a multi-stage metaprogramming calculus. That surprises me, as
+there have been many type systems proposed for metaprogramming calculi.
+
+The development is somewhat routine, and follows the structure of Hanada and
+Igurashi's paper on lambda^->% fairly closely.
+
+Quality of the paper:
+
+The presentation is fairly clear, although there are a number of linguistic errors;
+see the detailed comments below.
+
+Technical questions/criticisms:
+
+The main question I have is whether the work is truly novel.
+If you Google for "dependent types metaprogramming", you get results about the Lean
+theorem prover ("A metaprogramming framework for formal verification.", ICFP 2017)
+and the Adam Chlipala's Ur programming language. The focus of these papers is very
+different: they're coming from the world of dependently-typed proof assistants,
+and they aren't that bothered about the nesting of stages. Nonetheless, I would
+like to hear whether you think this is related in your author response.
+If you think it is, please add it to your related work.
+
+One other question is whether the calculus is suitable as a model for MetaOCaml as
+it doesn't have recursion and hence isn't Turing-powerful.
+
+Detailed comments:
+
+p1: certain type equivalence -> certain type equivalences
+
+program and such -> program, and such
+
+espace -> escape
+
+p2: data structure -> data structures
+
+simplest form -> simplest forms
+
+p5: "At first, the restriction above sounds too severe, because..." -
+You don't finish this sentence with the reason.
+
+p10: can also has -> can also have
+
+p12: I find the use of the box symbol for a hole in an evaluation context distracting.
+I would prefer a narrow rectangle, square brackets, an underscore or a filled dot.
+
+p16: The paper "Program Logics for Homogeneous Generative Run-Time Meta-Programming"
+by Berger and Tratt may be worth citing. It takes a very different approach (using
+a Hoare-style logic) to the same problem (of enforcing strong invariants on the
+behaviour of dynamically generated code).
+
+much work... and most of them are -> much work... and most of it is
+
+It has been well known -> It is well known
+
+properties of data structure -> properties of data structures
+
+mutable cells, control operators -> mutable cells and control operators
+
+p17: Reference 11 is missing space in "Proc. ofACM".
+
+p17: Reference 21 is missing space in "Proc. ofEuropean".
+----------- Reviewer's confidence -----------
+SCORE: 3 ((medium))
+
+
+----------------------- REVIEW 3 ---------------------
+SUBMISSION: 8
+TITLE: A Dependently Typed Multi-Stage Calculus
+AUTHORS: Akira Kawata and Atsushi Igarashi
+
+----------- Overall evaluation -----------
+SCORE: 1 (weak accept)
+----- TEXT:
+=== Summary ===
+
+The paper presents a dependently-typed extension of the staged calculus by Hanada and Igarashi. The dependent types are formulated in the style of Edinburgh LF. 
+By means of using a running example of operations over vectors, the paper shows how this extension is both natural and useful. It formulates a small-step semantics, proves progress, preservation, normalisation, confluence and unique decomposition, thus showing soundness of the proposed system.
+
+=== Evaluation ==
+
+The paper is very well written, and is easy to read. There is only a tiny amount of typos and stylistic suggestions I can make (see below). 
+
+The proposed extension does not look too surprising, but the authors are careful at explaining the parts that were less trivial to figure out or those parts that allowed for multiple decisions. 
+
+The formalism, semantics and proofs are all clearly presented. Appendices include all the proofs. 
+
+The running examples really help.
+I would have liked to see more out-of-the-beaten track examples than vectors. 
+
+The authors say that type checking algorithm for this calculus is a future work -- it would be interesting to see it when it comes. 
+
+=== Specific points ===
+
+p.2 types per by themselves -> types by themselves 
+p.3 of of Lambda-abstraction - remove of
+p.6 in the table that lists all syntactic constructs, you write $\Pix:\tau \tau$, but later in the text you write  $\Pix:\tau \sigma$ when you refer to it. Please be consistent. I personally prefer the latter version. But then your table will need to be modified in a few places.
+p.6 line -4: ... and \tau by ... -> ... and in \tau by ..
+p.7 left-associative: The binders -> left associative. The binders
+p.7 ... of stage A for stage variable alpha in term N for x -> I think "in term N for x" is a stray phrase, that must be removed.
+p.10 can also has type Vector ->  can also have type Vector
+p.15, Progress: 
+or $M'$ exists such that -> or there exists M' such that
+----------- Reviewer's confidence -----------
+SCORE: 3 ((medium))
+
+
+------------------------------------------------------
+
