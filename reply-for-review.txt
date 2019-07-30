@@ -9,7 +9,7 @@ reviewer.
 Comment on the last sentence of the abstract:
 This sentence refers to the "vadd" example and handling of the symbol of CSP in
 the type equivalence relation. We think they are an important part of this
-paper. 
+paper.
 
 Comment on the last sentence before Section 3.2:
 This statement is a conjecture but we think it is not difficult to prove.
@@ -34,9 +34,9 @@ Comment on "A metaprogramming framework for formal verification" (by Ebner et
 The first paper is loosely related in the sense that they are interested in
 (automated) construction of well-typed terms but, in the MSP setting, the
 presence of eval (which it does not care) often complicates the problem a lot.
-We will include this discussion in the Related work section.
 The second paper is also loosely related because it focuses on practical use
-and does not contain a theory for metaprogramming.
+and does not contain a theory for metaprogramming.  We will include this
+discussion in the Related work section.
 
 Comment on the ability of this calculus as a model for a practical language
 such as MetaOCaml:
@@ -44,7 +44,7 @@ Because it is easy to extend this calculus to include recursion, we think it is
 able to use as a model of a practical language.
 
 Comment on "Program Logics for Homogeneous Generative Run-Time Meta-Programming"
-    (by Berger and Tratt): 
+    (by Berger and Tratt):
 Although this paper takes a different approach from ours, its main purpose is
 similar to ours. The main difference is that their language is based on
 lambda-Box, which can manipulate only closed code, whereas ours can deal
@@ -53,5 +53,5 @@ with open code.
 ------------------ Reviewer 3 -------------------------
 
 Comment on the type checking algorithm:
-We will construct the algorithm by extending an algorithm for dependent type
+We will construct the algorithm by extending an algorithm for an ordinary dependent type
 system.
