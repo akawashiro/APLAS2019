@@ -1,0 +1,27 @@
+Dear Reviewers,
+Thank you for your detailed and valuable comments.
+
+We will incorporate the comments as much as possible to a final version of the paper is accepted.  We will focus below on a few important comments (by Reviewers 1 and 2) we think we should address here.
+
+------------------ Reviewer 1 -------------------------
+
+Comment on the last sentence of the abstract:
+This sentence refers to the "vadd" example and handling of the symbol of CSP in the type equivalence relation. We think they are an important part of this paper. We'll try to improve but probably will not remove it.
+
+Comment on the last sentence before Section 3.2:
+This statement is a conjecture but we think it is not difficult to prove.  We'll make it clear.
+
+Comment on design choice to make type-level CSP:
+Because we don't have staged semantics for types, explicit type-level CSP just makes the system more complicated.
+
+Comment on the proof of Strong Normalisation:
+Yes, SN for a calculus with pattern-matching can be proved as suggested.  We are not sure how the progress property contributes to the discussion here, though: what we would like to prove is a simulation property, which assumes one-step (successful) reduction in the source calculus and so the progress is not used.  (Are we missing anything?)
+
+------------------ Reviewer 2 -------------------------
+
+Comment on "A metaprogramming framework for formal verification" (by Ebner et al.) and "Ur: Statically-Typed Metaprogramming with Type-Level Record Computation" (by Chlipala):
+The first paper is loosely related in the sense that they are interested in (automated) construction of well-typed terms but, in the MSP setting, the presence of eval (which it does not care) often complicates the problem a lot. The second paper is also loosely related because it focuses on practical use and does not contain a theory for metaprogramming.
+
+Comment on "Program Logics for Homogeneous Generative Run-Time Meta-Programming"
+(by Berger and Tratt): Although this paper takes a different approach from ours, its main purpose is similar to ours. The main difference is that their language is based on lambda-Box, which can manipulate only closed code, whereas ours can deal with open code.
+
