@@ -1,7 +1,7 @@
 Thank you for your detailed and valuable comments.
 
 We will incorporate all feedback and comments, including those not addressed
-here. We will now respond to some of the key comments and questsions from each
+here. We will now respond to some of the key comments and questions from each
 reviewer.
 
 ------------------ Reviewer 1 -------------------------
@@ -9,7 +9,7 @@ reviewer.
 Comment on the last sentence of the abstract:
 This sentence refers to the "vadd" example and handling of the symbol of CSP in
 the type equivalence relation. We think they are an important part of this
-paper. We'll try to improve but probably will not remove it.
+paper. 
 
 Comment on the last sentence before Section 3.2:
 This statement is a conjecture but we think it is not difficult to prove.
@@ -38,6 +38,11 @@ We will include this discussion in the Related work section.
 The second paper is also loosely related because it focuses on practical use
 and does not contain a theory for metaprogramming.
 
+Comment on the ability of this calculus as a model for a practical language
+such as MetaOCaml:
+Because it is easy to extend this calculus to include recursion, we think it is
+able to use as a model of a practical language.
+
 Comment on "Program Logics for Homogeneous Generative Run-Time Meta-Programming"
     (by Berger and Tratt): 
 Although this paper takes a different approach from ours, its main purpose is
@@ -46,3 +51,7 @@ lambda-Box, which can manipulate only closed code, whereas ours can deal
 with open code.
 
 ------------------ Reviewer 3 -------------------------
+
+Comment on the type checking algorithm:
+We will construct the algorithm by extending an algorithm for dependent type
+system.
