@@ -2,14 +2,16 @@
 
 \section{Properties of \LMD \label{sec:properties}}
 
-In this section, we show basic properties of \LMD: preservation, strong normalization, confluence for full reduction, and progress for staged reduction.
+In this section, we show the basic properties of \LMD: preservation, strong
+normalization, confluence for full reduction, and progress for staged
+reduction.
 
 % Substitution Lemma
 
-Substitution Lemma in \LMD{} is a little more complicated than usual
+The Substitution Lemma in \LMD{} is a little more complicated than usual
 because there are eight judgment forms and two kinds of substitution.
-Term Substitution Lemma states that term substitution $[z \mapsto M]$
-preserves derivability of judgments and Stage Substitution Lemma
+The Term Substitution Lemma states that term substitution $[z \mapsto M]$
+preserves derivability of judgments. The Stage Substitution Lemma
 states similarly for stage substitution $[\alpha\mapsto A]$.
 
 We let $\mathcal{J}$ stand for the judgments $K \iskind @A$, $\tau::K@A$,
@@ -39,7 +41,7 @@ manner.  Using these notations, the two substitution lemmas are stated as follow
 
 % Inversion Lemma
 
-The following Inversion Lemma is needed to prove main theorems.
+The following Inversion Lemma is needed to prove the main theorems.
 As usual~\cite{TAPL}, Inversion Lemma enables us to infer the types of subterms of a term from the type of the term.
 
 \begin{lemma}[Inversion]\ 

@@ -54,7 +54,7 @@ of kind $K$.
 A type is a type-level constant $X$, which is declared in the signature with its kind, a dependent function type $\Pi x:\tau.\sigma$,
 an application $\tau\ M$ of a type (operator of $\Pi$-kind) to a term, a code type $\TW_\alpha \tau$, or an $\alpha$-closed type $\F\alpha.\tau$.
 An example of an application of a type (operator) of $\Pi$-kind to a term is $\text{Vector}\ 10$; it is well kinded
-if, say, type-level constant $\text{Vector}$ has kind $\Pi x:\I.*$.
+if, say, the type-level constant $\text{Vector}$ has kind $\Pi x:\I.*$.
 A code type $\TW_\alpha \tau$ is for a code fragment of a term of type $\tau$.
 An $\alpha$-closed type, when used with $\TW_\alpha$, represents runnable code.
 
@@ -78,17 +78,20 @@ $\%_\alpha M$ is an operator for cross-stage persistence.
 
 % Signature
 
-We adopt the tradition of \LLF-like systems, where types of constants and kinds of type-level constants are globally declared in a signature $\Sigma$, which
-is a sequence of declarations of the form $c:\tau$ and $X::K$.
-For example, when we use Boolean in \LMD, $\Sigma$ includes $\B :: *, \textrm{true}:\B, \textrm{false}:\B$.
-Type environments are sequences of triples of a variable, its type, and its stage.
-We write \(\textit{dom}(\Sigma)\) and \(\textit{dom}(\Gamma)\)
-for the set of (type-level) constants and variables declared in \(\Sigma\) and \(\Gamma\), respectively.   As in other multi-stage calculi~\cite{taha2003environment,Tsukada,Hanada2014},
-a variable declaration is associated with a stage
-so that a variable can be referenced only at the declared stage.
-On the contrary, constants and type-level constants are \emph{not} associated with stages;
-so, they can appear at any stage.
-We define well-formed signature and well-formed type environments later.
+We adopt the tradition of \LLF-like systems, where types of constants and
+kinds of type-level constants are globally declared in a signature $\Sigma$,
+which is a sequence of declarations of the form $c:\tau$ and $X::K$. For
+example, when we use Boolean in \LMD, $\Sigma$ includes $\B :: *,
+\textrm{true}:\B, \textrm{false}:\B$. Type environments are sequences of
+triples of a variable, its type, and its stage. We write
+\(\textit{dom}(\Sigma)\) and \(\textit{dom}(\Gamma)\) for the set of
+(type-level) constants and variables declared in \(\Sigma\) and \(\Gamma\),
+respectively. As in other multi-stage
+calculi~\cite{taha2003environment,Tsukada,Hanada2014}, a variable declaration
+is associated with a stage so that a variable can be referenced only at the
+declared stage. On the contrary, constants and type-level constants are
+\emph{not} associated with stages; so, they can appear at any stage. We
+define well-formed signatures and well-formed type environments later.
 
 The variable $x$ is bound in $M$ by $\lambda x:\tau.M$ and in $\sigma$
 by $\Pi x:\tau.\sigma$, as usual; the stage variable $\alpha$ is
@@ -185,8 +188,8 @@ We show an example of a reduction sequence below.
 Underlines show the redexes.
 \begin{align*}
      & \hspace{10mm} \underline{(\lambda i:\I\to\I.(\Lambda\alpha.\TB_\alpha (\%_\alpha i\ 1 + (\TBL_\alpha \TB_\alpha 3))\ \varepsilon))\ (\lambda x:\I.x)} \\
-     & \longrightarrow_\blacklozenge (\Lambda\alpha.\TB_\alpha (\%_\alpha (\lambda x:\I.x)\ 1 + (\underline{\TBL_\alpha \TB_\alpha 3})))\ \varepsilon        \\
-     & \longrightarrow_\beta \underline{(\Lambda\alpha.\TB_\alpha (\%_\alpha (\lambda x:\I.x)\ 1 + 3))\ \varepsilon}                                         \\
+     & \longrightarrow_\beta (\Lambda\alpha.\TB_\alpha (\%_\alpha (\lambda x:\I.x)\ 1 + (\underline{\TBL_\alpha \TB_\alpha 3})))\ \varepsilon        \\
+     & \longrightarrow_\blacklozenge \underline{(\Lambda\alpha.\TB_\alpha (\%_\alpha (\lambda x:\I.x)\ 1 + 3))\ \varepsilon}                                         \\
      & \longrightarrow_\Lambda \underline{(\lambda x:\I.x)\ 1} + 3                                                                                           \\
      & \longrightarrow_\beta 1 + 3                                                                                                                           \\
      & \longrightarrow^* 4
@@ -300,7 +303,7 @@ Unlike the term level, type-level CSP is implicit.
   \end{center}
 \end{figure}
 
-Typing rules of \LMD are shown in Figure~\ref{fig:typing-rules}.
+The typing rules of \LMD are shown in Figure~\ref{fig:typing-rules}.
 The rule \TConst{} means that a constant can appear at any stage.
 % For example, if we have a signature $\Sigma$ which is
 % $\textrm{bool} :: *, \textrm{true}: \textrm{bool}, \textrm{false}:
@@ -348,10 +351,10 @@ Note that CSP is also applied to the type \(\tau\) (although it is implicit) in 
 \subsubsection{Kind, Type and Term Equivalence.}
 
 Since the syntax of kinds, types, and terms is mutually recursive,
-corresponding notions of equivalence are also mutually recursive.
+the corresponding notions of equivalence are also mutually recursive.
 They are congruences closed under a few axioms for term equivalence.
-So, the rules for kind and type equivalences are not very interesting
-except implicit CSP is allowed.
+So, the rules for kind and type equivalences are not very interesting, 
+except that implicit CSP is allowed.
 We show a few representative rules below.
 
   {\small
@@ -510,7 +513,7 @@ syntactically different types.
 Interestingly, Hanada and Igarashi~\cite{Hanada2014} rejected the idea of
 reduction that removes $\%_\alpha$ when they developed \LTP{}, as such
 reduction does not match the operational behavior of the CSP operator
-in implementation.  However, as an equational system for multi-stage
+in implementations.  However, as an equational system for multi-stage
 programs, the rule \QPercent makes sense.
 
 \renewcommand{\Vpn}{\text{Vector}\ n}
@@ -576,7 +579,7 @@ In order to define staged reduction, we define redex and evaluation contexts.
     \mid \Lambda\alpha.E^\varepsilon_B \mid E^\varepsilon_B\ A                                                                                    \\
     E^{A'}_B \in ECtx^{A'}_B               & ::= \square\ (\text{if } A' = B) \mid \lambda x:\tau.E^{A'}_B \mid E^{A'}_B\ M \mid v^{A'}\ E^{A'}_B \\
                                            & \mid \TB_\alpha E^{A'\alpha}_B \mid \TBL_\alpha E^{A}_B \ (\text{where } A\alpha = A')               \\
-                                           & \mid \Lambda\alpha.E^{A'}_B \mid E^{A'}_B\ A \mid \%_\alpha\ E^{A'}_B \ (\text{where } A\alpha = A')
+                                           & \mid \Lambda\alpha.E^{A'}_B \mid E^{A'}_B\ A \mid \%_\alpha\ E^{A}_B \ (\text{where } A\alpha = A')
   \end{align*}
 \end{definition}
 

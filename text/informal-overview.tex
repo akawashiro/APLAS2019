@@ -48,7 +48,7 @@ This is expressed by the following reduction rule:
 \begin{align*}
 	(\Lambda\alpha.M)\ A \longrightarrow M[\alpha\mapsto A]
 \end{align*}
-where stage substitution \([\alpha \mapsto A]\) manipulates nesting of
+where stage substitution \([\alpha \mapsto A]\) manipulates the nesting of
 \(\TB_\alpha\) and \(\TBL_\alpha\) (and also \(\%_\alpha\) as we see later).
 
 Cross-stage persistence (CSP), which is an important feature of \LTP,
@@ -75,7 +75,7 @@ one can call library functions from inside quotations.
 
 The type system of \LTP uses code types---the type of code of type
 \(\tau\) is written \(\TW_\alpha \tau\)---for typing \(\TB_\alpha\),
-\(\TBL_\alpha\) and \(\%_\alpha\).  It takes stages into account: A
+\(\TBL_\alpha\) and \(\%_\alpha\).  It takes stages into account: a
 variable declaration (written $x:\tau@A$) in a type environment is associated with its
 declared stage $A$ as well as its type $\tau$ and the type judgement of \LTP is of
 the form $\G \vdash M : \tau@A$, in which $A$ stands for the stage
@@ -194,7 +194,7 @@ derived but
 neither
 \(x:\I@\alpha \V \text{Vector }x :: * @\varepsilon\)
 nor 
-\(x:\I@\epsilon \V \text{Vector }x :: * @\alpha\)
+\(x:\I@\varepsilon \V \text{Vector }x :: * @\alpha\)
 can be.
 
 At first, the restriction above sounds too severe, because a term like
@@ -203,7 +203,7 @@ models a typical code generator which takes the size $x$ and returns
 code for vector manipulation specialized to the given size.  It seems
 crucial for \(y\) to be given a type indexed by $x$.  We can address
 this problem by CSP---In fact,
-$\text{Vector }x$ is not well formed at $\alpha$ under $x:\I@\epsilon$
+$\text{Vector }x$ is not well formed at $\alpha$ under $x:\I@\varepsilon$
 but $\text{Vector }(\%_\alpha x)$ is!  So, we can still write
 \(\lambda x:\I. \TB_\alpha (\lambda y:\text{Vector }(\%_\alpha x).M) \)
 for the typical sort of code generators.
