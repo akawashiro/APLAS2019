@@ -108,7 +108,7 @@ We identify $\alpha$-convertible terms and assume the names of bound variables a
 
 The prefix operators $\TW_\alpha, \TB_\alpha, \TBL_\alpha$, and
 $\%_\alpha$ connect tighter than the three forms $\tau\ M$, $M\ N$,
-$M\ A$ of applications, which are left-associative; The binders $\Pi$,
+$M\ A$ of applications, which are left-associative. The binders $\Pi$,
 $\forall$, and $\lambda$ extend as far to the right as possible.
 Thus, $\F\alpha.\TW_{\alpha} (\Pi x:\I.\text{Vector}\ 5)$ is
 interpreted as
@@ -271,9 +271,9 @@ used at any stage.  In what follows, well-formedness is not explicitly
 mentioned but we assume that all signatures and type environments are
 well-formed.
 
-\subsubsection{Kind Wellformedness and Kinding.}
+\subsubsection{Kind Well-formedness and Kinding.}
 
-The rules for kind wellformedness and kinding is a straightforward
+The rules for kind well-formedness and kinding is a straightforward
 adaptation from \LLF and \LTP, except for the following rule for type-level CSP.
 \begin{center}
   \infrule[K-Csp]{
@@ -333,8 +333,10 @@ $*$ (\TAbs) at the stage where it is declared (\TVar{} and \TAbs).
 
 
 % \TConv
-As in standard dependent type systems, \TConv{} allows us to replace the type of a term with an equivalent one.
-For example, assuming integers and arithmetic, a value of type $\textrm{Vector}\ (4+1)$ can also has type $\textrm{Vector}\ 5$ because of \TConv{}.
+As in standard dependent type systems, \TConv{} allows us to replace the type
+of a term with an equivalent one. For example, assuming integers and
+arithmetic, a value of type $\textrm{Vector}\ (4+1)$ can also have type
+$\textrm{Vector}\ 5$ because of \TConv{}.
 
 % Typing rules for a multi-stage calculus
 The rules \TTB, \TTBL, \TGen, \TIns, and \TCsp{} are constructs for multi-stage progarmming.
@@ -451,7 +453,7 @@ $\beta$-reduction, $\blacklozenge$-reduction, and $\Lambda$-reduction, respectiv
 % \QPercentの説明
 The only rule that deserves elaboration is the last rule \QPercent.
 Intuitively, it means that the CSP operator applied to term $M$ can be
-removed if $M$ is also well typed at the next stage \(A\alpha\).
+removed if $M$ is also well-typed at the next stage \(A\alpha\).
 For example, constants do not depend on the stage (see \TConst) and
 so \(\G\V \%_\alpha c \E c : \tau @ A\alpha\) holds but variables
 do depend on stages and so this rule does not apply.

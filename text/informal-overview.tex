@@ -40,7 +40,7 @@ where \(\alpha\) is abstracted.  If it is applied to \(\alpha_1 \cdots \alpha_n\
 if \(n = 0\), \(\TB_\alpha\) disappears.  So, an
 application of $\Lambda\alpha.\TB_\alpha ((\lambda x:\I.x+10)\ 5)$
 to the empty sequence \(\varepsilon\) reduces to
-(unquoted) \((\lambda x:\I.x+10)\ 5\) and to 15.  In other words, application of of
+(unquoted) \((\lambda x:\I.x+10)\ 5\) and to 15.  In other words, application of
 \(\Lambda\)-abstraction to $\varepsilon$ corresponds to \texttt{run}.
 % If \(\alpha\) is instantiated with, say, \(\beta\gamma\), then
 % \(\TB_\alpha\) becomes nested brackets \(\TB_{\beta} \TB_\gamma\).
@@ -181,13 +181,13 @@ kind of proper types).  Declarations in a signature are not
 associated to particular stages; so they can be used at every stage.
 
 Second, an indexed type such as Vector\ 3 or Vector\ $x$ is well
-formed only at the stage(s) where the index term is well typed.  Since
-constant \(3\) is well typed at every stage (if it is declared in the
+formed only at the stage(s) where the index term is well-typed.  Since
+constant \(3\) is well-typed at every stage (if it is declared in the
 signature), Vector\ 3 is a well-formed type at every stage, too.
-However, Vector\ $M$ is well formed only at the stage where index term
+However, Vector\ $M$ is well-formed only at the stage where index term
 $M$ is typed.  Thus, the kinding judgment
 of \LMD takes the form \(\G\V \tau :: K @ A\), where stage $A$ stands for
-where \(\tau\) is well formed.  For example,
+where \(\tau\) is well-formed.  For example,
 given \(\text{Vector}:: \I \rightarrow *\) in the signature \(\Sigma\),
 \(x:\I@\varepsilon \V \text{Vector }x :: * @\varepsilon\) can be
 derived but

@@ -30,7 +30,7 @@ argument and returns \(c \texttt{ + } c\), is given type \texttt{int
   code -> int code} so that it cannot be applied to, say, a quotation
 of \texttt{"Hello"}, which is given type \texttt{string
   code}.  Ensuring safety for \verb|run| is more challenging because
-code types per by themselves do not guarantee that the execution of code values never
+code types by themselves do not guarantee that the execution of code values never
 results in unbound variable errors.  Taha and
 Nielsen~\cite{taha2003environment} introduced the notion of
 environment classifiers to address the problem, developed a type
@@ -106,7 +106,7 @@ vectors and matrices of different sizes.
 % 依存型とは何か?
 
 One natural idea to address this problem is the introduction of dependent types
-to express the size of data structure in static types~\cite{Xi98}.
+to express the size of data structures in static types~\cite{Xi98}.
 % Dependent types are types which are dependent on values.
 % We can use dependent types for securer programming like Xi and Pfenning
 For example, we could declare vector types indexed by the size of
@@ -141,7 +141,7 @@ the four multi-stage constructs are handled slightly differently from
 MetaOCaml, because its type system and semantics are arguably simpler
 than \(\lambda^\alpha\)~\cite{taha2003environment}, which formalizes
 the design of MetaOCaml more faithfully.  Dependent types are based on
-\LLF~\cite{attapl}, which has one of the simplest form of dependent
+\LLF~\cite{attapl}, which has one of the simplest forms of dependent
 types.  Our technical contributions are summarized as follows:
 \begin{itemize}
 \item We give a formal definition of \LMD with its syntax, 

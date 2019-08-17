@@ -20,24 +20,16 @@ $M \E N : \tau @ A$.  Substitutions $\mathcal{J}[z \mapsto M]$ and
 $\mathcal{J}[\alpha \mapsto A]$ are defined in a straightforward
 manner.  Using these notations, the two substitution lemmas are stated as follows:
 
+We proved the next two leammas by simultaneous induction on derivations.
+
 \begin{lemma}[Term Substitution]
   If $\G, z:\xi@B, \D \V \mathcal{J}$ and $\G\V P:\xi @B$, then $\G, (\D[z \mapsto P]) \V \mathcal{J}[z \mapsto P]$.  Similarly, if $\V \G, z:\xi@B, \D$ and
   $\G\V P:\xi @B$, then $\V \G, (\D[z \mapsto P])$.
 \end{lemma}
 
-\begin{proof}
-  By simultaneous induction on derivations.
- \qed
-\end{proof}
-
 \begin{lemma}[Stage Substitution]
 	If $\G \V \mathcal{J}$, then $\G[\beta\mapsto B] \V \mathcal{J}[\beta\mapsto B]$.  Similarly, if $\V \G$, then $\V \G[\beta\mapsto B]$.
 \end{lemma}
-
-\begin{proof}
-  By simultaneous induction on derivations.
-  \qed
-\end{proof}
 
 % Inversion Lemma
 
@@ -135,7 +127,7 @@ Reduction holds also for the staged reduction.
 
 The following theorem Unique Decomposition ensures that, every typed
 term is either a value or can be uniquely decomposed to an evaluation
-context and a redex, ensuring that a well typed term is not
+context and a redex, ensuring that a well-typed term is not
 immediately stuck and the staged semantics is deterministic.
 
 \begin{theorem}[Unique Decomposition]
@@ -169,6 +161,6 @@ Progress is a corollary of Unique Decomposition.
 
 \begin{corollary}[Progress]
 	If $\G$ does not have any variable declared at stage $\varepsilon$ and $\G \V M : \tau  @ A$, then
-	$ M \in V^A $ or $M'$ exists such that $M \longrightarrow_s M'$.
+	$ M \in V^A $ or there exists $M'$ such that $M \longrightarrow_s M'$.
 \end{corollary}
 
