@@ -25,9 +25,9 @@ sequence. \LMD is defined by the following grammar:
     % \textrm{Stage variables} &   &                          & \alpha,\beta,\gamma                                                                                        \\
     % \textrm{Stage}           &   &                          & A,B,C                                                                                                      \\
     \textrm{kinds}             &  & K,J,I,H,G                & ::= * \mid \Pi x:\tau.K                                                           \\
-    \textrm{types}             &  & \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\tau \mid \tau\ M \mid \TW_{\alpha} \tau \mid \F\alpha.\tau \\
+    \textrm{types}             &  & \tau,\sigma,\rho,\pi,\xi & ::= X \mid \Pi x:\tau.\sigma \mid \tau\ M \mid \TW_{\alpha} \tau \mid \F\alpha.\tau \\
     %     \textrm{Constants}       &   &                          & c                                                                                                          \\
-    \textrm{terms}             &  & M,N,L,O,P                & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M                   \\
+    \textrm{terms}             &  & M,N,L,O,P                & ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ N \mid \TB_\alpha M                   \\
                                &  &                          & \ \ \ \ \mid \TBL_\alpha M \mid \Lambda\alpha.M \mid M\ A \mid \%_\alpha M        \\
     \textrm{signatures}         &  & \Sigma                   & ::= \emptyset \mid \Sigma, X::K \mid \Sigma, c:\tau                               \\
     \textrm{type env.} &  & \Gamma                   & ::= \emptyset \mid  \Gamma,x:\tau @A                                              \\
