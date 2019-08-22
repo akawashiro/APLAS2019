@@ -144,8 +144,11 @@ the design of MetaOCaml more faithfully.  Dependent types are based on
 \LLF~\cite{attapl}, which has one of the simplest forms of dependent
 types.  Our technical contributions are summarized as follows:
 \begin{itemize}
-\item We give a formal definition of \LMD with its syntax, 
-  type system and two kinds of reduction---full and staged reduction.
+\item We give a formal definition of \LMD with its syntax, type system and
+two kinds of reduction. Full reduction, allowing reduction of any redex,
+including under $\lambda$-abstraction and quotation, and staged reduction, a
+small-step call-by-value operational semantics that is closer to the intended
+multi-stage implementation. \AK{This sentence looks too long as an item.}
 \item We show preservation, strong normalization, and confluence for
   full reduction; and show unique decomposition (and progress as its
   corollary) for staged reduction, which formalizes program execution.
