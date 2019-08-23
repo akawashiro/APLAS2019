@@ -198,14 +198,13 @@ nor
 can be.
 
 At first, the restriction above sounds too severe, because a term like
-\(\lambda x:\I. \TB_\alpha (\lambda y:\text{Vector }x.M) \), which
-models a typical code generator which takes the size $x$ and returns
-code for vector manipulation specialized to the given size.  It seems
-crucial for \(y\) to be given a type indexed by $x$.  We can address
-this problem by CSP---In fact,
-$\text{Vector }x$ is not well formed at $\alpha$ under $x:\I@\varepsilon$
-but $\text{Vector }(\%_\alpha x)$ is!  So, we can still write
-\(\lambda x:\I. \TB_\alpha (\lambda y:\text{Vector }(\%_\alpha x).M) \)
+\(\lambda x:\I. \TB_\alpha (\lambda y:\text{Vector }x.M) \), which models a
+typical code generator which takes the size $x$ and returns code for vector
+manipulation specialized to the given size, frequently appears. It seems crucial
+for \(y\) to be given a type indexed by $x$. We can address this problem by
+CSP---In fact, $\text{Vector }x$ is not well formed at $\alpha$ under
+$x:\I@\varepsilon$ but $\text{Vector }(\%_\alpha x)$ is! So, we can still
+write \(\lambda x:\I. \TB_\alpha (\lambda y:\text{Vector }(\%_\alpha x).M) \)
 for the typical sort of code generators.
 
 Our decision that well-formedness of types takes stages of index terms
