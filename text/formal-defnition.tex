@@ -548,12 +548,12 @@ not executed, the grammar is indexed by stages.
 
 \begin{definition}[Values]
   The family $V^A$ of sets of values, ranged over by $v^A$,
-  is defined by the following grammar.  In the grammar, $A \neq \varepsilon$ is assumed.
+  is defined by the following grammar.  In the grammar, $A' \neq \varepsilon$ is assumed.
   \begin{align*}
-    v^\varepsilon \in V^\varepsilon & ::= \lambda x:\tau.M \mid\ \TB_\alpha v^\alpha \mid \Lambda\alpha.v^\varepsilon                                       & \\
-    v^A \in V^A                     & ::= x \mid \lambda x:\tau.v^A \mid v^A\ v^A \mid\ \TB_\alpha v^{A\alpha} \mid \Lambda\alpha.v^A \mid v^A\ B & \\
-                                    & \quad\   \mid\ \TBL_\alpha v^{A'} (\text{if } A = A'\alpha \text{ for some } \alpha, A' \neq \varepsilon)             & \\
-                                    & \quad\   \mid\ \%_\alpha v^{A'} (\text{if } A = A'\alpha  \text{ for some } \alpha, A')
+    v^\varepsilon \in V^\varepsilon & ::= \lambda x:\tau.M \mid\ \TB_\alpha v^\alpha \mid \Lambda\alpha.v^\varepsilon                                             & \\
+    v^{A'} \in V^{A'}               & ::= x \mid \lambda x:\tau.v^{A'} \mid v^{A'}\ v^{A'} \mid\ \TB_\alpha v^{A'\alpha} \mid \Lambda\alpha.v^{A'} \mid v^{A'}\ B & \\
+                                    & \quad\   \mid\ \TBL_\alpha v^{A''} (\text{if } A' = A''\alpha \text{ for some } \alpha, A'' \neq \varepsilon)               & \\
+                                    & \quad\   \mid\ \%_\alpha v^{A''} (\text{if } A' = A''\alpha)
   \end{align*}
 \end{definition}
 
