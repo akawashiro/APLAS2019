@@ -340,15 +340,17 @@ arithmetic, a value of type $\textrm{Vector}\ (4+1)$ can also have type
 $\textrm{Vector}\ 5$ because of \TConv{}.
 
 % Typing rules for a multi-stage calculus
-The rules \TTB, \TTBL, \TGen, \TIns, and \TCsp{} are constructs for multi-stage progarmming.
-\TTB{} and \TTBL{} are the same as \LTP, as we explained in Section \ref{sec:informal-overview}.
-The rule \TGen{} for stage abstraction is straightforward.
-The condition $\alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)$ ensures that the scope of $\alpha$ is in $M$.
-The rule \TIns{} is for applications of stages to stage abstractions.
-% \TIns{} is mainly used when we run a code value or rename a stage variable in the body of an abstraction.
-The rule \TCsp{} is for CSP, which means that,
-if term $M$ is of type $\tau$ at stage $A$, then $\%_\alpha M$ is of type $\tau$ at stage $A\alpha$.
-Note that CSP is also applied to the type \(\tau\) (although it is implicit) in the conclusion.  Thanks to implicit CSP, the typing rule is the same as \LTP.
+The rules \TTB, \TTBL, \TGen, \TIns, and \TCsp{} are constructs for
+multi-stage progarmming. \TTB{} and \TTBL{} are the same as \LTP, as we
+explained in Section \ref{sec:informal-overview}. The rule \TGen{} for stage
+abstraction is straightforward. The condition
+$\alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)$ ensures that the scope of $\alpha$
+is in $M$, and avoids capturing variables in the rest of the judgments. The
+rule \TIns{} is for applications of stages to stage abstractions. The rule
+\TCsp{} is for CSP, which means that, if term $M$ is of type $\tau$ at stage
+$A$, then $\%_\alpha M$ is of type $\tau$ at stage $A\alpha$. Note that CSP
+is also applied to the type \(\tau\) (although it is implicit) in the
+conclusion. Thanks to implicit CSP, the typing rules are the same as in \LTP.
 
 
 \subsubsection{Kind, Type and Term Equivalence.}
