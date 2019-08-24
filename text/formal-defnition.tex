@@ -586,12 +586,16 @@ In order to define staged reduction, we define redex and evaluation contexts.
     \mid \Lambda\alpha.E^\varepsilon_B \mid E^\varepsilon_B\ A                                                                                    \\
     E^{A'}_B \in ECtx^{A'}_B               & ::= \square\ (\text{if } A' = B) \mid \lambda x:\tau.E^{A'}_B \mid E^{A'}_B\ M \mid v^{A'}\ E^{A'}_B \\
                                            & \mid \TB_\alpha E^{A'\alpha}_B \mid \TBL_\alpha E^{A}_B \ (\text{where } A\alpha = A')               \\
-                                           & \mid \Lambda\alpha.E^{A'}_B \mid E^{A'}_B\ A \mid \%_\alpha\ E^{A}_B \ (\text{where } A\alpha = A')
+                                           & \mid \Lambda\alpha.E^{A'}_B \mid E^{A'}_B\ A \mid \%_\alpha\ E^{A'}_B \ (\text{where } A\alpha = A')
   \end{align*}
 \end{definition}
 
-The subscripts $A$ and $B$ in $E^A_B$ stand for the stage of the evaluation context and of the hole, respectively.  The grammar represents that staged reduction is left-to-right and call-by-value and terms under \(\Lambda\) are reduced.
-A few examples of evaluation context are shown below:
+The subscripts $A$ and $B$ in $E^A_B$ stand for the stage of the evaluation
+context and of the hole, respectively. The grammar represents that staged
+reduction is left-to-right and call-by-value and terms under \(\Lambda\) are
+reduced. Terms at non-$\varepsilon$ stages are not reduced as long as they do
+not contain a term such as \(\TBL_\alpha \TB_\alpha M\). A few examples of
+evaluation context are shown below:
 \begin{align*}
   \square\ (\lambda x:\I.x)                  & \in  ECtx^\varepsilon_\varepsilon \\
   \Lambda\alpha.\square\ \epsilon            & \in ECtx^\varepsilon_\varepsilon  \\
