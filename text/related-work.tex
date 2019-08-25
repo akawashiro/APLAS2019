@@ -3,9 +3,13 @@
 \section{Related Work}
 \label{sec:related-work}
 
-MetaOCaml is a programming language with quoting, unquoting, run, and
-CSP.  Kiselyov~\cite{8384206} describes many applications of MetaOCaml, including filtering in signal processing, matrix-vector product,
-and a DSL compiler.  
+% Practical research on multi-stage programming
+
+MetaOCaml is a programming language with quoting, unquoting, run, and CSP.
+Kiselyov~\cite{8384206} describes many applications of MetaOCaml, including
+filtering in signal processing, matrix-vector product, and a DSL compiler.
+Ur\cite{chlipala2010ur} is a programming language with metaprogramming, which
+is focused on Web applications.
 
 % 多段階計算の歴史
 
@@ -87,7 +91,10 @@ combination of dependently typed programming with staging in the style of
 MetaOCaml to implement a staged interpreter, which is statically guaranteed
 to generate well-typed code. However, they focused on concrete programming
 examples and there is no theoretical investigation of the programming
-language they used.
+language they used. In order to make safer multi-stage programming language, 
+Martin and Laurence~\cite{martin2015HGRTMP} gave program logic for
+\(\text{Mini-ML}^\square_e\)~\cite{DaviesPfenning01JACM} but
+it cannot manipulate open code which ours can deal with.
 
 % 他の方法としてどのようなものが考えられたか
 
