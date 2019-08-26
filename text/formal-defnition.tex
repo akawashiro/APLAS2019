@@ -464,14 +464,14 @@ do depend on stages and so this rule does not apply.
 This rule is motivated by a practical consideration. We have potentially many
 pairs of vectors of the fixed length in some fields, for example, computer
 graphics and the same function such as vector addition is applied to all of
-them. We will discuss the motivation through an example of specializing a
-vector addition function with respect to the size of vectors. The function
-vadd (with an auxiliary function vadd$_1$) below implements a code generator
-in a hypothetical language based on \LTP. This language provides definitions
-by \textbf{let}, recursive functions (represented by \textbf{fix}),
-\textbf{if}-expressions, and primitives cons, head, and tail to manipulate
-vectors.
-We assume that
+them. \AK{I strenghened this example by adding concrete situation. Do we need
+more reinforcements such as comparision with other method?} We will discuss
+the motivation through an example of specializing a vector addition function
+with respect to the size of vectors. The function vadd (with an auxiliary
+function vadd$_1$) below implements a code generator in a hypothetical
+language based on \LTP. This language provides definitions by \textbf{let},
+recursive functions (represented by \textbf{fix}), \textbf{if}-expressions,
+and primitives cons, head, and tail to manipulate vectors. We assume that
 $\text{cons}$ is of type $\Pi n:\I.\I \to \text{Vector}\ n \to \text{Vector}\ (n+1)$, 
 $\text{head}$ is of type $\Pi n:\I.\text{Vector}\ (n+1) \to \I$, and
 $\text{tail}$ is of type $\Pi n:\I.\text{Vector}\ (n+1) \to (\text{Vector}\ n)$.
