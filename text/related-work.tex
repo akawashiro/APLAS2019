@@ -23,7 +23,11 @@ operators for run and CSP; a few
 studies~\cite{benaissa1999logical,MoggiTahaBenaissaSheard99ESOP} enhanced and
 improved $\lambda^\circ$ towards the development of a type-safe multi-stage
 calculus with quasi-quotation, run, and CSP, which were proposed by Taha and
-Sheard as constructs for multi-stage programming~\cite{MetaML}.
+Sheard as constructs for multi-stage programming~\cite{MetaML}. Chen and
+Xi~\cite{chen2003meta} introduce a code type with types of free variables in
+the code in order to prevent free variable evaluation. \AK{Is here
+appropriate? Although this paper using the concept of dependent types, the
+purpose is avoid open code problem. Therefore, I cite this paper here.}
 
 Finally, Taha and Nielsen invented the concept of environment
 classifiers~\cite{taha2003environment} and developed a typed calculus
@@ -75,24 +79,21 @@ example.
 % Comparison with other works
 
 Although there are studies on combinations of multi-stage programming and
-other programming features such as mutable cells~\cite{kiselyov2016refined} and
-control operators~\cite{KameyamaKiselyovShan09PEPM,oishi2017staging}, a
-combination with dependent types has been little studied. 
-
-Brady and Hammond~\cite{brady2006dependently} have discussed a
-combination of dependently typed programming with staging in the style of
-MetaOCaml to implement a staged interpreter, which is statically guaranteed
-to generate well-typed code. However, they focused on concrete programming
-examples and there is no theoretical investigation of the programming
-language they used. 
-
+other programming features such as mutable cells~\cite{kiselyov2016refined}
+and control operators~\cite{KameyamaKiselyovShan09PEPM,oishi2017staging}, a
+combination with dependent types has been little studied. \AK{little?} Brady
+and Hammond~\cite{brady2006dependently} have discussed a combination of
+dependently typed programming with staging in the style of MetaOCaml to
+implement a staged interpreter, which is statically guaranteed to generate
+well-typed code. However, they focused on concrete programming examples and
+there is no theoretical investigation of the programming language they used.
 Pasalic and Taha~\cite{pasalic2002tagless} designed \(\lambda_{H\circ}\) by
 introducing the concept of stage into an existing dependent type system
 \(\lambda_H\)~\cite{zhong2002certified}. However, there are not eval and CSP
 in \(\lambda_{H\circ}\) because it was designed before the invention of
-environment classifiers.
-
-In Forgarty, Pasalic, Siek and Taha~\cite{fogarty2007concoqtion}
+environment classifiers. In Forgarty, Pasalic, Siek and
+Taha~\cite{fogarty2007concoqtion}, they extended the type system of MetaOCaml
+with indexed types. With this extension, types can be indexed with a Coq term.
 
 In order to make safer multi-stage programming language, 
 Martin and Laurence~\cite{martin2015HGRTMP} gave program logic for
@@ -102,8 +103,8 @@ this sentence is appropriate?}
 
 % 他の方法としてどのようなものが考えられたか
 
-Although we define type equivalence of \LMD with composition of equivalence
-rules, there is another candidate to define, which gives reduction on types
-and compare the results of reduction such as~\cite{sorensen2006lectures}.
-This method is better than one of \LMD because equivalence rules become
-simple. However, we reject it because it cannot handle CSP flexibly.
+% Although we define type equivalence of \LMD with composition of equivalence
+% rules, there is another candidate to define, which gives reduction on types
+% and compare the results of reduction such as~\cite{sorensen2006lectures}.
+% This method is better than one of \LMD because equivalence rules become
+% simple. However, we reject it because it cannot handle CSP flexibly.
