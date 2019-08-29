@@ -524,18 +524,15 @@ the type of vadd\ 5\ $\varepsilon$ is
 \AI{Comparison?}
 
 \paragraph{Remark:}
-\AI{Comments on \QPercent}
-Without \QPercent, however, it would not be possible
-to compose this function code with another piece of code
-$v$ of type, say, \(\TW_\gamma \text{Vector }5\) because
-\(\text{Vector }5\) and \(\text{Vector }(\%_\beta 5)\) are
-syntactically different types.
-% : \(\TB_\gamma (\TBL_\gamma (\text{vadd}\ 5\ \gamma)\ v\ v)\).
+When this function is composed with another piece of code $v$ of type, say,
+\(\TW_\gamma \text{Vector }5\), \QPercent plays an essential role; that is,
+\(\text{Vector }5\) and \(\text{Vector }(\%_\beta 5)\) are syntactically
+different types but \QPercent enables to equate one with another.
 Interestingly, Hanada and Igarashi~\cite{Hanada2014} rejected the idea of
 reduction that removes $\%_\alpha$ when they developed \LTP{}, as such
-reduction does not match the operational behavior of the CSP operator
-in implementations.  However, as an equational system for multi-stage
-programs, the rule \QPercent makes sense.
+reduction does not match the operational behavior of the CSP operator in
+implementations. However, as an equational system for multi-stage programs,
+the rule \QPercent makes sense.
 
 \renewcommand{\Vpn}{\text{Vector}\ n}
 \paragraph{Remark:} By using implicit type-level CSP, the type of vadd
