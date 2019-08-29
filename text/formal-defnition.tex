@@ -521,18 +521,25 @@ If the obtained code is run by applying to \(\varepsilon\),
 the type of vadd\ 5\ $\varepsilon$ is
 \(\Vpn\to\Vpn\to\Vpn\) as expected.
 
-\AI{Comparison?}
+There are other ways to realize the vector addition function for fixed-length
+lists: determining statically the length of all the vectors and use tuples
+instead of lists or checking dynamically the dimensions of every pair of
+lists. However, our method is better than there two methods in two points.
+First, our function, $\text{vadd}_1$ can generate function for arbitrary
+length vectors unlike ones using tuples. Second, $\text{vadd}_1$ has an
+advantage in speed over ones using dynamic checking because it can generate
+optimized function for a given length.
 
 \paragraph{Remark:}
 When this function is composed with another piece of code $v$ of type, say,
-\(\TW_\gamma \text{Vector }5\), \QPercent plays an essential role; that is,
+\(\TW_\gamma \text{Vector }5\), \QPercent{} plays an essential role; that is,
 \(\text{Vector }5\) and \(\text{Vector }(\%_\beta 5)\) are syntactically
-different types but \QPercent enables to equate one with another.
+different types but \QPercent{} enables to equate one with another.
 Interestingly, Hanada and Igarashi~\cite{Hanada2014} rejected the idea of
 reduction that removes $\%_\alpha$ when they developed \LTP{}, as such
 reduction does not match the operational behavior of the CSP operator in
 implementations. However, as an equational system for multi-stage programs,
-the rule \QPercent makes sense.
+the rule \QPercent{} makes sense.
 
 \renewcommand{\Vpn}{\text{Vector}\ n}
 \paragraph{Remark:} By using implicit type-level CSP, the type of vadd
