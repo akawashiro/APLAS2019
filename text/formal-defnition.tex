@@ -465,13 +465,12 @@ do depend on stages and so this rule does not apply.
 We show an example of a dependently typed code generator in a
 hypothetical language based on \LTP.  
 % This rule is motivated by a practical consideration.
-Let's consider an application, for example, in computer graphics, in
-which we have potentially many pairs of vectors of the fixed (but
-statically unkown) length and a function---such as vector
-addition---to be applied to all of them.
+Let's consider an application, for example, in computer graphics, in which we
+have potentially many pairs of vectors of the fixed (but statically unkown)
+length and a function---such as vector addition---to be applied to all of
+them. This function should be fast because it is applied many times and be
+safe because just one runtime error may ruin whole long time calculation.
 
-\AI{Some more description about what we'd like to do.}
-\AI{Brief comparison with other ways (somewhere else)?}
 % \AK{I strenghened this example by adding concrete situation. Do we need
 % more reinforcements such as comparision with other method?} We will discuss
 % the motivation through an example of specializing a vector addition function
