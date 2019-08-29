@@ -504,7 +504,7 @@ We start with the helper function vadd$_1$, which takes a stage, the length $n$ 
 	  \>\> $\textbf{else}\ \TB_\alpha ($ \= $\textbf{let}\ t_1 = \text{tail}\ (\TBL_\alpha v_1)\ \textbf{in}$ \\
 	  \>\>\> $\textbf{let}\ t_2 = \text{tail}\ (\TBL_\alpha v_2)\ \textbf{in}$ \\
           \>\>\> $\text{cons}\ $\= $(\text{head}\ (\TBL_\alpha v_1) + \text{head} \ (\TBL_\alpha v_2))$ \\
-          \>\>\>\> $(\TBL_\alpha f\ (n-1)\ (\TB_\alpha t_1)\ (\TB_\alpha t_2)))$
+          \>\>\>\> $\TBL_\alpha (f\ (n-1)\ (\TB_\alpha t_1)\ (\TB_\alpha t_2)))$
 \end{tabbing}
 Note that the generated code will not contain branching on $n$ or recursion.
 (Here, we assume that the type system can determine whether $n=0$ when
