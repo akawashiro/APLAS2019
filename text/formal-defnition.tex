@@ -340,7 +340,7 @@ $\textrm{Vector}\ 5$ because of \TConv{}.
 
 % Typing rules for a multi-stage calculus
 The rules \TTB, \TTBL, \TGen, \TIns, and \TCsp{} are constructs for
-multi-stage progarmming. \TTB{} and \TTBL{} are the same as in \LTP, as we
+multi-stage programming. \TTB{} and \TTBL{} are the same as in \LTP, as we
 explained in Section \ref{sec:informal-overview}. The rule \TGen{} for stage
 abstraction is straightforward. The condition
 $\alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)$ ensures that the scope of $\alpha$
@@ -473,7 +473,7 @@ $\text{head}$ is of type $\Pi n:\I.\text{Vector}\ (n+1) \to \I$, and
 $\text{tail}$ is of type $\Pi n:\I.\text{Vector}\ (n+1) \to (\text{Vector}\ n)$.
 
 Let's consider an application, for example, in computer graphics, in which we
-have potentially many pairs of vectors of the fixed (but statically unkown)
+have potentially many pairs of vectors of the fixed (but statically unknown)
 length and a function---such as vector addition---to be applied to
 them. This function should be fast because it is applied many times and be
 safe because just one runtime error may ruin the whole long-running calculation.
