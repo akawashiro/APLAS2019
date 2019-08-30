@@ -73,7 +73,7 @@ whose types are declared in signature $\Sigma$, and the following five forms
 related to multi-stage programming:
 $\TB_\alpha M$ represents a code fragment; $\TBL_\alpha M$ represents escape;
 $\Lambda\alpha.M$ is a stage variable abstraction;
-$M\ A$ is an application of stage $A$ to a stage abstraction $M$; and
+$M\ A$ is an application of a stage abstraction $M$ to stage $A$; and
 $\%_\alpha M$ is an operator for cross-stage persistence.
 
 % Signature
@@ -152,9 +152,12 @@ We show representative cases below.
 Here, $\TB_{\alpha_1\cdots\alpha_n} M$,
 $\TBL_{\alpha_1\cdots\alpha_n} M$, and $\%_{\alpha_1\cdots\alpha_n} M$
 $(n \geq 0)$ stand for $\TB_{\alpha_1} \cdots \TB_{\alpha_n} M$,
-$\TBL_{\alpha_1}\cdots \TBL_{\alpha_n} M$, and
-$\%_{\alpha_1}\cdots \%_{\alpha_n} M$, respectively.  In particular,
+$\TBL_{\alpha_n}\cdots \TBL_{\alpha_1} M$, and
+$\%_{\alpha_n}\cdots \%_{\alpha_1} M$, respectively.  
+In particular,
 $\TB_{\varepsilon} M = \TBL_{\varepsilon} M = \%_{\varepsilon} M = M$.
+Also, it is important that
+the order of stage variables is reversed for $\TBL$ and $\%$.
 We also define substitutions of a stage or a term for variables in type environment $\G$.
 
 \begin{definition}[Reduction]
@@ -186,7 +189,7 @@ The CSP operator $\%_\alpha$ disappears when $\varepsilon$ is substituted for $\
 We show an example of a reduction sequence below.
 Underlines show the redexes.
 \begin{align*}
-     & \hspace{10mm} \underline{(\lambda i:\I\to\I.(\Lambda\alpha.\TB_\alpha (\%_\alpha i\ 1 + (\TBL_\alpha \TB_\alpha 3))\ \varepsilon))\ (\lambda x:\I.x)} \\
+     & \hspace{10mm} \underline{(\lambda f:\I\to\I.(\Lambda\alpha.\TB_\alpha (\%_\alpha f\ 1 + (\TBL_\alpha \TB_\alpha 3))\ \varepsilon))\ (\lambda x:\I.x)} \\
      & \longrightarrow_\beta (\Lambda\alpha.\TB_\alpha (\%_\alpha (\lambda x:\I.x)\ 1 + (\underline{\TBL_\alpha \TB_\alpha 3})))\ \varepsilon        \\
      & \longrightarrow_\blacklozenge \underline{(\Lambda\alpha.\TB_\alpha (\%_\alpha (\lambda x:\I.x)\ 1 + 3))\ \varepsilon}                                         \\
      & \longrightarrow_\Lambda \underline{(\lambda x:\I.x)\ 1} + 3                                                                                           \\
@@ -200,7 +203,7 @@ Underlines show the redexes.
 
 In this section, we define the type system of \LMD.
 It consists of eight judgment forms for signature well-formedness, type environment well-formedness, kind well-formedness, kinding, typing, kind equivalence, type equivalence, and term equivalence.
-We list the judgments forms in Figure~\ref{fig:LMD-six-judgments}.
+We list the judgment forms in Figure~\ref{fig:LMD-six-judgments}.
 They are all defined in a mutual recursive manner.  We will discuss
 each judgment below.
 
@@ -272,7 +275,7 @@ well-formed.
 
 \subsubsection{Kind Well-formedness and Kinding.}
 
-The rules for kind well-formedness and kinding is a straightforward
+The rules for kind well-formedness and kinding are a straightforward
 adaptation from \LLF and \LTP, except for the following rule for type-level CSP.
 \begin{center}
   \infrule[K-Csp]{
@@ -309,7 +312,7 @@ The rule \TConst{} means that a constant can appear at any stage.
 % $\textrm{bool} :: *, \textrm{true}: \textrm{bool}, \textrm{false}:
 %     \textrm{bool}$, the derivation tree in
 % Figure~\ref{fig:tconst-derivation-tree} is admissible.
-The rules \TVar,\TAbs, and \TApp{} are almost the same as those in the simply typed
+The rules \TVar, \TAbs, and \TApp{} are almost the same as those in the simply typed
 lambda calculus or \LLF.  Additional conditions are that subterms must be
 typed at the same stage (\TAbs{} and \TApp); the type
 annotation/declaration on a variable has to be a proper type of kind
@@ -344,12 +347,12 @@ multi-stage programming. \TTB{} and \TTBL{} are the same as in \LTP, as we
 explained in Section \ref{sec:informal-overview}. The rule \TGen{} for stage
 abstraction is straightforward. The condition
 $\alpha\notin\rm{FTV}(\G)\cup\rm{FTV}(A)$ ensures that the scope of $\alpha$
-is in $M$, and avoids capturing variables in the rest of the judgments. The
+is in $M$, and avoids capturing variables elsewhere. The
 rule \TIns{} is for applications of stages to stage abstractions. The rule
 \TCsp{} is for CSP, which means that, if term $M$ is of type $\tau$ at stage
 $A$, then $\%_\alpha M$ is of type $\tau$ at stage $A\alpha$. Note that CSP
 is also applied to the type \(\tau\) (although it is implicit) in the
-conclusion. Thanks to implicit CSP, the typing rules are the same as in \LTP.
+conclusion. Thanks to implicit CSP, the typing rule is the same as in \LTP.
 
 
 \subsubsection{Kind, Type and Term Equivalence.}
@@ -357,7 +360,7 @@ conclusion. Thanks to implicit CSP, the typing rules are the same as in \LTP.
 Since the syntax of kinds, types, and terms is mutually recursive,
 the corresponding notions of equivalence are also mutually recursive.
 They are congruences closed under a few axioms for term equivalence.
-So, the rules for kind and type equivalences are not very interesting, 
+Thus, the rules for kind and type equivalences are not very interesting, 
 except that implicit CSP is allowed.
 We show a few representative rules below.
 
@@ -495,7 +498,7 @@ function to add two vectors of length $n$.  The generated
 code is run by applying it to \(\varepsilon\) to obtain
 a function of type \(\Vpn\to\Vpn\to\Vpn\) as expected.
 
-We start with the helper function vadd$_1$, which takes a stage, the length $n$ of vectors, and two quoted vectors and returns code that computes the addition of the given two vectors:
+We start with the helper function vadd$_1$, which takes a stage, the length $n$ of vectors, and two quoted vectors as arguments and returns code that computes the addition of the given two vectors:
 %
 \begin{tabbing}
 	  $\textbf{let}\ \text{vadd}_1 : \F\alpha.\Pi n:\I.\TW_\alpha\Vpn\to\TW_\alpha\Vpn\to\TW_\alpha\Vpn$                                \\
@@ -531,11 +534,11 @@ If the obtained code is run by applying to \(\varepsilon\),
 the type of vadd\ 5\ $\varepsilon$ is
 \(\Vpn\to\Vpn\to\Vpn\) as expected.
 
-There are other ways to implement the vector addition function for
-lists of fixed length: by using tuples instead of lists if the length
+There are other ways to implement the vector addition function:
+by using tuples instead of lists if the length
 for all the vectors is statically known or by checking dynamically the
 lengths of lists for every pair.  However, our method is better than
-these two methods in two points.  First, our function, $\text{vadd}_1$
+these alternatives in two points.  First, our function, $\text{vadd}_1$
 can generate functions for vectors of arbitrary length unlike the one
 using tuples.  Second, $\text{vadd}_1$ has an advantage in speed over
 the one using dynamic checking because it can generate an optimized
@@ -588,14 +591,14 @@ not executed, the grammar is indexed by stages.
   \end{align*}
 \end{definition}
 
-Values at $\varepsilon$ stage are a $\lambda$-abstraction, a quoted code,
-or a $\Lambda$-abstraction.  The body of a $\lambda$-abstraction can
-be any term but the body of $\Lambda$-abstraction has to a value.  It
+Values at stage $\varepsilon$ are $\lambda$-abstractions, quoted pieces of code,
+or $\Lambda$-abstractions.  The body of a $\lambda$-abstraction can
+be any term but the body of $\Lambda$-abstraction has to be a value.  It
 means that the body of $\Lambda$-abstraction must be evaluated.  The
 side condition for $\TBL_\alpha v^{A'}$ means that escapes in a value
-can appear only under nested quotations (because an escape under a
+can appear only under nested quotations because an escape under a
 single quotation will splice the code value into the surrounding
-code).  See Hanada and Igarashi~\cite{Hanada2014} for details.
+code.  See Hanada and Igarashi~\cite{Hanada2014} for details.
 
 In order to define staged reduction, we define redex and evaluation contexts.
 
@@ -625,7 +628,7 @@ The subscripts $A$ and $B$ in $E^A_B$ stand for the stage of the evaluation
 context and of the hole, respectively. The grammar represents that staged
 reduction is left-to-right and call-by-value and terms under \(\Lambda\) are
 reduced. Terms at non-$\varepsilon$ stages are not reduced, except
-redexes of the form \(\TBL_\alpha \TB_\alpha M\) at stage \(\alpha\).
+redexes of the form \(\TBL_\alpha \TB_\alpha v^\alpha\) at stage \(\alpha\).
 A few examples of
 evaluation contexts are shown below:
 \begin{align*}
@@ -638,7 +641,7 @@ We write $E^A_B[M]$ for the term obtained by filling the hole $\square$ in $E^A_
 
 Now we define staged reduction using the redex and evaluation contexts.
 
-\begin{definition}[Staged Reduction]
+\begin{definition}[Staged Reduction]\sloppy
   The staged reduction relation, written $M \longrightarrow_s N$, is defined by
   the least relation closed under the rules below.
   \begin{align*}

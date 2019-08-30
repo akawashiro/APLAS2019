@@ -23,8 +23,8 @@ manner.  Using these notations, the two substitution lemmas are stated as follow
 We proved the next two leammas by simultaneous induction on derivations.
 
 \begin{lemma}[Term Substitution]
-  If $\G, z:\xi@B, \D \V \mathcal{J}$ and $\G\V P:\xi @B$, then $\G, (\D[z \mapsto P]) \V \mathcal{J}[z \mapsto P]$.  Similarly, if $\V \G, z:\xi@B, \D$ and
-  $\G\V P:\xi @B$, then $\V \G, (\D[z \mapsto P])$.
+  If $\G, z:\xi@B, \D \V \mathcal{J}$ and $\G\V N:\xi @B$, then $\G, (\D[z \mapsto N]) \V \mathcal{J}[z \mapsto N]$.  Similarly, if $\V \G, z:\xi@B, \D$ and
+  $\G\V N:\xi @B$, then $\V \G, (\D[z \mapsto N])$.
 \end{lemma}
 
 \begin{lemma}[Stage Substitution]
@@ -34,7 +34,7 @@ We proved the next two leammas by simultaneous induction on derivations.
 % Inversion Lemma
 
 The following Inversion Lemma is needed to prove the main theorems.
-As usual~\cite{TAPL}, the Inversion Lemma enables us to infer the types of subterms of a term from the type of the term.
+As usual~\cite{TAPL}, the Inversion Lemma enables us to infer the types of subterms of a term from the shape of the term.
 
 \begin{lemma}[Inversion]\ 
 	\begin{enumerate}
@@ -58,7 +58,7 @@ As usual~\cite{TAPL}, the Inversion Lemma enables us to infer the types of subte
   \end{quotation}
   and its symmetric version.  Then, they are proved simultaneously by induction on derivations.
   Similarly for the others.
- \qed
+  \qed
 \end{proof}
 
 
@@ -74,6 +74,7 @@ Thanks to Term/Stage Substitution and Inversion, we can prove Preservation easil
 	First, there are three cases for $M \longrightarrow M'$.
 	They are $M \longrightarrow_\beta M'$, $M \longrightarrow_\Lambda M'$, and $M \longrightarrow_\blacklozenge M'$.
 	For each case, we can use straightforward induction on typing derivations.
+        \qed
 	% Difficult cases are \TApp, \TTBL, and \TIns.
 	% We need Inversion Lemmas for them.
 \end{proof}
@@ -93,6 +94,7 @@ Following standard proofs (see, e.g., \cite{harper1993framework}), we prove this
 	In order to prove this theorem, we define a translation $(\cdot)^\natural$ from \LMD\ to the simply typed lambda calculus.
 	Second, we prove the $\natural$-translation preserves typing and reduction.
 	Then, we can prove Strong Normalization of \LMD from Strong Normalization of the simply typed lambda calculus.
+ \qed
 \end{proof}
 
 Confluence is a property that any reduction sequences from one typed term converge.
@@ -111,6 +113,7 @@ Since we have proved Strong Normalization, we can use Newman's Lemma~\cite{DBLP:
 	% When we consider two different redexes in a \LMD term, they can only be disjoint, or one is a part of the other.
 	% In short, they are never overlapped each other.
 	% So, we can reduce one of them after we reduce another.
+ \qed
 \end{proof}
 
 Now, we turn our attention to staged semantics.  First, the staged
@@ -125,7 +128,7 @@ Reduction holds also for the staged reduction.
  \qed
 \end{proof}
 
-The following theorem Unique Decomposition ensures that, every typed
+The following theorem Unique Decomposition ensures that every typed
 term is either a value or can be uniquely decomposed to an evaluation
 context and a redex, ensuring that a well-typed term is not
 immediately stuck and the staged semantics is deterministic.

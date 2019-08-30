@@ -151,13 +151,13 @@ small-step call-by-value operational semantics that is closer to the intended
 multi-stage implementation.
 \item We show preservation, strong normalization, and confluence for
   full reduction; and show unique decomposition (and progress as its
-  corollary) for staged reduction, which formalizes program execution.
+  corollary) for staged reduction.
 \end{itemize}
 The combination of multi-stage programming and dependent types has
 been discussed by Pasalic, Taha, and Sheard~\cite{pasalic2002tagless}
 and Brady and Hammond~\cite{brady2006dependently} but, to our
-knowledge, our work is a first formal calculus of dependently typed
-multi-stage programming with all the key constructs~\cite{MetaML}.
+knowledge, our work is a first formal calculus of full-spectrum dependently typed
+multi-stage programming with all the key constructs mentioned above.
 
 \subsubsection{Organization of the Paper.}
 
@@ -167,5 +167,7 @@ Section~\ref{sec:informal-overview} gives an informal overview of
 Section~\ref{sec:properties} shows properties of \LMD.
 Section~\ref{sec:related-work} discusses related work and Section
 \ref{sec:conclusion} concludes the paper with discussion of future
-work.  For reference, we give the full definition of \LMD and
- proofs of properties in the Appendix.
+work.  We omit proofs and (details of) some definitions for brevity;
+interested readers are referred to a full version of the paper,
+which is available at \url{https://arxiv.org/abs/1908.02035}.
+

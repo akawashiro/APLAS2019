@@ -32,15 +32,15 @@ The subscript $\alpha$ in $\TB_\alpha$ and $\TBL_\alpha$ is a \textit{stage
   \textit{transition variable}, which is derived from correspondence
   to modal logic, studied by Tsukada and Igarashi~\cite{Tsukada}.} and
 a sequence of stage variables is called a \textit{stage}.  Intuitively,
-they represent the depth of nested brackets.  Stage variables can be
+a stage represents the depth of nested brackets.  Stage variables can be
 abstracted by $\Lambda\alpha.M$ and instantiated by an application
 $M\ A$ to stages.  For example,
 $\Lambda\alpha.\TB_\alpha ((\lambda x:\I.x+10)\ 5)$ is a code value,
-where \(\alpha\) is abstracted.  If it is applied to \(\alpha_1 \cdots \alpha_n\), \(\TB_\alpha\) becomes \(\TB_{\alpha_1} \cdots \TB_{\alpha_n}\); in particular,
+where \(\alpha\) is abstracted.  If it is applied to \(A = \alpha_1 \cdots \alpha_n\), \(\TB_\alpha\) becomes \(\TB_{\alpha_1} \cdots \TB_{\alpha_n}\); in particular,
 if \(n = 0\), \(\TB_\alpha\) disappears.  So, an
 application of $\Lambda\alpha.\TB_\alpha ((\lambda x:\I.x+10)\ 5)$
-to the empty sequence \(\varepsilon\) reduces to
-(unquoted) \((\lambda x:\I.x+10)\ 5\) and to 15.  In other words, application of
+pto the empty sequence \(\varepsilon\) reduces to
+(unquoted) \((\lambda x:\I.x+10)\ 5\) and to 15.  In other words, application of a
 \(\Lambda\)-abstraction to $\varepsilon$ corresponds to \texttt{run}.
 % If \(\alpha\) is instantiated with, say, \(\beta\gamma\), then
 % \(\TB_\alpha\) becomes nested brackets \(\TB_{\beta} \TB_\gamma\).
@@ -159,7 +159,7 @@ at every stage as in \LTP so that
 \(\lambda x:\I.\Lambda \alpha. \TB_\alpha \lambda y:\I.M\) is a valid
 term (here, \(\I\) is used at \(\varepsilon\) and \(\alpha\)).
 Similarly for indexed types such as Vector 4.  On the other hand, it
-is not clear how a type indexed by a variable, which can be used only
+is not immediately clear how a type indexed by a variable, which can be used only
 at a declared stage, can be used.  For example,
 consider
 \[\TB_\alpha (\lambda x:\I. (\TBL_\alpha (\lambda y:\text{Vector
@@ -203,7 +203,7 @@ typical code generator which takes the size $x$ and returns code for vector
 manipulation specialized to the given size, will be rejected. It seems crucial
 for \(y\) to be given a type indexed by $x$. We can address this problem by
 CSP---In fact, $\text{Vector }x$ is not well formed at $\alpha$ under
-$x:\I@\varepsilon$ but $\text{Vector }(\%_\alpha x)$ is! So, we can still
+$x:\I@\varepsilon$ but $\text{Vector }(\%_\alpha x)$ is!  Thus, we can still
 write \(\lambda x:\I. \TB_\alpha (\lambda y:\text{Vector }(\%_\alpha x).M) \)
 for the typical sort of code generators.
 
