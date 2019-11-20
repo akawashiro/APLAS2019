@@ -265,7 +265,17 @@
 \end{frame}
 
 \begin{frame}[fragile]{\LTP [Hanada\&Igarashi'14]}
-    Multi-stage programming with explicit Cross Stage Persistence (CSP)
+    Multi-stage calculus with Cross Stage Persistence (CSP)
+    \begin{table}
+        \begin{tabular}{ c | c | c }
+            & MetaOCaml & \LTP \\
+            \hline
+            Make code & \verb| let a = .<(1+2)>.| & \( \textbf{let } a = \TB_\alpha (1 + 2) \) \\
+            Embed code & \verb| .<(.~a)+(.~a)>.| & \( (\TB_\alpha (\TBL_\alpha a + \TBL_\alpha a)) \) \\
+            Run code & \verb| run .<(1+2)>.| & \( \textbf{run } (\TB_\alpha (1 + 2)) \) \\
+            Code type & \verb| int code | & \( \TW_\alpha \text{Int} \)
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}[fragile]{vadd-gen in \LMD}
