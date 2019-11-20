@@ -1,0 +1,584 @@
+\documentclass[dvipdfmx,aspectratio=169, 20pt]{beamer}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{ascmac}
+\usepackage[backend=biber, style=numeric]{biblatex}
+\usepackage{color}
+\usepackage{mathtools}
+\usepackage{url}
+\usepackage{bcprules, proof}
+\usepackage{xparse}
+\usepackage{xspace}
+\usepackage{fancybox}
+\usepackage{float}
+\usepackage{bcprules}
+\usepackage{ebproof}
+\usepackage{lscape}
+\usepackage{pgfpages}
+
+% beamer cheat sheet
+% http://www.cpt.univ-mrs.fr/~masson/latex/Beamer-appearance-cheat-sheet.pdf
+
+% Make note pages suer simple.
+% \setbeamertemplate{note page}[plain]
+
+% This option generate pdf files showing notes on the right hand side of each
+% pages. But this optionn has some bugs. I recommend you tou do not use this
+% option.
+% \setbeameroption{show notes on second screen=right}
+
+% Note options
+% \setbeameroption{show notes}
+% \setbeameroption{hide notes}
+% \setbeameroption{show only notes}
+
+% Show grid for debug
+% \setbeamertemplate{background}[grid][step=1cm]
+
+% Use default design theme. I quit to use this theme because it has no boxed
+% environments.
+% \usetheme{default}
+\usetheme{Boadilla}
+
+% Add page numbers to footnotes. This line does not work for Boadilla theme.
+% \setbeamertemplate{footline}[frame number]
+
+% So, I use some hack in
+% https://tex.stackexchange.com/questions/66995/modify-footer-of-slides.
+% \makeatother and \makeatletter enable us to change internal package things.
+\makeatother
+\setbeamertemplate{footline}
+{
+    \leavevmode
+    \hbox{
+        \setbeamercolor{coloredboxstuff}{fg=black,bg=white}
+        \hskip0.85\paperwidth
+        \begin{beamercolorbox}[wd=0.10\paperwidth,ht=2.25ex,dp=1ex,right]{coloredboxstuff}
+            {\textbf{\insertframenumber{} / \inserttotalframenumber}}
+        \end{beamercolorbox}}
+    \vskip0pt
+}
+\makeatletter
+
+% Remove all navigation symbols
+\setbeamertemplate{navigation symbols}{}
+% using non standard fonts for beamer
+\usefonttheme{professionalfonts}
+% Set the font size of titles
+% See other font category at
+% https://tex.stackexchange.com/questions/183052/what-are-all-the-possible-first-arguments-to-setbeamerfont
+\setbeamerfont{title}{size=\normalsize}
+\setbeamerfont{frametitle}{size=\normalsize}
+\setbeamerfont{normal text}{size=\small}
+\setbeamerfont{itemize/enumerate body}{size=\footnotesize}
+\setbeamerfont{itemize/enumerate subbody}{size=\footnotesize}
+\setbeamerfont{frametitle continuation}{size=\small}
+\setbeamerfont{framesubtitle}{size=\small}
+\setbeamerfont{abstract}{size=\small}
+\setbeamerfont{projected text}{size=\small}
+\setbeamerfont{block title}{size=\small}
+\setbeamerfont{footline}{size=\tiny}
+
+% You need this line in order to enforce normal text font setting.
+% https://tex.stackexchange.com/questions/320223/how-to-enforce-a-font-series-in-beamer-for-normal-default-text
+\AtBeginDocument{\usebeamerfont{normal text}}
+
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+% \setbeamertemplate{blocks}[default]
+\setbeamertemplate{blocks}[rounded]
+\setbeamertemplate{theorems}[normal font]
+
+% \bibliography{main}{}
+\addbibresource{main.bib}
+\DeclareSortingScheme{mysorting}{\sort{\citeorder}}
+\ExecuteBibliographyOptions{sorting=mysorting}
+
+\setlength\intextsep{0pt}
+\setlength\textfloatsep{0pt}
+
+\newcommand{\rulefbox}[1]{\fbox{\ensuremath{#1}} \hspace{1mm}}
+\newcommand{\figheader}[2]{
+  \begin{flushleft}
+    #2 {\bf \normalsize #1}
+\end{flushleft}}
+
+\newcommand{\toc}[0]{
+  \begin{frame}{Contents}
+  \tableofcontents[currentsection]
+  \end{frame}
+}
+
+\defbeamertemplate{description item}{align left}{\insertdescriptionitem\hfill}
+
+% Load symbol macros
+\input{symboldef.tex}
+
+\title{Dependently Typed Multi-stage Calculus}
+\author{\underline{Akira Kawata} and Atsushi Igarashi}
+\institute{Gradudate School of Informatics, Kyoto University}
+\date{Dec 2, 2019}
+
+\begin{document}
+\maketitle
+
+% Output the outline slide
+% \begin{frame}{Contents}
+%   \tableofcontents
+%   \note{
+%   }
+% \end{frame}
+
+\section{Introduction to Multistage programming}
+
+\begin{frame}[fragile]{What is Multi-stage Programming}
+    A programming paradigm enables
+    \begin{itemize}
+        \item Generation of code at runtime
+        \item Evaluation of code at runtime
+    \end{itemize}
+    Applications
+    \begin{itemize}
+        \item Speeding up programs using runtime information
+    \end{itemize}
+    \note{
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Styles of Multi-stage Programming}
+    \begin{itemize}
+        \item Strings
+            \begin{itemize}
+                    \item Ruby, Perl, etc.
+            \end{itemize}
+        \item ASTs
+            \begin{itemize}
+                    \item Lisp
+            \end{itemize}
+        \item ASTs and code types
+            \begin{itemize}
+                    \item MetaOCaml
+            \end{itemize}
+    \end{itemize}
+    \note{
+        There are three kinds of multi-stage Programming.
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Example of Multi-stage Programming in MetaOCaml}
+    \begin{center}
+        \begin{verbatim}
+     # let a = .< 1 + 2 >.;;
+     val a : int code = .< 1 + 2 >.
+     # Runcode.run a;;
+     - : int = 3
+
+     # let b = .<.~a + .~a>.;;
+     val b : int code = .<(1 + 2) + (1 + 2)>. 
+     # Runcode.run b;;
+     - : int = 6
+        \end{verbatim}
+    \end{center}
+    \note{
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Application of Multi-stage Programming: vadd-gen}
+    Generate efficient vector addition functions for given length vectors.
+    \renewcommand{\V}{\text{Vec}}
+    \begin{tabbing}
+        \( \text{vadd-gen} : \I \to \TW_\alpha (\V \to \V \to \V) \) \\
+        (* \( \TW_\alpha \) is corresponding to code in MetaOCaml.*) \\[2mm]
+        \( \textbf{let}\ \text{vadd3} = \textbf{run}\ (\text{vadd-gen}\ 3);; \) \\
+        \( \text{val}\ \text{vadd3} : \V \to \V \to \V \) \\[2mm]
+        \( \text{vadd3}\ [1;2;3]\ [4;5;6];; \) \\
+        \( - : \V = [5;7;9] \)
+    \end{tabbing}
+    \note{
+    }
+\end{frame}
+
+\begin{frame}[fragile]{The problem of vadd3 generated by vadd-gen}
+    Runtime error occurs for wrong length vectors.
+    \renewcommand{\V}{\text{Vec}}
+    \begin{tabbing}
+        \( \text{vadd3}\ [1;2;3;4]\ [4;5;6;7];; \) \\
+        \( \longrightarrow \textbf{RUNTIME ERROR!} \)
+    \end{tabbing}
+    \note{
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Dependent Types}
+    Types dependent on values
+    \begin{itemize}
+            \item Can give more fine restriction on terms.
+    \end{itemize}
+    \renewcommand{\V}{\text{Vec}\ }
+    \begin{tabbing}
+        \( [1;2;3]:\ (\V 3) \) \\
+        \( [1;2;3;4]:\ (\V 4) \) \\
+        \( \text{vadd3}:\ (\V 3) \to (\V 3) \to (\V 3) \)
+    \end{tabbing}
+
+    \note{
+        By the way, we can write types dependent on values using dependent types.
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Our Approach: \LMD}
+    Introduce dependent types into \LTP [Hanada\&Igarashi'14].
+    \begin{itemize}
+        \item Features of multi-stage programming
+            \begin{itemize}
+                \item Code type
+                \item Type safe {\bf{run}}
+                \item Cross Stage Persistence(CSP)
+            \end{itemize}
+        \item Features of dependent types
+            \begin{itemize}
+                \item Typing, Kinding, Well-formed kind rules with stages
+                \item Equivalence rules including CSP
+            \end{itemize}
+    \end{itemize}
+    \note{
+        Our approach to the problem of multi-stage programming is introducing dependent types into a multi-stage calculus by Hanada and Igarashi.
+        We call our multi-stage calculus as \LMD.
+    }
+\end{frame}
+
+\begin{frame}[fragile]{vadd-gen in \LMD}
+    Type tells us the length of vector.
+    \newcommand{\Vn}{\text{Vec}\ n}
+    \newcommand{\Vt}{\text{Vec}\ 3}
+    \begin{tabbing}
+        \( \text{vadd-gen} : \Pi n:\I \to \TW_\alpha (\Vn \to \Vn \to \Vn) \) \\[2mm]
+        \( \textbf{let}\ \text{vadd3} = \textbf{run}\ (\text{vadd-gen}\ 3);; \) \\
+        \( \text{val}\ \text{vadd3} : \Vt \to \Vt \to \Vt \) \\[2mm]
+    \end{tabbing}
+    Now, vadd3 takes only vectors of 3 length.
+    \note{
+        vadd-gen is changed as follows in \LMD.
+        Thanks to dependent types ...
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Generated functions by vadd-gen in \LMD}
+    Type system prevents illegal use of generated function.
+    \renewcommand{\V}{\text{Vec}}
+    \begin{tabbing}
+        \( \text{vadd3}\ [1;2;3]\ [4;5;6];; \) \\
+        \( - : \V = [5;7;9] \) \\[2mm]
+        \( \text{vadd3}\ [1;2;3;4]\ [4;5;6;7];; \) \\
+        \( \longrightarrow \textbf{TYPE ERROR!} \text{ (not RUNTIME ERROR)} \)
+    \end{tabbing}
+    \note{
+        Type of generated functions by vadd-gen in \LMD have the length information in their types.
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Terms of \LMD}
+    \begin{block}{Terms}
+        \( M ::= c \mid x \mid \lambda x:\tau.M\ \mid M\ M \mid \TB_\alpha M \mid \textbf{run}\ M \mid \TBL_\alpha M \)
+    \end{block}
+    \begin{itemize}
+        \item \( c \): constants
+            \begin{itemize}
+                    \item true, false, etc.
+            \end{itemize}
+        \item \( \TB_\alpha M \): code value
+        \item \( \textbf{run}\ M \): run a code value \( M \)
+            \begin{itemize}
+                \item \( \textbf{run }(\text{vadd-gen }3)\)
+            \end{itemize}
+    \end{itemize}
+    \note{
+        Then, let me explain details of \LMD. \\
+        \( \TBL_\alpha M \) is not needed?
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Types of \LMD}
+    \begin{block}{Types}
+    \( \tau,\sigma ::= X \mid \Pi x:\tau.\sigma \mid \tau\ M \mid \TW_{\alpha} \tau \mid \F\alpha.\tau \)
+    \end{block}
+    \begin{itemize}
+        \item \( X \): type-level constants 
+            \begin{itemize}
+                \item \( \text{Vec} \), \( \text{Int} \).
+            \end{itemize}
+        \item \( \Pi x:\tau.\sigma \): dependent type.
+        \item \( \tau\ M \): Application of term to dependent type.
+            \begin{itemize}
+                \item \( \text{Vec } 3 \)
+            \end{itemize}
+        \item \( \TW_{\alpha} \tau \): a type of code of type \( \tau \).
+            \begin{itemize}
+                \item \( \text{vadd-gen 3} : \TW_\alpha (\text{Vec}\ 3 \to \text{Vec}\ 3 \to \text{Vec}\ 3) \)
+            \end{itemize}
+    \end{itemize}
+    \note{
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Kinds of \LMD}
+    \begin{block}{Kinds}
+        \( K ::= * \mid \Pi x:\tau.K \)
+    \end{block}
+    \begin{itemize}
+        \item \( * \): kind of proper type
+            \begin{itemize}
+                \item \( \text{Int} :: * \)
+            \end{itemize}
+        \item \( \Pi x:\tau.K \): kind dependent on term.
+            \begin{itemize}
+                \item \( \text{Vec} :: (\Pi x:\text{Int}.*) \)
+            \end{itemize}
+    \end{itemize}
+    \note{
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Judgements of \LMD}
+    \begin{itemize}
+        \item \( \G \V K @ A \)
+            \begin{itemize}
+                \item \( K \) is a proper kind under signature \( \Sigma \) at stage \( A \).
+            \end{itemize}
+        \item \( \G \V \tau :: K @ A \)
+            \begin{itemize}
+                \item Type \( \tau \) has kind \( K \) under signature \( \Sigma \) at stage \( A \).
+            \end{itemize}
+        \item \( \G \V M : \tau @ A \)
+        \item \( \G \V K \E K' @ A \)
+            \begin{itemize}
+                \item Kind \( K \) is equivalent to \( K' \) under signature \( \Sigma \) at stage \( A \).
+            \end{itemize}
+        \item \( \G \V \tau \E \tau' @ A \)
+        \item \( \G \V M \E M' @ A \)
+    \end{itemize}
+    \note{
+    }
+\end{frame}
+
+\begin{frame}[fragile]{What is stage\ \( A \)\ ?}
+    % I copied this underwrite macro from
+    % https://tex.stackexchange.com/questions/141932/how-to-write-under-an-underline.
+    % \underwrite[<thickness>]{<numerator>}{<denominator>}
+    \newcommand{\underwrite}[3][]{
+        \genfrac{}{}{#1}{}{\textstyle #2}{\textstyle #3}
+    }
+
+    Level of nested brankets
+    \begin{block}{Stages}
+        \( A := \varepsilon (\text{empty}) \mid \alpha \mid A\alpha \)
+    \end{block}
+    \begin{center}
+        \( \underbrace{(\textbf{run}\ (\TB_\alpha\ \overbrace{(2 + 3)}^{\let\scriptstyle\textstyle\substack{@\alpha}})) + 1}_{\let\scriptstyle\textstyle\substack{@\varepsilon}} \)
+    \end{center}
+    \note{
+        Stage is a sequence of stage variables which appended to each brack triangles.
+        \( \varepsilon \) means the empty sequence
+
+        The wholes expression is a term on stage \( \varepsilon \),
+        But subexpression in the brack triangle is a term on stage \( \alpha \).
+    }
+\end{frame}
+
+\begin{frame}[fragile]{What is signature \( \Sigma \)\ ?}
+    Signature \( \Sigma \) is a sequence of type-level constants and constant values.
+    \begin{itemize}
+        \item For example,
+            \begin{itemize}
+                \item \( \Sigma = \text{Int}::*, \text{Vec}::\Pi x:\text{Int}.*, 0:\text{Int} \)
+            \end{itemize}
+        \item Elements of \( \Sigma \) can be used at any stages.
+    \end{itemize}
+    \note{
+        自然数が無限個あるというツッコミを誘発する気がする。
+        後者関数が存在することにするか?
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Typing Rules of \LMD}
+    \begin{center}
+        \infrule[{\TTB}]{
+            \G\V M:\tau@{A\alpha}
+        }{
+            \G\V\TB_{\alpha}M:\TW_{\alpha}\tau@A
+        } \\[2mm]
+        \infrule[{\textsc{T-App}}]{
+            \G\V M:(\Pi (x:\sigma).\tau)@A \andalso
+            \G\V N:\sigma@A
+        }{
+            \G\V M\ N : \tau[x\mapsto N]@A
+        } \\[2mm]
+        \infrule[{\TConst}]{
+            c:\tau \in \Sigma \andalso
+        }{
+            \G \V c:\tau@A
+        }
+    \end{center}
+    \begin{itemize}
+        \item Terms are stage sensitive so cannot ignore stages.
+        \item Constants in \( \Sigma \) can be used at any stages.
+    \end{itemize}
+    \note{
+        Let's have a look on some typing rules.
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Kinding Rules of \LMD}
+    \begin{center}
+        \infrule[{\KTW}]{
+            \G\V \tau::*@A\alpha
+        }{
+            \G\V\TW_\alpha \tau::*@A
+        }\\[2mm]
+        \infrule[{\KApp}]{
+            \G\V \sigma:: (\Pi x:\tau.K)@A \andalso \G\V M:\tau@A
+        }{
+            \G\V \sigma\ M::K[x\mapsto M]@A
+        }
+        \infrule[{\KTConst}]{
+            X::K \in \Sigma
+        }{
+            \G \V X::K@A
+        }
+    \end{center}
+    \begin{itemize}
+        \item Types are also stage sensitive.
+        \item Type-level constants in \( \Sigma \) can be used at any stages.
+    \end{itemize}
+    \note{
+        Kinding rules have something in common with typing rules.
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Example of Kinding Derivation}
+    \renewcommand{\Vec}{\text{Vec}}
+    \( \V \TB_\alpha [1,2,3] : \underbrace{\TW_\alpha (\Vec\ 3)}_{\TW_\alpha (\Vec\ 3) :: * @ \varepsilon} @ \varepsilon \) \\[2mm]
+    \pause
+    \( \Sigma = \Vec::\Pi x:\I.*, 0:\I, 1:\I, \cdots \)
+    \begin{center}
+        \footnotesize
+        \begin{minipage}{0.7\hsize}
+            \infer[\KTW]
+            {\V \TW_\alpha (\Vec\ 3) :: * @ \varepsilon}
+            {
+                \infer[\KApp]
+                {\V \Vec\ 3 :: * @ \alpha}
+                {
+                    \infer[\KTConst]
+                    {\V \Vec :: \Pi x:\I.* @ \alpha}
+                    {\Vec :: \Pi x:\I.* \in \Sigma}
+                    \andalso
+                    \infer[\TConst]
+                    {\V 3 : \I @ \alpha}
+                    {3 : \I \in \Sigma}
+                }
+            }
+        \end{minipage}
+    \end{center}
+    We can use \Vec\ and integers at any stages.
+    \note{
+        The constructed type Vec 3 is stage sensitive so we cannot use at arbitrary stages
+        but the elements, Vec and 3 are in the signature \( \Sigma \) and can be used at any stages.
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Type and Term Equality Rules of \LMD}
+    \begin{center}
+        \footnotesize{
+            \infrule[{\QTApp}]{
+                \G\V \tau \E \sigma :: (\Pi x:\rho.K)@A \andalso
+                \G\V M \E N : \rho @A
+            }{
+                \G\V \tau\ M \E \sigma\ N :: K[x \mapsto M]@A
+            } \\[2mm]
+            \infrule[{\QBeta}]{
+                \G,x:\sigma@A\V M:\tau@A \andalso
+                \G\V N:\sigma@A
+            }{
+                \G\V(\lambda x:\sigma.M)\ N\E M[x\mapsto N] : \tau[x \mapsto N]@A
+            } \\[2mm]
+            \infrule[{\QPercent}]{
+                \G\V M:\tau@{A\alpha} \andalso
+                \G\V M:\tau@A
+            }{
+                \G\V\%_\alpha M \E M : \tau@{A\alpha}
+            } \\[2mm]
+            \infrule[{\textsc{T-Conv}}]{
+                \G\V M:\tau@A \andalso
+                \G\V \tau\equiv \sigma :: K@A
+            }{
+                \G\V M:\sigma@A
+            }
+        }
+    \end{center}
+    \note{
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Examples of Type Equality}
+    \renewcommand{\V}{\text{Vec}}
+    \begin{itemize}
+        \item \( (\lambda x:\text{Int}.x)\ 3\E 3 \)
+            \begin{itemize}
+                \item From \QBeta.
+            \end{itemize}
+        \item \( \V\ ((\lambda x:\text{Int}.x)\ 3) \E \V\ 3 \)
+            \begin{itemize}
+                \item From \QTApp and \QBeta.
+            \end{itemize}
+        \item \( \V\ (\%_\alpha 3) \E \V\ 3 \)
+            \begin{itemize}
+                \item Because \( 3 \) has type \text{Int} at any stage, we can use \QPercent.
+            \end{itemize}
+    \end{itemize}
+    \note{
+        Shold I show complete derivation tree?
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Propaties}
+    \begin{itemize}
+        \item Subject Reduction
+        \item Strong Normalization
+        \item Confluence
+        \item Progress
+    \end{itemize}
+    \note{
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Conclusion \& Future Works}
+    \begin{block}{Conclusion}
+        We introduced dependent types into muti-stage programming.
+        \begin{itemize}
+            \item Define typing, kinding, well-formed kinding rules including stages.
+            \item Define equality rules.
+            \item Prove type soundness.
+        \end{itemize}
+    \end{block}
+    \begin{block}{Future Works}
+        \begin{itemize}
+            \item Algorithmic Typing
+        \end{itemize}
+    \end{block}
+    \note{
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Related Works}
+    \begin{itemize}
+        \item \LTP [Hanada\&Igarashi'14]
+            \begin{itemize}
+                \item Multi-stage programming including explicit CSP
+            \end{itemize}
+    \end{itemize}
+    \note{
+    }
+\end{frame}
+
+\end{document}
