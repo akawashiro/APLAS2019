@@ -34,7 +34,7 @@
 % \setbeameroption{show only notes}
 
 % Show grid for debug
-% \setbeamertemplate{background}[grid][step=1cm]
+\setbeamertemplate{background}[grid][step=1cm]
 
 % Use default design theme. I quit to use this theme because it has no boxed
 % environments.
@@ -132,7 +132,7 @@
 \section{Introduction to Multistage programming}
 
 \begin{frame}[fragile]{What is Multi-stage Programming}
-    A programming paradigm enables
+    A programming paradigm enables that
     \begin{itemize}
         \item Generation of code at runtime
         \item Evaluation of code at runtime
@@ -145,37 +145,37 @@
     }
 \end{frame}
 
-\begin{frame}[fragile]{Styles of Multi-stage Programming}
-    \begin{itemize}
-        \item Strings
-            \begin{itemize}
-                    \item Ruby, Perl, etc.
-            \end{itemize}
-        \item ASTs
-            \begin{itemize}
-                    \item Lisp
-            \end{itemize}
-        \item ASTs and code types
-            \begin{itemize}
-                    \item MetaOCaml
-            \end{itemize}
-    \end{itemize}
-    \note{
-        There are three kinds of multi-stage Programming.
-    }
-\end{frame}
+% \begin{frame}[fragile]{Styles of Multi-stage Programming}
+%     \begin{itemize}
+%         \item Strings
+%             \begin{itemize}
+%                     \item Ruby, Perl, etc.
+%             \end{itemize}
+%         \item ASTs
+%             \begin{itemize}
+%                     \item Lisp
+%             \end{itemize}
+%         \item ASTs and code types
+%             \begin{itemize}
+%                     \item MetaOCaml
+%             \end{itemize}
+%     \end{itemize}
+%     \note{
+%         There are three kinds of multi-stage Programming.
+%     }
+% \end{frame}
 
 \begin{frame}[fragile]{Example of Multi-stage Programming in MetaOCaml}
     \begin{center}
         \begin{verbatim}
-     # let a = .< 1 + 2 >.;;
-     val a : int code = .< 1 + 2 >.
-     # Runcode.run a;;
+     # let a = .< (1 + 2) >.;;
+     val a : int code = .< (1 + 2) >.
+     # run a;;
      - : int = 3
 
-     # let b = .<.~a + .~a>.;;
-     val b : int code = .<(1 + 2) + (1 + 2)>. 
-     # Runcode.run b;;
+     # let b = .<(.~a) + (.~a)>.;;
+     val b : int code = .< ((1 + 2) + (1 + 2)) >. 
+     # run b;;
      - : int = 6
         \end{verbatim}
     \end{center}
@@ -185,15 +185,13 @@
 
 \begin{frame}[fragile]{Application of Multi-stage Programming: vadd-gen}
     Generate efficient vector addition functions for given length vectors.
-    \renewcommand{\V}{\text{Vec}}
-    \begin{tabbing}
-        \( \text{vadd-gen} : \I \to \TW_\alpha (\V \to \V \to \V) \) \\
-        (* \( \TW_\alpha \) is corresponding to code in MetaOCaml.*) \\[2mm]
-        \( \textbf{let}\ \text{vadd3} = \textbf{run}\ (\text{vadd-gen}\ 3);; \) \\
-        \( \text{val}\ \text{vadd3} : \V \to \V \to \V \) \\[2mm]
-        \( \text{vadd3}\ [1;2;3]\ [4;5;6];; \) \\
-        \( - : \V = [5;7;9] \)
-    \end{tabbing}
+    \begin{verbatim}
+ val vadd-gen : Int -> (Vec -> Vec -> Vec) code
+ let vadd3 = vadd-gen 3;;
+ val vadd : (Vec -> Vec -> Vec) code
+ (run vadd3) [1;2;3] [4;5;6];;
+  - : Vec = [5;7;9]
+    \end{verbatim}
     \note{
     }
 \end{frame}
