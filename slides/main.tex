@@ -266,16 +266,58 @@
 
 \begin{frame}[fragile]{\LTP [Hanada\&Igarashi'14]}
     Multi-stage calculus with Cross Stage Persistence (CSP)
+    \begin{block}{Terms}
+    \begin{tabbing}
+        \hspace{5mm} \( M \) \= \( ::= c \) \hspace{20mm} \= (constants) \\
+        \> \( \mid \TB M \) \> (quote) \\
+        \> \( \mid \TBL M \) \> (unquote) \\
+        \> \( \mid \textbf{run}\ M \) \> (run) \\
+        \> \( \mid \% M \) \> (CSP) \\
+        \> \( \mid x \mid \lambda x:\tau.M \mid M\ M \) \\
+    \end{tabbing}
+    \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Types of \LTP}
+    \begin{block}{Types}
+    \begin{tabbing}
+        \hspace{5mm} \( \tau \) \= ::= X \hspace{20mm} \= (constants) \\
+        \> \( \mid \tau \to \tau \) \> (function type) \\
+        \> \( \mid \TW\ \tau \) \> (code type)
+        % \> \mid \Pi x:\tau.\sigma \mid \tau\ M \mid \TW_{\alpha} \tau \mid \F\alpha.\tau \)
+    \end{tabbing}
+    \end{block}
+   \note{
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Example of \LTP}
     \begin{table}
         \begin{tabular}{ c | c | c }
-            & MetaOCaml & \LTP \\
+            & \LTP & MetaOCaml \\[2mm]
             \hline
-            Make code & \verb| let a = .<(1+2)>.| & \( \textbf{let } a = \TB_\alpha (1 + 2) \) \\
-            Embed code & \verb| .<(.~a)+(.~a)>.| & \( (\TB_\alpha (\TBL_\alpha a + \TBL_\alpha a)) \) \\
-            Run code & \verb| run .<(1+2)>.| & \( \textbf{run } (\TB_\alpha (1 + 2)) \) \\
-            Code type & \verb| int code | & \( \TW_\alpha \text{Int} \)
+            Make code & \( \textbf{let } a = \TB (1 + 2) \) & \verb| let a = .<(1+2)>.| \\[2mm]
+            Embed code & \( (\TB (\TBL a + \TBL a)) \) & \verb| .<(.~a)+(.~a)>.| \\[2mm]
+            Run code & \( \textbf{run } (\TB (1 + 2)) \) & \verb| run .<(1+2)>.| \\[2mm]
+            Code type & \( \TW\ \text{Int} \) & \verb| int code |
         \end{tabular}
     \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{Cross Stage Persistence (CSP)}
+\end{frame}
+
+\begin{frame}[fragile]{Types of \LMD}
+    \begin{block}{Types}
+    \begin{tabbing}
+        \hspace{5mm} \( \tau \) \= ::= X \hspace{20mm} \= (constants) \\
+        \> \( \mid \tau \to \tau \) \> (function type) \\
+        \> \( \mid \TW\ \tau \) \> (code type)
+        % \> \mid \Pi x:\tau.\sigma \mid \tau\ M \mid \TW_{\alpha} \tau \mid \F\alpha.\tau \)
+    \end{tabbing}
+    \end{block}
+   \note{
+    }
 \end{frame}
 
 \begin{frame}[fragile]{vadd-gen in \LMD}
