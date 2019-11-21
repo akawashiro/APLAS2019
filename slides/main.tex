@@ -125,7 +125,7 @@
 
 % Output the outline slide
 % \begin{frame}{Contents}
-%   \tableofcontents
+%     \tableofcontents[currentsection]
 %   \note{
 %   }
 % \end{frame}
@@ -145,26 +145,6 @@
     \note{
     }
 \end{frame}
-
-% \begin{frame}[fragile]{Styles of Multi-stage Programming}
-%     \begin{itemize}
-%         \item Strings
-%             \begin{itemize}
-%                     \item Ruby, Perl, etc.
-%             \end{itemize}
-%         \item ASTs
-%             \begin{itemize}
-%                     \item Lisp
-%             \end{itemize}
-%         \item ASTs and code types
-%             \begin{itemize}
-%                     \item MetaOCaml
-%             \end{itemize}
-%     \end{itemize}
-%     \note{
-%         There are three kinds of multi-stage Programming.
-%     }
-% \end{frame}
 
 \begin{frame}[fragile]{Example of Multi-stage Programming in MetaOCaml}
     \begin{center}
@@ -266,6 +246,14 @@
     }
 \end{frame}
 
+\section{Existing Multi-stage Calculus \LTP}
+
+\begin{frame}{Contents}
+    \tableofcontents[currentsection]
+  \note{
+  }
+\end{frame}
+
 \begin{frame}[fragile]{\LTP [Hanada\&Igarashi'14]}
     Multi-stage calculus with Cross Stage Persistence (CSP)
     \begin{block}{Terms}
@@ -311,6 +299,14 @@
         \hspace{5mm} \= \( \textbf{let}\ \text{mul3}\ x = 2 * x\ \textbf{in} \) \\
         \> \( \TB (\% \text{mul3}\ 5) \)
     \end{tabbing}
+\end{frame}
+
+\section{Extend \LTP with Dependent Types}
+
+\begin{frame}{Contents}
+    \tableofcontents[currentsection]
+  \note{
+  }
 \end{frame}
 
 \begin{frame}[fragile]{Types of \LMD}
@@ -376,6 +372,61 @@
         \item \( \text{vadd3} : \TW (\Vt \to \Vt \to \Vt) \)
     \end{itemize}
 \end{frame}
+
+\begin{frame}[fragile]{Properties}
+    We proved
+    \begin{itemize}
+        \item Subject Reduction
+        \item Strong Normalization
+        \item Confluence
+        \item Progress
+    \end{itemize}
+    \note{
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Related Works}
+    \begin{itemize}
+        \item \LTP [Hanada\&Igarashi'14]
+            \begin{itemize}
+                \item Multi-stage programming including explicit CSP
+            \end{itemize}
+    \end{itemize}
+    \note{
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Conclusion}
+        We introduced dependent types into muti-stage programming.
+        \begin{itemize}
+            \item Define typing, kinding, well-formed kinding rules including stages.
+            \item Define equality rules.
+            \item Prove type soundness.
+        \end{itemize}
+    \note{
+    }
+\end{frame}
+
+% \begin{frame}[fragile]{Styles of Multi-stage Programming}
+%     \begin{itemize}
+%         \item Strings
+%             \begin{itemize}
+%                     \item Ruby, Perl, etc.
+%             \end{itemize}
+%         \item ASTs
+%             \begin{itemize}
+%                     \item Lisp
+%             \end{itemize}
+%         \item ASTs and code types
+%             \begin{itemize}
+%                     \item MetaOCaml
+%             \end{itemize}
+%     \end{itemize}
+%     \note{
+%         There are three kinds of multi-stage Programming.
+%     }
+% \end{frame}
+
 
 % \begin{frame}[fragile]{Terms of \LMD}
 %     \begin{block}{Terms}
@@ -641,45 +692,7 @@
 %     }
 % \end{frame}
 
-\begin{frame}[fragile]{Properties}
-    We proved
-    \begin{itemize}
-        \item Subject Reduction
-        \item Strong Normalization
-        \item Confluence
-        \item Progress
-    \end{itemize}
-    \note{
-    }
-\end{frame}
 
-\begin{frame}[fragile]{Conclusion \& Future Works}
-    \begin{block}{Conclusion}
-        We introduced dependent types into muti-stage programming.
-        \begin{itemize}
-            \item Define typing, kinding, well-formed kinding rules including stages.
-            \item Define equality rules.
-            \item Prove type soundness.
-        \end{itemize}
-    \end{block}
-    \begin{block}{Future Works}
-        \begin{itemize}
-            \item Algorithmic Typing
-        \end{itemize}
-    \end{block}
-    \note{
-    }
-\end{frame}
 
-\begin{frame}[fragile]{Related Works}
-    \begin{itemize}
-        \item \LTP [Hanada\&Igarashi'14]
-            \begin{itemize}
-                \item Multi-stage programming including explicit CSP
-            \end{itemize}
-    \end{itemize}
-    \note{
-    }
-\end{frame}
 
 \end{document}
