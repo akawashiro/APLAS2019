@@ -229,16 +229,12 @@
     Introduce dependent types into \LTP [Hanada\&Igarashi'14].
     \begin{itemize}
         \item Features of multi-stage programming
-            \begin{itemize}
-                \item Code type
-                \item Type safe {\bf{run}}
-                \item Cross Stage Persistence(CSP)
-            \end{itemize}
         \item Features of dependent types
-            \begin{itemize}
-                \item Typing, Kinding, Well-formed kind rules with stages
-                \item Equivalence rules including CSP
-            \end{itemize}
+    \end{itemize}
+    Our contribution
+    \begin{itemize}
+        \item Define typing, kinding, well-formed kind rules with stages
+        \item Define equivalence rules including CSP
     \end{itemize}
     \note{
         Our approach to the problem of multi-stage programming is introducing dependent types into a multi-stage calculus by Hanada and Igarashi.
@@ -250,14 +246,14 @@
 
 \begin{frame}{Contents}
     \tableofcontents[currentsection]
-  \note{
-  }
+    \note{
+    }
 \end{frame}
 
 \begin{frame}[fragile]{\LTP [Hanada\&Igarashi'14]}
     Multi-stage calculus with Cross Stage Persistence (CSP)
     \begin{block}{Terms}
-    \begin{tabbing}
+        \begin{tabbing}
         \hspace{5mm} \( M \) \= \( ::= c \) \hspace{20mm} \= (constants) \\
         \> \( \mid \TB M \) \> (quote) \\
         \> \( \mid \TBL M \) \> (unquote) \\
@@ -285,9 +281,9 @@
         \begin{tabular}{ c | c | c }
             & \LTP & MetaOCaml \\[2mm]
             \hline
-            Make code & \( \textbf{let } a = \TB (1 + 2) \) & \verb| let a = .<(1+2)>.| \\[2mm]
-            Embed code & \( (\TB (\TBL a + \TBL a)) \) & \verb| .<(.~a)+(.~a)>.| \\[2mm]
-            Run code & \( \textbf{run } (\TB (1 + 2)) \) & \verb| run .<(1+2)>.| \\[2mm]
+            Quote & \( \textbf{let } a = \TB (1 + 2) \) & \verb| let a = .<(1+2)>.| \\[2mm]
+            Unquote & \( (\TB (\TBL a + \TBL a)) \) & \verb| .<(.~a)+(.~a)>.| \\[2mm]
+            Run & \( \textbf{run } (\TB (1 + 2)) \) & \verb| run .<(1+2)>.| \\[2mm]
             Code type & \( \TW\ \text{Int} \) & \verb| int code |
         \end{tabular}
     \end{table}
@@ -343,8 +339,8 @@
     }
 \end{frame}
 
-\begin{frame}[fragile]{Problem of vadd3}
-    Hard to compose with other functions.
+\begin{frame}[fragile]{Problem of type of vadd3}
+    Hard to combine with other functions.
     \newcommand{\Vn}{\text{Vec}\ \%n}
     \newcommand{\Vpt}{\text{Vec}\ \%3}
     \newcommand{\Vt}{\text{Vec}\ 3}
@@ -358,18 +354,20 @@
 
 \begin{frame}[fragile]{Solution}
     \newcommand{\Vt}{\text{Vec}\ 3}
+    \newcommand{\Vpt}{\text{Vec}\ \%3}
     Introduce \QPercent.
     \begin{center}
         \infrule[{\QPercent}]{
             M \text{ is a closed term.}
         }{
-            \G\vdash \%_\alpha M \E M : \tau
+            \G\vdash \%_\alpha M \E M
         }
     \end{center}
     Erase the symbol of \( \% \) under the condition.
     \begin{itemize}
         \item \( \text{Vec}\ \%3 \E \text{Vec}\ 3 \)
-        \item \( \text{vadd3} : \TW (\Vt \to \Vt \to \Vt) \)
+        \item \( \text{vadd3} : \TW (\Vt \to \Vt \to \Vt) \) \\
+            \hspace{15mm} \( (\E  \TW (\Vpt \to \Vpt \to \Vpt)) \)
     \end{itemize}
 \end{frame}
 
@@ -399,8 +397,11 @@
 \begin{frame}[fragile]{Conclusion}
         We introduced dependent types into muti-stage programming.
         \begin{itemize}
-            \item Define typing, kinding, well-formed kinding rules including stages.
+            \item Define typing, kinding, well-formed kinding rules for multi-stage calculus.
             \item Define equality rules.
+                \begin{itemize}
+                        \item Especially, dealing with CSP.
+                \end{itemize}
             \item Prove type soundness.
         \end{itemize}
     \note{
