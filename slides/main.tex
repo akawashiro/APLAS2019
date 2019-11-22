@@ -133,7 +133,7 @@
 \section{Introduction to Multistage programming}
 
 \begin{frame}[fragile]{What is Multi-stage Programming}
-    A programming paradigm enables that
+    A programming paradigm that enables
     \begin{itemize}
         \item Generation of code at runtime
         \item Evaluation of code at runtime
@@ -292,7 +292,7 @@
 \begin{frame}[fragile]{Cross Stage Persistence (CSP)}
     Enable using normal values in code values
     \begin{center}
-        \( \textbf{let}\ \underbrace{\text{mul3}}_{\text{normal value}}\ x = 2 * x\ \textbf{in} \underbrace{\TB\ (\% \text{mul3}\ 5)}_{\text{code value}} \)
+        \( \textbf{let}\ \underbrace{\text{mul5}}_{\text{normal value}}\ x = 5 * x\ \textbf{in} \underbrace{\TB\ (\% \text{mul5}\ 4)}_{\text{code value}} \)
     \end{center}
     CSP symbol \( \% \) {\bf{lift up}} an normal value into code value.
 \end{frame}
@@ -328,7 +328,7 @@
     \newcommand{\Vn}{\text{Vec}\ \%n}
     \newcommand{\Vt}{\text{Vec}\ \%3}
     \begin{tabbing}
-        \hspace{5mm} \= \( \text{vadd-gen} : \Pi n:\I \to \TW (\Vn \to \Vn \to \Vn) \) \\[2mm]
+        \hspace{5mm} \= \( \text{vadd-gen} : \Pi n:\I. \TW (\Vn \to \Vn \to \Vn) \) \\[2mm]
         \> \( \textbf{let}\ \text{vadd3} = \text{vadd-gen}\ 3;; \) \\
         \> \( \text{val}\ \text{vadd3} : \TW (\Vt \to \Vt \to \Vt) \) \\[2mm]
     \end{tabbing}
@@ -361,7 +361,7 @@
         \infrule[{\QPercent}]{
             M \text{ is a closed term.}
         }{
-            \G\vdash \%_\alpha M \E M
+            \G\vdash \% M \E M
         }
     \end{center}
     Erase the symbol of \( \% \) under the condition.
@@ -400,7 +400,7 @@
 \end{frame}
 
 \begin{frame}[fragile]{Conclusion}
-    We introduced dependent types into multi-stage programming.
+    We introduced dependent types into multi-stage calculus.
     \begin{itemize}
         \item Define typing, kinding, well-formed kinding rules for multi-stage calculus.
             \item Define equality rules.
