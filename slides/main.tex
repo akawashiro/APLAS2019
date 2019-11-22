@@ -117,7 +117,7 @@
 
 \title{Dependently Typed Multi-stage Calculus}
 \author{\underline{Akira Kawata} and Atsushi Igarashi}
-\institute{Gradudate School of Informatics, Kyoto University}
+\institute{Graduate School of Informatics, Kyoto University}
 \date{Dec 2, 2019}
 
 \begin{document}
@@ -233,7 +233,7 @@
     \end{itemize}
     Our contribution
     \begin{itemize}
-        \item Define typing, kinding, well-formed kind rules with stages
+        \item Define typing, kinding, well-formed kind rules for multi-stage calculus
         \item Define equivalence rules including CSP
     \end{itemize}
     \note{
@@ -290,11 +290,11 @@
 \end{frame}
 
 \begin{frame}[fragile]{Cross Stage Persistence (CSP)}
-    Use normal values in code values
-    \begin{tabbing}
-        \hspace{5mm} \= \( \textbf{let}\ \text{mul3}\ x = 2 * x\ \textbf{in} \) \\
-        \> \( \TB (\% \text{mul3}\ 5) \)
-    \end{tabbing}
+    Enable using normal values in code values
+    \begin{center}
+        \( \textbf{let}\ \underbrace{\text{mul3}}_{\text{normal value}}\ x = 2 * x\ \textbf{in} \underbrace{\TB\ (\% \text{mul3}\ 5)}_{\text{code value}} \)
+    \end{center}
+    CSP symbol \( \% \) {\bf{lift up}} an normal value into code value.
 \end{frame}
 
 \section{Extend \LTP with Dependent Types}
@@ -311,10 +311,10 @@
         \hspace{5mm} \( \tau \) \= ::= X \hspace{20mm} \= (constants) \\
         \> \( \mid \TW\ \tau \) \> (code type) \\
         \> \( \bm{\mid \Pi x:\tau.\tau} \) \> (function dependent type) \\
-        \> \( \bm{\mid \tau\ M} \) \> (application of term to dependent type)
+        \> \( \bm{\mid \tau\ M} \) \> (application, e.g. \(\text{Vec}\ 3\))
     \end{tabbing}
     \end{block}
-    We need CSP to use normal variables in code types.
+    Note: We need CSP to use normal variables in code types.
     \begin{itemize}
         \item OK  \( \Pi n: \TW (\text{Vec}\ \%n) \)
         \item NG  \( \Pi n: \TW (\text{Vec}\ n) \)
@@ -340,7 +340,7 @@
 \end{frame}
 
 \begin{frame}[fragile]{Problem of type of vadd3}
-    Hard to combine with other functions.
+    Hard to compose with other functions.
     \newcommand{\Vn}{\text{Vec}\ \%n}
     \newcommand{\Vpt}{\text{Vec}\ \%3}
     \newcommand{\Vt}{\text{Vec}\ 3}
@@ -348,8 +348,9 @@
         \hspace{5mm} \= \( \text{val}\ \text{vadd3} : \TW (\Vpt \to \Vpt \to \Vpt) \) \\
         \> \( \text{val}\ \text{double} : \TW (\Vt \to \Vt) \) \\[2mm]
         \> \( \textbf{let}\ \text{add-double}\ v\ w = \) \\
-        \> \hspace{5mm} \( \TB (\TBL\text{double}\ (\TBL \text{vadd3}\ \TBL v\ \TBL w));; \) \\
+        \> \hspace{5mm} \( \TB (\underbrace{\TBL\text{double}}_{\Vt \to \Vt}\ \underbrace{(\TBL \text{vadd3}\ \TBL v\ \TBL w)}_{\Vpt});; \) \\
     \end{tabbing}
+    We cannot compose because of type mismatch.
 \end{frame}
 
 \begin{frame}[fragile]{Solution}
@@ -389,15 +390,19 @@
             \begin{itemize}
                 \item Multi-stage programming including explicit CSP
             \end{itemize}
+        \item Concoqtion [Forgarty et al]
+            \begin{itemize}
+                \item Introduce indexed type into MetaOCaml.
+            \end{itemize}
     \end{itemize}
     \note{
     }
 \end{frame}
 
 \begin{frame}[fragile]{Conclusion}
-        We introduced dependent types into muti-stage programming.
-        \begin{itemize}
-            \item Define typing, kinding, well-formed kinding rules for multi-stage calculus.
+    We introduced dependent types into multi-stage programming.
+    \begin{itemize}
+        \item Define typing, kinding, well-formed kinding rules for multi-stage calculus.
             \item Define equality rules.
                 \begin{itemize}
                         \item Especially, dealing with CSP.
