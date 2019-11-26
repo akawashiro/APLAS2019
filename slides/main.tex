@@ -169,14 +169,14 @@
 \begin{frame}[fragile]{Example of Multi-stage Programming in MetaOCaml}
     \begin{center}
         \begin{verbatim}
- # let a = .< (1 + 2) >.;;
- val a : int code = .< (1 + 2) >.
+ # let a = < (1 + 2) >;;
+ val a : int code = < (1 + 2) >
  # run a;;
  - : int = 3
 
- # let b = .<(.~a) + (.~a)>.;;
- val b : int code = .< ((1 + 2) + (1 + 2)) >. 
- # run b;;
+ # let b = <(~a) + (~a)>
+ val b : int code = < ((1 + 2) + (1 + 2)) >
+ # run b
  - : int = 6
         \end{verbatim}
     \end{center}
@@ -189,7 +189,7 @@
     
     \begin{verbatim}
  val vadd-gen : Int -> (Vec -> Vec -> Vec) code
- # let vadd3 = vadd-gen 3;;
+ # let vadd3 = vadd-gen 3
  val vadd3 : (Vec -> Vec -> Vec) code
  (* vadd3 v w =                            *)
  (*   < let (v, w)=(~v, ~w) in             *)
@@ -203,9 +203,9 @@
     Runtime error occurs for wrong length vectors.
     \begin{verbatim}
  val vadd3 : (Vec -> Vec -> Vec) code
- # (run vadd3) [1;2;3] [4;5;6];;
+ # (run vadd3) [1;2;3] [4;5;6]
  - : Vec = [5;7;9]
- # (run vadd3) [1;2] [4;5];;
+ # (run vadd3) [1;2] [4;5]
  Exception: Failure
     \end{verbatim}
     \note{
@@ -222,7 +222,7 @@
  - : [1;2]: Vec 2
  - : vadd3 : (Vec 3 -> Vec 3 -> Vec 3) code
 
- # (run vadd3) [1;2] [4;5];;
+ # (run vadd3) [1;2] [4;5]
  [1;2] has type Vec 2
  but was expected of type Vec 3
  \end{verbatim}
@@ -230,20 +230,6 @@
         By the way, we can write types dependent on values using dependent types.
     }
 \end{frame}
-
-% \begin{frame}[fragile]{Generated functions by vadd-gen in \LMD}
-%     Type system prevents illegal use of generated function.
-%     \renewcommand{\V}{\text{Vec}}
-%     \begin{tabbing}
-%         \( \text{vadd3}\ [1;2;3]\ [4;5;6];; \) \\
-%         \( - : \V = [5;7;9] \) \\[2mm]
-%         \( \text{vadd3}\ [1;2;3;4]\ [4;5;6;7];; \) \\
-%         \( \longrightarrow \textbf{TYPE ERROR!} \text{ (not RUNTIME ERROR)} \)
-%     \end{tabbing}
-%     \note{
-%         Type of generated functions by vadd-gen in \LMD have the length information in their types.
-%     }
-% \end{frame}
 
 \begin{frame}[fragile]{Our Approach: \LMD}
     Introduce dependent types into \LTP [Hanada\&Igarashi'14].
@@ -317,13 +303,13 @@
 
     Typing judgements of \LTP include a stage.
     \begin{center}
-    \( \G \vdash 2 + 3 : \I @ 1 \)
+        \( \G \vdash 2 + 3 : \I {\mathbf{@ 1}} \)
     \end{center}
     \note{
     }
 \end{frame}
 
-\begin{frame}[fragile]{Typing Rules of \LMD}
+\begin{frame}[fragile]{Typing Rules of \LTP}
     Cannot apply a term to a function in a different stage.
     \begin{center}
         {\small \infrule[\TApp]{
@@ -346,13 +332,14 @@
             \G\V\TBL M:\tau @ n + 1
         }}
     \end{center}
+    In general, we cannot use terms of one stage at other stages.
     \note{
         Let's have a look on some typing rules.
     }
 \end{frame}
 
 \begin{frame}[fragile]{Cross Stage Persistence (CSP)}
-    Enable using terms at lower stages at higer stages. \\[3mm]
+    Enable using terms at lower stages at higher stages. \\[3mm]
 
     Want to use \( \text{mul5} \) in a code value.
     \begin{center}
@@ -369,22 +356,60 @@
   }
 \end{frame}
 
-\begin{frame}[fragile]{Types of \LMD}
+\begin{frame}[fragile]{Types and Kinds of \LMD}
+    Append function dependent types to types of \LTP.
     \begin{block}{Types}
-    \begin{tabbing}
-        \hspace{5mm} \( \tau \) \= ::= X \hspace{20mm} \= (constants) \\
-        \> \( \mid \TW\ \tau \) \> (code type) \\
-        \> \( \bm{\mid \Pi x:\tau.\tau} \) \> (function dependent type) \\
-        \> \( \bm{\mid \tau\ M} \) \> (application, e.g. \(\text{Vec}\ 3\))
-    \end{tabbing}
+        \begin{tabbing}
+            \hspace{5mm} \( \tau \) \= ::= X \hspace{20mm} \= (constants) \\
+            \> \( \mid \TW\ \tau \) \> (code type) \\
+            \> \( \bm{\mid \Pi x:\tau.\tau} \) \> (function dependent type) \\
+            \> \( \bm{\mid \tau\ M} \) \> (application, e.g. \(\text{Vec}\ 3\))
+        \end{tabbing}
     \end{block}
-    Note: We need CSP to use normal variables in code types.
-    \begin{itemize}
-        \item OK  \( \Pi n: \TW (\text{Vec}\ \%n) \)
-        \item NG  \( \Pi n: \TW (\text{Vec}\ n) \)
-    \end{itemize}
-   \note{
+    \begin{block}{Kinds}
+        \( K ::= * \mid \Pi x:\tau.K \)
+    \end{block}
+    % Note: We need CSP to use normal variables in code types.
+    % \begin{itemize}
+    %     \item OK  \( \Pi n: \TW (\text{Vec}\ \%n) \)
+    %     \item NG  \( \Pi n: \TW (\text{Vec}\ n) \)
+    % \end{itemize}
+    \note{
     }
+\end{frame}
+
+\begin{frame}[fragile]{Kinding rules of \LMD}
+    Types have also stages because types may contains terms.
+    \begin{center}
+    \infrule[{\KApp}]{
+        \G\V \sigma:: (\Pi x:\tau.K) @ n \andalso \G\V M:\tau @ n
+    }{
+        \G\V \sigma\ M::K[x\mapsto M] @ n
+    }
+    \infrule[{\KAbs}]{
+        \G\V \tau :: * @ n \andalso \G,x:\tau@ n \V \sigma::J@A
+    }{
+        \G\V(\Pi x:\tau.\sigma) :: (\Pi x:\tau.J) @ n
+    }
+    \end{center}
+    So, we need CSP in types also.
+    \begin{center}
+    \( \underbrace{\Pi n:\I. \TW (\overbrace{\text{Vec}\ \%n}^{\text{stage }1})}_{\text{stage }0} \)
+    \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Constants and type-level constants of \LMD}
+    Constants and type-level constants can be used at any stage.
+    \begin{itemize}
+        \item Integers: \( 0,1,2,3,\dots \)
+        \item Int, Vec, \dots
+    \end{itemize}
+
+    \begin{tabbing}
+        \hspace{5mm} \= \text{val doub3} : \( \text{Vec }3 \to \text{Vec }3 \) \\[2mm]
+        \> \textbf{let } \text{double} = \( \TB (\% \text{doub3}) \) \\
+        \> \text{val double} : \( \TW ( \text{Vec }3 \to \text{Vec }3) \)
+    \end{tabbing}
 \end{frame}
 
 \begin{frame}[fragile]{vadd-gen in \LMD}
@@ -448,15 +473,16 @@
     }
 \end{frame}
 
-\begin{frame}[fragile]{Related Works}
+\begin{frame}[fragile]{Related Work}
     \begin{itemize}
         \item \LTP [Hanada\&Igarashi'14]
             \begin{itemize}
                 \item Multi-stage programming including explicit CSP
             \end{itemize}
-        \item Concoqtion [Forgarty et al]
+        \item Concoqtion [Forgarty et al.]
             \begin{itemize}
                 \item Introduce indexed type into MetaOCaml.
+                \item Types are indexed by Coq terms.
             \end{itemize}
     \end{itemize}
     \note{
@@ -467,12 +493,12 @@
     We introduced dependent types into multi-stage calculus.
     \begin{itemize}
         \item Define typing, kinding, well-formed kinding rules for multi-stage calculus.
-            \item Define equality rules.
-                \begin{itemize}
-                        \item Especially, dealing with CSP.
-                \end{itemize}
-            \item Prove type soundness.
-        \end{itemize}
+        \item Define equality rules.
+            \begin{itemize}
+                \item Especially, dealing with CSP.
+            \end{itemize}
+        \item Prove type soundness.
+    \end{itemize}
     \note{
     }
 \end{frame}
@@ -497,6 +523,19 @@
 %     }
 % \end{frame}
 
+% \begin{frame}[fragile]{Generated functions by vadd-gen in \LMD}
+%     Type system prevents illegal use of generated function.
+%     \renewcommand{\V}{\text{Vec}}
+%     \begin{tabbing}
+%         \( \text{vadd3}\ [1;2;3]\ [4;5;6];; \) \\
+%         \( - : \V = [5;7;9] \) \\[2mm]
+%         \( \text{vadd3}\ [1;2;3;4]\ [4;5;6;7];; \) \\
+%         \( \longrightarrow \textbf{TYPE ERROR!} \text{ (not RUNTIME ERROR)} \)
+%     \end{tabbing}
+%     \note{
+%         Type of generated functions by vadd-gen in \LMD have the length information in their types.
+%     }
+% \end{frame}
 
 % \begin{frame}[fragile]{Terms of \LMD}
 %     \begin{block}{Terms}
@@ -541,7 +580,7 @@
 %     \note{
 %     }
 % \end{frame}
-%
+
 % \begin{frame}[fragile]{Kinds of \LMD}
 %     \begin{block}{Kinds}
 %         \( K ::= * \mid \Pi x:\tau.K \)
@@ -559,7 +598,7 @@
 %     \note{
 %     }
 % \end{frame}
-%
+
 % \begin{frame}[fragile]{Judgements of \LMD}
 %     \begin{itemize}
 %         \item \( \G \V K @ A \)
@@ -581,7 +620,7 @@
 %     \note{
 %     }
 % \end{frame}
-%
+
 % \begin{frame}[fragile]{What is stage\ \( A \)\ ?}
 %     % I copied this underwrite macro from
 %     % https://tex.stackexchange.com/questions/141932/how-to-write-under-an-underline.
@@ -605,7 +644,7 @@
 %         But subexpression in the brack triangle is a term on stage \( \alpha \).
 %     }
 % \end{frame}
-%
+
 % \begin{frame}[fragile]{What is signature \( \Sigma \)\ ?}
 %     Signature \( \Sigma \) is a sequence of type-level constants and constant values.
 %     \begin{itemize}
@@ -620,7 +659,7 @@
 %         後者関数が存在することにするか?
 %     }
 % \end{frame}
-%
+
 % \begin{frame}[fragile]{Typing Rules of \LMD}
 %     \begin{center}
 %         \infrule[{\TTB}]{
@@ -648,7 +687,7 @@
 %         Let's have a look on some typing rules.
 %     }
 % \end{frame}
-%
+
 % \begin{frame}[fragile]{Kinding Rules of \LMD}
 %     \begin{center}
 %         \infrule[{\KTW}]{
@@ -675,7 +714,7 @@
 %         Kinding rules have something in common with typing rules.
 %     }
 % \end{frame}
-%
+
 % \begin{frame}[fragile]{Example of Kinding Derivation}
 %     \renewcommand{\Vec}{\text{Vec}}
 %     \( \V \TB_\alpha [1,2,3] : \underbrace{\TW_\alpha (\Vec\ 3)}_{\TW_\alpha (\Vec\ 3) :: * @ \varepsilon} @ \varepsilon \) \\[2mm]
@@ -707,7 +746,7 @@
 %         but the elements, Vec and 3 are in the signature \( \Sigma \) and can be used at any stages.
 %     }
 % \end{frame}
-%
+
 % \begin{frame}[fragile]{Type and Term Equality Rules of \LMD}
 %     \begin{center}
 %         \footnotesize{
@@ -740,7 +779,7 @@
 %     \note{
 %     }
 % \end{frame}
-%
+
 % \begin{frame}[fragile]{Examples of Type Equality}
 %     \renewcommand{\V}{\text{Vec}}
 %     \begin{itemize}
@@ -761,8 +800,5 @@
 %         Shold I show complete derivation tree?
 %     }
 % \end{frame}
-
-
-
 
 \end{document}
