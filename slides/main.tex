@@ -85,6 +85,18 @@
 % https://tex.stackexchange.com/questions/320223/how-to-enforce-a-font-series-in-beamer-for-normal-default-text
 \AtBeginDocument{\usebeamerfont{normal text}}
 
+% Settings of Table of Contents page.
+% Append underline to currentsection.
+% https://tex.stackexchange.com/questions/280813/beamer-change-color-underline-but-do-not-hide-shade-other-section-in-table-of-c/283585
+% https://tex.stackexchange.com/questions/414250/numbers-shading-and-alert-in-beamer-table-of-contents
+% Page 101 of http://tug.ctan.org/macros/latex/contrib/beamer/doc/beameruserguide.pdf
+\setbeamertemplate{section in toc}{
+    \inserttocsectionnumber.\ \bf{\underline{\inserttocsection}}
+}
+\setbeamertemplate{section in toc shaded}{
+    \inserttocsectionnumber.\  \inserttocsection
+}
+
 \setbeamertemplate{bibliography item}{\insertbiblabel}
 % \setbeamertemplate{blocks}[default]
 \setbeamertemplate{blocks}[rounded]
@@ -104,16 +116,13 @@
     #2 {\bf \normalsize #1}
 \end{flushleft}}
 
-\newcommand{\toc}[0]{
-  \begin{frame}{Contents}
-  \tableofcontents[currentsection]
-  \end{frame}
-}
-
 \defbeamertemplate{description item}{align left}{\insertdescriptionitem\hfill}
 
 % Load symbol macros
 \input{symboldef.tex}
+
+% I don't use sigma in this slides.
+\renewcommand{\V}{\vdash}
 
 \title{Dependently Typed Multi-stage Calculus}
 \author{\underline{Akira Kawata} and Atsushi Igarashi}
@@ -131,6 +140,17 @@
 % \end{frame}
 
 \section{Introduction to Multistage programming}
+
+\begin{frame}{Contents}
+
+    \setbeamertemplate{section in toc}{
+        \inserttocsectionnumber.\ \inserttocsection
+    }
+
+    \tableofcontents
+    \note{
+    }
+\end{frame}
 
 \begin{frame}[fragile]{What is Multi-stage Programming}
     A programming paradigm that enables
@@ -171,9 +191,9 @@
  val vadd-gen : Int -> (Vec -> Vec -> Vec) code
  # let vadd3 = vadd-gen 3;;
  val vadd3 : (Vec -> Vec -> Vec) code
- (* vadd3 v w =                             *)
- (*   let (v, w)=(.~v, ,~w) in              *)
- (*   .< [v[0]+w[0];v[1]+w[1];v[2]+w[2]] >. *)
+ (* vadd3 v w =                            *)
+ (*   < let (v, w)=(~v, ~w) in             *)
+ (*      [v[0]+w[0];v[1]+w[1];v[2]+w[2]] > *)
     \end{verbatim}
     \note{
     }
@@ -289,10 +309,54 @@
     \end{table}
 \end{frame}
 
-\begin{frame}[fragile]{Cross Stage Persistence (CSP)}
-    Enable using normal values in code values
+\begin{frame}[fragile]{What is a stage?}
+    Level of nested quote
     \begin{center}
-        \( \textbf{let}\ \underbrace{\text{mul5}}_{\text{normal value}}\ x = 5 * x\ \textbf{in} \underbrace{\TB\ (\% \text{mul5}\ 4)}_{\text{code value}} \)
+        \( \underbrace{(\textbf{run}\ (\TB\ \overbrace{(2 + 3)}^{\let\scriptstyle\textstyle\substack{\text{stage }1}})) + 1}_{\let\scriptstyle\textstyle\substack{\text{stage }0}} \)
+    \end{center}
+
+    Typing judgements of \LTP include a stage.
+    \begin{center}
+    \( \G \vdash 2 + 3 : \I @ 1 \)
+    \end{center}
+    \note{
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Typing Rules of \LMD}
+    Cannot apply a term to a function in a different stage.
+    \begin{center}
+        {\small \infrule[\TApp]{
+            \G\V M:\sigma \to \tau @ n \andalso
+            \G\V N:\sigma @ n
+        }{
+            \G\V M\ N : \tau @ n
+        }}
+    \end{center}
+    Increase and decrease stage using \( \TB \) and \( \TBL \).
+    \begin{center}
+        {\small \infrule[{\TTB}]{
+            \G\V M:\tau @ n+1
+        }{
+            \G\V\TB M:\TW \tau @ n
+        } \hfil
+        \infrule[{\TTBL}]{
+            \G\V M:\TW \tau @ n
+        }{
+            \G\V\TBL M:\tau @ n + 1
+        }}
+    \end{center}
+    \note{
+        Let's have a look on some typing rules.
+    }
+\end{frame}
+
+\begin{frame}[fragile]{Cross Stage Persistence (CSP)}
+    Enable using terms at lower stages at higer stages. \\[3mm]
+
+    Want to use \( \text{mul5} \) in a code value.
+    \begin{center}
+        \( \textbf{let}\ \underbrace{\text{mul5}}_{\text{stage }0}\ x = 5 * x\ \textbf{in} \TB\ \underbrace{(\% \text{mul5}\ 4)}_{\text{stage }1} \)
     \end{center}
     CSP symbol \( \% \) {\bf{lift up}} an normal value into code value.
 \end{frame}
