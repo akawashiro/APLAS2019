@@ -244,8 +244,7 @@
     \end{itemize}
     Our contribution
     \begin{itemize}
-        \item Define typing, kinding, well-formed kind rules for multi-stage calculus
-        \item Define equivalence rules including CSP
+        \item Prevent illegal use of generated code values with dependent types.
     \end{itemize}
     \note{
         Our approach to the problem of multi-stage programming is introducing dependent types into a multi-stage calculus by Hanada and Igarashi.
@@ -348,7 +347,6 @@
 \begin{frame}[fragile]{Cross Stage Persistence (CSP)}
     Enable using terms at lower stages at higher stages. \\[3mm]
 
-    Want to use \( \text{mul5} \) in a code value.
     \begin{exampleblock}{}
     \begin{center}
         \( \textbf{let}\ \underbrace{\text{mul5}}_{\text{stage }0}\ x = 5 * x\ \textbf{in} \TB\ \underbrace{(\% \text{mul5}\ 4)}_{\text{stage }1} \)
@@ -512,11 +510,7 @@
 \begin{frame}[fragile]{Conclusion}
     We introduced dependent types into multi-stage calculus.
     \begin{itemize}
-        \item Define typing, kinding, well-formed kinding rules for multi-stage calculus.
-        \item Define equality rules.
-            \begin{itemize}
-                \item Especially, dealing with CSP.
-            \end{itemize}
+        \item Avoid illegal use of generated code values with dependent types.
         \item Prove type soundness.
         \item Future work: algorithmic typing
     \end{itemize}
