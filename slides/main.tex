@@ -422,7 +422,6 @@
         \item Type-level constants: Int, Vec, \dots
     \end{itemize}
     can be used at any stage.
-
     \begin{exampleblock}{}
         \begin{tabbing}
             \hspace{5mm} \= \text{val double-at-0} : \( \text{Vec }3 \to \text{Vec }3 \) \\[2mm]
@@ -430,7 +429,6 @@
             \> \text{val double} : \( \TW \underbrace{(\text{Vec }3 \to \text{Vec }3)}_{\text{stage 1}} \)
         \end{tabbing}
     \end{exampleblock}
-    Vec and integer 3 can be used at stage 1.
 \end{frame}
 
 \begin{frame}[fragile]{vadd-gen in \LMD}
