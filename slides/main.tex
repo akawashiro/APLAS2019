@@ -155,12 +155,12 @@
 \begin{frame}[fragile]{What is Multi-stage Programming}
     A programming paradigm that enables
     \begin{itemize}
-        \item Generation of code at runtime
-        \item Evaluation of code at runtime
+        \item Generation of code at run-time
+        \item Evaluation of code at run-time
     \end{itemize}
     Applications
     \begin{itemize}
-        \item Speeding up programs using runtime information
+        \item Speeding up programs using run-time information
     \end{itemize}
     \note{
     }
@@ -169,12 +169,12 @@
 \begin{frame}[fragile]{Example of Multi-stage Programming in MetaOCaml}
     \begin{exampleblock}{}
         \begin{verbatim}
- # let a = < (1 + 2) >;;
+ # let a = < (1 + 2) >     (* Make a code *)
  val a : int code = < (1 + 2) >
- # run a;;
+ # run a                   (* Run a code *)
  - : int = 3
 
- # let b = <(~a) + (~a)>
+ # let b = <(~a) + (~a)>   (* Embed codes *)
  val b : int code = < ((1 + 2) + (1 + 2)) >
  # run b
  - : int = 6
@@ -260,7 +260,7 @@
     }
 \end{frame}
 
-\begin{frame}[fragile]{\LTP [Hanada\&Igarashi'14]}
+\begin{frame}[fragile]{Quick Overview of \LTP [Hanada\&Igarashi'14]}
     \begin{table}
         \begin{tabular}{ c | c | c }
             & \LTP & MetaOCaml \\[2mm]
@@ -295,17 +295,25 @@
         \> \( \mid \tau \to \tau \) \> (function type)
     \end{tabbing}
     \end{block}
-   \note{
+    
+    \begin{block}{Typing Judgement}
+        \begin{center}
+            \( \G \V M : \tau @ n \)
+        \end{center}
+        * \( n \) is a stage.
+    \end{block}
+    
+    \note{
     }
-\end{frame}
+    \end{frame}
 
-\begin{frame}[fragile]{What is a stage?}
-    Level of nested quote
-    \begin{exampleblock}{}
-    \begin{center}
-        \( \underbrace{(\textbf{run}\ (\TB\ \overbrace{(2 + 3)}^{\let\scriptstyle\textstyle\substack{\text{stage }1}})) + 1}_{\let\scriptstyle\textstyle\substack{\text{stage }0}} \)
-    \end{center}
-    \end{exampleblock}
+    \begin{frame}[fragile]{What is a stage?}
+        Level of nested quote
+        \begin{exampleblock}{}
+            \begin{center}
+                \( \underbrace{(\textbf{run}\ (\TB\ \overbrace{(2 + 3)}^{\let\scriptstyle\textstyle\substack{\text{stage }1}})) + 1}_{\let\scriptstyle\textstyle\substack{\text{stage }0}} \)
+            \end{center}
+        \end{exampleblock}
 
     Typing judgements of \LTP include a stage.
     \begin{center}
@@ -355,7 +363,7 @@
     CSP symbol \( \% \) {\bf{lift up}} mul5 from stage 0 to stage 1.
 \end{frame}
 
-\section{Extend \LTP with Dependent Types}
+\section{Extension \LTP with Dependent Types}
 
 \begin{frame}{Contents}
     \tableofcontents[currentsection]
@@ -462,7 +470,7 @@
 \begin{frame}[fragile]{Solution}
     \newcommand{\Vt}{\text{Vec}\ 3}
     \newcommand{\Vpt}{\text{Vec}\ \%3}
-    Erase the CSP symbol \( \% \) of an closed term.
+    Erase the CSP symbol \( \% \) under the condition \(M \) is closed.
     \begin{center}
         \infrule[{\QPercent}]{
             M \text{ is a closed term.}
@@ -516,6 +524,23 @@
     \end{itemize}
     \note{
     }
+\end{frame}
+
+\begin{frame}[fragile]{Why a Stage is Needed?}
+    Without stage, \textbf{run} may causes a run-time error.
+    \begin{exampleblock}{}
+        \begin{center}
+    \( \TB (\lambda x:\tau. \TBL (\textbf{run}\ \TB x)) \)
+        \end{center}
+    \end{exampleblock}
+
+    With stage, the same code cannot be typed.\\
+    Because the subterm \( (\Lambda\alpha.\ \TB_\alpha x) \) is ill-typed.
+    \begin{exampleblock}{}
+        \begin{center}
+    \( \TB_\alpha (\lambda x:\tau. \TBL_\alpha ((\Lambda\alpha.\ \TB_\alpha x)\ \varepsilon)) \)
+        \end{center}
+    \end{exampleblock}
 \end{frame}
 
 % \begin{frame}[fragile]{Styles of Multi-stage Programming}
