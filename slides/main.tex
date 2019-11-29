@@ -408,6 +408,10 @@
 \end{frame}
 
 \begin{frame}[fragile]{Kinding rules of \LMD}
+    Kiding judgements also inculde stages.
+    \begin{center}
+        \( \G \vdash \tau :: K @ n \)
+    \end{center}
     Types have also stages because types may contains terms.
     \begin{center}
     {\footnotesize
@@ -422,11 +426,22 @@
         \G\V(\Pi x:\tau.\sigma) :: (\Pi x:\tau.J) @ n
     }}
     \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{CSP in Types}
+    Code type \( \TW \) decreases the stage.
+    \begin{center}
+        \infrule[{\KTW}]{
+            \G\V \tau::*@ n + 1
+        }{
+            \G\V\TW \tau::*@ n
+        }
+    \end{center}
     So, we need CSP in types also.
     \begin{exampleblock}{}
-    \begin{center}
-    \( \underbrace{\Pi n:\text{int}. \TW (\overbrace{\text{vec}\ \%n}^{\text{stage }1})}_{\text{stage }0} \)
-    \end{center}
+        \begin{center}
+            \( \underbrace{\Pi n:\text{int}. \TW (\overbrace{\text{vec}\ \%n}^{\text{stage }1})}_{\text{stage }0} \)
+        \end{center}
     \end{exampleblock}
 \end{frame}
 
