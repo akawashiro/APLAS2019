@@ -412,14 +412,14 @@
     \begin{center}
         \( \G \vdash \tau :: K @ n \)
     \end{center}
-    Types have also stages because types may contains terms.
+    Because types may contains terms. (e.g. vec n)
     \begin{center}
     {\footnotesize
     \infrule[{\KApp}]{
         \G\V \sigma:: (\Pi x:\tau.K) @ n \andalso \G\V M:\tau @ n
     }{
         \G\V \sigma\ M::K[x\mapsto M] @ n
-    }
+    } \\[2mm]
     \infrule[{\KAbs}]{
         \G\V \tau :: * @ n \andalso \G,x:\tau@ n \V \sigma::J@A
     }{
