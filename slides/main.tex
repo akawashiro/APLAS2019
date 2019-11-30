@@ -547,11 +547,12 @@
             \G\V\TW \tau::*@ n
         }
     \end{center}
-    So, we need CSP in types also in order to use \( n \) in \( \TW \).
+    We need CSP in types also in order to use \( n \) in \( \TW \).
     \begin{exampleblock}{}
-        \begin{center}
-            \( \lambda n:\text{int}. \text{zeros}(n): \underbrace{\Pi n:\text{int}. \TW (\overbrace{\text{vec}\ \%n}^{\text{stage }1})}_{\text{stage }0} \)
-        \end{center}
+        \begin{tabbing}
+            \hspace{5mm} \= \text{val zeros} : \( \Pi n:\text{int}.(\text{vec}\ n) \) \\
+            \> \( \lambda n:\text{int}. (\TB (\% \text{zeros}\ \% n)): \underbrace{\Pi n:\text{int}. \TW (\overbrace{\text{vec}\ \%n}^{\text{stage }1})}_{\text{stage }0} \)
+        \end{tabbing}
     \end{exampleblock}
     \note{
         Code type decreases the stage as you can see in K-code.  So we need CSP
