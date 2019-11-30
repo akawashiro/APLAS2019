@@ -150,6 +150,15 @@
 
     \tableofcontents
     \note{
+        Thank you for coming. I am Akira Kawata at Graduate School of
+        Informatics, Kyoto University. Today, I talk about Dependently Typed
+        Multi-stage Calculus.
+
+        This is today's outline. Firstly, I will introduce multi-stage
+        programming paradigm. Secondly, I explain existing multi-stage
+        calculus lambda-triangle-percent, which I call it lambda-T-P from now
+        because lambda-triangle-present is quite long. Lastly, I talk about
+        lambda-M-D which is an extension of lambda-T-P with dependent types.
     }
 \end{frame}
 
@@ -166,7 +175,11 @@
         \item DSLs
     \end{itemize}
     \note{
-        a.k.a = Also known as
+        So, what is multi-stage programming? It is a programming paradigm that
+        enables generation of code at run-time and evaluation of code at
+        run-time simultaneously. Famous applications of multi-stage programming
+        is speeding up programs using run-time information, which is also known
+        as run-time specialization and DSLs, for example TODO.
     }
 \end{frame}
 
@@ -408,7 +421,7 @@
 \end{frame}
 
 \begin{frame}[fragile]{Kinding rules of \LMD}
-    Kiding judgements also inculde stages.
+    Kiding judgements also include stages.
     \begin{center}
         \( \G \vdash \tau :: K @ n \)
     \end{center}
