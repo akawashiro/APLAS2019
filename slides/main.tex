@@ -181,10 +181,10 @@
     \note{
         So, what is multi-stage programming? It is a programming paradigm that
         enables generation of code at run-time and evaluation of code at
-        run-time simultaneously. Famous applications of multi-stage programming
-        is speeding up programs using run-time information, which is also known
-        as run-time specialization and DSLs, such as DSL for linear algebra or
-        image processing.
+        run-time simultaneously. One of famous applications of multi-stage
+        programming is speeding up programs using run-time information, which
+        is also known as run-time specialization. A DSL is also a famous
+        application such as a DSL for linear algebra or image processing.
     }
 \end{frame}
 
@@ -209,7 +209,7 @@
         code type. In line three, I run a code value bounded to "a" using "run"
         primitive. As a result, I get integer 3. We can embed code values into
         another code value.  In line 6, I make a code value by embedding the
-        code value banded to "a". Tilde symbol is a symbol to embed a code
+        code value bounded to "a". Tilde symbol is a symbol to embed a code
         value. Then, I bind a code of 1 + 2 + 1 + 2 to variable "b". When I run
         variable "b", we get integer 6 as a result.
     }
@@ -231,13 +231,13 @@
         Speeding up programs is important application of multi-stage
         programming as I said in the two before slide. vadd-gen function in
         this slide generates efficient addition function for given lengths.
-        vadd-gen function takes a integer as the vector length and return a
-        code value of function which takes two fixed length vectors and return
-        the sum of them. For example, when I apply 3 to vadd-gen function and
-        bind it to vadd3, vadd3 is a code value which takes two 3 length
-        vectors. I show the contents of vadd3 in commented out lines. It is
-        important that there is no loop. Loop is unrolled at generation of a
-        code value and it helps to make an efficient function.
+        vadd-gen function takes a integer as the length of vectors and return
+        code of function which takes two vectors of the length and return the
+        sum of them. For example, when I apply 3 to vadd-gen function and bind
+        it to vadd3, vadd3 is code which takes two 3 length vectors and returns
+        the sum. I show the contents of vadd3 in commented out lines. It is
+        important that there is no loop. Loop is unrolled at generation of code
+        and it make generated functions efficient.
     }
 \end{frame}
 
@@ -254,7 +254,7 @@
     \end{exampleblock}
     \note{
         But there is a problem in vadd3. It is that vadd3 raises runtime errors
-        for vectors of wrong length. For example, when I apply correct length
+        for vectors of wrong lengths. For example, when I apply correct length
         vectors, [1,2,3] and [4,5,6], I can get the sum of them [5,7,9]. But
         when I apply wrong length vectors, [1,2] and [4,5], I get exception at
         run-time.
@@ -279,12 +279,12 @@
     \end{exampleblock}
     \note{
         Our approach to the problem is using dependent types. Dependent types
-        are types dependent on values and can prevent illegal value of vadd3.
+        are types dependent on values and can prevent illegal use of vadd3.
         Using dependent types, we can express the length of vectors in their
-        types. For example, a vector [1;2] can be typed as vec 2 and vadd3 can
-        be typed code of function which takes values of vec 3 type and return a
-        value of vec 3 type. Now, if I apply wrong length vectors, [1;2] and
-        [4;5] to vadd3, I get only type error not run-time error.
+        types. For example, a vector [1;2] is as vec 2 and vadd3 is typed code
+        of function from vec 3 type to vec 3. Now, if I apply wrong length
+        vectors, [1;2] and [4;5] to vadd3, I get only type error not run-time
+        error.
     }
 \end{frame}
 
@@ -301,9 +301,9 @@
         \item Prove type soundness.
     \end{itemize}
     \note{
-        Our contribution of this research is designing lambda-M-D by
+        The contribution of our research is designing lambda-M-D by
         introducing dependent types into multi-stage calculus lambda-T-P by
-        Hanada and Igarashi. lambda-T-P have both of features of multi-stage
+        Hanada and Igarashi. lambda-MD have both of features of multi-stage
         programming and features of dependent types. Technically, we define
         well-formed kind, kinding, typing and equivalence rules and prove type
         soundness.
@@ -315,7 +315,8 @@
 \begin{frame}{Contents}
     \tableofcontents[currentsection]
     \note{
-        From the next slide, I explain existing multi-stage calculus lambda-T-P which we used as our lambda-M-D.
+        From the next slide, I explain existing multi-stage calculus lambda-TP
+        which is the base of our lambda-MD.
     }
 \end{frame}
 
@@ -331,10 +332,10 @@
     \end{table}
     \note{
         This is a quick overview of lambda-TP. In lambda-TP, we can make a code
-        value with a black triangle which corresponds to angle brackets in
-        MetaOCaml. Left-directed black triangle is used to embed a code values
-        which corresponds to tilde in MetaOCaml. Code type is represented with
-        white triangle.
+        value with a black triangle, quote, which corresponds to angle brackets
+        in MetaOCaml. Left-directed black triangle, unquote, is used to embed a
+        code values which corresponds to tilde in MetaOCaml. Code type is
+        represented with white triangle.
     }
 \end{frame}
 
@@ -376,8 +377,8 @@
 
     \note{
         Type of lambda-TP is type-level constants for example int or code type
-        or function type. Typing judgements of lambda-TP have shape of M is
-        typed tau at stage n under environment gamma.
+        or function type. Typing judgements of lambda-TP is that M is typed tau
+        at stage n under environment gamma.
     }
 \end{frame}
 
@@ -394,11 +395,11 @@
         \( x:\text{int}@1 \vdash x + 1 : \text{int} {\mathbf{@ 1}} \)
     \end{center}
     \note{
-        What is a stage? A stage is a level of nested quote surrounding a term
-        . For example, this whole term is on stage 0 because there is no black
-        triangle around this term. However, the subterm lambda x dot x + 1 is
-        on stage 1 because there is one black triangle around the subterm.
-        Typing judgements and environments of lambda-TP include a stage.
+        What is a stage? A stage is a level of nested quote surrounding a term.
+        For example, this whole term is on stage 0 because there is no quote
+        around this term. However, the subterm lambda x dot x + 1 is on stage 1
+        because there is one quote around the subterm.  Typing judgements and
+        environments of lambda-TP include a stage.
     }
 \end{frame}
 
@@ -430,11 +431,10 @@
         Let's have a look on some typing rules of lambda-TP. The application
         rule is T-App. As Simply Typed Lambda Calculus, types of a function and
         an argument must correspond. In addition to it, there is another
-        restriction. It is the function and the argument must live in the same
-        stage. Typing rules of quote and unquote is T-black triangle and T-left
-        directed black triangle. They say that black triangles increase and
-        decrease the stage of terms. In general, we cannot use terms of one
-        stage at other stages.
+        restriction. It is that the function and the argument must live in the
+        same stage. Typing rules of quote and unquote is T-quote and T-unquote.
+        They say that black triangles increase and decrease the stage of terms.
+        In general, we cannot use terms of one stage at other stages.
     }
 \end{frame}
 
@@ -449,10 +449,10 @@
     CSP symbol \( \% \) {\bf{lifts up}} mul5 from stage 0 to stage 1. \\
     (In MetaOCaml, variables are lifted up implicitly.)
     \note{
-        But we want to use terms at different stage. Cross Stage Persistence
+        But we want to use terms at different stage, sometime. Cross Stage Persistence
         (CSP) enables it. CSP allow terms at lower stages to be used at higher
         stages. For example, when we define a mul5 function at stage 0, we
-        cannot use it other stages. However, when we insert \% which is a
+        cannot use it other stages. However, when we insert \%, which is a
         symbol of CSP, we can use mul5 at stage 1. CSP symbol \( \% \)
         lifts up mul5 from stage 0 to stage 1.
     }
@@ -476,7 +476,7 @@
     \end{itemize}
     \note{
         This is overview of lambda-MD. Lambda-MD is an extension of multi-stage
-        calculus lambda-TP with dependent types. Its term are the same as
+        calculus lambda-TP with dependent types. Its terms are the same with
         lambda-TP but types are extended with dependent function type. And
         there are equivalence rules because dependent type system need them.
     }
@@ -498,7 +498,7 @@
     \note{
         These are types and kinds of lambda-MD. We add dependent function type
         to lambda-TP. So, there is a pi type which means dependent function
-        type and application such as vec 3 type. There are kinds also in
+        type and application such as vec 3. There are kinds also in
         lambda-MD in order to classify types into types of values which is
         represented with star symbol and types dependent on terms which is
         represented with pi x dot K.
@@ -526,11 +526,11 @@
     \end{center}
     \note{
         Kiding judgements also include stages. Because types may contains terms
-        such as vec n. It is natural that types dependent on a value live in
-        the same stage of the value. So, application rule, K-App, says that if
-        you want to apply term M to type sigma, they must live in the same
-        stage n. K-Abs says when sigma is kinded at stage n and variable x in
-        the environment is on stage n also, you can abstract x using Pi.
+        such as n in vec n. It is natural that types dependent on a value live
+        in the same stage of the value. So, application rule, K-App, says that
+        if you want to apply term M to type sigma, they must live in the same
+        stage n. K-Abs says that when sigma is kinded at stage n and variable x
+        in the environment is on stage n also, you can abstract x using Pi.
     }
 \end{frame}
 
@@ -550,12 +550,12 @@
         \end{center}
     \end{exampleblock}
     \note{
-        Code type decreases the stage as you can see in K-white triangle rule.
-        So we need CSP in types also. For example, let's consider a function
-        which takes integer n and returns a vector of length n filled with
-        zero. Because n is a variable at stage 0, you must insert \% symbol
-        when you use it in code type. But vec is used without \% symbol. I will
-        explain the reason in the next slide.
+        Code type decreases the stage as you can see in K-code.  So we need CSP
+        in types also. For example, let's consider a function which takes
+        integer n and returns a code of length n vector filled with zeros.
+        Because n is a variable at stage 0, you must insert \% symbol when you
+        use it in code type. But vec is used without \% symbol. I will explain
+        the reason in the next slide.
     }
 \end{frame}
 
@@ -600,7 +600,7 @@
         in \LMD.  The type of vadd-gen says that it takes integer n and returns
         a code value of function which takes two \% n length vectors and
         returns a \% n length vector.  Thanks to dependent types we can see it
-        takes length 3 vectors.
+        takes only length 3 vectors.
     }
 \end{frame}
 
@@ -619,10 +619,10 @@
     \end{exampleblock}
     We cannot compose because of type mismatch.
     \note{
-        But there is a technical challenge in vadd3. It is vadd3 is hard to
+        But there is a technical challenge in vadd3. vadd3 is hard to
         compose with other functions. For example, as you have seen, vadd3 has
         the type of code which takes two vec \% 3 values and returns vec \% 3
-        values. However, double has type of code which takes vec 3. So we
+        values. However, double has type of code from vec 3 to vec 3. So we
         cannot compose them because \% symbol raises a type error.
     }
 \end{frame}
@@ -657,9 +657,9 @@
         Our solution for this problem is erasing the CSP symbol \( \% \) when
         \(M \) is closed. \QPercent says that if M is a closed term, \% M is
         equivalent to M. And \TConv says we change the type of term to an
-        equivalent type. So, vec \% 3 is equivalent to vec 3 and vadd3 can have
-        type of code of function which takes two vec 3 values and returns a vec
-        3 value. The type is equivalent to the original type of vadd3.
+        equivalent type. So, vec \% 3 is equivalent to vec 3 and vadd3 can be 
+        typed of code of function which takes two vec 3 values and returns a vec
+        3 value. And the type is equivalent to the original type of vadd3.
     }
 \end{frame}
 
@@ -718,7 +718,7 @@
     \note{
         Here is conclusion. We introduced dependent types into multi-stage
         calculus. It can avoid illegal use of generated code values with
-        dependent types. And it dependent types is full dependent types not
+        dependent types. And its dependent types is full dependent types not
         restricted ones. We define equivalence rules for dependent types
         especially for CSP. And we proved type soundness. There is a future
         work of algorithmic typing but we have designed almost all rules of
