@@ -137,6 +137,9 @@
 \begin{document}
 \maketitle
 
+\begin{frame}{}
+\end{frame}
+
 % Output the outline slide
 % \begin{frame}{Contents}
 %     \tableofcontents[currentsection]
@@ -166,7 +169,7 @@
     }
 \end{frame}
 
-\begin{frame}[fragile]{What is Multi-stage Programming}
+\begin{frame}[fragile]{What is Multi-stage Programming?}
     A programming paradigm that enables
     \begin{itemize}
         \item Generation of code at run-time
@@ -274,7 +277,7 @@
 
  # (run vadd3) [1;2] [4;5]
  [1;2] has type vec 2
- but was expected of type vec 3
+ but a value of type Vec 3 was expected
  \end{Verbatim}
     \end{exampleblock}
     \note{
@@ -506,7 +509,7 @@
 \end{frame}
 
 \begin{frame}[fragile]{Kinding rules of \LMD}
-    Kiding judgements also include stages.
+    Kiding judgements as well include stages.
     \begin{center}
         \( \G \vdash \tau :: K @ n \)
     \end{center}
