@@ -97,9 +97,9 @@
     \G \V X::K@A
   } \\[2mm]
   \infrule[{\KAbs}]{
-    \G\V \tau :: *@A \andalso \G,x:\tau@A\V \sigma::J@A
+    \G\V \tau :: *@A \andalso \G,x:\tau@A\V \sigma::*@A
   }{
-    \G\V(\Pi x:\tau.\sigma) :: (\Pi x:\tau.J)@A
+    \G\V(\Pi x:\tau.\sigma) :: (\Pi x:\tau.*)@A
   } \\[2mm]
   \infrule[{\KApp}]{
     \G\V \sigma:: (\Pi x:\tau.K)@A \andalso \G\V M:\tau@A
