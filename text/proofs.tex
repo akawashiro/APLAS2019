@@ -39,14 +39,14 @@ if and only if we can get \(\G\) from \(\D\) by deleting some or no variables wi
 
 	\begin{rneqncase}{
 			\QTAbs{}}{
-			\mathcal{J} = \rho \E \pi :: * @ A \\
+			\mathcal{J} = \Pi x:\tau.\rho \E \Pi x:\sigma.\pi :: * @ A \\
 			\G\V \tau \E \sigma :: *@A  & \G,x:\tau@A \V \rho \E \pi :: *@A.
 		}
 		By the induction hypothesis, we have
 		\begin{align*}
 			 & \D\V \tau \E \sigma :: *@A &  & \D,x:\tau@A \V \rho \E \pi :: *@A
 		\end{align*}
-		from which \( \D\V \rho \E \pi :: * @ A \) follows.
+		from which \( \D\V  \Pi x:\tau.\rho \E \Pi x:\sigma.\pi :: * @ A \) follows.
 	\end{rneqncase}
 	\qed\end{proof}
 
